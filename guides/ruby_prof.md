@@ -1,10 +1,10 @@
 # Profiling with RubyProf
 
-Easy integrate the power of [ruby-prof](https://github.com/ruby-prof/ruby-prof) into your test suite.
+Easily integrate the power of [ruby-prof](https://github.com/ruby-prof/ruby-prof) into your test suite.
 
 ## Instructions
 
-Install 'ruby-prof' gem (>= 0.16):
+Install `ruby-prof` gem (>= 0.16):
 
 ```ruby
 # Gemfile
@@ -13,7 +13,7 @@ group :development, :test do
 end
 ```
 
-RubyProf profiler has 2 modes: _global_ and _per-example_.
+RubyProf profiler has two modes: _global_ and _per-example_.
 
 You can activate the global profiling using the environment variable `TEST_RUBY_PROF`:
 
@@ -56,7 +56,7 @@ TestProf::RubyProf.configure do |config|
 end
 ```
 
-By default we use `CallStackPrinter`.
+By default, we use `CallStackPrinter`.
 
 You also tell TestProf to use unique filenames for reports (by simply appending current timestamp):
 
