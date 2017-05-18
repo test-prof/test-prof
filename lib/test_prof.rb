@@ -58,3 +58,5 @@ module TestProf
     end
   end
 end
+
+require "test_prof/ruby_prof"

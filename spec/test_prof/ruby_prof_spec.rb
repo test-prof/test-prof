@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "test_prof/ruby_prof"
 
 describe TestProf::RubyProf do
   # Use fresh config all for every example

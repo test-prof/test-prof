@@ -26,7 +26,7 @@ module TestProf
       # Contains a lot of RSpec stuff.
       ELIMINATE_METHODS = [
         /instance_exec/,
-        /Example(Group)?>?#run(_examples)?/,
+        /ExampleGroup>?#run/,
         /Procsy/,
         /AroundHook#execute_with/,
         /HookCollections/,
@@ -130,6 +130,8 @@ module TestProf
     end
 
     class << self
+      include Logging
+
       def config
         @config ||= Configuration.new
       end
@@ -143,9 +145,11 @@ module TestProf
       #
       # Use this method to profile the whole run.
       def run
+        report = profile
+
         @locked = true
 
-        report = profile
+        log :info, "RubyProf enabled"
 
         at_exit { report.dump("total") }
       end
