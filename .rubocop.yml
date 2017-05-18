@@ -1,0 +1,70 @@
+AllCops:
+  Include:
+    - 'lib/**/*.rb'
+    - 'lib/**/*.rake'
+    - 'spec/**/*.rb'
+  Exclude:
+    - 'bin/**/*'
+    - 'spec/dummy/**/*'
+    - 'tmp/**/*'
+    - 'Rakefile'
+    - 'Gemfile'
+    - '*.gemspec'
+  DisplayCopNames: true
+  StyleGuideCopsOnly: false
+  TargetRubyVersion: 2.4
+
+Rails:
+  Enabled: false
+
+Style/AccessorMethodName:
+  Enabled: false
+
+Style/TrivialAccessors:
+  Enabled: false
+
+Style/Documentation:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Style/StringLiterals: 
+  Enabled: false
+
+Style/RegexpLiteral:
+  Enabled: false
+
+Style/SpaceInsideStringInterpolation:
+  EnforcedStyle: no_space
+
+Style/ClassAndModuleChildren:
+  Enabled: false
+
+Style/BlockDelimiters:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Lint/AmbiguousRegexpLiteral:
+  Enabled: false
+
+
+Metrics/MethodLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/AbcSize:
+  Max: 20
+
+Metrics/LineLength:
+  Max: 100
+  Exclude:
+    - 'spec/**/*.rb'
+
+Metrics/BlockLength:
+  Exclude:
+    - 'spec/**/*.rb'
+
+Rails/Date:
+  Enabled: false
+
+Rails/TimeZone:
+  Enabled: false

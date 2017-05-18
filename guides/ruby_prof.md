@@ -1,0 +1,61 @@
+# Profiling with RubyProf
+
+Easy integrate the power of [ruby-prof](https://github.com/ruby-prof/ruby-prof) into your test suite.
+
+## Instructions
+
+Install 'ruby-prof' gem (>= 0.16):
+
+```ruby
+# Gemfile
+group :development, :test do
+  gem 'ruby-prof', require: false
+end
+```
+
+RubyProf profiler has 2 modes: _global_ and _per-example_.
+
+You can activate the global profiling using the environment variable `TEST_RUBY_PROF`:
+
+```sh
+TEST_RUBY_PROF=1 bundle exec rake test
+
+# or for RSpec
+TEST_RUBY_PROF=1 rspec ...
+```
+
+Or in your code:
+
+```ruby
+TestProf::RubyProf.run
+```
+
+TestProf provides a built-in shared context for RSpec to profile examples individually:
+
+```ruby
+it "is doing heavy stuff", :rprof do
+  ...
+end
+```
+
+### Configuration
+
+The most useful configuration option is `printer` – it allows you to specify a RubyProf [printer](https://github.com/ruby-prof/ruby-prof#printers).
+
+You can specify a printer through environment variable `TEST_RUBY_PROF_PRINTER`:
+
+```sh
+TEST_RUBY_PROF_PRINTER=flat bundle exec rake test
+```
+
+Or in your code:
+
+```ruby
+TestProf::RubyProf.confugure do |config|
+  config.printer = :flat
+end
+```
+
+By default we use `CallStackPrinter`.
+
+See [ruby_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/ruby_prof.rb) for all available configuration options and their usage.
