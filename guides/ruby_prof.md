@@ -58,12 +58,4 @@ end
 
 By default, we use `CallStackPrinter`.
 
-You also tell TestProf to use unique filenames for reports (by simply appending current timestamp):
-
-```ruby
-TestProf::RubyProf.configure do |config|
-  config.timestamps = true
-end
-```
-
 See [ruby_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/ruby_prof.rb) for all available configuration options and their usage.

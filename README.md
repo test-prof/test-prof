@@ -43,7 +43,7 @@ Checkout our guides for each specific tool:
 
 - [RubyProf Integration](https://github.com/palkan/test-prof/tree/master/guides/ruby_prof.md)
 
-- StackProf Integration
+- [StackProf Integration](https://github.com/palkan/test-prof/tree/master/guides/stack_prof.md)
 
 - ActiveSupport events profiler
 
@@ -51,7 +51,7 @@ Checkout our guides for each specific tool:
 
 - Factory Profiler
 
-## Tips and Tricks
+## Tips and Tricks (or _Recipes_)
 
 We also want to share some small code tricks which can help you to improve your test suite performance and efficiency:
 
@@ -62,6 +62,20 @@ We also want to share some small code tricks which can help you to improve your 
 - `bulletify`
 
 - [`rspec-sqlimit`](https://github.com/nepalez/rspec-sqlimit)
+
+## Configuration
+
+TestProf global configuration is used by most of the profilers:
+
+```ruby
+TestProf.configure do |config|
+  # the directory to put artifacts (reports) in ("tmp" by default)
+  config.output_dir = "tmp/test_prof"
+
+  # use unique filenames for reports (by simply appending current timestamp)
+  config.timestamps = true
+end
+```
 
 ## License
 
