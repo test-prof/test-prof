@@ -3,8 +3,6 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "test-prof"
 
-TestProf.config.output = StringIO.new
-
 RSpec.configure do |config|
   config.mock_with :rspec
 
@@ -18,6 +16,10 @@ RSpec.configure do |config|
 
   config.before(:each) do
     allow(TestProf).to receive(:require).and_return(true)
+    # Clear global configuration
+    TestProf.remove_instance_variable(:@config) if
+      TestProf.instance_variable_defined?(:@config)
+    TestProf.config.output = StringIO.new
   end
 
   config.after(:suite) do

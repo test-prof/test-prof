@@ -41,22 +41,37 @@ module TestProf
       log :error, msg
       false
     end
+
+    def with_timestamps(path)
+      return path unless config.timestamps?
+      timestamps = "-#{Time.now.to_i}"
+      "#{path.sub(/\.\w+$/, '')}#{timestamps}#{File.extname(path)}"
+    end
   end
 
   # TestProf configuration
   class Configuration
-    attr_accessor :output, # IO to write output messages.
-                  :color   # Whether to colorize output or not
+    attr_accessor :output,      # IO to write output messages.
+                  :color,       # Whether to colorize output or not
+                  :output_dir,  # Directory to store artifacts
+                  :timestamps   # Whethere to use timestamped names for artifacts
 
     def initialize
       @output = $stdout
       @color = true
+      @output_dir = "tmp"
+      @timestamps = false
     end
 
     def color?
       color == true
     end
+
+    def timestamps?
+      timestamps == true
+    end
   end
 end
 
 require "test_prof/ruby_prof"
+require "test_prof/stack_prof"

@@ -13,7 +13,6 @@ describe TestProf::RubyProf do
       expect(subject.printer).to eq :call_stack
       expect(subject.mode).to eq :wall
       expect(subject.min_percent).to eq 1
-      expect(subject.output_dir).to eq 'tmp'
       expect(subject.include_threads).to eq false
     end
 
@@ -90,9 +89,10 @@ describe TestProf::RubyProf do
     specify "with custom config" do
       described_class.config.printer = :flat
       described_class.config.eliminate_methods = []
-      described_class.config.timestamps = true
       described_class.config.min_percent = 2
       described_class.config.mode = :cpu
+
+      TestProf.config.timestamps = true
 
       expect(result).not_to receive(:eliminate_methods!)
 

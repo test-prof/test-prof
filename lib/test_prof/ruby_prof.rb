@@ -45,17 +45,14 @@ module TestProf
       }.freeze
 
       attr_accessor :printer, :mode, :min_percent,
-                    :output_dir, :include_threads,
-                    :eliminate_methods, :timestamps
+                    :include_threads, :eliminate_methods
 
       def initialize
         @printer = :call_stack
         @mode = :wall
         @min_percent = 1
-        @output_dir = "tmp"
         @include_threads = false
         @eliminate_methods = ELIMINATE_METHODS
-        @timestamps = false
       end
 
       def include_threads?
@@ -65,10 +62,6 @@ module TestProf
       def eliminate_methods?
         !eliminate_methods.nil? &&
           !eliminate_methods.empty?
-      end
-
-      def timestamps?
-        timestamps == true
       end
 
       # Returns an array of printer type (ID) and class.
@@ -117,10 +110,11 @@ module TestProf
       private
 
       def build_path(name, printer)
-        timestamps = config.timestamps? ? "-#{Time.now.to_i}" : ""
-        File.join(
-          config.output_dir,
-          "ruby-prof-report-#{printer}-#{config.mode}-#{name}#{timestamps}.html"
+        TestProf.with_timestamps(
+          File.join(
+            TestProf.config.output_dir,
+            "ruby-prof-report-#{printer}-#{config.mode}-#{name}.html"
+          )
         )
       end
 
@@ -146,6 +140,8 @@ module TestProf
       # Use this method to profile the whole run.
       def run
         report = profile
+
+        return unless report
 
         @locked = true
 
