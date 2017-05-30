@@ -2,7 +2,13 @@
 
 # Ruby Tests Profiling Toolbox
 
-TestProf is a collection of different tools to analyze your test suite performance:
+TestProf is a collection of different tools to analyze your test suite performance.
+
+Why does test suite performance matter? First of all, testing is a part of a developer's feedback loop (see @searls [talk](https://www.youtube.com/watch?v=VD51AkG8EZw)) and, secondly, it is a part of a deployment cycle.
+
+Simply speaking, slow tests waste your time making you less productive.
+
+TestProf toolbox aims to help you identify bottlenecks in your test suite. It contains:
 
 - Plug'n'Play integrations for general Ruby profilers ([`ruby-prof`](https://github.com/ruby-prof), [`stackprof`](https://github.com/tmm1/stackprof))
 
@@ -80,4 +86,3 @@ end
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
