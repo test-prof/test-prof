@@ -6,7 +6,7 @@ describe TestProf::StackProf do
   # Use fresh config all for every example
   after { described_class.remove_instance_variable(:@config) }
 
-  describe "#config" do
+  describe ".config" do
     subject { described_class.config }
 
     specify "defaults", :aggregate_failiures do
