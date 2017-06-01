@@ -51,7 +51,7 @@ Checkout our guides for each specific tool:
 
 - [StackProf Integration](https://github.com/palkan/test-prof/tree/master/guides/stack_prof.md)
 
-- ActiveSupport events profiler
+- [Instrumentation Profiler](https://github.com/palkan/test-prof/tree/master/guides/event_prof.md) (e.g. ActiveSupport notifications)
 
 - Factory Doctor
 
@@ -80,6 +80,9 @@ TestProf.configure do |config|
 
   # use unique filenames for reports (by simply appending current timestamp)
   config.timestamps = true
+
+  # color output
+  config.color = true
 end
 ```
 
