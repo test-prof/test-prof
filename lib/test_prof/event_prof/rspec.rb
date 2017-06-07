@@ -8,11 +8,11 @@ module TestProf
       include Logging
       using FloatDuration
 
-      NOTIFICATIONS = [
-        :example_group_started,
-        :example_group_finished,
-        :example_started,
-        :example_finished
+      NOTIFICATIONS = %i[
+        example_group_started
+        example_group_finished
+        example_started
+        example_finished
       ].freeze
 
       def initialize
@@ -65,7 +65,6 @@ module TestProf
 
         if result[:examples]
           msgs << "\nTop #{@profiler.top_count} slowest tests (by #{@profiler.rank_by}):\n\n"
-
 
           result[:examples].each do |example|
             description = example[:id].description

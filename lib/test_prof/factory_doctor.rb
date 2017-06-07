@@ -1,0 +1,127 @@
+# frozen_string_literal: true
+
+require "test_prof/factory_doctor/factory_girl_patch"
+
+module TestProf
+  # FactoryDoctor is a tool that helps you identify such _bad_ tests,
+  # i.e. tests that perform unnecessary database queries.
+  module FactoryDoctor
+    class Result # :nodoc:
+      attr_reader :count, :time, :queries_count
+
+      def initialize(count, time, queries_count)
+        @count = count
+        @time = time
+        @queries_count = queries_count
+      end
+
+      def bad?
+        count.positive? && queries_count.zero?
+      end
+    end
+
+    IGNORED_QUERIES_PATTERN = %r{(
+      pg_table|
+      pg_attribute|
+      pg_namespace|
+      show\stables|
+      pragma|
+      sqlite_master/rollback|
+      \ATRUNCATE TABLE|
+      \AALTER TABLE|
+      \ABEGIN|
+      \ACOMMIT|
+      \AROLLBACK|
+      \ARELEASE|
+      \ASAVEPOINT
+    )}xi
+
+    class << self
+      attr_reader :event
+      attr_reader :count, :time, :queries_count
+
+      # Patch factory lib, init counters
+      def init(event = 'sql.active_record')
+        @event = event
+        reset!
+
+        # Monkey-patch FactoryGirl
+        ::FactoryGirl::FactoryRunner.prepend(FactoryGirlPatch) if
+          defined?(::FactoryGirl)
+
+        subscribe!
+      end
+
+      def start
+        reset!
+        @running = true
+      end
+
+      def stop
+        @running = false
+      end
+
+      def result
+        Result.new(count, time, queries_count)
+      end
+
+      # Do not analyze code within the block
+      def ignore
+        @ignored = true
+        res = yield
+      ensure
+        @ignored = false
+        res
+      end
+
+      def within_factory(strategy)
+        return yield if ignore? || !running? || (strategy != :create)
+
+        ts = Time.now if @depth.zero?
+        @depth += 1
+        @count += 1
+        yield
+      ensure
+        @depth -= 1
+
+        @time += (Time.now - ts) if @depth.zero?
+      end
+
+      private
+
+      def reset!
+        @depth = 0
+        @time = 0.0
+        @count = 0
+        @queries_count = 0
+      end
+
+      def subscribe!
+        ::ActiveSupport::Notifications.subscribe(event) do |_name, _start, _finish, _id, query|
+          next if ignore? || !running? || within_factory?
+          next if query[:sql] =~ IGNORED_QUERIES_PATTERN
+          @queries_count += 1
+        end
+      end
+
+      def within_factory?
+        @depth.positive?
+      end
+
+      def ignore?
+        @ignored == true
+      end
+
+      def running?
+        @running == true
+      end
+    end
+  end
+end
+
+if ENV['FDOC']
+  TestProf::FactoryDoctor.init
+
+  require "test_prof/factory_doctor/rspec" if defined?(RSpec)
+  require "test_prof/factory_doctor/minitest" if defined?(Minitest::Reporters)
+end

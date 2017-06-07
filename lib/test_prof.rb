@@ -76,3 +76,4 @@ end
 require "test_prof/ruby_prof"
 require "test_prof/stack_prof"
 require "test_prof/event_prof"
+require "test_prof/factory_doctor"

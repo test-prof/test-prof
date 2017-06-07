@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module BeforeAll
   def before_all(&block)
     raise ArgumentError, "Block is required!" unless block_given?

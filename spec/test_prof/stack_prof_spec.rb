@@ -64,7 +64,7 @@ describe TestProf::StackProf do
 
     it "stops profiling and stores results" do
       expect(stack_prof).to receive(:results).with(
-        "tmp/stack-prof-report-wall-stub.dump",
+        "tmp/stack-prof-report-wall-stub.dump"
       )
       expect(stack_prof).to receive(:stop)
       described_class.dump("stub")

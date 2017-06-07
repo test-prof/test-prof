@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module IntegrationHelpers
   def run_rspec(path, env: {})
     output, status = Open3.capture2(

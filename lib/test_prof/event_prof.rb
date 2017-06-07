@@ -115,7 +115,7 @@ module TestProf
         @current_group = nil
       end
 
-      def example_started(id)
+      def example_started(_id)
         reset_example!
       end
 

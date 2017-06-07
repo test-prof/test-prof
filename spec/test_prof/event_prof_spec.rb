@@ -78,13 +78,11 @@ describe TestProf::EventProf do
 
     it "returns top slow groups and totals" do
       expect(results).to eq(
-        {
-          groups: [
-            { id: 'C', examples: 2, time: 440, count: 2 },
-            { id: 'B', examples: 2, time: 420, count: 3 },
-            { id: 'A', examples: 1, time: 100, count: 1 }
-          ]
-        }
+        groups: [
+          { id: 'C', examples: 2, time: 440, count: 2 },
+          { id: 'B', examples: 2, time: 420, count: 3 },
+          { id: 'A', examples: 1, time: 100, count: 1 }
+        ]
       )
       expect(subject.total_time).to eq 960
       expect(subject.total_count).to eq 6
@@ -95,13 +93,11 @@ describe TestProf::EventProf do
 
       it "returns top groups by event occurances" do
         expect(results).to eq(
-          {
-            groups: [
-              { id: 'B', examples: 2, time: 420, count: 3 },
-              { id: 'C', examples: 2, time: 440, count: 2 },
-              { id: 'A', examples: 1, time: 100, count: 1 }
-            ]
-          }
+          groups: [
+            { id: 'B', examples: 2, time: 420, count: 3 },
+            { id: 'C', examples: 2, time: 440, count: 2 },
+            { id: 'A', examples: 1, time: 100, count: 1 }
+          ]
         )
       end
     end
@@ -111,12 +107,10 @@ describe TestProf::EventProf do
 
       it "returns top groups by event occurances" do
         expect(results).to eq(
-          {
-            groups: [
-              { id: 'C', examples: 2, time: 440, count: 2 },
-              { id: 'B', examples: 2, time: 420, count: 3 }
-            ]
-          }
+          groups: [
+            { id: 'C', examples: 2, time: 440, count: 2 },
+            { id: 'B', examples: 2, time: 420, count: 3 }
+          ]
         )
       end
     end
@@ -126,19 +120,17 @@ describe TestProf::EventProf do
 
       it "returns top groups and examples" do
         expect(results).to eq(
-          {
-            groups: [
-              { id: 'C', examples: 2, time: 440, count: 2 },
-              { id: 'B', examples: 2, time: 420, count: 3 },
-              { id: 'A', examples: 1, time: 100, count: 1 }
-            ],
-            examples: [
-              { id: 'C1', time: 440, count: 2 },
-              { id: 'B1', time: 380, count: 2 },
-              { id: 'A1', time: 100, count: 1 },
-              { id: 'B2', time: 40,  count: 1 }
-            ]
-          }
+          groups: [
+            { id: 'C', examples: 2, time: 440, count: 2 },
+            { id: 'B', examples: 2, time: 420, count: 3 },
+            { id: 'A', examples: 1, time: 100, count: 1 }
+          ],
+          examples: [
+            { id: 'C1', time: 440, count: 2 },
+            { id: 'B1', time: 380, count: 2 },
+            { id: 'A1', time: 100, count: 1 },
+            { id: 'B2', time: 40,  count: 1 }
+          ]
         )
       end
     end

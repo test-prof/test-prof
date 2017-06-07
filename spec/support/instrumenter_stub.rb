@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module InstrumenterStub
   class << self
     def subscribe(event, &block)

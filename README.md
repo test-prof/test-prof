@@ -53,7 +53,7 @@ Checkout our guides for each specific tool:
 
 - [Instrumentation Profiler](https://github.com/palkan/test-prof/tree/master/guides/event_prof.md) (e.g. ActiveSupport notifications)
 
-- Factory Doctor
+- [Factory Doctor]((https://github.com/palkan/test-prof/tree/master/guides/factory_doctor.md))
 
 - Factory Profiler
 
@@ -64,10 +64,6 @@ We also want to share some small code tricks which can help you to improve your 
 - `before_all` Hook
 
 - Any Fixture
-
-- `bulletify`
-
-- [`rspec-sqlimit`](https://github.com/nepalez/rspec-sqlimit)
 
 ## Configuration
 
@@ -85,6 +81,17 @@ TestProf.configure do |config|
   config.color = true
 end
 ```
+
+## What's next?
+
+Or TODO list:
+
+- Better Minitest integration (PRs welcome!)
+
+- Other data generation library support (e.g [Fabricator](http://fabricationgem.org/))
+
+- Improve FactoryDoctor
+
 
 ## License
 
