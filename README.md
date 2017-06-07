@@ -53,7 +53,7 @@ Checkout our guides for each specific tool:
 
 - [Instrumentation Profiler](https://github.com/palkan/test-prof/tree/master/guides/event_prof.md) (e.g. ActiveSupport notifications)
 
-- [Factory Doctor]((https://github.com/palkan/test-prof/tree/master/guides/factory_doctor.md))
+- [Factory Doctor](https://github.com/palkan/test-prof/tree/master/guides/factory_doctor.md)
 
 - Factory Profiler
 
@@ -61,7 +61,7 @@ Checkout our guides for each specific tool:
 
 We also want to share some small code tricks which can help you to improve your test suite performance and efficiency:
 
-- `before_all` Hook
+- [`before_all` Hook](https://github.com/palkan/test-prof/tree/master/guides/before_all.md)
 
 - Any Fixture
 
