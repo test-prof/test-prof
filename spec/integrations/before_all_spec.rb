@@ -2,9 +2,9 @@
 
 require "spec_helper"
 
-describe "BeforeAll spec" do
+describe "BeforeAll" do
   specify "it works" do
-    output = run_rspec('before_all_rspec_fixture.rb')
+    output = run_rspec('before_all')
 
     expect(output).to include("3 examples, 0 failures")
   end
