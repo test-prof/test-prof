@@ -72,7 +72,7 @@ module TestProf
       end
     end
 
-    class Profiler
+    class Profiler # :nodoc:
       attr_reader :event, :top_count, :rank_by, :total_count, :total_time
 
       def initialize(event:, instrumenter:, rank_by:, top_count:)

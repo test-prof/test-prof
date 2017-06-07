@@ -2,6 +2,7 @@
 
 # Add #duration method to floats
 module TestProf
+  # Extend Float with #duration method
   module FloatDuration
     refine Float do
       def duration

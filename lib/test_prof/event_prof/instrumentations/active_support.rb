@@ -2,6 +2,7 @@
 
 module TestProf::EventProf
   module Instrumentations
+    # Wrapper over ActiveSupport::Notifications
     module ActiveSupport
       def self.subscribe(event)
         raise ArgumentError, 'Block is required!' unless block_given?

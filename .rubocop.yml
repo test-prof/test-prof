@@ -12,7 +12,7 @@ AllCops:
     - '*.gemspec'
   DisplayCopNames: true
   StyleGuideCopsOnly: false
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.3
 
 Rails:
   Enabled: false
@@ -48,11 +48,10 @@ Lint/AmbiguousRegexpLiteral:
 
 
 Metrics/MethodLength:
-  Exclude:
-    - 'spec/**/*.rb'
+  Enabled: false
 
 Metrics/AbcSize:
-  Max: 20
+  Enabled: false
 
 Metrics/LineLength:
   Max: 100

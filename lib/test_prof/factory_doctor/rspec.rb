@@ -29,16 +29,16 @@ module TestProf
 
         result = FactoryDoctor.result
 
-        if result.bad?
-          group = notification.example.example_group.parent_groups.last
-          notification.example.metadata.merge!(
-            factories: result.count,
-            time: result.time
-          )
-          @example_groups[group] << notification.example
-          @count += 1
-          @time += result.time
-        end
+        return unless result.bad?
+
+        group = notification.example.example_group.parent_groups.last
+        notification.example.metadata.merge!(
+          factories: result.count,
+          time: result.time
+        )
+        @example_groups[group] << notification.example
+        @count += 1
+        @time += result.time
       end
 
       def print
@@ -82,7 +82,9 @@ end
 RSpec.configure do |config|
   listener = TestProf::FactoryDoctor::RSpecListener.new
 
-  config.reporter.register_listener(listener, *TestProf::FactoryDoctor::RSpecListener::NOTIFICATIONS)
+  config.reporter.register_listener(
+    listener, *TestProf::FactoryDoctor::RSpecListener::NOTIFICATIONS
+  )
 
   config.after(:suite) { listener.print }
 end
