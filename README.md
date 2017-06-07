@@ -1,4 +1,4 @@
-[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build Status](https://travis-ci.org/palkan/test-prof.svg?branch=master)](https://travis-ci.org/palkan/test-prof)
+[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build Status](https://travis-ci.org/palkan/test-prof.svg?branch=master)](https://travis-ci.org/palkan/test-prof) [![Circle CI](https://circleci.com/gh/palkan/test-prof/tree/master.svg?style=svg)](https://circleci.com/gh/palkan/test-prof/tree/master)
 
 # Ruby Tests Profiling Toolbox
 
