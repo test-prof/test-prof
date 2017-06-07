@@ -17,7 +17,7 @@ Gem::Specification.new do |spec|
     profile your examples using ActiveSupport notifications (if any) and
     statically analyze your code with custom Rubocop cops.
   }
-  spec.homepage      = "http://github.com/onboardiq/checkr-canada"
+  spec.homepage      = "http://github.com/palkan/test-prof"
   spec.license       = "MIT"
 
   spec.files         = `git ls-files`.split($/)
@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rake", "~> 10.0"
   spec.add_development_dependency "rspec", "~> 3.5"
   spec.add_development_dependency "pry-byebug"
+  spec.add_development_dependency "activesupport", "~> 5.0"
 end
