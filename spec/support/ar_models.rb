@@ -37,7 +37,7 @@ FactoryGirl.define do
   end
 
   factory :post do
-    test { |n| "Post ##{n}}" }
+    text { |n| "Post ##{n}}" }
     user
   end
 end

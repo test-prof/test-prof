@@ -57,7 +57,7 @@ That's all!
 In your `spec_helper.rb`:
 
 ```ruby
-require "test_prof/recipes/before_all"
+require "test_prof/recipes/rspec/before_all"
 ```
 
 ## Caveats

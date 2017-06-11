@@ -63,7 +63,7 @@ We also want to share some small code tricks which can help you to improve your 
 
 - [`before_all` Hook](https://github.com/palkan/test-prof/tree/master/guides/before_all.md)
 
-- Any Fixture
+- [AnyFixture](https://github.com/palkan/test-prof/tree/master/guides/any_fixture.md)
 
 ## Configuration
 

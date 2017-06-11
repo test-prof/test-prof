@@ -2,7 +2,7 @@
 
 $LOAD_PATH.unshift File.expand_path("../../../../lib", __FILE__)
 require_relative "../../../support/ar_models"
-require "test_prof/recipes/before_all"
+require "test_prof/recipes/rspec/before_all"
 
 describe "User" do
   context "with before_all" do
