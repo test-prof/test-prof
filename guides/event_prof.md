@@ -28,7 +28,6 @@ fails (./spec/shared_examples/controllers/invalid_examples.rb:3) – 00:00.007 (
 
 ```
 
-
 ## Instructions
 
 Currently, EventProf supports only ActiveSupport::Notifications and RSpec.
@@ -64,3 +63,35 @@ EVENT_PROF_RANK=count EVENT_PROF='instantiation.active_record' be rspec
 ```
 
 See [event_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/event_prof.rb) for all available configuration options and their usage.
+
+## Custom Events
+
+### `"factory.create"`
+
+FactoryGirl provides its own instrumentation ('factory_girl.run_factory'); but there is a caveat – it fires an event every time a factory is used, even when we use factory for nested associations. Thus it's not possible to calculate the total time spent in factories due to the double calculation.
+
+EventProf comes with a little patch for FactoryGirl which provides instrumentation only for top-level `FactoryGirl.create` calls. It is loaded automatically if you use `"factory.create"` event:
+
+```sh
+EVENT_PROF=factory.create bundle exec rspec
+```
+
+### `"sidekiq.jobs"`
+
+Collects statistics about Sidekiq jobs that have been run inline:
+
+```sh
+EVENT_PROF=sidekiq.jobs bundle exec rspec
+```
+
+**NOTE**: automatically sets `rank_by` to `count` ('cause it doesn't make sense to collect the information about time spent – see below).
+
+### `"sidekiq.inline"`
+
+Collects statistics about Sidekiq jobs that have been run inline (excluding nested jobs):
+
+```sh
+EVENT_PROF=sidekiq.inline bundle exec rspec
+```
+
+Use this event to profile the time spent running Sidekiq jobs.

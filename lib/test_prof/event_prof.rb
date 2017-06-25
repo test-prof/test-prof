@@ -77,8 +77,6 @@ module TestProf
 
       def initialize(event:, instrumenter:, rank_by:, top_count:)
         @event = event
-        @rank_by = rank_by
-        @top_count = top_count
 
         instrumenter.subscribe(event) { |time| track(time) }
 
@@ -137,6 +135,14 @@ module TestProf
         end
       end
 
+      def rank_by
+        EventProf.config.rank_by
+      end
+
+      def top_count
+        EventProf.config.top_count
+      end
+
       private
 
       def fetch_top(arr)
@@ -167,4 +173,5 @@ end
 if ENV['EVENT_PROF']
   require "test_prof/event_prof/rspec" if defined?(RSpec)
   require "test_prof/event_prof/minitest" if defined?(Minitest::Reporters)
+  require "test_prof/event_prof/custom_events"
 end

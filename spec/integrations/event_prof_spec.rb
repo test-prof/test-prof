@@ -51,4 +51,50 @@ describe "EventProf" do
       "do very long (./event_prof_fixture.rb:47) – 16:40.000 (1)"
     )
   end
+
+  context "CustomEvents" do
+    it "works with factory.create" do
+      output = run_rspec(
+        'event_prof_factory_create',
+        env: { 'EVENT_PROF' => 'factory.create' }
+      )
+
+      expect(output).to include("EventProf results for factory.create")
+      expect(output).to match(/Total time: \d{2}:\d{2}\.\d{3}/)
+      expect(output).to include("Total events: 3")
+
+      expect(output).to match(%r{Post \(./event_prof_factory_create_fixture.rb:7\) – \d{2}:\d{2}.\d{3} \(2 / 1\)})
+      expect(output).to match(%r{User \(./event_prof_factory_create_fixture.rb:16\) – \d{2}:\d{2}.\d{3} \(1 / 1\)})
+    end
+
+    it "works with sidekiq.inline" do
+      output = run_rspec(
+        'event_prof_sidekiq',
+        env: { 'EVENT_PROF' => 'sidekiq.inline' }
+      )
+
+      expect(output).to include("EventProf results for sidekiq.inline")
+      expect(output).to match(/Total time: \d{2}:\d{2}\.\d{3}/)
+      expect(output).to include("Total events: 3")
+
+      expect(output).to match(%r{SingleJob \(./event_prof_sidekiq_fixture.rb:28\) – \d{2}:\d{2}.\d{3} \(2 / 2\)})
+      expect(output).to match(%r{BatchJob \(./event_prof_sidekiq_fixture.rb:40\) – \d{2}:\d{2}.\d{3} \(1 / 2\)})
+    end
+
+    it "works with sidekiq.jobs" do
+      output = run_rspec(
+        'event_prof_sidekiq',
+        env: { 'EVENT_PROF' => 'sidekiq.jobs' }
+      )
+
+      expect(output).to include("EventProf results for sidekiq.jobs")
+      expect(output).to match(/Total time: \d{2}:\d{2}\.\d{3}/)
+      expect(output).to include("Total events: 6")
+
+      expect(output).to include("Top 5 slowest suites (by count):")
+
+      expect(output).to match(%r{SingleJob \(./event_prof_sidekiq_fixture.rb:28\) – \d{2}:\d{2}.\d{3} \(2 / 2\)})
+      expect(output).to match(%r{BatchJob \(./event_prof_sidekiq_fixture.rb:40\) – \d{2}:\d{2}.\d{3} \(4 / 2\)})
+    end
+  end
 end

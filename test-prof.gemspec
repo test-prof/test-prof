@@ -6,7 +6,7 @@ require 'test_prof/version'
 Gem::Specification.new do |spec|
   spec.name          = "test-prof"
   spec.version       = Test::Prof::VERSION
-  spec.authors       = ["palkan"]
+  spec.authors       = ["Vladimir Dementyev"]
   spec.email         = ["dementiev.vm@gmail.com"]
 
   spec.summary       = "Ruby applications tests profiling tools"
@@ -31,4 +31,5 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rubocop", "~> 0.49"
   spec.add_development_dependency "pry-byebug"
   spec.add_development_dependency "sqlite3"
+  spec.add_development_dependency "sidekiq", "~> 4.0"
 end
