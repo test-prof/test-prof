@@ -83,8 +83,8 @@ module TestProf
 end
 
 # Register EventProf listener
-RSpec.configure do |config|
-  if ENV['EVENT_PROF']
+TestProf.activate('EVENT_PROF') do
+  RSpec.configure do |config|
     listener = TestProf::EventProf::RSpecListener.new
 
     config.reporter.register_listener(listener, *TestProf::EventProf::RSpecListener::NOTIFICATIONS)

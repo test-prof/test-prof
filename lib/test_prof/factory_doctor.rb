@@ -123,7 +123,9 @@ module TestProf
   end
 end
 
-TestProf::FactoryDoctor.init if ENV['FDOC']
-
 require "test_prof/factory_doctor/rspec" if defined?(RSpec)
 require "test_prof/factory_doctor/minitest" if defined?(Minitest::Reporters)
+
+TestProf.activate('FDOC') do
+  TestProf::FactoryDoctor.init
+end

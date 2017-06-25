@@ -118,4 +118,6 @@ end
 require "test_prof/stack_prof/rspec" if defined?(RSpec)
 
 # Hook to run StackProf globally
-TestProf::StackProf.run if ENV['TEST_STACK_PROF']
+TestProf.activate('TEST_STACK_PROF') do
+  TestProf::StackProf.run
+end

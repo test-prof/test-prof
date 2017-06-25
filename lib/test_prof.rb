@@ -42,6 +42,16 @@ module TestProf
       false
     end
 
+    # Run block only if provided env var is present.
+    # Contains workaround for applications using Spring.
+    def activate(env_var)
+      if defined?(::Spring) && !ENV['DISABLE_SPRING']
+        Spring.after_fork { yield if ENV[env_var] }
+      else
+        yield if ENV[env_var] 
+      end
+    end
+
     def with_timestamps(path)
       return path unless config.timestamps?
       timestamps = "-#{Time.now.to_i}"

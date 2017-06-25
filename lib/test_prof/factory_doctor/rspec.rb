@@ -79,8 +79,8 @@ module TestProf
 end
 
 # Register FactoryDoctor listener
-RSpec.configure do |config|
-  if ENV['FDOC']
+TestProf.activate('FDOC') do
+  RSpec.configure do |config|
     listener = TestProf::FactoryDoctor::RSpecListener.new
 
     config.reporter.register_listener(
@@ -89,8 +89,8 @@ RSpec.configure do |config|
 
     config.after(:suite) { listener.print }
   end
-end
 
-RSpec.shared_context "factory_doctor:ignore", fd_ignore: true do
-  around(:each) { |ex| TestProf::FactoryDoctor.ignore(&ex) }
+  RSpec.shared_context "factory_doctor:ignore", fd_ignore: true do
+    around(:each) { |ex| TestProf::FactoryDoctor.ignore(&ex) }
+  end
 end
