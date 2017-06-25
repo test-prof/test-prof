@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-module Test
-  module Prof
-    VERSION = "0.1.0"
-  end
+module TestProf
+  VERSION = "0.1.0.pre3"
 end

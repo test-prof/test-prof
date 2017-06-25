@@ -73,10 +73,14 @@ module TestProf
     end
 
     class Profiler # :nodoc:
+      include TestProf::Logging
+
       attr_reader :event, :top_count, :rank_by, :total_count, :total_time
 
       def initialize(event:, instrumenter:, rank_by:, top_count:)
         @event = event
+
+        log :info, "EventProf enabled (#{@event})"
 
         instrumenter.subscribe(event) { |time| track(time) }
 
@@ -170,8 +174,6 @@ module TestProf
   end
 end
 
-if ENV['EVENT_PROF']
-  require "test_prof/event_prof/rspec" if defined?(RSpec)
-  require "test_prof/event_prof/minitest" if defined?(Minitest::Reporters)
-  require "test_prof/event_prof/custom_events"
-end
+require "test_prof/event_prof/rspec" if defined?(RSpec)
+require "test_prof/event_prof/minitest" if defined?(Minitest::Reporters)
+require "test_prof/event_prof/custom_events"

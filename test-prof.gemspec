@@ -5,7 +5,7 @@ require 'test_prof/version'
 
 Gem::Specification.new do |spec|
   spec.name          = "test-prof"
-  spec.version       = Test::Prof::VERSION
+  spec.version       = TestProf::VERSION
   spec.authors       = ["Vladimir Dementyev"]
   spec.email         = ["dementiev.vm@gmail.com"]
 

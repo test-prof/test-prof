@@ -80,13 +80,15 @@ end
 
 # Register FactoryDoctor listener
 RSpec.configure do |config|
-  listener = TestProf::FactoryDoctor::RSpecListener.new
+  if ENV['FDOC']
+    listener = TestProf::FactoryDoctor::RSpecListener.new
 
-  config.reporter.register_listener(
-    listener, *TestProf::FactoryDoctor::RSpecListener::NOTIFICATIONS
-  )
+    config.reporter.register_listener(
+      listener, *TestProf::FactoryDoctor::RSpecListener::NOTIFICATIONS
+    )
 
-  config.after(:suite) { listener.print }
+    config.after(:suite) { listener.print }
+  end
 end
 
 RSpec.shared_context "factory_doctor:ignore", fd_ignore: true do

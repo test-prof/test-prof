@@ -37,6 +37,8 @@ module TestProf
     )}xi
 
     class << self
+      include TestProf::Logging
+
       attr_reader :event
       attr_reader :count, :time, :queries_count
 
@@ -44,6 +46,8 @@ module TestProf
       def init(event = 'sql.active_record')
         @event = event
         reset!
+
+        log :info, "FactoryDoctor enabled"
 
         # Monkey-patch FactoryGirl
         ::FactoryGirl::FactoryRunner.prepend(FactoryGirlPatch) if
@@ -119,9 +123,7 @@ module TestProf
   end
 end
 
-if ENV['FDOC']
-  TestProf::FactoryDoctor.init
+TestProf::FactoryDoctor.init if ENV['FDOC']
 
-  require "test_prof/factory_doctor/rspec" if defined?(RSpec)
-  require "test_prof/factory_doctor/minitest" if defined?(Minitest::Reporters)
-end
+require "test_prof/factory_doctor/rspec" if defined?(RSpec)
+require "test_prof/factory_doctor/minitest" if defined?(Minitest::Reporters)
