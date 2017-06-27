@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module TestProf::EventProf::CustomEvents
-  module FactoryCreate
+  module FactoryCreate # :nodoc: all
     module RunnerPatch
       def run(strategy = @strategy)
         return super unless strategy == :create

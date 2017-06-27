@@ -65,9 +65,7 @@ module TestProf
       def build
         Profiler.new(
           event: config.event,
-          instrumenter: config.resolve_instrumenter,
-          rank_by: config.rank_by,
-          top_count: config.top_count
+          instrumenter: config.resolve_instrumenter
         )
       end
     end
@@ -77,7 +75,7 @@ module TestProf
 
       attr_reader :event, :top_count, :rank_by, :total_count, :total_time
 
-      def initialize(event:, instrumenter:, rank_by:, top_count:)
+      def initialize(event:, instrumenter:)
         @event = event
 
         log :info, "EventProf enabled (#{@event})"

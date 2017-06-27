@@ -77,8 +77,8 @@ describe "EventProf" do
       expect(output).to match(/Total time: \d{2}:\d{2}\.\d{3}/)
       expect(output).to include("Total events: 3")
 
-      expect(output).to match(%r{SingleJob \(./event_prof_sidekiq_fixture.rb:28\) – \d{2}:\d{2}.\d{3} \(2 / 2\)})
-      expect(output).to match(%r{BatchJob \(./event_prof_sidekiq_fixture.rb:40\) – \d{2}:\d{2}.\d{3} \(1 / 2\)})
+      expect(output).to match(%r{SingleJob \(./event_prof_sidekiq_fixture.rb:27\) – \d{2}:\d{2}.\d{3} \(2 / 2\)})
+      expect(output).to match(%r{BatchJob \(./event_prof_sidekiq_fixture.rb:39\) – \d{2}:\d{2}.\d{3} \(1 / 2\)})
     end
 
     it "works with sidekiq.jobs" do
@@ -93,8 +93,8 @@ describe "EventProf" do
 
       expect(output).to include("Top 5 slowest suites (by count):")
 
-      expect(output).to match(%r{SingleJob \(./event_prof_sidekiq_fixture.rb:28\) – \d{2}:\d{2}.\d{3} \(2 / 2\)})
-      expect(output).to match(%r{BatchJob \(./event_prof_sidekiq_fixture.rb:40\) – \d{2}:\d{2}.\d{3} \(4 / 2\)})
+      expect(output).to match(%r{SingleJob \(./event_prof_sidekiq_fixture.rb:27\) – \d{2}:\d{2}.\d{3} \(2 / 2\)})
+      expect(output).to match(%r{BatchJob \(./event_prof_sidekiq_fixture.rb:39\) – \d{2}:\d{2}.\d{3} \(4 / 2\)})
     end
   end
 end

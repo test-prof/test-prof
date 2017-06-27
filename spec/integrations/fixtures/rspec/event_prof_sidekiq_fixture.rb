@@ -9,11 +9,10 @@ Sidekiq::Testing.inline!
 class SingleJob
   include Sidekiq::Worker
 
-  def perform(*args)
-    1 == 1
+  def perform(*_args)
+    true
   end
 end
-
 
 class BatchJob
   include Sidekiq::Worker

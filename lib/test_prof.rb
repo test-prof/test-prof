@@ -47,8 +47,8 @@ module TestProf
     def activate(env_var)
       if defined?(::Spring) && !ENV['DISABLE_SPRING']
         Spring.after_fork { yield if ENV[env_var] }
-      else
-        yield if ENV[env_var] 
+      elsif ENV[env_var]
+        yield
       end
     end
 
@@ -87,3 +87,4 @@ require "test_prof/ruby_prof"
 require "test_prof/stack_prof"
 require "test_prof/event_prof"
 require "test_prof/factory_doctor"
+require "test_prof/rspec_stamp"

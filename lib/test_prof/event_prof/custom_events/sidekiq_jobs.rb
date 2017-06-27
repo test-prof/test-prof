@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module TestProf::EventProf::CustomEvents
-  module SidekiqJobs
+  module SidekiqJobs # :nodoc: all
     module ClientPatch
       def raw_push(*)
         return super unless Sidekiq::Testing.inline?
