@@ -55,7 +55,7 @@ Checkout our guides for each specific tool:
 
 - [Factory Doctor](https://github.com/palkan/test-prof/tree/master/guides/factory_doctor.md)
 
-- Factory Profiler
+- [Factory Profiler](https://github.com/palkan/test-prof/tree/master/guides/factory_prof.md)
 
 ## Tips and Tricks (or _Recipes_)
 

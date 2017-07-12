@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 require "test_prof/factory_prof/factory_girl_patch"
+require "test_prof/factory_prof/printers/simple"
+require "test_prof/factory_prof/printers/flamegraph"
 
 module TestProf
   # FactoryProf collects "factory stacks" that can be used to build
@@ -14,8 +16,8 @@ module TestProf
         @mode = ENV['FPROF'] == 'flamegraph' ? :flamegraph : :simple
       end
 
-      # Whether to collect stacks
-      def stacks?
+      # Whether we want to generate flamegraphs
+      def flamegraph?
         @mode == :flamegraph
       end
     end
@@ -32,10 +34,8 @@ module TestProf
       def stats
         return @stats if instance_variable_defined?(:@stats)
 
-        @stats = {
-          total: sorted_stats(:total),
-          top_level: sorted_stats(:top_level)
-        }
+        @stats = @raw_stats.values
+                           .sort_by { |el| -el[:total] }
       end
 
       private
@@ -78,13 +78,25 @@ module TestProf
 
       # Patch factory lib, init vars
       def init
-        reset!
+        @running = false
 
-        log :info, "FactoryProf enabled with #{config.mode} mode"
+        log :info, "FactoryProf enabled (#{config.mode} mode)"
 
         # Monkey-patch FactoryGirl
         ::FactoryGirl::FactoryRunner.prepend(FactoryGirlPatch) if
           defined?(::FactoryGirl)
+      end
+
+      # Inits FactoryProf and setups at exit hook,
+      # then runs
+      def run
+        init
+
+        printer = config.flamegraph? ? Printers::Flamegraph : Printers::Simple
+
+        at_exit { printer.dump(result) }
+
+        start
       end
 
       def start
@@ -102,27 +114,29 @@ module TestProf
 
       def track(strategy, factory)
         return yield if !running? || (strategy != :create)
-        @depth += 1
-        @current_stack << factory if config.stacks?
-        @stats[factory][:total] += 1
-        @stats[factory][:top_level] += 1 if @depth == 1
-        yield
-      ensure
-        @depth -= 1
-        flush_stack if @depth.zero?
+        begin
+          @depth += 1
+          @current_stack << factory if config.flamegraph?
+          @stats[factory][:total] += 1
+          @stats[factory][:top_level] += 1 if @depth == 1
+          yield
+        ensure
+          @depth -= 1
+          flush_stack if @depth.zero?
+        end
       end
 
       private
 
       def reset!
-        @stacks = [] if config.stacks?
+        @stacks = [] if config.flamegraph?
         @depth = 0
         @stats = Hash.new { |h, k| h[k] = { name: k, total: 0, top_level: 0 } }
         flush_stack
       end
 
       def flush_stack
-        return unless config.stacks?
+        return unless config.flamegraph?
         @stacks << @current_stack if @current_stack&.present?
         @current_stack = Stack.new
       end
@@ -134,9 +148,6 @@ module TestProf
   end
 end
 
-require "test_prof/factory_prof/rspec" if defined?(RSpec)
-require "test_prof/factory_prof/minitest" if defined?(Minitest::Reporters)
-
 TestProf.activate('FPROF') do
-  TestProf::FactoryProf.init
+  TestProf::FactoryProf.run
 end

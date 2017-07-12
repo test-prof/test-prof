@@ -46,13 +46,9 @@ describe TestProf::FactoryProf, :transactional do
         ]
       )
       expect(result.stats).to eq(
-        total: [
-          [:user, 6],
-          [:post, 3]
-        ],
-        top_level: [
-          [:user, 3],
-          [:post, 1]
+        [
+          { name: :user, total: 6, top_level: 3 },
+          { name: :post, total: 3, top_level: 1 }
         ]
       )
     end
