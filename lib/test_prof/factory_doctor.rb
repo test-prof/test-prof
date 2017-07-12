@@ -3,8 +3,8 @@
 require "test_prof/factory_doctor/factory_girl_patch"
 
 module TestProf
-  # FactoryDoctor is a tool that helps you identify such _bad_ tests,
-  # i.e. tests that perform unnecessary database queries.
+  # FactoryDoctor is a tool that helps you identify
+  # tests that perform unnecessary database queries.
   module FactoryDoctor
     class Result # :nodoc:
       attr_reader :count, :time, :queries_count

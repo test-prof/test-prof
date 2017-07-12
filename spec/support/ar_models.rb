@@ -34,6 +34,12 @@ end
 FactoryGirl.define do
   factory :user do
     name { |n| "John #{n}" }
+
+    trait :with_posts do
+      after(:create) do
+        FactoryGirl.create_pair(:post)
+      end
+    end
   end
 
   factory :post do
