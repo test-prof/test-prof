@@ -20,7 +20,9 @@ Gem::Specification.new do |spec|
   spec.homepage      = "http://github.com/palkan/test-prof"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files`.split($/)
+  spec.files         = `git ls-files`.split($/).select { |p| p.match(%r{^(lib/|guides/assets/)}) } +
+    %w(README.md CHANGELOG.md LICENSE.txt)
+
   spec.require_paths = ["lib"]
 
   spec.add_development_dependency "bundler", "~> 1.10"
