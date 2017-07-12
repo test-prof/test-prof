@@ -1,6 +1,6 @@
 # Profiling with StackProf
 
-[StackProf](https://github.com/ruby-prof/ruby-prof) is a sampling call-stack profiler for ruby.
+[StackProf](https://github.com/tmm1/stackprof) is a sampling call-stack profiler for ruby.
 
 ## Instructions
 

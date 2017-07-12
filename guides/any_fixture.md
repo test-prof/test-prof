@@ -18,7 +18,7 @@ RSpec.shared_context "account", account: true do
     @account = TestProf::AnyFixture.register(:account) do
       # Do anything here, AnyFixture keeps track of affected DB tables
       # For example, you can use factories here
-      create(:account)
+      FactoryGirl.create(:account)
 
       # or with Fabrication
       Fabricate(:account)
