@@ -13,11 +13,11 @@ module TestProf::FactoryProf
             <<~MSG
               Factories usage
 
-               total      top-level             name
+               total      top-level                            name
             MSG
 
           result.stats.each do |stat|
-            msgs << format("%6d    %11d  %15s", stat[:total], stat[:top_level], stat[:name])
+            msgs << format("%6d    %11d  %30s", stat[:total], stat[:top_level], stat[:name])
           end
 
           log :info, msgs.join("\n")
