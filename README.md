@@ -57,6 +57,8 @@ Checkout our guides for each specific tool:
 
 - [Factory Profiler](https://github.com/palkan/test-prof/tree/master/guides/factory_prof.md)
 
+- [Rubocop Cops](https://github.com/palkan/test-prof/tree/master/guides/rubocop.md)
+
 ## Tips and Tricks (or _Recipes_)
 
 We also want to share some small code tricks which can help you to improve your test suite performance and efficiency:
@@ -93,6 +95,8 @@ Or TODO list:
 - Other data generation library support (e.g [Fabricator](http://fabricationgem.org/)). _Does anyone use something except from FactoryGirl?_
 
 - Improve FactoryDoctor
+
+- Add more Rubocop cops (e.g. `CreateListLimit`)
 
 ## License
 
