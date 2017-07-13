@@ -4,6 +4,10 @@ $LOAD_PATH.unshift File.expand_path("../../../../lib", __FILE__)
 require_relative "../../../support/ar_models"
 require "test-prof"
 
+TestProf.configure do |config|
+  config.output_dir = "../../../../tmp"
+end
+
 describe "User" do
   let(:user) { FactoryGirl.create(:user) }
 

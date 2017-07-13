@@ -20,7 +20,7 @@ Gem::Specification.new do |spec|
   spec.homepage      = "http://github.com/palkan/test-prof"
   spec.license       = "MIT"
 
-  spec.files         = `git ls-files`.split($/).select { |p| p.match(%r{^(lib/|guides/assets/)}) } +
+  spec.files         = `git ls-files`.split($/).select { |p| p.match(%r{^(lib/|guides/|assets/[^\/]+)}) } +
     %w(README.md CHANGELOG.md LICENSE.txt)
 
   spec.require_paths = ["lib"]

@@ -110,11 +110,8 @@ module TestProf
       private
 
       def build_path(name, printer)
-        TestProf.with_timestamps(
-          File.join(
-            TestProf.config.output_dir,
-            "ruby-prof-report-#{printer}-#{config.mode}-#{name}.html"
-          )
+        TestProf.artefact_path(
+          "ruby-prof-report-#{printer}-#{config.mode}-#{name}.html"
         )
       end
 

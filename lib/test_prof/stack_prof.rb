@@ -88,11 +88,8 @@ module TestProf
       private
 
       def build_path(name)
-        TestProf.with_timestamps(
-          File.join(
-            TestProf.config.output_dir,
-            "stack-prof-report-#{config.mode}-#{name}.dump"
-          )
+        TestProf.artefact_path(
+          "stack-prof-report-#{config.mode}-#{name}.dump"
         )
       end
 

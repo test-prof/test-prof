@@ -23,7 +23,7 @@ module TestProf
     end
 
     class Result # :nodoc:
-      attr_reader :stacks
+      attr_reader :stacks, :raw_stats
 
       def initialize(stacks, raw_stats)
         @stacks = stacks
@@ -38,30 +38,17 @@ module TestProf
                            .sort_by { |el| -el[:total] }
       end
 
+      def total
+        return @total if instance_variable_defined?(:@total)
+        @total = @raw_stats.values.sum { |v| v[:total] }
+      end
+
       private
 
       def sorted_stats(key)
         @raw_stats.values
                   .map { |el| [el[:name], el[key]] }
                   .sort_by { |el| -el[1] }
-      end
-    end
-
-    class Stack # :nodoc:
-      attr_reader :fingerprint, :data
-
-      def initialize
-        @data = []
-        @fingerprint = ''
-      end
-
-      def <<(sample)
-        @fingerprint += ":#{sample}"
-        @data << sample
-      end
-
-      def present?
-        !@data.empty?
       end
     end
 
@@ -137,8 +124,8 @@ module TestProf
 
       def flush_stack
         return unless config.flamegraph?
-        @stacks << @current_stack if @current_stack&.present?
-        @current_stack = Stack.new
+        @stacks << @current_stack unless @current_stack.nil? || @current_stack.empty?
+        @current_stack = []
       end
 
       def running?

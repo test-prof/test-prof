@@ -34,4 +34,52 @@ FPROF=1 bundle exec rake test
 
 ## Factory Flamegraph
 
-TBD
+The most useful feature of FactoryProf is the _FactoryFlame_ report. That's the special interpetation of Brendan Gregg's [flame graphs](http://www.brendangregg.com/flamegraphs.html) which allows you to identify _factory cascades_.
+
+To generate FactoryFlame report set `FPROF` environment variable to `flamegraph`:
+
+```sh
+FPROF=flamegraph rspec
+
+# or 
+FPROF=flamegraph bundle exec rake test
+```
+
+That's how a report looks like:
+
+![](https://s3-us-west-1.amazonaws.com/vladem/test-prof/factory_flame.png)
+
+How to read this?
+
+Every column represents a _factory stack_ or _cascade_, that is a sequence of recursive `#create` method calls. Consider and example:
+
+```ruby
+factory :comment do
+  answer
+  author
+end
+
+factory :answer do
+  question
+  author
+end
+
+factory :question do
+  author
+end
+
+create(:comment) #=> creates 5 records
+
+# And the corresponding stack is:
+[:comment, :answer, :question, :author, :author, :author]
+```
+
+The wider column the more often this stack appears.
+
+The `root` cell shows the total number of `create` calls.
+
+## Acknowledgements
+
+- Thanks to [Martin Spier](https://github.com/spiermar) for [d3-flame-graph](https://github.com/spiermar/d3-flame-graph)
+
+- Thanks to [Sam Saffron](https://github.com/SamSaffron) for his [flame graphs implementation](https://github.com/SamSaffron/flamegraph).

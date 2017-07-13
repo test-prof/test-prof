@@ -4,7 +4,7 @@
     <title>TestProf: FactoryFlame</title>
     <meta name="viewport" content="width=device-width">
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="d3.flameGraph.min.css">
+    <link rel="stylesheet" type="text/css" href="src/d3.flameGraph.css">
     <style>
     html, body {
       height: 100%;
@@ -135,20 +135,16 @@
       </div>
     </div>
 
-    <script type="text/javascript" src="d3.v4.min.js"></script>
-    <script type="text/javascript" src="d3-tip.min.js"></script>
-    <script type="text/javascript" src="d3.flameGraph.min.js"></script>
+    <script type="text/javascript" src="src/d3.v4.min.js"></script>
+    <script type="text/javascript" src="src/d3-tip.js"></script>
+    <script type="text/javascript" src="src/d3.flameGraph.js"></script>
 
     <script type="text/javascript">
     var flameGraph = d3.flameGraph()
-      // .height(540)
-      // .width(960)
+      .height(360)
       .cellHeight(18)
       .transitionDuration(750)
       .transitionEase(d3.easeCubic)
-      .sort(true)
-      //Example to sort in reverse order
-      //.sort(function(a,b){ return d3.descending(a.name, b.name);})
       .title("");
 
     // Example on how to use custom tooltips using d3-tip.
@@ -160,41 +156,13 @@
 
     flameGraph.tooltip(tip);
 
+    report_data = JSON.parse('{"total":27,"roots":[{"name":"user","value":21,"children":[{"name":"account","value":20}]},{"name":"post","value":1,"children":[{"name":"account","value":1,"children":[{"name":"user","value":1,"children":[{"name":"account","value":1}]}]}]},{"name":"comment","value":4,"children":[{"name":"post","value":1},{"name":"user","value":3,"children":[{"name":"account","value":3,"children":[{"name":"post","value":2,"children":[{"name":"account","value":2,"children":[{"name":"user","value":2,"children":[{"name":"account","value":2,"children":[{"name":"subscription","value":2,"children":[{"name":"order","value":2,"children":[{"name":"account","value":2,"children":[{"name":"user","value":2,"children":[{"name":"profile","value":2,"children":[{"name":"post","value":1,"children":[{"name":"account","value":1,"children":[{"name":"user","value":1,"children":[{"name":"account","value":1,"children":[{"name":"subscription","value":1}]}]}]}]}]}]}]}]}]}]}]}]}]},{"name":"user","value":1,"children":[{"name":"account","value":1,"children":[{"name":"subscription","value":1,"children":[{"name":"order","value":1,"children":[{"name":"account","value":1,"children":[{"name":"user","value":1,"children":[{"name":"profile","value":1}]}]}]}]}]}]}]}]}]},{"name":"account","value":1}]}');
 
     data = {
       name: "root",
-      value: 150,
+      value: report_data.total,
       color: "#9e9e9e",
-      children: [
-        {
-          name: "post",
-          value: 123,
-          children: [
-            {
-              name: "user", 
-              value: 56,
-            },
-            {
-              name: "comment", 
-              value: 67
-           }
-          ]
-        },
-        {
-          name: "account",
-          value: 27,
-          children: [
-            {
-              name: "user", 
-              value: 6,
-            },
-            {
-              name: "comment", 
-              value: 21
-           }
-          ]
-        }
-      ]
+      children: report_data.roots
     };
 
     d3.select("#chart")

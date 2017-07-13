@@ -28,7 +28,8 @@ describe TestProf::FactoryProf, :transactional do
     it "contains simple stack" do
       FactoryGirl.create(:user)
       expect(result.stacks.size).to eq 1
-      expect(result.stacks.first.data).to eq([:user])
+      expect(result.total).to eq 1
+      expect(result.stacks.first).to eq([:user])
     end
 
     it "contains many stacks" do
@@ -37,13 +38,12 @@ describe TestProf::FactoryProf, :transactional do
       FactoryGirl.create(:user, :with_posts)
 
       expect(result.stacks.size).to eq 4
-      expect(result.stacks.map(&:fingerprint)).to eq(
-        %w[
-          :user
-          :user
-          :post:user
-          :user:post:user:post:user
-        ]
+      expect(result.total).to eq 9
+      expect(result.stacks).to contain_exactly(
+        [:user],
+        [:user],
+        %i[post user],
+        %i[user post user post user]
       )
       expect(result.stats).to eq(
         [

@@ -52,10 +52,27 @@ module TestProf
       end
     end
 
+    # Return absolute path to asset
+    def asset_path(filename)
+      ::File.expand_path(filename, ::File.join(::File.dirname(__FILE__), "..", "assets"))
+    end
+
+    # Return a path to store artefact
+    def artefact_path(filename)
+      with_timestamps(
+        ::File.join(
+          config.output_dir,
+          filename
+        )
+      )
+    end
+
+    private
+
     def with_timestamps(path)
       return path unless config.timestamps?
       timestamps = "-#{Time.now.to_i}"
-      "#{path.sub(/\.\w+$/, '')}#{timestamps}#{File.extname(path)}"
+      "#{path.sub(/\.\w+$/, '')}#{timestamps}#{::File.extname(path)}"
     end
   end
 
