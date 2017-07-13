@@ -47,7 +47,7 @@ FPROF=flamegraph bundle exec rake test
 
 That's how a report looks like:
 
-![](https://s3-us-west-1.amazonaws.com/vladem/test-prof/factory_flame.png)
+![](https://s3-us-west-1.amazonaws.com/vladem/test-prof/factory-flame.gif)
 
 How to read this?
 
