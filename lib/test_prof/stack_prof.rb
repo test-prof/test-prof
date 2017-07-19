@@ -25,8 +25,8 @@ module TestProf
       attr_accessor :mode, :interval, :raw
 
       def initialize
-        @mode = :wall
-        @raw = false
+        @mode = ENV.fetch('TEST_STACK_PROF_MODE', :wall).to_sym
+        @raw = ENV['TEST_STACK_PROF_RAW'] == '1'
       end
     end
 
@@ -89,7 +89,7 @@ module TestProf
 
       def build_path(name)
         TestProf.artefact_path(
-          "stack-prof-report-#{config.mode}-#{name}.dump"
+          "stack-prof-report-#{config.mode}#{config.raw ? '-raw' : ''}-#{name}.dump"
         )
       end
 

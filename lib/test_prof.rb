@@ -45,8 +45,8 @@ module TestProf
     # Run block only if provided env var is present.
     # Contains workaround for applications using Spring.
     def activate(env_var)
-      if defined?(::Spring) && !ENV['DISABLE_SPRING']
-        Spring.after_fork { yield if ENV[env_var] }
+      if defined?(::Spring)
+        ::Spring.after_fork { yield if ENV[env_var] }
       elsif ENV[env_var]
         yield
       end

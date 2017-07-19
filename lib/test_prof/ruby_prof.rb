@@ -48,8 +48,8 @@ module TestProf
                     :include_threads, :eliminate_methods
 
       def initialize
-        @printer = :call_stack
-        @mode = :wall
+        @printer = ENV.fetch('TEST_RUBY_PROF_PRINTER', :call_stack).to_sym
+        @mode = ENV.fetch('TEST_RUBY_PROF_MODE', :wall).to_sym
         @min_percent = 1
         @include_threads = false
         @eliminate_methods = ELIMINATE_METHODS
@@ -65,13 +65,10 @@ module TestProf
       end
 
       # Returns an array of printer type (ID) and class.
-      # Takes ENV variable TEST_RUBY_PROF_PRINTER into account.
       def resolve_printer
-        type = ENV['TEST_RUBY_PROF_PRINTER'] || printer
+        return ['custom', printer] if printer.is_a?(Module)
 
-        return ['custom', type] if type.is_a?(Module)
-
-        type = type.to_s
+        type = printer.to_s
 
         raise ArgumentError, "Unknown printer: #{type}" unless
           PRINTERS.key?(type)
