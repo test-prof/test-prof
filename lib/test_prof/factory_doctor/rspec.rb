@@ -83,9 +83,11 @@ TestProf.activate('FDOC') do
   RSpec.configure do |config|
     listener = TestProf::FactoryDoctor::RSpecListener.new
 
-    config.reporter.register_listener(
-      listener, *TestProf::FactoryDoctor::RSpecListener::NOTIFICATIONS
-    )
+    config.before(:suite) do
+      config.reporter.register_listener(
+        listener, *TestProf::FactoryDoctor::RSpecListener::NOTIFICATIONS
+      )
+    end
 
     config.after(:suite) { listener.print }
   end

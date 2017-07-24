@@ -84,7 +84,9 @@ TestProf.activate('RSTAMP') do
   RSpec.configure do |config|
     listener = TestProf::RSpecStamp::RSpecListener.new
 
-    config.reporter.register_listener(listener, *TestProf::RSpecStamp::RSpecListener::NOTIFICATIONS)
+    config.before(:suite) do
+      config.reporter.register_listener(listener, *TestProf::RSpecStamp::RSpecListener::NOTIFICATIONS)
+    end
 
     config.after(:suite) { listener.stamp! }
   end
