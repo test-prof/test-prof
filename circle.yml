@@ -9,3 +9,7 @@ database:
 dependencies:
   pre:
     - gem install bundler -v 1.13.6
+
+test:
+  override:
+    - bundle exec rake
