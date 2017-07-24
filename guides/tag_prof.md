@@ -27,7 +27,7 @@ TagProf can only be used with RSpec.
 To activate TagProf use `TAG_PROF` environment variable:
 
 ```sh
-# Simple profiler
+# Group by type
 TAG_PROF=type rspec
 ```
 
