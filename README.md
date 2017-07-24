@@ -53,6 +53,8 @@ Checkout our guides for each specific tool:
 
 - [Instrumentation Profiler](https://github.com/palkan/test-prof/tree/master/guides/event_prof.md) (e.g. ActiveSupport notifications)
 
+- [Tag Profiler](https://github.com/palkan/test-prof/tree/master/guides/tag_prof.md)
+
 - [Factory Doctor](https://github.com/palkan/test-prof/tree/master/guides/factory_doctor.md)
 
 - [Factory Profiler](https://github.com/palkan/test-prof/tree/master/guides/factory_prof.md)
