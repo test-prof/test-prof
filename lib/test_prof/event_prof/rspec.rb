@@ -88,7 +88,9 @@ TestProf.activate('EVENT_PROF') do
     listener = TestProf::EventProf::RSpecListener.new
 
     config.before(:suite) do
-      config.reporter.register_listener(listener, *TestProf::EventProf::RSpecListener::NOTIFICATIONS)
+      config.reporter.register_listener(
+        listener, *TestProf::EventProf::RSpecListener::NOTIFICATIONS
+      )
     end
 
     config.after(:suite) { listener.print }
