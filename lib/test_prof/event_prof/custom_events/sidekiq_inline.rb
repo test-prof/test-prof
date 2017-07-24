@@ -36,13 +36,15 @@ module TestProf::EventProf::CustomEvents
   end
 end
 
-if TestProf.require(
-  'sidekiq/testing',
-  <<~MSG
-    Failed to load Sidekiq.
+TestProf.activate('EVENT_PROF', 'sidekiq.inline') do
+  if TestProf.require(
+    'sidekiq/testing',
+    <<~MSG
+      Failed to load Sidekiq.
 
-    Make sure that "sidekiq" gem is in your Gemfile.
-  MSG
-)
-  TestProf::EventProf::CustomEvents::SidekiqInline.setup!
+      Make sure that "sidekiq" gem is in your Gemfile.
+    MSG
+  )
+    TestProf::EventProf::CustomEvents::SidekiqInline.setup!
+  end
 end

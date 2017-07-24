@@ -42,13 +42,14 @@ module TestProf
       false
     end
 
-    # Run block only if provided env var is present.
+    # Run block only if provided env var is present and
+    # equal to the provided value (if any).
     # Contains workaround for applications using Spring.
-    def activate(env_var)
+    def activate(env_var, val = nil)
       if defined?(::Spring)
-        ::Spring.after_fork { yield if ENV[env_var] }
-      elsif ENV[env_var]
-        yield
+        ::Spring.after_fork { activate!(env_var, val) { yield } }
+      else
+        activate!(env_var, val) { yield }
       end
     end
 
@@ -68,6 +69,10 @@ module TestProf
     end
 
     private
+
+    def activate!(env_var, val)
+      yield if ENV[env_var] && (val.nil? || ENV[env_var] == val)
+    end
 
     def with_timestamps(path)
       return path unless config.timestamps?

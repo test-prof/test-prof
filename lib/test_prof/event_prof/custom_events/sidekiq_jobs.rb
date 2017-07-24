@@ -23,16 +23,18 @@ module TestProf::EventProf::CustomEvents
   end
 end
 
-if TestProf.require(
-  'sidekiq/testing',
-  <<~MSG
-    Failed to load Sidekiq.
+TestProf.activate('EVENT_PROF', 'sidekiq.jobs') do
+  if TestProf.require(
+    'sidekiq/testing',
+    <<~MSG
+      Failed to load Sidekiq.
 
-    Make sure that "sidekiq" gem is in your Gemfile.
-  MSG
-)
-  TestProf::EventProf::CustomEvents::SidekiqJobs.setup!
-  TestProf::EventProf.configure do |config|
-    config.rank_by = :count
+      Make sure that "sidekiq" gem is in your Gemfile.
+    MSG
+  )
+    TestProf::EventProf::CustomEvents::SidekiqJobs.setup!
+    TestProf::EventProf.configure do |config|
+      config.rank_by = :count
+    end
   end
 end

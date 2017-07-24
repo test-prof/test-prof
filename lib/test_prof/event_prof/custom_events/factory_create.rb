@@ -39,13 +39,15 @@ module TestProf::EventProf::CustomEvents
   end
 end
 
-if TestProf.require(
-  'factory_girl',
-  <<~MSG
-    Failed to load FactoryGirl.
+TestProf.activate('EVENT_PROF', 'factory.create') do
+  if TestProf.require(
+    'factory_girl',
+    <<~MSG
+      Failed to load FactoryGirl.
 
-    Make sure that "factory_girl" gem is in your Gemfile.
-  MSG
-)
-  TestProf::EventProf::CustomEvents::FactoryCreate.setup!
+      Make sure that "factory_girl" gem is in your Gemfile.
+    MSG
+  )
+    TestProf::EventProf::CustomEvents::FactoryCreate.setup!
+  end
 end
