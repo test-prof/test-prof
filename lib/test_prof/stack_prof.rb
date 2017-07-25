@@ -83,6 +83,16 @@ module TestProf
         ::StackProf.results(path)
 
         log :info, "StackProf report generated: #{path}"
+
+        return unless config.raw
+
+        html_path = path.gsub(/\.dump$/, '.html')
+
+        log :info, <<~MSG
+          Run the following command to generate a flame graph report:
+
+          stackprof --flamegraph #{path} > #{html_path} && stackprof --flamegraph-viewer=#{html_path}
+        MSG
       end
 
       private
