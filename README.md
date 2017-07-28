@@ -71,6 +71,8 @@ We also want to share some small code tricks which can help you to improve your 
 
 - [AnyFixture](https://github.com/palkan/test-prof/tree/master/guides/any_fixture.md)
 
+- [FactoryDefault](https://github.com/palkan/test-prof/tree/master/guides/factory_default.md)
+
 - [RSpec Stamp](https://github.com/palkan/test-prof/tree/master/guides/rspec_stamp.md)
 
 ## Configuration
