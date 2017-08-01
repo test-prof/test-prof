@@ -75,6 +75,8 @@ We also want to share some small code tricks which can help you to improve your 
 
 - [RSpec Stamp](https://github.com/palkan/test-prof/tree/master/guides/rspec_stamp.md)
 
+- [Tests Sampling](https://github.com/palkan/test-prof/tree/master/guides/tests_sampling.md)
+
 ## Configuration
 
 TestProf global configuration is used by most of the profilers:
