@@ -64,6 +64,36 @@ EVENT_PROF_RANK=count EVENT_PROF='instantiation.active_record' be rspec
 
 See [event_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/event_prof.rb) for all available configuration options and their usage.
 
+## Custom Instrumentation
+
+To use EventProf with your instrumentation engine just complete the two following steps:
+
+- Add a wrapper for your instrumentation:
+
+
+```ruby
+# Wrapper over your instrumentation
+module MyEventsWrapper
+  # Should contain the only one method
+  def self.subscribe(event)
+    raise ArgumentError, 'Block is required!' unless block_given?
+
+    ::MyEvents.subscribe(event) do |start, finish, *|
+      yield (finish - start)
+    end
+  end
+end
+```
+
+- Set instrumenter in the config:
+
+
+```ruby
+TestProf::EventProf.configure do |config|
+  config.instrumenter = MyEventsWrapper
+end
+```
+
 ## Custom Events
 
 ### `"factory.create"`
