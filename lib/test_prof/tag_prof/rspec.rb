@@ -49,8 +49,8 @@ module TestProf
 
         msgs << ""
 
-        total = @tags.values.sum { |v| v[:count] }
-        total_time = @tags.values.sum { |v| v[:time] }
+        total = @tags.values.inject(0) { |acc, v| acc + v[:count] }
+        total_time = @tags.values.inject(0) { |acc, v| acc + v[:time] }
 
         @tags.values.sort_by { |v| -v[:time] }.each do |tag|
           msgs << format(
