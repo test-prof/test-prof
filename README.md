@@ -53,7 +53,7 @@ Checkout our guides for each specific tool:
 
 - [StackProf Integration](https://github.com/palkan/test-prof/tree/master/guides/stack_prof.md)
 
-- [Instrumentation Profiler](https://github.com/palkan/test-prof/tree/master/guides/event_prof.md) (e.g. ActiveSupport notifications)
+- [Event Profiler](https://github.com/palkan/test-prof/tree/master/guides/event_prof.md) (e.g. ActiveSupport notifications)
 
 - [Tag Profiler](https://github.com/palkan/test-prof/tree/master/guides/tag_prof.md)
 
