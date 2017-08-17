@@ -1,5 +1,7 @@
 [![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build Status](https://travis-ci.org/palkan/test-prof.svg?branch=master)](https://travis-ci.org/palkan/test-prof) [![CircleCI](https://circleci.com/gh/palkan/test-prof.svg?style=svg)](https://circleci.com/gh/palkan/test-prof)
 
+[![Code Triagers Badge](https://www.codetriage.com/palkan/test-prof/badges/users.svg)](https://www.codetriage.com/palkan/test-prof)
+
 # Ruby Tests Profiling Toolbox
 
 TestProf is a collection of different tools to analyze your test suite performance.
