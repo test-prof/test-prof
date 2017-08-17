@@ -30,7 +30,7 @@ And we want to test the `Task` model:
 
 ```ruby
 describe "PATCH #update" do
-  let(:task( { create(:task) }
+  let(:task) { create(:task) }
 
   it "works" do
     patch :update, id: task.id, task: { completed: 't' }
