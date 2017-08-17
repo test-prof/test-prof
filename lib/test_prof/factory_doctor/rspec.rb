@@ -8,6 +8,8 @@ module TestProf
       include Logging
       using FloatDuration
 
+      SUCCESS_MESSAGE = 'FactoryDoctor says: "Looks good to me!"'
+
       NOTIFICATIONS = %i[
         example_started
         example_finished
@@ -42,7 +44,7 @@ module TestProf
       end
 
       def print
-        return if @example_groups.empty?
+        return log(:info, SUCCESS_MESSAGE) if @example_groups.empty?
 
         msgs = []
 
