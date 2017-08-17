@@ -92,7 +92,7 @@ module TestProf
     def initialize
       @output = $stdout
       @color = true
-      @output_dir = "tmp"
+      @output_dir = "tmp/test_prof"
       @timestamps = false
     end
 
