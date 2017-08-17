@@ -61,6 +61,8 @@ module TestProf
 
     # Return a path to store artefact
     def artefact_path(filename)
+      FileUtils.mkdir_p(config.output_dir)
+
       with_timestamps(
         ::File.join(
           config.output_dir,
@@ -97,7 +99,7 @@ module TestProf
     end
 
     def output_dir=(path)
-      FileUtils.mkdir_p path
+       path
       @output_dir = path
     end
 

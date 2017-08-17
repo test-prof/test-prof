@@ -8,6 +8,14 @@ describe TestProf do
       described_class.config.output_dir = "tmp/test"
     end
 
+    context "ensures creation of output_dir" do
+      subject { described_class.artefact_path("c.html") }
+
+      before { FileUtils.rmdir described_class.config.output_dir }
+
+      it { expect { subject }.to change { File.exist?(described_class.config.output_dir) } }
+    end
+
     context "with timestamps" do
       before { described_class.config.timestamps = false }
 
