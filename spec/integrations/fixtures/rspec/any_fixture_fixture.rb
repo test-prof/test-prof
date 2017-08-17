@@ -30,6 +30,7 @@ end
 
 describe "Post", :user do
   let(:post) { FactoryGirl.create(:post, user: user) }
+  after { post.destroy }
 
   it "creates post with the same user" do
     expect { post }.not_to change(User, :count)
