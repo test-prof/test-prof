@@ -1,5 +1,7 @@
 # Change log
 
+## master
+
 ## 0.1.1
 
 - AnyFixture: clean tables in reverse order to not fail when foreign keys exist. ([@marshall-lee][])
@@ -9,3 +11,4 @@
 - Initial version. ([@palkan][])
 
 [@palkan]: https://github.com/palkan
+[@marshall-lee]: https://github.com/marshall-lee
