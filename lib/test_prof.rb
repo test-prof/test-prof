@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "fileutils"
 require "test_prof/version"
 require "test_prof/logging"
 
@@ -93,6 +94,11 @@ module TestProf
       @color = true
       @output_dir = "tmp"
       @timestamps = false
+    end
+
+    def output_dir=(path)
+      FileUtils.mkdir_p path
+      @output_dir = path
     end
 
     def color?
