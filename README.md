@@ -6,7 +6,7 @@
 
 TestProf is a collection of different tools to analyze your test suite performance.
 
-Why does test suite performance matter? First of all, testing is a part of a developer's feedback loop (see @searls [talk](https://www.youtube.com/watch?v=VD51AkG8EZw)) and, secondly, it is a part of a deployment cycle.
+Why does test suite performance matter? First of all, testing is a part of a developer's feedback loop (see [@searls](https://github.com/searls) [talk](https://vimeo.com/145917204)) and, secondly, it is a part of a deployment cycle.
 
 Simply speaking, slow tests waste your time making you less productive.
 
