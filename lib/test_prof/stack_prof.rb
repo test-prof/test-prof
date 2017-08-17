@@ -98,7 +98,7 @@ module TestProf
       private
 
       def build_path(name)
-        TestProf.artefact_path(
+        TestProf.artifact_path(
           "stack-prof-report-#{config.mode}#{config.raw ? '-raw' : ''}-#{name}.dump"
         )
       end

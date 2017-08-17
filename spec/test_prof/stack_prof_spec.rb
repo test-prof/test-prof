@@ -46,7 +46,7 @@ describe TestProf::StackProf do
 
     specify "when block is given" do
       expect(stack_prof).to receive(:run).with(
-        out: "tmp/stack-prof-report-wall-stub.dump",
+        out: File.join(TestProf.config.output_dir, "stack-prof-report-wall-stub.dump").to_s,
         mode: :wall,
         raw: false
       )
@@ -64,7 +64,7 @@ describe TestProf::StackProf do
 
     it "stops profiling and stores results" do
       expect(stack_prof).to receive(:results).with(
-        "tmp/stack-prof-report-wall-stub.dump"
+        File.join(TestProf.config.output_dir, "stack-prof-report-wall-stub.dump").to_s
       )
       expect(stack_prof).to receive(:stop)
       described_class.dump("stub")

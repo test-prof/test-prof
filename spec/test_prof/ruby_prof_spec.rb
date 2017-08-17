@@ -83,7 +83,7 @@ describe TestProf::RubyProf do
 
       subject.dump("stub")
 
-      expect(File.exist?("tmp/ruby-prof-report-call_stack-wall-stub.html")).to eq true
+      expect(File.exist?(File.join(TestProf.config.output_dir, "ruby-prof-report-call_stack-wall-stub.html"))).to eq true
     end
 
     specify "with custom config" do
@@ -103,7 +103,7 @@ describe TestProf::RubyProf do
 
       subject.dump("stub")
 
-      expect(File.exist?("tmp/ruby-prof-report-flat-cpu-stub-123454321.html")).to eq true
+      expect(File.exist?(File.join(TestProf.config.output_dir, "ruby-prof-report-flat-cpu-stub-123454321.html"))).to eq true
     end
   end
 end

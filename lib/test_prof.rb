@@ -59,8 +59,8 @@ module TestProf
       ::File.expand_path(filename, ::File.join(::File.dirname(__FILE__), "..", "assets"))
     end
 
-    # Return a path to store artefact
-    def artefact_path(filename)
+    # Return a path to store artifact
+    def artifact_path(filename)
       FileUtils.mkdir_p(config.output_dir)
 
       with_timestamps(
@@ -96,11 +96,6 @@ module TestProf
       @color = true
       @output_dir = "tmp/test_prof"
       @timestamps = false
-    end
-
-    def output_dir=(path)
-       path
-      @output_dir = path
     end
 
     def color?
