@@ -34,7 +34,7 @@ module TestProf
 
       # Clean all affected tables (but do not reset cache)
       def clean
-        tables_cache.keys.each do |table|
+        tables_cache.keys.reverse_each do |table|
           ActiveRecord::Base.connection.execute %(
             DELETE FROM #{table}
           )
