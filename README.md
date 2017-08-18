@@ -1,6 +1,4 @@
-[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build Status](https://travis-ci.org/palkan/test-prof.svg?branch=master)](https://travis-ci.org/palkan/test-prof) [![CircleCI](https://circleci.com/gh/palkan/test-prof.svg?style=svg)](https://circleci.com/gh/palkan/test-prof)
-
-[![Code Triagers Badge](https://www.codetriage.com/palkan/test-prof/badges/users.svg)](https://www.codetriage.com/palkan/test-prof)
+[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build Status](https://travis-ci.org/palkan/test-prof.svg?branch=master)](https://travis-ci.org/palkan/test-prof) [![CircleCI](https://circleci.com/gh/palkan/test-prof.svg?style=svg)](https://circleci.com/gh/palkan/test-prof) [![Code Triagers Badge](https://www.codetriage.com/palkan/test-prof/badges/users.svg)](https://www.codetriage.com/palkan/test-prof)
 
 # Ruby Tests Profiling Toolbox
 
@@ -87,7 +85,7 @@ TestProf global configuration is used by most of the profilers:
 
 ```ruby
 TestProf.configure do |config|
-  # the directory to put artifacts (reports) in ("tmp" by default)
+  # the directory to put artifacts (reports) in ("tmp/test_prof" by default)
   config.output_dir = "tmp/test_prof"
 
   # use unique filenames for reports (by simply appending current timestamp)
