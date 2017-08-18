@@ -107,7 +107,7 @@ module TestProf
       private
 
       def build_path(name, printer)
-        TestProf.artefact_path(
+        TestProf.artifact_path(
           "ruby-prof-report-#{printer}-#{config.mode}-#{name}.html"
         )
       end

@@ -61,7 +61,7 @@ module TestProf::FactoryProf
           template = File.read(TestProf.asset_path("flamegraph.template.html"))
           template.sub! '/**REPORT-DATA**/', data.to_json
 
-          outpath = TestProf.artefact_path("factory-flame.html")
+          outpath = TestProf.artifact_path("factory-flame.html")
           File.write(outpath, template)
           outpath
         end
