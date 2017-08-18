@@ -2,9 +2,11 @@
 
 ## master
 
+## 0.2.0
+
 - Ensure output directory exists. ([@danielwestendorf][])
 
-Change default output dir to "tmp/test_prof".
+**Change default output dir** to "tmp/test_prof".
 
 Rename `#artefact_path` to `#artifact_path` to be more US-like
 
