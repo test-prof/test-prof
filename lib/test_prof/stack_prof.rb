@@ -122,7 +122,7 @@ module TestProf
   end
 end
 
-require "test_prof/stack_prof/rspec" if defined?(RSpec)
+require "test_prof/stack_prof/rspec" if defined?(RSpec::Core)
 
 # Hook to run StackProf globally
 TestProf.activate('TEST_STACK_PROF') do

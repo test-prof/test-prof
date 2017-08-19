@@ -2,6 +2,12 @@
 
 ## master
 
+## 0.2.1
+
+- Detect `RSpec` by checking the presence of `RSpec::Core`. ([@palkan][])
+
+Fixes [#8](https://github.com/palkan/test-prof/issues/8).
+
 ## 0.2.0
 
 - Ensure output directory exists. ([@danielwestendorf][])
