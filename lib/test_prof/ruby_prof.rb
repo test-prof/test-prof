@@ -183,7 +183,7 @@ module TestProf
   end
 end
 
-require "test_prof/ruby_prof/rspec" if defined?(RSpec)
+require "test_prof/ruby_prof/rspec" if defined?(RSpec::Core)
 
 # Hook to run RubyProf globally
 TestProf.activate('TEST_RUBY_PROF') do

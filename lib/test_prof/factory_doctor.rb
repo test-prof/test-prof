@@ -125,7 +125,7 @@ module TestProf
   end
 end
 
-require "test_prof/factory_doctor/rspec" if defined?(RSpec)
+require "test_prof/factory_doctor/rspec" if defined?(RSpec::Core)
 require "test_prof/factory_doctor/minitest" if defined?(Minitest::Reporters)
 
 TestProf.activate('FDOC') do

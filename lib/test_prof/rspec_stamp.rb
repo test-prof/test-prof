@@ -132,4 +132,4 @@ module TestProf
   end
 end
 
-require "test_prof/rspec_stamp/rspec" if defined?(RSpec)
+require "test_prof/rspec_stamp/rspec" if defined?(RSpec::Core)

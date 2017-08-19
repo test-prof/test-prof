@@ -5,4 +5,4 @@ module TestProf
   end
 end
 
-require "test_prof/tag_prof/rspec" if defined?(RSpec)
+require "test_prof/tag_prof/rspec" if defined?(RSpec::Core)
