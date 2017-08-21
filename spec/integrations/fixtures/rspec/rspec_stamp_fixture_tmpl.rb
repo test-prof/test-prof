@@ -13,6 +13,10 @@ describe "Something" do
     expect(@value).to eq true
   end
 
+  it "fail me with tag", fix: :no do
+    expect(@value).to eq true
+  end
+
   it "always passes" do
     expect(true).to eq true
   end
