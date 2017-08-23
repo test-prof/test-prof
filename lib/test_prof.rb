@@ -33,6 +33,17 @@ module TestProf
       yield config
     end
 
+    # Avoid issues with wrong time due to monkey-patches (e.g. timecop)
+    # See https://github.com/rspec/rspec-core/blob/v3.6.0/lib/rspec/core.rb#L147
+    #
+    # We also want to handle Timecop specificaly
+    # See https://github.com/travisjeffery/timecop/blob/master/lib/timecop/time_extensions.rb#L11
+    if Time.respond_to?(:now_without_mock_time)
+      define_method(:now, &::Time.method(:now_without_mock_time))
+    else
+      define_method(:now, &::Time.method(:now))
+    end
+
     # Require gem and shows a custom
     # message if it fails to load
     def require(gem_name, msg)
@@ -79,7 +90,7 @@ module TestProf
 
     def with_timestamps(path)
       return path unless config.timestamps?
-      timestamps = "-#{Time.now.to_i}"
+      timestamps = "-#{now.to_i}"
       "#{path.sub(/\.\w+$/, '')}#{timestamps}#{::File.extname(path)}"
     end
   end

@@ -34,9 +34,6 @@ Style/StringLiterals:
 Style/RegexpLiteral:
   Enabled: false
 
-Style/SpaceInsideStringInterpolation:
-  EnforcedStyle: no_space
-
 Style/ClassAndModuleChildren:
   Enabled: false
 
@@ -44,9 +41,20 @@ Style/BlockDelimiters:
   Exclude:
     - 'spec/**/*.rb'
 
+Style/ParallelAssignment:
+  Exclude:
+    - 'spec/**/*'
+
+Style/GlobalVars:
+  Exclude:
+    - 'spec/integrations/fixtures/**/*'
+    - 'spec/bugs/fixtures/**/*'
+
+Layout/SpaceInsideStringInterpolation:
+  EnforcedStyle: no_space
+
 Lint/AmbiguousRegexpLiteral:
   Enabled: false
-
 
 Metrics/MethodLength:
   Enabled: false

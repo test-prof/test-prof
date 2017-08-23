@@ -25,7 +25,7 @@ describe TestProf do
     context "with timestamps" do
       before do
         described_class.config.timestamps = true
-        expect(Time).to receive(:now).and_return(double("now", to_i: 123_454_321))
+        expect(described_class).to receive(:now).and_return(double("now", to_i: 123_454_321))
       end
 
       it { expect(described_class.artifact_path("c.html")).to eq 'tmp/test/c-123454321.html' }

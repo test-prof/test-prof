@@ -99,7 +99,7 @@ describe TestProf::RubyProf do
       stub_const("RubyProf::FlatPrinter", printer_class)
       expect(printer_class).to receive(:new).with(result).and_return(printer)
       expect(printer).to receive(:print).with(anything, min_percent: 2).and_return("")
-      expect(Time).to receive(:now).and_return(double("now", to_i: 123_454_321))
+      expect(TestProf).to receive(:now).and_return(double("now", to_i: 123_454_321))
 
       subject.dump("stub")
 
