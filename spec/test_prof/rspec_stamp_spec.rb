@@ -258,6 +258,31 @@ describe TestProf::RSpecStamp do
           expect(code.join("\n")).to eq expected.strip
         end
       end
+
+      context "when tags already set" do
+        let(:tags) { [{ log: :none }, :todo, { level: :info }] }
+
+        let(:source) do
+          <<~CODE
+            it 'is', :log, level: :debug do
+              expect(subject.body).to eq("Not Found")
+            end
+          CODE
+        end
+
+        let(:expected) do
+          <<~CODE
+            it 'is', :todo, log: :none, level: :info do
+              expect(subject.body).to eq("Not Found")
+            end
+          CODE
+        end
+
+        specify do
+          is_expected.to eq 0
+          expect(code.join("\n")).to eq expected.strip
+        end
+      end
     end
 
     context "with multiline description" do

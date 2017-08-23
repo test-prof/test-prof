@@ -22,6 +22,11 @@ module TestProf
           @htags ||= []
           @htags << [k, v]
         end
+
+        def remove_tag(tag)
+          @tags&.delete(tag)
+          @htags&.delete_if { |(k, _v)| k == tag }
+        end
       end
 
       class << self
