@@ -82,14 +82,14 @@ module TestProf
         return yield if ignore? || !running? || (strategy != :create)
 
         begin
-          ts = Time.now if @depth.zero?
+          ts = TestProf.now if @depth.zero?
           @depth += 1
           @count += 1
           yield
         ensure
           @depth -= 1
 
-          @time += (Time.now - ts) if @depth.zero?
+          @time += (TestProf.now - ts) if @depth.zero?
         end
       end
 

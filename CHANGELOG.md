@@ -2,6 +2,13 @@
 
 ## master
 
+- Fix time calculation when Time class is monkey-patched. ([@palkan][])
+
+Add `TestProf.now` method which is just a copy of original `Time.now` and
+use it everywhere.
+
+Fixes [#10](https://github.com/palkan/test-prof/issues/10).
+
 ## 0.2.1
 
 - Detect `RSpec` by checking the presence of `RSpec::Core`. ([@palkan][])

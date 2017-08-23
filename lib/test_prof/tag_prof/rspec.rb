@@ -21,7 +21,7 @@ module TestProf
       end
 
       def example_started(_notification)
-        @ts = Time.now
+        @ts = TestProf.now
       end
 
       def example_finished(notification)
@@ -30,7 +30,7 @@ module TestProf
         tag = notification.example.metadata.fetch(@tag, :__unknown__)
 
         @tags[tag][:count] += 1
-        @tags[tag][:time] += (Time.now - @ts)
+        @tags[tag][:time] += (TestProf.now - @ts)
       end
 
       def print
