@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.2.2
+
 - Fix time calculation when Time class is monkey-patched. ([@palkan][])
 
 Add `TestProf.now` method which is just a copy of original `Time.now` and
