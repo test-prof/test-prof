@@ -88,8 +88,12 @@ module TestProf
 
         tags.each do |t|
           if t.is_a?(Hash)
-            t.keys.each { |k| parsed.add_htag(k, t[k]) }
+            t.keys.each do |k|
+              parsed.remove_tag(k)
+              parsed.add_htag(k, t[k])
+            end
           else
+            parsed.remove_tag(t)
             parsed.add_tag(t)
           end
         end
