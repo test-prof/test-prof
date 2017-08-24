@@ -34,7 +34,7 @@ end
 
 FactoryGirl.define do
   factory :user do
-    name { |n| "John #{n}" }
+    sequence(:name) { |n| "John #{n}" }
 
     trait :with_posts do
       after(:create) do
@@ -44,7 +44,7 @@ FactoryGirl.define do
   end
 
   factory :post do
-    text { |n| "Post ##{n}}" }
+    sequence(:text) { |n| "Post ##{n}}" }
     user
   end
 end
