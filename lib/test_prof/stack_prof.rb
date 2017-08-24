@@ -114,7 +114,7 @@ module TestProf
           <<~MSG
             Please, install 'stackprof' first:
                # Gemfile
-              gem 'stackprof', require: false
+              gem 'stackprof', '>= 0.2.7', require: false
           MSG
         )
       end

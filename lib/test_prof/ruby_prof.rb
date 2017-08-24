@@ -175,7 +175,7 @@ module TestProf
           <<~MSG
             Please, install 'ruby-prof' first:
                # Gemfile
-              gem 'ruby-prof', require: false
+              gem 'ruby-prof', '>= 0.16.0', require: false
           MSG
         )
       end
