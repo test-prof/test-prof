@@ -6,6 +6,10 @@ module TestProf
     def before_all(&block)
       raise ArgumentError, "Block is required!" unless block_given?
 
+      return if within_before_all?
+
+      @__before_all_activated__ = true
+
       before(:all) do
         ActiveRecord::Base.connection.begin_transaction(joinable: false)
         instance_eval(&block)
@@ -14,6 +18,10 @@ module TestProf
       after(:all) do
         ActiveRecord::Base.connection.rollback_transaction
       end
+    end
+
+    def within_before_all?
+      instance_variable_defined?(:@__before_all_activated__)
     end
   end
 end
