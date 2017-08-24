@@ -58,6 +58,21 @@ describe "User", :transactional do
       end
     end
 
+    context "with refind option" do
+      let_it_be(:post, refind: true) { FactoryGirl.create(:post) }
+
+      let(:user) { post.user }
+
+      it "validates name" do
+        user.name = ''
+        expect(user).not_to be_valid
+      end
+
+      it "is valid" do
+        expect(user).to be_valid
+      end
+    end
+
     context "it still the same" do
       specify do
         expect(user.name).to eq @cache[:user_name]
