@@ -7,7 +7,7 @@ module IntegrationHelpers
       "rspec #{path}_fixture.rb",
       chdir: chdir || File.expand_path("../../integrations/fixtures/rspec", __FILE__)
     )
-    expect(status).to be_success if success
+    expect(status).to be_success, "Test #{path} failed with: #{output}" if success
     output
   end
 
@@ -17,7 +17,7 @@ module IntegrationHelpers
       "ruby #{path}_fixture.rb",
       chdir: chdir || File.expand_path("../../integrations/fixtures/minitest", __FILE__)
     )
-    expect(status).to be_success if success
+    expect(status).to be_success, "Test #{path} failed with: #{output}" if success
     output
   end
 end
