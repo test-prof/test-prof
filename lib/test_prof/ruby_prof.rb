@@ -177,7 +177,18 @@ module TestProf
                # Gemfile
               gem 'ruby-prof', '>= 0.16.0', require: false
           MSG
-        )
+        ) { check_ruby_prof_version }
+      end
+
+      def check_ruby_prof_version
+        if Utils.verify_gem_version('ruby-prof', at_least: '0.16.0')
+          true
+        else
+          log :error, <<~MGS
+            Please, upgrade 'ruby-prof' to version >= 0.16.0.
+          MGS
+          false
+        end
       end
     end
   end

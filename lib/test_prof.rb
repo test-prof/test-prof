@@ -3,6 +3,7 @@
 require "fileutils"
 require "test_prof/version"
 require "test_prof/logging"
+require "test_prof/utils"
 
 # Ruby applications tests profiling tools.
 #
@@ -48,7 +49,7 @@ module TestProf
     # message if it fails to load
     def require(gem_name, msg)
       Kernel.require gem_name
-      true
+      block_given? ? yield : true
     rescue LoadError
       log :error, msg
       false

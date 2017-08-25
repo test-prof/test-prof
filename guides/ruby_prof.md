@@ -9,7 +9,7 @@ Install `ruby-prof` gem (>= 0.16):
 ```ruby
 # Gemfile
 group :development, :test do
-  gem 'ruby-prof', require: false
+  gem 'ruby-prof', '>= 0.16.0', require: false
 end
 ```
 

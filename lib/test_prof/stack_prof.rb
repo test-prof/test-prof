@@ -114,9 +114,20 @@ module TestProf
           <<~MSG
             Please, install 'stackprof' first:
                # Gemfile
-              gem 'stackprof', '>= 0.2.7', require: false
+              gem 'stackprof', '>= 0.2.9', require: false
           MSG
-        )
+        ) { check_stack_prof_version }
+      end
+
+      def check_stack_prof_version
+        if Utils.verify_gem_version('stackprof', at_least: '0.2.9')
+          true
+        else
+          log :error, <<~MGS
+            Please, upgrade 'stackprof' to version >= 0.2.9.
+          MGS
+          false
+        end
       end
     end
   end

@@ -4,12 +4,12 @@
 
 ## Instructions
 
-Install 'stackprof' gem (>= 0.2.7):
+Install 'stackprof' gem (>= 0.2.9):
 
 ```ruby
 # Gemfile
 group :development, :test do
-  gem 'stackprof', require: false
+  gem 'stackprof', '>= 0.2.9', require: false
 end
 ```
 
