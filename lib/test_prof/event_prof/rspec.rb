@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require "test_prof/ext/float_duration"
+require "test_prof/ext/string_truncate"
 
 module TestProf
   module EventProf
     class RSpecListener # :nodoc:
       include Logging
       using FloatDuration
+      using StringTruncate
 
       NOTIFICATIONS = %i[
         example_group_started
@@ -59,7 +61,7 @@ module TestProf
 
           msgs <<
             <<~GROUP
-              #{description} (#{location}) – #{group[:time].duration} (#{group[:count]} / #{group[:examples]})
+              #{description.truncate} (#{location}) – #{group[:time].duration} (#{group[:count]} / #{group[:examples]})
             GROUP
         end
 
@@ -71,7 +73,7 @@ module TestProf
             location = example[:id].metadata[:location]
             msgs <<
               <<~GROUP
-                #{description} (#{location}) – #{example[:time].duration} (#{example[:count]})
+                #{description.truncate} (#{location}) – #{example[:time].duration} (#{example[:count]})
               GROUP
           end
         end

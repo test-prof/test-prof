@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-# Add #duration method to floats
 module TestProf
   # Extend Float with #duration method
   module FloatDuration
