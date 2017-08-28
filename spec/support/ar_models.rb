@@ -17,6 +17,8 @@ ActiveRecord::Schema.define do
   end
 end
 
+ActiveRecord::Base.logger = Logger.new(STDOUT) if ENV['LOG']
+
 class User < ActiveRecord::Base
   validates :name, presence: true
   has_many :posts, dependent: :destroy
