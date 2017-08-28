@@ -1,6 +1,8 @@
 # Change log
 
-## master
+## 0.2.3
+
+- Minor improvements. ([@palkan][])
 
 ## 0.2.2
 
