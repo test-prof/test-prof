@@ -69,6 +69,8 @@ Checkout our guides for each specific tool:
 
 - [Factory Profiler](https://github.com/palkan/test-prof/tree/master/guides/factory_prof.md)
 
+- [RSpecDissect Profiler](https://github.com/palkan/test-prof/tree/master/guides/rspec_dissect.md)
+
 - [Rubocop Cops](https://github.com/palkan/test-prof/tree/master/guides/rubocop.md)
 
 ## Tips and Tricks (or _Recipes_)

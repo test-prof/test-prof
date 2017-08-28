@@ -61,11 +61,9 @@ module TestProf
           <<~MSG
             RSpecDissect report
 
-            Total time:                 #{@total_examples_time.duration}
-
+            Total time: #{@total_examples_time.duration}
             Total `before(:each)` time: #{RSpecDissect.total_before_time.duration}
-
-            Total `let` time:           #{RSpecDissect.total_memo_time.duration}
+            Total `let` time: #{RSpecDissect.total_memo_time.duration}
 
           MSG
 
@@ -95,7 +93,7 @@ module TestProf
             GROUP
         end
 
-        log :info, msgs.join("\n")
+        log :info, msgs.join
       end
 
       private
