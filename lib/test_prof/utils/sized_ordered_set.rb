@@ -42,7 +42,11 @@ module TestProf
       end
 
       def each
-        data.each
+        if block_given?
+          data.each(&Proc.new)
+        else
+          data.each
+        end
       end
 
       def size
