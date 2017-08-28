@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_prof/event_prof/instrumentations/active_support"
+require "test_prof/utils/sized_ordered_set"
 
 module TestProf
   # EventProf profiles your tests and suites against custom events,
@@ -19,6 +20,8 @@ module TestProf
   #  TestProf::EventProf.configure do |config|
   #    config.per_example = true
   #  end
+  #
+  # Or provide the EVENT_PROF_EXAMPLES=1 env variable.
   module EventProf
     # EventProf configuration
     class Configuration
@@ -34,7 +37,7 @@ module TestProf
         @event = ENV['EVENT_PROF']
         @instrumenter = :active_support
         @top_count = (ENV['EVENT_PROF_TOP'] || 5).to_i
-        @per_example = false
+        @per_example = ENV['EVENT_PROF_EXAMPLES'] == '1'
         @rank_by = (ENV['EVENT_PROF_RANK'] || :time).to_sym
       end
 
@@ -82,13 +85,16 @@ module TestProf
 
         instrumenter.subscribe(event) { |time| track(time) }
 
-        @groups = Hash.new { |h, k| h[k] = { id: k } }
-        @examples = Hash.new { |h, k| h[k] = { id: k } }
+        @groups = Utils::SizedOrderedSet.new(
+          top_count, sort_by: rank_by
+        )
+
+        @examples = Utils::SizedOrderedSet.new(
+          top_count, sort_by: rank_by
+        )
 
         @total_count = 0
         @total_time = 0.0
-
-        reset!
       end
 
       def track(time)
@@ -99,41 +105,44 @@ module TestProf
         @time += time
         @count += 1
 
-        @example_time += time if config.per_example?
-        @example_count += 1 if config.per_example?
+        return unless config.per_example?
+
+        @example_time += time
+        @example_count += 1
       end
 
       def group_started(id)
-        reset!
+        reset_group!
         @current_group = id
       end
 
       def group_finished(id)
-        @groups[id][:time] = @time
-        @groups[id][:count] = @count
-        @groups[id][:examples] = @total_examples
+        data = { id: id, time: @time, count: @count, examples: @total_examples }
+
+        @groups << data unless data[rank_by].zero?
+
         @current_group = nil
       end
 
       def example_started(_id)
-        reset_example!
+        reset_example! if config.per_example?
       end
 
       def example_finished(id)
         @total_examples += 1
         return unless config.per_example?
 
-        @examples[id][:time] = @example_time
-        @examples[id][:count] = @example_count
+        data = { id: id, time: @example_time, count: @example_count }
+        @examples << data unless data[rank_by].zero?
       end
 
       def results
         {
-          groups: fetch_top(@groups.values)
+          groups: @groups.to_a
         }.tap do |data|
           next unless config.per_example?
 
-          data[:examples] = fetch_top(@examples.values)
+          data[:examples] = @examples.to_a
         end
       end
 
@@ -147,21 +156,14 @@ module TestProf
 
       private
 
-      def fetch_top(arr)
-        arr.reject { |el| el[rank_by].zero? }
-           .sort_by { |el| -el[rank_by] }
-           .take(top_count)
-      end
-
       def config
         EventProf.config
       end
 
-      def reset!
+      def reset_group!
         @time = 0.0
         @count = 0
         @total_examples = 0
-        reset_example!
       end
 
       def reset_example!
