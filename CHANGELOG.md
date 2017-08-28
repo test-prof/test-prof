@@ -1,5 +1,18 @@
 # Change log
 
+## 0.3.0
+
+Features:
+
+- [#14](https://github.com/palkan/test-prof/pull/14) RSpecDissect profiler. ([@palkan][])
+
+RSpecDissect tracks how much time do you spend in `before` hooks 
+and memoization helpers (i.e. `let`) in your tests.
+
+- [#13](https://github.com/palkan/test-prof/pull/13) RSpec `let_it_be` method. ([@palkan][])
+
+Just like `let`, but persist the result for the whole group (i.e. `let` + `before_all`).
+
 ## 0.2.5
 
 - [#16](https://github.com/palkan/test-prof/pull/16) Support Ruby >= 2.2.0 (was >= 2.3.0). ([@palkan][])
