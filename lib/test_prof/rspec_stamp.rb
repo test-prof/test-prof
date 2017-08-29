@@ -85,7 +85,7 @@ module TestProf
         parsed = Parser.parse(code)
         return false unless parsed
 
-        parsed.desc ||= 'works'
+        desc = parsed.desc_const || quote(parsed.desc || 'works')
 
         tags.each do |t|
           if t.is_a?(Hash)
@@ -113,7 +113,7 @@ module TestProf
         end
 
         replacement = "\\1#{parsed.fname}#{need_parens ? '(' : ' '}"\
-                      "#{[quote(parsed.desc), tags_str, htags_str].compact.join(', ')}"\
+                      "#{[desc, tags_str, htags_str].compact.join(', ')}"\
                       "#{need_parens ? ') ' : ' '}\\3"
 
         if config.dry_run?
