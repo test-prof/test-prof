@@ -1,5 +1,11 @@
 # Change log
 
+## 0.2.4
+
+- EventProf: Fix regression bug with examples profiling. ([@palkan][])
+
+There was a bug when an event occurs before the example has started (e.g. in `before(:context)` hook).
+
 ## 0.2.3
 
 - Minor improvements. ([@palkan][])

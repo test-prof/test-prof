@@ -105,7 +105,7 @@ module TestProf
         @time += time
         @count += 1
 
-        return unless config.per_example?
+        return if @current_example.nil?
 
         @example_time += time
         @example_count += 1
@@ -124,8 +124,10 @@ module TestProf
         @current_group = nil
       end
 
-      def example_started(_id)
-        reset_example! if config.per_example?
+      def example_started(id)
+        return unless config.per_example?
+        reset_example!
+        @current_example = id
       end
 
       def example_finished(id)
@@ -134,6 +136,7 @@ module TestProf
 
         data = { id: id, time: @example_time, count: @example_count }
         @examples << data unless data[rank_by].zero?
+        @current_example = nil
       end
 
       def results
