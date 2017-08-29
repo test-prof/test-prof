@@ -305,5 +305,50 @@ describe TestProf::RSpecStamp do
         expect(code.join("\n")).to eq source.strip
       end
     end
+
+    context "with example groups" do
+      let(:source) do
+        <<-CODE.strip_heredoc
+          RSpec.describe User::Story, :account do
+            it 'succeeds' do
+              expect(subject.body).to eq("OK")
+            end
+
+            context 'not found', sidekiq: :fake do
+              let(:post) { draft_post }
+
+              it 'fails' do
+                expect(subject.body).to eq("Not Found")
+              end
+            end
+          end
+        CODE
+      end
+
+      let(:expected) do
+        <<-CODE.strip_heredoc
+          RSpec.describe User::Story, :account, :todo do
+            it 'succeeds' do
+              expect(subject.body).to eq("OK")
+            end
+
+            context 'not found', :todo, sidekiq: :fake do
+              let(:post) { draft_post }
+
+              it 'fails', :todo do
+                expect(subject.body).to eq("Not Found")
+              end
+            end
+          end
+        CODE
+      end
+
+      let(:lines) { [1, 6, 9] }
+
+      specify do
+        is_expected.to eq 0
+        expect(code.join("\n")).to eq expected.strip
+      end
+    end
   end
 end

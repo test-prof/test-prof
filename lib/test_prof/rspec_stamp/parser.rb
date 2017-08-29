@@ -8,7 +8,7 @@ module TestProf
     module Parser
       # Contains the result of parsing
       class Result
-        attr_accessor :fname, :desc
+        attr_accessor :fname, :desc, :desc_const
         attr_reader :tags, :htags
 
         def add_tag(v)
@@ -29,6 +29,7 @@ module TestProf
 
       class << self
         # rubocop: disable Metrics/CyclomaticComplexity
+        # rubocop: disable Metrics/PerceivedComplexity
         def parse(code)
           sexp = Ripper.sexp(code)
           return unless sexp
@@ -57,10 +58,16 @@ module TestProf
           res = Result.new
 
           fcall = sexp[1][0][1]
-          fcall = fcall[1] if fcall.first == :fcall
-          res.fname = fcall[1]
-
           args_block = sexp[1][0][2]
+
+          if fcall.first == :fcall
+            fcall = fcall[1]
+          elsif fcall.first == :var_ref
+            res.fname = [parse_const(fcall), sexp[1][0][3][1]].join(".")
+            args_block = sexp[1][0][4]
+          end
+
+          res.fname ||= fcall[1]
 
           return res if args_block.nil?
 
@@ -70,6 +77,8 @@ module TestProf
 
           if args.first.first == :string_literal
             res.desc = parse_literal(args.shift)
+          elsif args.first.first == :var_ref || args.first.first == :const_path_ref
+            res.desc_const = parse_const(args.shift)
           end
 
           parse_arg(res, args.shift) until args.empty?
@@ -77,6 +86,7 @@ module TestProf
           res
         end
         # rubocop: enable Metrics/CyclomaticComplexity
+        # rubocop: enable Metrics/PerceivedComplexity
 
         private
 
@@ -101,6 +111,25 @@ module TestProf
           val = val.to_sym if expr[0] == :symbol_literal ||
                               expr[0] == :assoc_new
           val
+        end
+
+        # Expr of the form:
+        #  [:var_ref, [:@const, "User", [1, 9]]]
+        #
+        #  or
+        #
+        #  [:const_path_ref, [:const_path_ref, [:var_ref,
+        #    [:@const, "User", [1, 17]]],
+        #    [:@const, "Guest", [1, 23]]],
+        #    [:@const, "Collection", [1, 30]]
+        def parse_const(expr)
+          if expr.first == :var_ref
+            expr[1][1]
+          elsif expr.first == :@const
+            expr[1]
+          elsif expr.first == :const_path_ref
+            expr[1..-1].map(&method(:parse_const)).join("::")
+          end
         end
       end
     end
