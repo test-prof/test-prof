@@ -54,5 +54,39 @@ describe TestProf::RSpecStamp::Parser do
       expect(res.tags).to eq(%i[cool bad])
       expect(res.htags).to eq([%i[type feature]])
     end
+
+    context "example groups" do
+      it "handles simple text describes" do
+        res = subject.parse('describe "feature", :cool, :bad, type: :feature')
+        expect(res.fname).to eq 'describe'
+        expect(res.desc).to eq "feature"
+        expect(res.tags).to eq(%i[cool bad])
+        expect(res.htags).to eq([%i[type feature]])
+      end
+
+      it "handles сlass describes" do
+        res = subject.parse('describe User, :bad, type: :feature')
+        expect(res.fname).to eq 'describe'
+        expect(res.desc_const).to eq "User"
+        expect(res.tags).to eq(%i[bad])
+        expect(res.htags).to eq([%i[type feature]])
+      end
+
+      it "handles full syntax describes" do
+        res = subject.parse('RSpec.describe User, :bad, type: :feature')
+        expect(res.fname).to eq 'RSpec.describe'
+        expect(res.desc_const).to eq "User"
+        expect(res.tags).to eq(%i[bad])
+        expect(res.htags).to eq([%i[type feature]])
+      end
+
+      it "handles namespaced constants" do
+        res = subject.parse('  RSpec.describe User::Guest::Collection, :bad, type: :feature')
+        expect(res.fname).to eq 'RSpec.describe'
+        expect(res.desc_const).to eq "User::Guest::Collection"
+        expect(res.tags).to eq(%i[bad])
+        expect(res.htags).to eq([%i[type feature]])
+      end
+    end
   end
 end
