@@ -1,5 +1,9 @@
 # Change log
 
+## master
+
+- [#16](https://github.com/palkan/test-prof/pull/16) Support Ruby >= 2.2.0 (was >= 2.3.0). ([@palkan][])
+
 ## 0.2.4
 
 - EventProf: Fix regression bug with examples profiling. ([@palkan][])
