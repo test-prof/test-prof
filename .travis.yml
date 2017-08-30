@@ -7,8 +7,8 @@ matrix:
   include:
     - rvm: ruby-head
       gemfile: gemfiles/railsmaster.gemfile
-    - rvm: jruby-9.0.1.0
-      gemfile: Gemfile
+    - rvm: jruby-9.1.0.0
+      gemfile: gemfiles/jruby.gemfile
     - rvm: 2.4.1
       gemfile: Gemfile
     - rvm: 2.3.1
@@ -18,5 +18,3 @@ matrix:
   allow_failures:
     - rvm: ruby-head
       gemfile: gemfiles/railsmaster.gemfile
-    - rvm: jruby-9.0.1.0
-      gemfile: Gemfile
