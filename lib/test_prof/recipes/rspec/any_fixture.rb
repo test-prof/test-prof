@@ -12,7 +12,7 @@ RSpec.shared_context "any_fixture:clean", with_clean_fixture: true do
 
   def open_transaction?
     pool = ActiveRecord::Base.connection_pool
-    pool.active_connection? && pool.connection.open_transactions.positive?
+    pool.active_connection? && pool.connection.open_transactions > 0
   end
 end
 
