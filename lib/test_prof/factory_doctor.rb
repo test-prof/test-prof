@@ -16,7 +16,7 @@ module TestProf
       end
 
       def bad?
-        count.positive? && queries_count.zero?
+        count > 0 && queries_count.zero?
       end
     end
 
@@ -111,7 +111,7 @@ module TestProf
       end
 
       def within_factory?
-        @depth.positive?
+        @depth > 0
       end
 
       def ignore?

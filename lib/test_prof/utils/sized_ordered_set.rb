@@ -4,6 +4,11 @@ module TestProf
   module Utils
     # Ordered set with capacity
     class SizedOrderedSet
+      unless [].respond_to?(:bsearch_index)
+        require "test_prof/ext/array_bsearch_index"
+        using ArrayBSearchIndex
+      end
+
       include Enumerable
 
       def initialize(max_size, sort_by: nil)
