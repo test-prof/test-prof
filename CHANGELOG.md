@@ -1,6 +1,6 @@
 # Change log
 
-## master
+## 0.2.5
 
 - [#16](https://github.com/palkan/test-prof/pull/16) Support Ruby >= 2.2.0 (was >= 2.3.0). ([@palkan][])
 
