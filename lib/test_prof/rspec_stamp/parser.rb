@@ -2,8 +2,6 @@
 
 require "ripper"
 
-# rubocop: disable Metrics/CyclomaticComplexity
-
 module TestProf
   module RSpecStamp
     # Parse examples headers
@@ -24,12 +22,13 @@ module TestProf
         end
 
         def remove_tag(tag)
-          @tags&.delete(tag)
-          @htags&.delete_if { |(k, _v)| k == tag }
+          @tags.delete(tag) if @tags
+          @htags.delete_if { |(k, _v)| k == tag } if @htags
         end
       end
 
       class << self
+        # rubocop: disable Metrics/CyclomaticComplexity
         def parse(code)
           sexp = Ripper.sexp(code)
           return unless sexp
@@ -77,6 +76,7 @@ module TestProf
 
           res
         end
+        # rubocop: enable Metrics/CyclomaticComplexity
 
         private
 

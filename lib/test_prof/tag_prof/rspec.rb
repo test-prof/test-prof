@@ -1,12 +1,14 @@
 # frozen_string_literal: true
 
 require "test_prof/ext/float_duration"
+require "test_prof/ext/string_strip_heredoc"
 
 module TestProf
   module TagProf
     class RSpecListener # :nodoc:
       include Logging
       using FloatDuration
+      using StringStripHeredoc
 
       NOTIFICATIONS = %i[
         example_started
@@ -37,7 +39,7 @@ module TestProf
         msgs = []
 
         msgs <<
-          <<~MSG
+          <<-MSG.strip_heredoc
             TagProf report for #{@tag}
           MSG
 

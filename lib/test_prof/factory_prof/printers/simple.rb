@@ -1,16 +1,19 @@
 # frozen_string_literal: true
 
+require "test_prof/ext/string_strip_heredoc"
+
 module TestProf::FactoryProf
   module Printers
     module Simple # :nodoc: all
       class << self
         include TestProf::Logging
+        using TestProf::StringStripHeredoc
 
         def dump(result)
           msgs = []
 
           msgs <<
-            <<~MSG
+            <<-MSG.strip_heredoc
               Factories usage
 
                total      top-level                            name

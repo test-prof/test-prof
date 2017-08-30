@@ -1,9 +1,12 @@
 # frozen_string_literal: true
 
+require "test_prof/ext/string_strip_heredoc"
+
 module TestProf
   module RSpecStamp
     class RSpecListener # :nodoc:
       include Logging
+      using StringStripHeredoc
 
       NOTIFICATIONS = %i[
         example_failed
@@ -34,7 +37,7 @@ module TestProf
         msgs = []
 
         msgs <<
-          <<~MSG
+          <<-MSG.strip_heredoc
             RSpec Stamp results
 
             Total patches: #{@total}

@@ -2,6 +2,7 @@
 
 require "test_prof/ext/float_duration"
 require "test_prof/ext/string_truncate"
+require "test_prof/ext/string_strip_heredoc"
 
 module TestProf
   module EventProf
@@ -9,6 +10,7 @@ module TestProf
       include Logging
       using FloatDuration
       using StringTruncate
+      using StringStripHeredoc
 
       NOTIFICATIONS = %i[
         example_group_started
@@ -45,7 +47,7 @@ module TestProf
         msgs = []
 
         msgs <<
-          <<~MSG
+          <<-MSG.strip_heredoc
             EventProf results for #{@profiler.event}
 
             Total time: #{@profiler.total_time.duration}
@@ -60,7 +62,7 @@ module TestProf
           location = group[:id].metadata[:location]
 
           msgs <<
-            <<~GROUP
+            <<-GROUP.strip_heredoc
               #{description.truncate} (#{location}) – #{group[:time].duration} (#{group[:count]} / #{group[:examples]})
             GROUP
         end
@@ -72,7 +74,7 @@ module TestProf
             description = example[:id].description
             location = example[:id].metadata[:location]
             msgs <<
-              <<~GROUP
+              <<-GROUP.strip_heredoc
                 #{description.truncate} (#{location}) – #{example[:time].duration} (#{example[:count]})
               GROUP
           end

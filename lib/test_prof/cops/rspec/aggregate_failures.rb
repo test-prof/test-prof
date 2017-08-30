@@ -39,7 +39,7 @@ module RuboCop
 
         def on_block(node)
           method, _args, body = *node
-          return unless body&.begin_type?
+          return unless body && body.begin_type?
 
           _receiver, method_name, _object = *method
           return unless GROUP_BLOCKS.include?(method_name)
@@ -109,7 +109,7 @@ module RuboCop
         end
 
         def oneliner?(node)
-          node&.block_type? &&
+          node && node.block_type? &&
             (node.source.lines.size == 1) &&
             example_node?(node)
         end
