@@ -1,0 +1,10 @@
+source 'https://rubygems.org'
+
+gem 'arel', github: 'rails/arel'
+gem 'rails', github: 'rails/rails'
+gem "factory_girl", "~> 4.8.0"
+gem "sqlite3"
+gem "sidekiq", "~> 4.0"
+gem "timecop", "~> 0.9.1"
+
+gemspec path: '..'

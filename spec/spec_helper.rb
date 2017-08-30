@@ -2,7 +2,11 @@
 
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 require "test-prof"
-require "pry-byebug"
+begin
+  require "pry-byebug"
+rescue LoadError # rubocop:disable Lint/HandleExceptions
+end
+
 require "open3"
 
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].each { |f| require f }
