@@ -24,6 +24,10 @@ Of course, we have some [solutions](#tips-and-tricks) for common performance iss
 
 See [Table of Contents](#table-of-contents) for more.
 
+Supported Ruby versions:
+
+- Ruby (MRI) >= 2.2.0
+
 <a href="https://evilmartians.com/">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
 

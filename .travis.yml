@@ -1,6 +1,22 @@
 sudo: false
 language: ruby
-rvm:
-  - 2.2.5
-  - 2.3.3
 before_install: gem install bundler -v 1.13.6
+
+matrix:
+  fast_finish: true
+  include:
+    - rvm: ruby-head
+      gemfile: gemfiles/railsmaster.gemfile
+    - rvm: jruby-9.0.1.0
+      gemfile: Gemfile
+    - rvm: 2.4.1
+      gemfile: Gemfile
+    - rvm: 2.3.1
+      gemfile: Gemfile
+    - rvm: 2.2.0
+      gemfile: gemfiles/activerecord42.gemfile
+  allow_failures:
+    - rvm: ruby-head
+      gemfile: gemfiles/railsmaster.gemfile
+    - rvm: jruby-9.0.1.0
+      gemfile: Gemfile
