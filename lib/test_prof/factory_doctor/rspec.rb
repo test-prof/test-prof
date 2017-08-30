@@ -1,14 +1,16 @@
 # frozen_string_literal: true
 
 require "test_prof/ext/float_duration"
+require "test_prof/ext/string_strip_heredoc"
 
 module TestProf
   module FactoryDoctor
     class RSpecListener # :nodoc:
       include Logging
       using FloatDuration
+      using StringStripHeredoc
 
-      SUCCESS_MESSAGE = 'FactoryDoctor says: "Looks good to me!"'
+      SUCCESS_MESSAGE = 'FactoryDoctor says: "Looks good to me!"'.freeze
 
       NOTIFICATIONS = %i[
         example_started
@@ -49,7 +51,7 @@ module TestProf
         msgs = []
 
         msgs <<
-          <<~MSG
+          <<-MSG.strip_heredoc
             FactoryDoctor report
 
             Total (potentially) bad examples: #{@count}

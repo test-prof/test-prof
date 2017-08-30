@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require "test_prof/ext/string_strip_heredoc"
+
+using TestProf::StringStripHeredoc
+
 module TestProf::EventProf::CustomEvents
   module FactoryCreate # :nodoc: all
     module RunnerPatch
@@ -42,7 +46,7 @@ end
 TestProf.activate('EVENT_PROF', 'factory.create') do
   if TestProf.require(
     'factory_girl',
-    <<~MSG
+    <<-MSG.strip_heredoc
       Failed to load FactoryGirl.
 
       Make sure that "factory_girl" gem is in your Gemfile.
