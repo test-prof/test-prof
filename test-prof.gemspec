@@ -8,7 +8,7 @@ Gem::Specification.new do |spec|
   spec.version       = TestProf::VERSION
   spec.authors       = ["Vladimir Dementyev"]
   spec.email         = ["dementiev.vm@gmail.com"]
-  spec.required_ruby_version = '>= 2.3.0'
+  spec.required_ruby_version = '>= 2.2.0'
 
   spec.summary       = "Ruby applications tests profiling tools"
   spec.description   = %{
