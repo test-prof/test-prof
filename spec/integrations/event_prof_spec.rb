@@ -52,6 +52,79 @@ describe "EventProf" do
     )
   end
 
+  context "with RStamp" do
+    before do
+      FileUtils.cp(
+        File.expand_path("../../integrations/fixtures/rspec/event_prof_stamp_fixture_tmpl.rb", __FILE__),
+        File.expand_path("../../integrations/fixtures/rspec/event_prof_stamp_fixture.rb", __FILE__)
+      )
+    end
+
+    after do
+      FileUtils.rm(
+        File.expand_path("../../integrations/fixtures/rspec/event_prof_stamp_fixture.rb", __FILE__)
+      )
+    end
+
+    specify "it works with groups", :aggregate_failures do
+      output = run_rspec(
+        'event_prof_stamp',
+        env: { 'EVENT_PROF' => 'test.event', 'EVENT_PROF_STAMP' => 'slow', 'EVENT_PROF_TOP' => '1' }
+      )
+
+      expect(output).to include("5 examples, 0 failures")
+
+      expect(output).to include("EventProf results for test.event")
+      expect(output).to include("Total events: 7")
+
+      expect(output).to include("Top 1 slowest suites (by time):")
+
+      expect(output).to include("RSpec Stamp results")
+      expect(output).to include("Total patches: 1")
+      expect(output).to include("Total files: 1")
+      expect(output).to include("Failed patches: 0")
+      expect(output).to include("Ignored files: 0")
+
+      output2 = run_rspec(
+        'event_prof_stamp',
+        env: { 'SPEC_OPTS' => '--tag slow' }
+      )
+
+      expect(output2).to include("3 examples, 0 failures")
+    end
+
+    specify "it works with groups and examples", :aggregate_failures do
+      output = run_rspec(
+        'event_prof_stamp',
+        env: {
+          'EVENT_PROF' => 'test.event', 'EVENT_PROF_STAMP' => 'slow:test_event',
+          'EVENT_PROF_TOP' => '1', 'EVENT_PROF_EXAMPLES' => '1'
+        }
+      )
+
+      expect(output).to include("5 examples, 0 failures")
+
+      expect(output).to include("EventProf results for test.event")
+      expect(output).to include("Total events: 7")
+
+      expect(output).to include("Top 1 slowest suites (by time):")
+      expect(output).to include("Top 1 slowest tests (by time):")
+
+      expect(output).to include("RSpec Stamp results")
+      expect(output).to include("Total patches: 2")
+      expect(output).to include("Total files: 1")
+      expect(output).to include("Failed patches: 0")
+      expect(output).to include("Ignored files: 0")
+
+      output2 = run_rspec(
+        'event_prof_stamp',
+        env: { 'SPEC_OPTS' => '--tag slow:test_event' }
+      )
+
+      expect(output2).to include("4 examples, 0 failures")
+    end
+  end
+
   context "CustomEvents" do
     it "works with factory.create" do
       output = run_rspec(

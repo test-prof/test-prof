@@ -44,6 +44,49 @@ module TestProf
       end
     end
 
+    # Stamper collects statistics about applying tags
+    # to examples.
+    class Stamper
+      include TestProf::Logging
+
+      attr_reader :total, :failed, :ignored
+
+      def initialize
+        @total = 0
+        @failed = 0
+        @ignored = 0
+      end
+
+      def stamp_file(file, lines)
+        @total += lines.size
+        return if ignored?(file)
+
+        log :info, "(dry-run) Patching #{file}" if dry_run?
+
+        code = File.readlines(file)
+
+        @failed += RSpecStamp.apply_tags(code, lines, RSpecStamp.config.tags)
+
+        File.write(file, code.join) unless dry_run?
+      end
+
+      private
+
+      def ignored?(file)
+        ignored = RSpecStamp.config.ignore_files.find do |pattern|
+          file =~ pattern
+        end
+
+        return unless ignored
+        log :warn, "Ignore stamping file: #{file}"
+        @ignored += 1
+      end
+
+      def dry_run?
+        RSpecStamp.config.dry_run?
+      end
+    end
+
     class << self
       include TestProf::Logging
 
