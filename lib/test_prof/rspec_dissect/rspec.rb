@@ -3,6 +3,7 @@
 require "test_prof/ext/float_duration"
 require "test_prof/ext/string_truncate"
 require "test_prof/utils/sized_ordered_set"
+require "test_prof/ext/string_strip_heredoc"
 
 module TestProf
   module RSpecDissect
@@ -10,6 +11,7 @@ module TestProf
       include Logging
       using FloatDuration
       using StringTruncate
+      using StringStripHeredoc
 
       NOTIFICATIONS = %i[
         example_finished
@@ -58,7 +60,7 @@ module TestProf
         msgs = []
 
         msgs <<
-          <<~MSG
+          <<-MSG.strip_heredoc
             RSpecDissect report
 
             Total time: #{@total_examples_time.duration}
@@ -68,27 +70,27 @@ module TestProf
           MSG
 
         msgs <<
-          <<~MSG
+          <<-MSG.strip_heredoc
             Top #{top_count} slowest suites (by `before(:each)` time):
 
           MSG
 
         @before_results.each do |group|
           msgs <<
-            <<~GROUP
+            <<-GROUP.strip_heredoc
               #{group[:desc].truncate} (#{group[:loc]}) – #{group[:before].duration} of #{group[:total].duration} (#{group[:count]})
             GROUP
         end
 
         msgs <<
-          <<~MSG
+          <<-MSG.strip_heredoc
             Top #{top_count} slowest suites (by `let` time):
 
           MSG
 
         @memo_results.each do |group|
           msgs <<
-            <<~GROUP
+            <<-GROUP.strip_heredoc
               #{group[:desc].truncate} (#{group[:loc]}) – #{group[:memo].duration} of #{group[:total].duration} (#{group[:count]})
             GROUP
         end

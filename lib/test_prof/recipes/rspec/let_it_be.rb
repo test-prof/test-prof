@@ -22,7 +22,7 @@ module TestProf
     # Use uniq prefix for instance variables to avoid collisions
     # We want to use the power of Ruby's unicode support)
     # And we love cats!)
-    PREFIX = "@😸"
+    PREFIX = "@😸".freeze
 
     def let_it_be(identifier, **options, &block)
       initializer = proc do
@@ -41,7 +41,13 @@ module TestProf
     def define_let_it_be_methods(identifier, reload: false, refind: false)
       let_accessor = -> { instance_variable_get(:"#{PREFIX}#{identifier}") }
 
-      let_accessor = -> { instance_variable_get(:"#{PREFIX}#{identifier}")&.reload } if reload
+      if reload
+        let_accessor = lambda do
+          record = instance_variable_get(:"#{PREFIX}#{identifier}")
+          next unless record.is_a?(::ActiveRecord::Base)
+          record.reload
+        end
+      end
 
       if refind
         let_accessor = lambda do
