@@ -22,7 +22,7 @@ module TestProf
     # Use uniq prefix for instance variables to avoid collisions
     # We want to use the power of Ruby's unicode support)
     # And we love cats!)
-    PREFIX = "@😸".freeze
+    PREFIX = RUBY_ENGINE == 'jruby' ? "@__jruby_is_not_cat_friendly__".freeze : "@😸".freeze
 
     def let_it_be(identifier, **options, &block)
       initializer = proc do
