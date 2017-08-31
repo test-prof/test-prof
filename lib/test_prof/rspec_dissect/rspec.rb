@@ -96,6 +96,39 @@ module TestProf
         end
 
         log :info, msgs.join
+
+        stamp! if RSpecDissect.config.stamp?
+      end
+
+      def stamp!
+        stamper = RSpecStamp::Stamper.new
+
+        examples = Hash.new { |h, k| h[k] = [] }
+
+        (@before_results.to_a + @memo_results.to_a)
+          .map { |obj| obj[:loc] }.each do |location|
+          file, line = location.split(":")
+          examples[file] << line.to_i
+        end
+
+        examples.each do |file, lines|
+          stamper.stamp_file(file, lines.uniq)
+        end
+
+        msgs = []
+
+        msgs <<
+          <<-MSG.strip_heredoc
+            RSpec Stamp results
+
+            Total patches: #{stamper.total}
+            Total files: #{examples.keys.size}
+
+            Failed patches: #{stamper.failed}
+            Ignored files: #{stamper.ignored}
+          MSG
+
+        log :info, msgs.join
       end
 
       private
