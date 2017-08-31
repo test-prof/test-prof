@@ -66,6 +66,16 @@ EVENT_PROF_RANK=count EVENT_PROF='instantiation.active_record' be rspec
 
 See [event_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/event_prof.rb) for all available configuration options and their usage.
 
+## Using with RSpecStamp
+
+EventProf can be used with [RSpec Stamp](https://github.com/palkan/test-prof/tree/master/guides/rspec_stamp.md) to automatically mark _slow_ examples with custom tags. For example:
+
+```sh
+EVENT_PROF="sql.active_record" EVENT_PROF_STAMP="slow:sql" rspec ...
+```
+
+After running the command above the slowest example groups (and examples if configured) would be marked with the `slow: :sql` tag.
+
 ## Custom Instrumentation
 
 To use EventProf with your instrumentation engine just complete the two following steps:
