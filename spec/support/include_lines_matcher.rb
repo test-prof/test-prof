@@ -1,5 +1,9 @@
 # frozen_string_literal: true
 
+require "test_prof/ext/string_strip_heredoc"
+
+using TestProf::StringStripHeredoc
+
 # Verify that the actual string contains all lines that included the specified
 # lines in the provided order.
 #
@@ -34,7 +38,7 @@
   end
 
   failure_message do |actual|
-    <<~MSG
+    <<-MSG.strip_heredoc
       Couldn't find lines:
 
       #{lines.join("\n")}
