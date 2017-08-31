@@ -4,6 +4,16 @@
 
 Features:
 
+- [#17](https://github.com/palkan/test-prof/pull/17) Combine RSpecStamp with EventProf and RSpecDissect. ([@palkan][])
+
+It is possible now to automatically mark _slow_ examples and groups with custom tags. For example:
+
+```sh
+EVENT_PROF="sql.active_record" EVENT_PROF_STAMP="slow:sql" rspec ...
+```
+
+After running the command above the top 5 slowest example groups would be marked with `slow: :sql` tag.
+
 - [#14](https://github.com/palkan/test-prof/pull/14) RSpecDissect profiler. ([@palkan][])
 
 RSpecDissect tracks how much time do you spend in `before` hooks 

@@ -47,3 +47,12 @@ You can also specify the number of top slow groups through `RD_TOP` variable:
 RD=1 RD_TOP=10 rspec ...
 ```
 
+## Using with RSpecStamp
+
+RSpecDissect can be used with [RSpec Stamp](https://github.com/palkan/test-prof/tree/master/guides/rspec_stamp.md) to automatically mark _slow_ examples with custom tags. For example:
+
+```sh
+RD=1 RD_STAMP="slow" rspec ...
+```
+
+After running the command above the slowest example groups would be marked with the `:slow` tag.
