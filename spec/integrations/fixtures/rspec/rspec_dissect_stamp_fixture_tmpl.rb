@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.unshift File.expand_path("../../../../../../lib", __FILE__)
+$LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 
 require "test-prof"
 
@@ -19,7 +19,7 @@ class Work
   end
 end
 
-describe "Subject + Before" do
+describe 'Subject + Before' do
   subject(:work) { Work.new }
 
   specify do
@@ -27,6 +27,7 @@ describe "Subject + Before" do
   end
 
   it "does nothing" do
+    work
     expect(true).to eq true
   end
 
@@ -39,15 +40,15 @@ describe "Subject + Before" do
   end
 end
 
-describe "Only let" do
+describe 'Only let' do
   let(:work) { Work.new }
-  let(:more_work) { Work.new(1) }
+  let(:work2) { Work.new }
 
   it "does nothing" do
     expect(true).to eq true
   end
 
   it "takes very long" do
-    expect(work).not_to eq more_work
+    expect(work).not_to eq work2
   end
 end
