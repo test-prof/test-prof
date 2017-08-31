@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof/rspec_stamp"
 require "test_prof/event_prof/instrumentations/active_support"
 require "test_prof/utils/sized_ordered_set"
 
@@ -39,6 +40,13 @@ module TestProf
         @top_count = (ENV['EVENT_PROF_TOP'] || 5).to_i
         @per_example = ENV['EVENT_PROF_EXAMPLES'] == '1'
         @rank_by = (ENV['EVENT_PROF_RANK'] || :time).to_sym
+        @stamp = ENV['EVENT_PROF_STAMP']
+
+        RSpecStamp.config.tags = @stamp if stamp?
+      end
+
+      def stamp?
+        !@stamp.nil?
       end
 
       def per_example?

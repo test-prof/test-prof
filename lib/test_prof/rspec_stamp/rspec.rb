@@ -30,8 +30,10 @@ module TestProf
       end
 
       def stamp!
+        stamper = Stamper.new
+
         @examples.each do |file, lines|
-          stamp_file(file, lines.uniq)
+          stamper.stamp_file(file, lines.uniq)
         end
 
         msgs = []
@@ -40,43 +42,14 @@ module TestProf
           <<-MSG.strip_heredoc
             RSpec Stamp results
 
-            Total patches: #{@total}
+            Total patches: #{stamper.total}
             Total files: #{@examples.keys.size}
 
-            Failed patches: #{@failed}
-            Ignored files: #{@ignored}
+            Failed patches: #{stamper.failed}
+            Ignored files: #{stamper.ignored}
           MSG
 
         log :info, msgs.join
-      end
-
-      private
-
-      def stamp_file(file, lines)
-        @total += lines.size
-        return if ignored?(file)
-
-        log :info, "(dry-run) Patching #{file}" if dry_run?
-
-        code = File.readlines(file)
-
-        @failed += RSpecStamp.apply_tags(code, lines, RSpecStamp.config.tags)
-
-        File.write(file, code.join) unless dry_run?
-      end
-
-      def ignored?(file)
-        ignored = RSpecStamp.config.ignore_files.find do |pattern|
-          file =~ pattern
-        end
-
-        return unless ignored
-        log :warn, "Ignore stamping file: #{file}"
-        @ignored += 1
-      end
-
-      def dry_run?
-        RSpecStamp.config.dry_run?
       end
     end
   end
