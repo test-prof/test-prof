@@ -54,7 +54,7 @@ module TestProf
       end
 
       def to_a
-        data
+        data.dup
       end
 
       private

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof/rspec_stamp"
 require "test_prof/logging"
 
 module TestProf
@@ -36,6 +37,13 @@ module TestProf
 
       def initialize
         @top_count = (ENV['RD_TOP'] || 5).to_i
+        @stamp = ENV['RD_STAMP']
+
+        RSpecStamp.config.tags = @stamp if stamp?
+      end
+
+      def stamp?
+        !@stamp.nil?
       end
     end
 
