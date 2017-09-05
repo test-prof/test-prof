@@ -84,6 +84,7 @@ module TestProf
 
         msgs <<
           <<-MSG.strip_heredoc
+
             Top #{top_count} slowest suites (by `let` time):
 
           MSG
