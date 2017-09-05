@@ -242,7 +242,7 @@ describe TestProf::RSpecStamp do
       context "with existing tags" do
         let(:source) do
           <<-CODE.strip_heredoc
-            it 'is', :log, level: :debug do
+            it 'is', :log, level: 'debug', elastic: true do
               expect(subject.body).to eq("Not Found")
             end
           CODE
@@ -250,7 +250,7 @@ describe TestProf::RSpecStamp do
 
         let(:expected) do
           <<-CODE.strip_heredoc
-            it 'is', :log, :todo, level: :debug, a: :b, c: 'd' do
+            it 'is', :log, :todo, level: 'debug', elastic: true, a: :b, c: 'd' do
               expect(subject.body).to eq("Not Found")
             end
           CODE
@@ -348,6 +348,66 @@ describe TestProf::RSpecStamp do
       specify do
         is_expected.to eq 0
         expect(code.join("\n")).to eq expected.strip
+      end
+
+      context "with existing tags" do
+        let(:source) do
+          <<-CODE.strip_heredoc
+            RSpec.describe User::Story, :slow do
+              it 'succeeds' do
+                expect(subject.body).to eq("OK")
+              end
+            end
+          CODE
+        end
+
+        let(:expected) do
+          <<-CODE.strip_heredoc
+            RSpec.describe User::Story, slow: :todo do
+              it 'succeeds' do
+                expect(subject.body).to eq("OK")
+              end
+            end
+          CODE
+        end
+
+        let(:lines) { [1] }
+
+        let(:tags) { [{ slow: :todo }] }
+
+        specify do
+          is_expected.to eq 0
+          expect(code.join("\n")).to eq expected.strip
+        end
+      end
+
+      context "with existing hash tags" do
+        let(:source) do
+          <<-CODE.strip_heredoc
+            RSpec.describe User::Story, todo: :slow do
+              it 'succeeds' do
+                expect(subject.body).to eq("OK")
+              end
+            end
+          CODE
+        end
+
+        let(:expected) do
+          <<-CODE.strip_heredoc
+            RSpec.describe User::Story, :todo do
+              it 'succeeds' do
+                expect(subject.body).to eq("OK")
+              end
+            end
+          CODE
+        end
+
+        let(:lines) { [1] }
+
+        specify do
+          is_expected.to eq 0
+          expect(code.join("\n")).to eq expected.strip
+        end
       end
     end
   end

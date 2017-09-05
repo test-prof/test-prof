@@ -145,9 +145,9 @@ module TestProf
         need_parens = block == "{"
 
         tags_str = parsed.tags.map { |t| t.is_a?(Symbol) ? ":#{t}" : t }.join(", ") unless
-          parsed.tags.nil?
+          parsed.tags.nil? || parsed.tags.empty?
 
-        unless parsed.htags.nil?
+        unless parsed.htags.nil? || parsed.htags.empty?
           htags_str = parsed.htags.map do |(k, v)|
             vstr = v.is_a?(Symbol) ? ":#{v}" : quote(v)
 
@@ -170,6 +170,7 @@ module TestProf
       # rubocop: enable Metrics/PerceivedComplexity
 
       def quote(str)
+        return str unless str.is_a?(String)
         if str.include?("'")
           "\"#{str}\""
         else
