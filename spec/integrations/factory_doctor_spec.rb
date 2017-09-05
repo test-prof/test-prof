@@ -25,5 +25,46 @@ describe "FactoryDoctor" do
       expect(output).to include("FactoryDoctor enabled")
       expect(output).to include('FactoryDoctor says: "Looks good to me!"')
     end
+
+    context "with RStamp" do
+      before do
+        FileUtils.cp(
+          File.expand_path("../../integrations/fixtures/rspec/factory_doctor_fixture.rb", __FILE__),
+          File.expand_path("../../integrations/fixtures/rspec/factory_doctor_stamp_fixture.rb", __FILE__)
+        )
+      end
+
+      after do
+        FileUtils.rm(
+          File.expand_path("../../integrations/fixtures/rspec/factory_doctor_stamp_fixture.rb", __FILE__)
+        )
+      end
+
+      specify "it works", :aggregate_failures do
+        output = run_rspec(
+          'factory_doctor_stamp',
+          env: { 'FDOC' => '1', 'FDOC_STAMP' => 'fd_ignore' }
+        )
+
+        expect(output).to include("5 examples, 0 failures")
+
+        expect(output).to include("FactoryDoctor report")
+        expect(output).to include("Total (potentially) bad examples: 3")
+
+        expect(output).to include("RSpec Stamp results")
+        expect(output).to include("Total patches: 3")
+        expect(output).to include("Total files: 1")
+        expect(output).to include("Failed patches: 0")
+        expect(output).to include("Ignored files: 0")
+
+        output2 = run_rspec(
+          'factory_doctor_stamp',
+          env: { 'FDOC' => '1' }
+        )
+
+        expect(output2).to include("5 examples, 0 failures")
+        expect(output2).to include('FactoryDoctor says: "Looks good to me!"')
+      end
+    end
   end
 end

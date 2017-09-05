@@ -54,6 +54,14 @@ module TestProf
           defined?(::FactoryGirl)
 
         subscribe!
+
+        @stamp = ENV['FDOC_STAMP']
+
+        RSpecStamp.config.tags = @stamp if stamp?
+      end
+
+      def stamp?
+        !@stamp.nil?
       end
 
       def start

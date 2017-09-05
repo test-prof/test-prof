@@ -62,3 +62,13 @@ To activate FactoryDoctor use `FDOC` environment variable:
 ```sh
 FDOC=1 rspec ...
 ```
+
+## Using with RSpecStamp
+
+FactoryDoctor can be used with [RSpec Stamp](https://github.com/palkan/test-prof/tree/master/guides/rspec_stamp.md) to automatically mark _bad_ examples with custom tags. For example:
+
+```sh
+FDOC=1 FDOC_STAMP="fdoc:consider" rspec ...
+```
+
+After running the command above all _potentially_ bad examples would be marked with the `fdoc: :consider` tag.
