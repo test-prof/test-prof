@@ -100,7 +100,24 @@ module TestProf
 
         def parse_hash(res, hash_arg)
           hash_arg.each do |(_, label, val)|
-            res.add_htag label[1][0..-2].to_sym, parse_literal(val)
+            res.add_htag label[1][0..-2].to_sym, parse_value(val)
+          end
+        end
+
+        # Expr of the form:
+        #  bool - [:var_ref, [:@kw, "true", [1, 24]]]
+        #  string - [:string_literal, [:string_content, [...]]]
+        #  int - [:@int, "3", [1, 52]]]]
+        def parse_value(expr)
+          case expr.first
+          when :var_ref
+            expr[1][1] == "true"
+          when :@int
+            expr[1].to_i
+          when :@float
+            expr[1].to_f
+          else
+            parse_literal(expr)
           end
         end
 

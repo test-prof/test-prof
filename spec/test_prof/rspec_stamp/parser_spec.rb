@@ -55,6 +55,14 @@ describe TestProf::RSpecStamp::Parser do
       expect(res.htags).to eq([%i[type feature]])
     end
 
+    it "handles different value types" do
+      res = subject.parse('  it "is", :cool, slow: true, type: "feature", num: 3, ratio: 0.3, disabled: false')
+      expect(res.fname).to eq 'it'
+      expect(res.desc).to eq "is"
+      expect(res.tags).to eq(%i[cool])
+      expect(res.htags).to eq([[:slow, true], [:type, "feature"], [:num, 3], [:ratio, 0.3], [:disabled, false]])
+    end
+
     context "example groups" do
       it "handles simple text describes" do
         res = subject.parse('describe "feature", :cool, :bad, type: :feature')
