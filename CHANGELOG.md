@@ -4,6 +4,10 @@
 
 Features:
 
+- Combine RSpecStamp with FactoryDoctor. ([@palkan][])
+
+Automatically mark _bad_ examples with custom tags.
+
 - [#17](https://github.com/palkan/test-prof/pull/17) Combine RSpecStamp with EventProf and RSpecDissect. ([@palkan][])
 
 It is possible now to automatically mark _slow_ examples and groups with custom tags. For example:

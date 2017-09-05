@@ -70,6 +70,40 @@ module TestProf
         end
 
         log :info, msgs.join
+
+        stamp! if FactoryDoctor.stamp?
+      end
+
+      def stamp!
+        stamper = RSpecStamp::Stamper.new
+
+        examples = Hash.new { |h, k| h[k] = [] }
+
+        @example_groups.each do |_group, bad_examples|
+          bad_examples.each do |example|
+            file, line = example.metadata[:location].split(":")
+            examples[file] << line.to_i
+          end
+        end
+
+        examples.each do |file, lines|
+          stamper.stamp_file(file, lines.uniq)
+        end
+
+        msgs = []
+
+        msgs <<
+          <<-MSG.strip_heredoc
+            RSpec Stamp results
+
+            Total patches: #{stamper.total}
+            Total files: #{examples.keys.size}
+
+            Failed patches: #{stamper.failed}
+            Ignored files: #{stamper.ignored}
+          MSG
+
+        log :info, msgs.join
       end
 
       private
