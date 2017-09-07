@@ -4,7 +4,7 @@ require "spec_helper"
 
 describe "RSpecDissect" do
   specify "it works", :aggregate_failures do
-    output = run_rspec('rspec_dissect', env: { 'RD' => '1' })
+    output = run_rspec('rspec_dissect', env: { 'RD_PROF' => '1' })
 
     expect(output).to include("5 examples, 0 failures")
 
@@ -24,7 +24,7 @@ describe "RSpecDissect" do
   end
 
   specify "it works with specified top count", :aggregate_failures do
-    output = run_rspec('rspec_dissect', env: { 'RD' => '1', 'RD_TOP' => '1' })
+    output = run_rspec('rspec_dissect', env: { 'RD_PROF' => '1', 'RD_PROF_TOP' => '1' })
 
     expect(output).to include("5 examples, 0 failures")
 
@@ -53,7 +53,7 @@ describe "RSpecDissect" do
     specify "it works", :aggregate_failures do
       output = run_rspec(
         'rspec_dissect_stamp',
-        env: { 'RD' => '1', 'RD_STAMP' => 'slow', 'RD_TOP' => '1' }
+        env: { 'RD_PROF' => '1', 'RD_PROF_STAMP' => 'slow', 'RD_PROF_TOP' => '1' }
       )
 
       expect(output).to include("5 examples, 0 failures")

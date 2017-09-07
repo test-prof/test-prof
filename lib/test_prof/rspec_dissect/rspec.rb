@@ -142,7 +142,7 @@ module TestProf
 end
 
 # Register RSpecDissect listener
-TestProf.activate('RD') do
+TestProf.activate('RD_PROF') do
   RSpec.configure do |config|
     listener = TestProf::RSpecDissect::Listener.new
 

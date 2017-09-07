@@ -28,7 +28,7 @@ module TestProf
 
       def initialize
         @mode = ENV.fetch('TEST_STACK_PROF_MODE', :wall).to_sym
-        @raw = ENV['TEST_STACK_PROF_RAW'] == '1'
+        @raw = ENV['TEST_STACK_PROF'] == 'raw' || ENV['TEST_STACK_PROF_RAW'] == 1
       end
     end
 
