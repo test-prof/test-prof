@@ -50,7 +50,8 @@ module TestProf
                     :include_threads, :eliminate_methods
 
       def initialize
-        @printer = ENV.fetch('TEST_RUBY_PROF_PRINTER', :call_stack).to_sym
+        @printer = ENV['TEST_RUBY_PROF'].to_sym if PRINTERS.key?(ENV['TEST_RUBY_PROF'])
+        @printer ||= ENV.fetch('TEST_RUBY_PROF_PRINTER', :flat).to_sym
         @mode = ENV.fetch('TEST_RUBY_PROF_MODE', :wall).to_sym
         @min_percent = 1
         @include_threads = false

@@ -2,7 +2,7 @@
 
 ## 0.3.0
 
-Features:
+### Features:
 
 - Combine RSpecStamp with FactoryDoctor. ([@palkan][])
 
@@ -26,6 +26,16 @@ and memoization helpers (i.e. `let`) in your tests.
 - [#13](https://github.com/palkan/test-prof/pull/13) RSpec `let_it_be` method. ([@palkan][])
 
 Just like `let`, but persist the result for the whole group (i.e. `let` + `before_all`).
+
+### Improvements:
+
+- Add ability to specify RubyProf report through `TEST_RUBY_PROF` env variable. ([@palkan][])
+
+- Add ability to specify StackProf raw mode through `TEST_STACK_PROF` env variable. ([@palkan][])
+
+### Changes
+
+- Use RubyProf `FlatPrinter` by default (was `CallStackPrinter`). ([@palkan][])
 
 ## 0.2.5
 

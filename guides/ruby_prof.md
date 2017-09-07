@@ -42,21 +42,21 @@ end
 
 The most useful configuration option is `printer` – it allows you to specify a RubyProf [printer](https://github.com/ruby-prof/ruby-prof#printers).
 
-You can specify a printer through environment variable `TEST_RUBY_PROF_PRINTER`:
+You can specify a printer through environment variable `TEST_RUBY_PROF`:
 
 ```sh
-TEST_RUBY_PROF_PRINTER=flat bundle exec rake test
+TEST_RUBY_PROF=call_stack bundle exec rake test
 ```
 
 Or in your code:
 
 ```ruby
 TestProf::RubyProf.configure do |config|
-  config.printer = :flat
+  config.printer = :call_stack
 end
 ```
 
-By default, we use `CallStackPrinter`.
+By default, we use `FlatPrinter`.
 
 Also, you can specify RubyProf mode (`wall`, `cpu`, etc) through `TEST_RUBY_PROF_MODE` env variable.
 

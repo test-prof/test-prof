@@ -35,16 +35,16 @@ AvailableSlotsController (./spec/controllers/available_slots_controller_spec.rb:
 
 RSpecDissect can only be used with RSpec (which is clear from the name).
 
-To activate RSpecDissect use `RD` environment variable:
+To activate RSpecDissect use `RD_PROF` environment variable:
 
 ```sh
-RD=1 rspec ...
+RD_PROF=1 rspec ...
 ```
 
-You can also specify the number of top slow groups through `RD_TOP` variable:
+You can also specify the number of top slow groups through `RD_PROF_TOP` variable:
 
 ```sh
-RD=1 RD_TOP=10 rspec ...
+RD_PROF=1 RD_PROF_TOP=10 rspec ...
 ```
 
 ## Using with RSpecStamp
@@ -52,7 +52,7 @@ RD=1 RD_TOP=10 rspec ...
 RSpecDissect can be used with [RSpec Stamp](https://github.com/palkan/test-prof/tree/master/guides/rspec_stamp.md) to automatically mark _slow_ examples with custom tags. For example:
 
 ```sh
-RD=1 RD_STAMP="slow" rspec ...
+RD_PROF=1 RD_PROF_STAMP="slow" rspec ...
 ```
 
 After running the command above the slowest example groups would be marked with the `:slow` tag.

@@ -10,7 +10,7 @@ describe TestProf::RubyProf do
     subject { described_class.config }
 
     specify "defaults", :aggregate_failiures do
-      expect(subject.printer).to eq :call_stack
+      expect(subject.printer).to eq :flat
       expect(subject.mode).to eq :wall
       expect(subject.min_percent).to eq 1
       expect(subject.include_threads).to eq false
@@ -77,17 +77,17 @@ describe TestProf::RubyProf do
     specify "with default config" do
       expect(result).to receive(:eliminate_methods!)
 
-      stub_const("::RubyProf::CallStackPrinter", printer_class)
+      stub_const("::RubyProf::FlatPrinter", printer_class)
       expect(printer_class).to receive(:new).with(result).and_return(printer)
       expect(printer).to receive(:print).with(anything, min_percent: 1).and_return("")
 
       subject.dump("stub")
 
-      expect(File.exist?(File.join(TestProf.config.output_dir, "ruby-prof-report-call_stack-wall-stub.html"))).to eq true
+      expect(File.exist?(File.join(TestProf.config.output_dir, "ruby-prof-report-flat-wall-stub.html"))).to eq true
     end
 
     specify "with custom config" do
-      described_class.config.printer = :flat
+      described_class.config.printer = :call_stack
       described_class.config.eliminate_methods = []
       described_class.config.min_percent = 2
       described_class.config.mode = :cpu
@@ -96,14 +96,14 @@ describe TestProf::RubyProf do
 
       expect(result).not_to receive(:eliminate_methods!)
 
-      stub_const("RubyProf::FlatPrinter", printer_class)
+      stub_const("RubyProf::CallStackPrinter", printer_class)
       expect(printer_class).to receive(:new).with(result).and_return(printer)
       expect(printer).to receive(:print).with(anything, min_percent: 2).and_return("")
       expect(TestProf).to receive(:now).and_return(double("now", to_i: 123_454_321))
 
       subject.dump("stub")
 
-      expect(File.exist?(File.join(TestProf.config.output_dir, "ruby-prof-report-flat-cpu-stub-123454321.html"))).to eq true
+      expect(File.exist?(File.join(TestProf.config.output_dir, "ruby-prof-report-call_stack-cpu-stub-123454321.html"))).to eq true
     end
   end
 end

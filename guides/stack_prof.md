@@ -42,6 +42,6 @@ end
 
 You can change StackProf mode (which is `wall` by default) through `TEST_STACK_PROF_MODE` env variable.
 
-If you want to generate flame graphs you should collect _raw_ data. Turn _raw_ collection on by passing `TEST_STACK_PROF_RAW=1`.
+If you want to generate flame graphs you should collect _raw_ data. Turn _raw_ collection on by passing `TEST_STACK_PROF=raw`.
 
 See [stack_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/stack_prof.rb) for all available configuration options and their usage.

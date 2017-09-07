@@ -36,8 +36,8 @@ module TestProf
       attr_accessor :top_count
 
       def initialize
-        @top_count = (ENV['RD_TOP'] || 5).to_i
-        @stamp = ENV['RD_STAMP']
+        @top_count = (ENV['RD_PROF_TOP'] || 5).to_i
+        @stamp = ENV['RD_PROF_STAMP']
 
         RSpecStamp.config.tags = @stamp if stamp?
       end
@@ -107,6 +107,6 @@ end
 
 require "test_prof/rspec_dissect/rspec" if defined?(RSpec::Core)
 
-TestProf.activate('RD') do
+TestProf.activate('RD_PROF') do
   TestProf::RSpecDissect.init
 end
