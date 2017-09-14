@@ -10,7 +10,7 @@ Simply speaking, slow tests waste your time making you less productive.
 
 TestProf toolbox aims to help you identify bottlenecks in your test suite. It contains:
 
-- Plug'n'Play integrations for general Ruby profilers ([`ruby-prof`](https://github.com/ruby-prof), [`stackprof`](https://github.com/tmm1/stackprof))
+- Plug'n'Play integrations for general Ruby profilers ([`ruby-prof`](https://github.com/ruby-prof/ruby-prof), [`stackprof`](https://github.com/tmm1/stackprof))
 
 - Factories usage analyzers and profilers
 
