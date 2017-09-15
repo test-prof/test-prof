@@ -76,7 +76,7 @@ module TestProf
     class Profiler # :nodoc:
       include TestProf::Logging
 
-      attr_reader :event, :top_count, :rank_by, :total_count, :total_time
+      attr_reader :event, :total_count, :total_time
 
       def initialize(event:, instrumenter:)
         @event = event
