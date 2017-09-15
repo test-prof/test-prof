@@ -18,7 +18,7 @@ AllCops:
 Rails:
   Enabled: false
 
-Style/AccessorMethodName:
+Naming/AccessorMethodName:
   Enabled: false
 
 Style/TrivialAccessors:
@@ -28,7 +28,7 @@ Style/Documentation:
   Exclude:
     - 'spec/**/*.rb'
 
-Style/StringLiterals: 
+Style/StringLiterals:
   Enabled: false
 
 Style/RegexpLiteral:

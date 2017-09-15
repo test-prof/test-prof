@@ -10,7 +10,8 @@ module TestProf
 
     # RSpecStamp configuration
     class Configuration
-      attr_accessor :ignore_files, :dry_run, :tags
+      attr_reader :tags
+      attr_accessor :ignore_files, :dry_run
 
       def initialize
         @ignore_files = [%r{spec/support}]
@@ -88,7 +89,7 @@ module TestProf
 
         tags.each do |t|
           if t.is_a?(Hash)
-            t.keys.each do |k|
+            t.each_key do |k|
               parsed.remove_tag(k)
               parsed.add_htag(k, t[k])
             end
