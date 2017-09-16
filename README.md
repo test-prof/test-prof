@@ -20,7 +20,7 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 - etc.
 
-Of course, we have some [solutions](#tips-and-tricks) for common performance issues too, bundled into the gem.
+Of course, we have some [solutions](#tips-and-tricks-or-recipes) for common performance issues too, bundled into the gem.
 
 See [Table of Contents](#table-of-contents) for more.
 
