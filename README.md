@@ -22,6 +22,8 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 Of course, we have some [solutions](#tips-and-tricks-or-recipes) for common performance issues too, bundled into the gem.
 
+[![](https://s3-us-west-1.amazonaws.com/vladem/test-prof/TestProf.png)](https://coggle.it/diagram/Wa7tW-87jAAB0ExN)
+
 See [Table of Contents](#table-of-contents) for more.
 
 Supported Ruby versions:
