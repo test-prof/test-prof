@@ -79,7 +79,7 @@ module TestProf
 
         examples = Hash.new { |h, k| h[k] = [] }
 
-        @example_groups.each do |_group, bad_examples|
+        @example_groups.each_value do |bad_examples|
           bad_examples.each do |example|
             file, line = example.metadata[:location].split(":")
             examples[file] << line.to_i
