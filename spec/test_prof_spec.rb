@@ -16,7 +16,7 @@ describe TestProf do
       it { expect { subject }.to(change { File.exist?(described_class.config.output_dir) }) }
     end
 
-    context "with timestamps" do
+    context "without timestamps" do
       before { described_class.config.timestamps = false }
 
       it { expect(described_class.artifact_path("c.html")).to eq 'tmp/test/c.html' }
