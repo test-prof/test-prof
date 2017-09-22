@@ -9,7 +9,7 @@ describe TestProf::StackProf do
   describe ".config" do
     subject { described_class.config }
 
-    specify "defaults", :aggregate_failiures do
+    specify "defaults", :aggregate_failures do
       expect(subject.mode).to eq :wall
       expect(subject.interval).to be_nil
       expect(subject.raw).to eq false

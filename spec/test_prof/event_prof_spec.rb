@@ -11,7 +11,7 @@ describe TestProf::EventProf do
   subject { described_class.build }
 
   describe ".config" do
-    specify "defaults", :aggregate_failiures do
+    specify "defaults", :aggregate_failures do
       expect(subject.top_count).to eq 5
       expect(subject.rank_by).to eq :time
     end
