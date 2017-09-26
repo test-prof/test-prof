@@ -58,3 +58,78 @@ require "test_prof/recipes/rspec/any_fixture"
 ```
 
 Now you can use `TestProf::AnyFixture` in your tests.
+
+## Caveats
+
+`AnyFixture` cleans tables in the reversed order, in which they were registered. This
+means, that if you register a fixture, which references a not-yet-registed table, a
+foreign-key violation error *might* occur. An example is worth more than 1000
+words:
+
+```ruby
+class Author < ApplicationRecord
+  has_many :articles
+end
+
+class Article < ApplicationRecord
+  belongs_to :author
+end
+```
+
+The usual usage of would be:
+
+1. Register the shared contexts:
+
+```ruby
+RSpec.shared_context "author" do
+  before(:all) do
+    @author = TestProf::AnyFixture.register(:author) do
+      FactoryGirl.create(:account)
+    end
+  end
+
+  let(:author) { @author }
+end
+
+RSpec.shared_context "article" do
+  before(:all) do
+    @article = TestProf::AnyFixture.register(:article) do
+      FactoryGirl.create(:article, author: @author)
+    end
+  end
+
+  let(:article) { @article }
+end
+```
+
+2. Include the contexts into a spec file:
+
+```ruby
+include_context 'author'
+include_context 'article'
+```
+
+If one forgets to include the `author` context or includes it after the `article` context,
+an error will be raised. At the end of the suite, first the `articles` and then the
+`authors` table will be cleaned.
+
+Here is another example of the `artcile` shared context:
+
+```ruby
+RSpec.shared_context "article" do
+  before(:all) do
+    author = FactoryGirl.create(:author)
+
+    @article = TestProf::AnyFixture.register(:article) do
+      FactoryGirl.create(:article, author: author)
+    end
+  end
+
+  let(:article) { @article }
+end
+```
+
+In this case, even if one doesn't include the `author` context, the test would pass. In
+case, the `author` context is later registered (in another test), at the end of the
+suite first the `authors` and then the `articles` table will be cleaned, which will lead
+to a foreign-key violation error.
