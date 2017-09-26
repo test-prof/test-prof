@@ -61,9 +61,9 @@ Now you can use `TestProf::AnyFixture` in your tests.
 
 ## Caveats
 
-`AnyFixture` cleans tables in the reversed order, in which they were registered. This
-means, that if you register a fixture, which references a not-yet-registed table, a
-foreign-key violation error *might* occur. An example is worth more than 1000
+`AnyFixture` cleans tables in the reverse order as compared to the order they were populated. That
+means when you register a fixture which references a not-yet-registered table, a
+foreign-key violation error *might* occur (if any). An example is worth more than 1000
 words:
 
 ```ruby
@@ -76,9 +76,7 @@ class Article < ApplicationRecord
 end
 ```
 
-The usual usage of would be:
-
-1. Register the shared contexts:
+And the shared contexts:
 
 ```ruby
 RSpec.shared_context "author" do
@@ -93,31 +91,7 @@ end
 
 RSpec.shared_context "article" do
   before(:all) do
-    @article = TestProf::AnyFixture.register(:article) do
-      FactoryGirl.create(:article, author: @author)
-    end
-  end
-
-  let(:article) { @article }
-end
-```
-
-2. Include the contexts into a spec file:
-
-```ruby
-include_context 'author'
-include_context 'article'
-```
-
-If one forgets to include the `author` context or includes it after the `article` context,
-an error will be raised. At the end of the suite, first the `articles` and then the
-`authors` table will be cleaned.
-
-Here is another example of the `artcile` shared context:
-
-```ruby
-RSpec.shared_context "article" do
-  before(:all) do
+    # outside of AnyFixture, we don't know about its dependent tables
     author = FactoryGirl.create(:author)
 
     @article = TestProf::AnyFixture.register(:article) do
@@ -129,7 +103,13 @@ RSpec.shared_context "article" do
 end
 ```
 
-In this case, even if one doesn't include the `author` context, the test would pass. In
-case, the `author` context is later registered (in another test), at the end of the
-suite first the `authors` and then the `articles` table will be cleaned, which will lead
-to a foreign-key violation error.
+Then in some example:
+
+```ruby
+# This one adds only the 'articles' table to the list of affected tables
+include_context "article"
+# And this one adds the 'authors' table
+include_context "author"
+```
+
+Now we have the following affected tables list: `["articles", "authors"]`. At the end of the suite, the "authors" table is cleaned first which leads to a foreign-key violation error.
