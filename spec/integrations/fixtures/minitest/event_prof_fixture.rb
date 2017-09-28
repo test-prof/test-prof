@@ -45,7 +45,9 @@ describe "Another something" do
     assert true
   end
 
-  it "do very long" do
+  it "do very long and invokes 3 times" do
+    Instrumenter.notify 'test.event', 1000
+    Instrumenter.notify 'test.event', 1000
     Instrumenter.notify 'test.event', 1000
     assert true
   end
