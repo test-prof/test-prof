@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require 'test_prof/logging'
 require 'test_prof/event_prof/formatters/minitest'
 
 module Minitest
@@ -8,7 +9,7 @@ module Minitest
 
     def initialize(options)
       @profiler = configure_profiler(options)
-      @formatter = MinitestFormatter.new(@profiler)
+      @formatter = TestProf::EventProf::MinitestFormatter.new(@profiler)
       @current_group = nil
       @current_example = nil
     end
