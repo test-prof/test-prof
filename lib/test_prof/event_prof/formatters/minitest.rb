@@ -6,7 +6,7 @@ require "test_prof/ext/string_strip_heredoc"
 
 module TestProf
   module EventProf
-    class MinitestFormatter
+    class MinitestFormatter # :nodoc:
       using FloatDuration
       using StringTruncate
       using StringStripHeredoc
@@ -51,18 +51,17 @@ module TestProf
       end
 
       def by_examples
-        if @profiler.results[:examples]
-          @results << "\nTop #{@profiler.top_count} slowest tests (by #{@profiler.rank_by}):\n\n"
+        return unless @profiler.results[:examples]
+        @results << "\nTop #{@profiler.top_count} slowest tests (by #{@profiler.rank_by}):\n\n"
 
-          @profiler.results[:examples].each do |example|
-            description = example[:id][:name]
-            location = example[:id][:location]
+        @profiler.results[:examples].each do |example|
+          description = example[:id][:name]
+          location = example[:id][:location]
 
-            @results <<
-              <<-GROUP.strip_heredoc
-                #{description.truncate} (#{location}) – #{example[:time].duration} (#{example[:count]})
-              GROUP
-          end
+          @results <<
+            <<-GROUP.strip_heredoc
+              #{description.truncate} (#{location}) – #{example[:time].duration} (#{example[:count]})
+            GROUP
         end
       end
     end

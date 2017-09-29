@@ -2,7 +2,7 @@
 
 require 'test_prof/event_prof/minitest'
 
-module Minitest
+module Minitest # :nodoc:
   def self.plugin_event_prof_options(opts, options)
     opts.on "--event-prof=EVENT", "Collects metrics for specified EVENT" do |event|
       options[:event] = event
@@ -16,7 +16,6 @@ module Minitest
     opts.on "--event-prof-per-example", TrueClass, "Includes examples metrics to results" do |flag|
       options[:per_example] = flag
     end
-
   end
 
   def self.plugin_event_prof_init(options)
@@ -25,6 +24,6 @@ module Minitest
     options[:top_count] = ENV['EVENT_PROF_TOP'].to_i if ENV['EVENT_PROF_TOP']
     options[:per_example] = true if ENV['EVENT_PROF_EXAMPLES']
 
-    self.reporter << EventProfReporter.new(options) if options[:event]
+    reporter << EventProfReporter.new(options) if options[:event]
   end
 end

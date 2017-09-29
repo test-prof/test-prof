@@ -25,7 +25,7 @@ describe 'EventProf' do
       "invokes once (./event_prof_fixture.rb:23) – 00:40.100 (1)"
     )
   end
-  specify 'Minitest integration with rank by count', :aggregate_failures  do
+  specify 'Minitest integration with rank by count', :aggregate_failures do
     output = run_minitest(
       'event_prof',
       env: { 'EVENT_PROF' => 'test.event', 'EVENT_PROF_RANK' => 'count' }
@@ -95,6 +95,5 @@ describe 'EventProf' do
       expect(output).to match(%r{SingleJob \(./event_prof_sidekiq_fixture.rb\) – \d{2}:\d{2}.\d{3} \(2 / 2\)})
       expect(output).to match(%r{BatchJob \(./event_prof_sidekiq_fixture.rb\) – \d{2}:\d{2}.\d{3} \(4 / 2\)})
     end
-
   end
 end

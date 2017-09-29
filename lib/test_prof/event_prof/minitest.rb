@@ -4,8 +4,8 @@ require 'test_prof/logging'
 require 'test_prof/event_prof/formatters/minitest'
 
 module Minitest
-  class EventProfReporter < AbstractReporter
-	  include TestProf::Logging
+  class EventProfReporter < AbstractReporter # :nodoc:
+    include TestProf::Logging
 
     def initialize(options)
       @profiler = configure_profiler(options)
@@ -19,7 +19,7 @@ module Minitest
       track_current_example(group, example)
     end
 
-    def record(result)
+    def record(*)
       @profiler.example_finished(@current_example)
     end
 
@@ -67,8 +67,7 @@ module Minitest
         config.top_count = options[:top_count] if options[:top_count]
         config.per_example = options[:per_example] if options[:per_example]
       end
-
-			TestProf::EventProf.build
+      TestProf::EventProf.build
     end
   end
 end
