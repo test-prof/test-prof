@@ -10,7 +10,7 @@ describe "FactoryProf" do
       expect(output).to include("FactoryProf enabled (simple mode)")
 
       expect(output).to include("Factories usage")
-      expect(output).to match(/total\s+top\-level\s+name\n\n\s+8\s+4\s+user\n\s+5\s+3\s+post/)
+      expect(output).to match(/total\s+top\-level\s+name\n\n\s+16\s+8\s+user\n\s+10\s+6\s+post/)
     end
 
     specify "flamegraph printer" do

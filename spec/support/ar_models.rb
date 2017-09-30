@@ -2,6 +2,7 @@
 
 require "active_record"
 require "factory_girl"
+require "fabrication"
 
 ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 
@@ -49,4 +50,13 @@ FactoryGirl.define do
     sequence(:text) { |n| "Post ##{n}}" }
     user
   end
+end
+
+Fabricator(:user) do
+  name Fabricate.sequence(:name) { |n| "John #{n}" }
+end
+
+Fabricator(:post) do
+  text Fabricate.sequence(:text) { |n| "Post ##{n}}" }
+  user
 end
