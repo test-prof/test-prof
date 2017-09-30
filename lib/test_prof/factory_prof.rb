@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "test_prof/factory_prof/factory_girl_patch"
-require "test_prof/factory_prof/fabrication_patch"
 require "test_prof/factory_prof/printers/simple"
 require "test_prof/factory_prof/printers/flamegraph"
 require "test_prof/factory_prof/factory_builders/factory_girl"
@@ -11,7 +9,6 @@ module TestProf
   # FactoryProf collects "factory stacks" that can be used to build
   # flamegraphs or detect most popular factories
   module FactoryProf
-
     FACTORY_BUILDERS = [FactoryBuilders::FactoryGirl,
                         FactoryBuilders::Fabrication].freeze
 
@@ -76,7 +73,7 @@ module TestProf
 
         log :info, "FactoryProf enabled (#{config.mode} mode)"
 
-        FACTORY_BUILDERS.each { |builder| builder.patch }
+        FACTORY_BUILDERS.each(&:patch)
       end
 
       # Inits FactoryProf and setups at exit hook,

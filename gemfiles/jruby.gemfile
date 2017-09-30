@@ -7,6 +7,7 @@ gem "activerecord-jdbcsqlite3-adapter"
 gem "activerecord", "~> 4.2"
 
 gem "factory_girl", "~> 4.8.0"
+gem "fabrication"
 
 gem "sidekiq", "~> 4.0"
 gem "timecop", "~> 0.9.1"
