@@ -5,7 +5,7 @@ module TestProf
     # Wrap #run method with FactoryProf tracking
     module FactoryGirlPatch
       def run(strategy = @strategy)
-        FactoryProf.track(strategy, @name) { super }
+        TestProf::FactoryProf::FactoryBuilders::FactoryGirl.track(strategy, @name) { super }
       end
     end
   end

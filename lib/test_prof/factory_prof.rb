@@ -1,13 +1,20 @@
 # frozen_string_literal: true
 
 require "test_prof/factory_prof/factory_girl_patch"
+require "test_prof/factory_prof/fabrication_patch"
 require "test_prof/factory_prof/printers/simple"
 require "test_prof/factory_prof/printers/flamegraph"
+require "test_prof/factory_prof/factory_builders/factory_girl"
+require "test_prof/factory_prof/factory_builders/fabrication"
 
 module TestProf
   # FactoryProf collects "factory stacks" that can be used to build
   # flamegraphs or detect most popular factories
   module FactoryProf
+
+    FACTORY_BUILDERS = [FactoryBuilders::FactoryGirl,
+                        FactoryBuilders::Fabrication].freeze
+
     # FactoryProf configuration
     class Configuration
       attr_accessor :mode
@@ -69,9 +76,7 @@ module TestProf
 
         log :info, "FactoryProf enabled (#{config.mode} mode)"
 
-        # Monkey-patch FactoryGirl
-        ::FactoryGirl::FactoryRunner.prepend(FactoryGirlPatch) if
-          defined?(::FactoryGirl)
+        FACTORY_BUILDERS.each { |builder| builder.patch }
       end
 
       # Inits FactoryProf and setups at exit hook,
@@ -99,8 +104,8 @@ module TestProf
         Result.new(@stacks, @stats)
       end
 
-      def track(strategy, factory)
-        return yield if !running? || (strategy != :create)
+      def track(factory)
+        return yield unless running?
         begin
           @depth += 1
           @current_stack << factory if config.flamegraph?
