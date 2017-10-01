@@ -16,11 +16,12 @@ Example output:
 
 It shows both the total number of the factory runs and the number of _top-level_ runs, i.e. not during another factory invocation (e.g. when using associations.)
 
-**NOTE**: FactoryProf only tracks the usage of `create` strategy.
+**NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryFirl these are the factories
+provided by using `create` strategy. In case of Fabrication - objects that created using `create` method.
 
 ## Instructions
 
-FactoryProf can only be used with FactoryGirl.
+FactoryProf can be used with FactoryGirl or Fabrication - application can be bundled with both gems at the same time.
 
 To activate FactoryProf use `FPROF` environment variable:
 
