@@ -14,7 +14,7 @@ Gem::Specification.new do |spec|
   spec.description   = %{
     Ruby applications tests profiling tools.
 
-    Contains tools to anylyze factories usage, integrate with Ruby profilers,
+    Contains tools to analyze factories usage, integrate with Ruby profilers,
     profile your examples using ActiveSupport notifications (if any) and
     statically analyze your code with custom Rubocop cops.
   }

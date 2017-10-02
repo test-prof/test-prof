@@ -58,3 +58,58 @@ require "test_prof/recipes/rspec/any_fixture"
 ```
 
 Now you can use `TestProf::AnyFixture` in your tests.
+
+## Caveats
+
+`AnyFixture` cleans tables in the reverse order as compared to the order they were populated. That
+means when you register a fixture which references a not-yet-registered table, a
+foreign-key violation error *might* occur (if any). An example is worth more than 1000
+words:
+
+```ruby
+class Author < ApplicationRecord
+  has_many :articles
+end
+
+class Article < ApplicationRecord
+  belongs_to :author
+end
+```
+
+And the shared contexts:
+
+```ruby
+RSpec.shared_context "author" do
+  before(:all) do
+    @author = TestProf::AnyFixture.register(:author) do
+      FactoryGirl.create(:account)
+    end
+  end
+
+  let(:author) { @author }
+end
+
+RSpec.shared_context "article" do
+  before(:all) do
+    # outside of AnyFixture, we don't know about its dependent tables
+    author = FactoryGirl.create(:author)
+
+    @article = TestProf::AnyFixture.register(:article) do
+      FactoryGirl.create(:article, author: author)
+    end
+  end
+
+  let(:article) { @article }
+end
+```
+
+Then in some example:
+
+```ruby
+# This one adds only the 'articles' table to the list of affected tables
+include_context "article"
+# And this one adds the 'authors' table
+include_context "author"
+```
+
+Now we have the following affected tables list: `["articles", "authors"]`. At the end of the suite, the "authors" table is cleaned first which leads to a foreign-key violation error.

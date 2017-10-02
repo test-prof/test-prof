@@ -3,9 +3,9 @@
 module TestProf
   module FactoryProf
     # Wrap #run method with FactoryProf tracking
-    module FactoryGirlPatch
-      def run(strategy = @strategy)
-        FactoryBuilders::FactoryGirl.track(strategy, @name) { super }
+    module FabricationPatch
+      def create(name, overrides = {})
+        FactoryBuilders::Fabrication.track(name) { super }
       end
     end
   end

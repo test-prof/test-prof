@@ -114,8 +114,6 @@ Or TODO list:
 
 - Better Minitest integration (PRs welcome!)
 
-- Other data generation library support (e.g [Fabricator](http://fabricationgem.org/)). _Does anyone use something except from FactoryGirl?_
-
 - Improve FactoryDoctor
 
 - Add more Rubocop cops (e.g. `CreateListLimit`)

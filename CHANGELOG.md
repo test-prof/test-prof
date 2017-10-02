@@ -8,6 +8,10 @@
 
 It is possible now to use Event Prof with Minitest
 
+- [#30](https://github.com/palkan/test-prof/pull/30) Fabrication support for FactoryProf. ([@Shkrt][])
+
+FactoryProf now also accounts objects created by Fabrication gem (in addition to FactoryGirl)
+
 ## 0.3.0
 
 ### Features:
@@ -28,7 +32,7 @@ After running the command above the top 5 slowest example groups would be marked
 
 - [#14](https://github.com/palkan/test-prof/pull/14) RSpecDissect profiler. ([@palkan][])
 
-RSpecDissect tracks how much time do you spend in `before` hooks 
+RSpecDissect tracks how much time do you spend in `before` hooks
 and memoization helpers (i.e. `let`) in your tests.
 
 - [#13](https://github.com/palkan/test-prof/pull/13) RSpec `let_it_be` method. ([@palkan][])
@@ -97,4 +101,6 @@ Ensure output dir exists in `#artifact_path` method.
 [@palkan]: https://github.com/palkan
 [@marshall-lee]: https://github.com/marshall-lee
 [@danielwestendorf]: https://github.com/danielwestendorf
+[@Shkrt]: https://github.com/Shkrt
 [@IDolgirev]: https://github.com/IDolgirev
+
