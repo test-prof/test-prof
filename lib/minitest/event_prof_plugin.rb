@@ -26,8 +26,5 @@ module Minitest # :nodoc:
 
     return unless options[:event]
     reporter << EventProfReporter.new(options[:io], options)
-
-    Minitest::Reporters.reporters << EventProfReporter.new(options[:io], options) if
-      defined?(Minitest::Reporters) && Minitest::Reporters.reporters
   end
 end

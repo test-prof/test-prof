@@ -15,6 +15,7 @@ module Minitest
       @formatter = TestProf::EventProf::MinitestFormatter.new(@profiler)
       @current_group = nil
       @current_example = nil
+      inject_to_minitest_reporters if defined? Minitest::Reporters
     end
 
     def start; end
@@ -37,7 +38,7 @@ module Minitest
     def report
       @profiler.group_finished(@current_group)
       result = @formatter.prepare_results
-
+      puts "\n"
       log :info, result
     end
 
@@ -80,6 +81,10 @@ module Minitest
         config.per_example = options[:per_example] if options[:per_example]
       end
       TestProf::EventProf.build
+    end
+
+    def inject_to_minitest_reporters
+      Minitest::Reporters.reporters << self if Minitest::Reporters.reporters
     end
   end
 end
