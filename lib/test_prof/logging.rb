@@ -13,7 +13,7 @@ module TestProf
     end
 
     def build_log_msg(level, msg)
-      colorize(level, "[TEST PROF #{level.to_s.upcase}] #{msg}")
+      colorize(level, "\n[TEST PROF #{level.to_s.upcase}] #{msg}")
     end
 
     def colorize(level, msg)
