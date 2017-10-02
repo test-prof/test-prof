@@ -70,6 +70,12 @@ in your test helper file:
 require 'minitest/reporters'
 Minitest::Reporters.use! [YOUR_FAVORITE_REPORTERS]
 ```
+#### NOTICE
+When you have `minitest-reporters` installed as a gem but not declared in your `Gemfile`
+make sure to always prepend your test run command with `bundle exec` (but we sure that you always do it).
+Otherwise, you'll get an error caused by Minitest plugin system, which scans all the entries in the
+`$LOAD_PATH` for any `minitest/*_plugin.rb`, thus initialization of `minitest-reporters` plugin which is
+available in that case doesn't happens correctly.
 
 See [Rails guides](http://guides.rubyonrails.org/active_support_instrumentation.html)
 for the list of available events if you're using Rails.
