@@ -1,5 +1,13 @@
 # Change log
 
+## Master Branch
+
+### Features:
+
+- [#29](https://github.com/palkan/test-prof/pull/29) EventProf Minitest integration. ([@IDolgirev][])
+
+It is possible now to use Event Prof with Minitest
+
 ## 0.3.0
 
 ### Features:
@@ -89,3 +97,4 @@ Ensure output dir exists in `#artifact_path` method.
 [@palkan]: https://github.com/palkan
 [@marshall-lee]: https://github.com/marshall-lee
 [@danielwestendorf]: https://github.com/danielwestendorf
+[@IDolgirev]: https://github.com/IDolgirev

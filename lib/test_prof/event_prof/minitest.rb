@@ -7,21 +7,32 @@ module Minitest
   class EventProfReporter < AbstractReporter # :nodoc:
     include TestProf::Logging
 
-    def initialize(options)
+    attr_accessor :io
+
+    def initialize(io = $stdout, options = {})
+      @io = io
       @profiler = configure_profiler(options)
       @formatter = TestProf::EventProf::MinitestFormatter.new(@profiler)
       @current_group = nil
       @current_example = nil
     end
 
+    def start; end
+
     def prerecord(group, example)
       change_current_group(group, example) unless @current_group
       track_current_example(group, example)
     end
 
+    def before_test(test)
+      prerecord(test.class, test.name)
+    end
+
     def record(*)
       @profiler.example_finished(@current_example)
     end
+
+    def after_test(*); end
 
     def report
       @profiler.group_finished(@current_group)
@@ -39,7 +50,7 @@ module Minitest
       end
 
       @current_example = {
-        name: example.gsub(/^test_\d+_/, ''),
+        name: example.gsub(/^test_(?:\d+_)?/, ''),
         location: File.expand_path(location(group, example).join(':')).gsub(Dir.getwd, '.')
       }
 
@@ -56,7 +67,8 @@ module Minitest
     end
 
     def location(group, example)
-      name = group.public_instance_methods(false).find { |mtd| mtd.to_s == example }
+      suite = group.public_instance_methods.select { |mtd| mtd.to_s.match /^test_/ }
+      name = suite.find { |mtd| mtd.to_s == example }
       group.instance_method(name).source_location
     end
 

@@ -7,7 +7,7 @@ module Minitest # :nodoc:
     opts.on "--event-prof=EVENT", "Collects metrics for specified EVENT" do |event|
       options[:event] = event
     end
-    opts.on "--event-prof-rank=RANK_BY", "Defines RANK_BY parameter for results" do |rank|
+    opts.on "--event-prof-rank-by=RANK_BY", "Defines RANK_BY parameter for results" do |rank|
       options[:rank_by] = rank.to_sym
     end
     opts.on "--event-prof-top-count=N", "Limits results with N groups/examples" do |count|
@@ -24,6 +24,10 @@ module Minitest # :nodoc:
     options[:top_count] = ENV['EVENT_PROF_TOP'].to_i if ENV['EVENT_PROF_TOP']
     options[:per_example] = true if ENV['EVENT_PROF_EXAMPLES']
 
-    reporter << EventProfReporter.new(options) if options[:event]
+    return unless options[:event]
+    reporter << EventProfReporter.new(options[:io], options)
+
+    Minitest::Reporters.reporters << EventProfReporter.new(options[:io], options) if
+      defined?(Minitest::Reporters) && Minitest::Reporters.reporters
   end
 end
