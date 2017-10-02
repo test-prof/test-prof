@@ -30,13 +30,45 @@ fails (./spec/shared_examples/controllers/invalid_examples.rb:3) – 00:00.007 (
 
 ## Instructions
 
-Currently, EventProf supports only ActiveSupport::Notifications and RSpec.
+Currently, EventProf supports only ActiveSupport::Notifications
 
-To activate EventProf use `EVENT_PROF` environment variable set to event name:
+To activate EventProf with:
+
+### Rspec
+
+Use `EVENT_PROF` environment variable set to event name:
 
 ```sh
 # Collect SQL queries stats for every suite and example
 EVENT_PROF='sql.active_record' rspec ...
+```
+
+### Minitest
+
+Use `EVENT_PROF` environment variable set to event name:
+
+```sh
+# Collect SQL queries stats for every suite and example
+EVENT_PROF='sql.active_record' rake test
+```
+or use CLI options as well:
+
+```sh
+# Run a specific file using CLI option
+ruby test/my_super_test.rb --event-prof=sql.active_record
+
+# Show the list of possible options:
+ruby test/my_super_test.rb --help
+```
+
+### Using with Minitest::Reporters
+
+If you're using `Minitest::Reporters` in your project you have to explicitly declare it
+in your test helper file:
+
+```sh
+require 'minitest/reporters'
+Minitest::Reporters.use! [YOUR_FAVORITE_REPORTERS]
 ```
 
 See [Rails guides](http://guides.rubyonrails.org/active_support_instrumentation.html)
