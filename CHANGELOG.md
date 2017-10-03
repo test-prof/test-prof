@@ -1,6 +1,6 @@
 # Change log
 
-## Master Branch
+## 0.4.0
 
 ### Features:
 
