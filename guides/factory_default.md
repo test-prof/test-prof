@@ -51,7 +51,7 @@ Typical workaround:
 describe "PATCH #update" do
   let(:account) { create(:account) }
   let(:project) { create(:project, account: account) }
-  let(:task( { create(:task, project: project, account: account) }
+  let(:task) { create(:task, project: project, account: account) }
 
   it "works" do
     patch :update, id: task.id, task: { completed: 't' }
@@ -68,7 +68,7 @@ Here is how we can deal with it using FactoryDefault:
 describe "PATCH #update" do
   let(:account) { create_default(:account) }
   let(:project) { create_default(:project) }
-  let(:task( { create(:task) }
+  let(:task) { create(:task) }
 
   # and if need more projects, users, tasks with the same parent record,
   # we just write
