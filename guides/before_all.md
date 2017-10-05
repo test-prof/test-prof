@@ -34,7 +34,7 @@ describe BeatleWeightedSearchQuery do
 end
 ```
 
-But then you have to deal with database cleaning, which can be eigher tricky or slow.
+But then you have to deal with database cleaning, which can be either tricky or slow.
 
 There is a better option: we can wrap the whole example group into a transaction.
 And that's how `before_all` works:

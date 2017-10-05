@@ -13,7 +13,7 @@ group :development, :test do
 end
 ```
 
-RubyProf profiler has two modes: _global_ and _per-example_.
+RubyProf profiler has two modes: `global` and `per-example`.
 
 You can activate the global profiling using the environment variable `TEST_RUBY_PROF`:
 

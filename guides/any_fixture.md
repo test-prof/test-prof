@@ -112,4 +112,4 @@ include_context "article"
 include_context "author"
 ```
 
-Now we have the following affected tables list: `["articles", "authors"]`. At the end of the suite, the "authors" table is cleaned first which leads to a foreign-key violation error.
+Now we have the following affected tables list: `['articles', 'authors']`. At the end of the suite, the 'authors' table is cleaned first which leads to a foreign-key violation error.

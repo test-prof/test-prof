@@ -16,7 +16,7 @@ Example output:
 
 It shows both the total number of the factory runs and the number of _top-level_ runs, i.e. not during another factory invocation (e.g. when using associations.)
 
-**NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryFirl these are the factories
+**NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryGirl these are the factories
 provided by using `create` strategy. In case of Fabrication - objects that created using `create` method.
 
 ## Instructions
@@ -29,7 +29,7 @@ To activate FactoryProf use `FPROF` environment variable:
 # Simple profiler
 FPROF=1 rspec
 
-# or 
+# or
 FPROF=1 bundle exec rake test
 ```
 
@@ -42,7 +42,7 @@ To generate FactoryFlame report set `FPROF` environment variable to `flamegraph`
 ```sh
 FPROF=flamegraph rspec
 
-# or 
+# or
 FPROF=flamegraph bundle exec rake test
 ```
 
@@ -52,7 +52,7 @@ That's how a report looks like:
 
 How to read this?
 
-Every column represents a _factory stack_ or _cascade_, that is a sequence of recursive `#create` method calls. Consider and example:
+Every column represents a _factory stack_ or _cascade_, that is a sequence of recursive `#create` method calls. Consider an example:
 
 ```ruby
 factory :comment do

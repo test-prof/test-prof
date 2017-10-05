@@ -95,7 +95,7 @@ end
 
 Or provide the `EVENT_PROF_EXAMPLES=1` env variable.
 
-Another useful configuration parameter – `rank_by`. It's responsible for sorting stats – 
+Another useful configuration parameter – `rank_by`. It's responsible for sorting stats –
 either by the time spent in the event or by the number of occurrences:
 
 ```sh

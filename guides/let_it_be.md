@@ -11,7 +11,7 @@ describe BeatleWeightedSearchQuery do
   let!(:george) { create(:beatle, name: 'George') }
   let!(:john) { create(:beatle, name: 'John') }
 
-  specify { expect(subject.call('joh')).to contain_exactly(john) }
+  specify { expect(subject.call('john')).to contain_exactly(john) }
 
   # and more examples here
 end
@@ -45,14 +45,13 @@ describe BeatleWeightedSearchQuery do
   let_it_be(:george) { create(:beatle, name: 'George') }
   let_it_be(:john) { create(:beatle, name: 'John') }
 
-  specify { expect(subject.call('joh')).to contain_exactly(john) }
+  specify { expect(subject.call('john')).to contain_exactly(john) }
 
   # and more examples here
 end
 ```
 
 That's it! Just replace `let!` with `let_it_be`. That's equal to the `before_all` approach but requires less refactoring.
-
 
 ## Instructions
 
