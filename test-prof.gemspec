@@ -16,7 +16,7 @@ Gem::Specification.new do |spec|
 
     Contains tools to analyze factories usage, integrate with Ruby profilers,
     profile your examples using ActiveSupport notifications (if any) and
-    statically analyze your code with custom Rubocop cops.
+    statically analyze your code with custom RuboCop cops.
   }
   spec.homepage      = "http://github.com/palkan/test-prof"
   spec.license       = "MIT"

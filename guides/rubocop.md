@@ -1,10 +1,10 @@
-# Custom Rubocop Cops
+# Custom RuboCop Cops
 
-TestProf comes with the [Rubocop](https://github.com/bbatsov/rubocop) cops that help you write more performant tests.
+TestProf comes with the [RuboCop](https://github.com/bbatsov/rubocop) cops that help you write more performant tests.
 
 To enable them:
 
-- Require `test_prof/rubocop` in your Rubocop configuration:
+- Require `test_prof/rubocop` in your RuboCop configuration:
 
 ```yml
 # .rubocop.yml
@@ -21,7 +21,7 @@ RSpec/AggregateFailures:
     - 'spec/**/*.rb'
 ```
 
-## Rspec/AggregateFailures
+## RSpec/AggregateFailures
 
 This cop encourages you to use one of the greatest features of the recent RSpec – aggregating failures within an example.
 
