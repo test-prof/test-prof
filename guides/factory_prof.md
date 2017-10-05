@@ -16,7 +16,7 @@ Example output:
 
 It shows both the total number of the factory runs and the number of _top-level_ runs, i.e. not during another factory invocation (e.g. when using associations.)
 
-**NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryFirl these are the factories
+**NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryGirl these are the factories
 provided by using `create` strategy. In case of Fabrication - objects that created using `create` method.
 
 ## Instructions
@@ -35,7 +35,7 @@ FPROF=1 bundle exec rake test
 
 ## Factory Flamegraph
 
-The most useful feature of FactoryProf is the _FactoryFlame_ report. That's the special interpetation of Brendan Gregg's [flame graphs](http://www.brendangregg.com/flamegraphs.html) which allows you to identify _factory cascades_.
+The most useful feature of FactoryProf is the _FactoryFlame_ report. That's the special interpretation of Brendan Gregg's [flame graphs](http://www.brendangregg.com/flamegraphs.html) which allows you to identify _factory cascades_.
 
 To generate FactoryFlame report set `FPROF` environment variable to `flamegraph`:
 
