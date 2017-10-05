@@ -1,6 +1,6 @@
 # RSpecDissect
 
-Do you know how much time you spend in `before` hooks? Or memoization helpers such as `let`? Usually, the most of the whole test suite time.
+Do you know how much time you spend in `before` hooks? Or in memoization helpers such as `let`? Usually, the most of the whole test suite time.
 
 _RSpecDissect_ provides this kind of information and also shows you the worst example groups. The main purpose of RSpecDissect is to identify these slow groups and refactor them using [`before_all`](https://github.com/palkan/test-prof/tree/master/guides/before_all.md) or [`let_it_be`](https://github.com/palkan/test-prof/tree/master/guides/let_it_be.md) recipes.
 

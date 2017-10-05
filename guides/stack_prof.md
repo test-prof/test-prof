@@ -4,7 +4,7 @@
 
 ## Instructions
 
-Install 'stackprof' gem (>= 0.2.9):
+Install `stackprof` gem (>= 0.2.9):
 
 ```ruby
 # Gemfile
@@ -13,9 +13,9 @@ group :development, :test do
 end
 ```
 
-StackProf profiler has 2 modes: _global_ and _per-example_.
+StackProf profiler has 2 modes: `global` and `per-example`.
 
-You can activate the global profiling using the environment variable `TEST_STACK_PROF`:
+You can activate global profiling using the environment variable `TEST_STACK_PROF`:
 
 ```sh
 TEST_STACK_PROF=1 bundle exec rake test

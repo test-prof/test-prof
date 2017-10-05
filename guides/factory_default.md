@@ -1,6 +1,6 @@
 # FactoryDefault
 
-_Factory Default_ aims to help you cope with _factory cascades_ (see [FactoryProf](https://github.com/palkan/test-prof/tree/master/guides/factory_prof.md)) by re-using associated records.
+_Factory Default_ aims to help you cope with _factory cascades_ (see [FactoryProf](https://github.com/palkan/test-prof/tree/master/guides/factory_prof.md)) by reusing associated records.
 
 It can be very useful when you're working on a typical SaaS application (or other hierarchical data).
 
@@ -70,7 +70,7 @@ describe "PATCH #update" do
   let(:project) { create_default(:project) }
   let(:task) { create(:task) }
 
-  # and if need more projects, users, tasks with the same parent record,
+  # and if we need more projects, users, tasks with the same parent record,
   # we just write
   let(:another_project) { create(:project) } # uses the same account
   let(:another_task) { create(:task) } # uses the same account and the first project

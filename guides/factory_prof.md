@@ -29,7 +29,7 @@ To activate FactoryProf use `FPROF` environment variable:
 # Simple profiler
 FPROF=1 rspec
 
-# or 
+# or
 FPROF=1 bundle exec rake test
 ```
 
@@ -42,7 +42,7 @@ To generate FactoryFlame report set `FPROF` environment variable to `flamegraph`
 ```sh
 FPROF=flamegraph rspec
 
-# or 
+# or
 FPROF=flamegraph bundle exec rake test
 ```
 
@@ -52,7 +52,7 @@ That's how a report looks like:
 
 How to read this?
 
-Every column represents a _factory stack_ or _cascade_, that is a sequence of recursive `#create` method calls. Consider and example:
+Every column represents a _factory stack_ or _cascade_, that is a sequence of recursive `#create` method calls. Consider an example:
 
 ```ruby
 factory :comment do

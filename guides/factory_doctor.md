@@ -37,12 +37,12 @@ User (./spec/models/user_spec.rb:3)
   validates email (./spec/user_spec.rb:8) – 2 records created, 00:00.514
 ```
 
-**NOTE**: have you noticed the "potentially" word? Unfortunately, FactoryDoctor is not a 
+**NOTE**: have you noticed the "potentially" word? Unfortunately, FactoryDoctor is not a
 magician (it's still learning) and sometimes it produces false negatives and false positives too.
 
 Please, submit an [issue](https://github.com/palkan/test-prof/issues) if you found a case which makes FactoryDoctor fail.
 
-You can also tell FactoryDoctor to ignore specific examples/groups. Just add `:fd_ignore` tag to it:
+You can also tell FactoryDoctor to ignore specific examples/groups. Just add the `:fd_ignore` tag to it:
 
 ```ruby
 # won't be reported as offense

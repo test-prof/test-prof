@@ -1,10 +1,10 @@
-# RSpec Stamp
+# RSpecStamp
 
-RSpec Stamp is a tool to automatically _tag_ failed examples with custom tags.
+RSpecStamp is a tool to automatically _tag_ failed examples with custom tags.
 
 It _literally_ adds tags to your examples (i.e. rewrites them).
 
-The main purpose of RSpec Stamp is to make refactoring testing codebase easy. Changing global configuration may cause a lot of failures. You can patch failing spec by adding a shared context. And here comes RSpec Stamp.
+The main purpose of RSpecStamp is to make testing codebase refactoring easy. Changing global configuration may cause a lot of failures. You can patch failing spec by adding a shared context. And here comes RSpecStamp.
 
 ## Example Use Case: Sidekiq Inline
 
@@ -38,7 +38,7 @@ The output of the command above contains information about the _stamping_ proces
 
 Now all (or almost all) failing specs are tagged with `sidekiq: :inline`. Run the whole suite again and check it there are any failures left.
 
-There is also a _dry-run_ mode (activated by `RSTAMP_DRY_RUN=1` env variable) which prints out patches instead of re-writing files.
+There is also a `dry-run` mode (activated by `RSTAMP_DRY_RUN=1` env variable) which prints out patches instead of re-writing files.
 
 ## Configuration
 
@@ -50,4 +50,3 @@ TestProf::RSpecStamp.configure do |config|
   config.ignore_files << %r{spec/my_directory}
 end
 ```
-
