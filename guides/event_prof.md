@@ -34,7 +34,7 @@ Currently, EventProf supports only ActiveSupport::Notifications
 
 To activate EventProf with:
 
-### Rspec
+### RSpec
 
 Use `EVENT_PROF` environment variable set to event name:
 

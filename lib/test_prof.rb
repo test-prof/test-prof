@@ -9,7 +9,7 @@ require "test_prof/utils"
 #
 # Contains tools to anylyze factories usage, integrate with Ruby profilers,
 # profile your examples using ActiveSupport notifications (if any) and
-# statically analyze your code with custom Rubocop cops.
+# statically analyze your code with custom RuboCop cops.
 #
 # Example usage:
 #

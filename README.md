@@ -16,7 +16,7 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 - ActiveSupport-backed profilers
 
-- Rubocop cops
+- RuboCop cops
 
 - etc.
 
@@ -73,7 +73,7 @@ Checkout our guides for each specific tool:
 
 - [RSpecDissect Profiler](https://github.com/palkan/test-prof/tree/master/guides/rspec_dissect.md)
 
-- [Rubocop Cops](https://github.com/palkan/test-prof/tree/master/guides/rubocop.md)
+- [RuboCop cops](https://github.com/palkan/test-prof/tree/master/guides/rubocop.md)
 
 ## Tips and Tricks (or _Recipes_)
 
@@ -116,7 +116,7 @@ Or TODO list:
 
 - Improve FactoryDoctor
 
-- Add more Rubocop cops (e.g. `CreateListLimit`)
+- Add more RuboCop cops (e.g. `CreateListLimit`)
 
 ## License
 
