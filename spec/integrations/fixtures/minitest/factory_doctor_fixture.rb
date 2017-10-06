@@ -31,7 +31,6 @@ describe "User" do
 
   # TODO: Rewrite when suitable solution for ignoring examples in Minitest
   # will be discussed
- 
   # it "is ignored", :fd_ignore do
   #   user.name = ''
   #   expect(user).not_to be_valid

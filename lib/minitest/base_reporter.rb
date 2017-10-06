@@ -29,10 +29,24 @@ module Minitest
 
       private
 
-      def location(group, example)
-        suite = group.public_instance_methods.select { |mtd| mtd.to_s.match /^test_/ }
-        name = suite.find { |mtd| mtd.to_s == example }
-        group.instance_method(name).source_location
+      def location(group, example = nil)
+        if group.is_a? Class
+          suite = group.public_instance_methods.select { |mtd| mtd.to_s.match /^test_/ }
+          name = suite.find { |mtd| mtd.to_s == example }
+          group.instance_method(name).source_location
+        else
+          suite = group.methods.select { |mtd| mtd.to_s.match /^test_/ }
+          name = suite.find { |mtd| mtd.to_s == group.name }
+          group.method(name).source_location
+        end
+      end
+
+      def location_with_line_number(group, example = nil)
+        File.expand_path(location(group, example).join(':')).gsub(Dir.getwd, '.')
+      end
+
+      def location_without_line_number(group, example = nil)
+        File.expand_path(location(group, example).first).gsub(Dir.getwd, '.')
       end
 
       def inject_to_minitest_reporters
