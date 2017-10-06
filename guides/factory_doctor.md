@@ -55,7 +55,9 @@ end
 
 ## Instructions
 
-Currently, FactoryDoctor works only with FactoryGirl and RSpec.
+Currently, FactoryDoctor works only with FactoryGirl.
+
+## RSpec
 
 To activate FactoryDoctor use `FDOC` environment variable:
 
@@ -72,3 +74,35 @@ FDOC=1 FDOC_STAMP="fdoc:consider" rspec ...
 ```
 
 After running the command above all _potentially_ bad examples would be marked with the `fdoc: :consider` tag.
+
+## Minitest
+
+To activate FactoryDoctor use `FDOC` environment variable:
+
+```sh
+FDOC=1 ruby ...
+```
+
+or use CLI option as shown below:
+
+```sh
+ruby ... --factory-doctor
+```
+
+At the moment, we don't have option to force Factory Doctor to ignore some groups/examples in Minitest.
+
+## Using with Minitest::Reporters
+
+If you're using `Minitest::Reporters` in your project you have to explicitly declare it
+in your test helper file:
+
+```sh
+require 'minitest/reporters'
+Minitest::Reporters.use! [YOUR_FAVORITE_REPORTERS]
+```
+#### NOTICE
+When you have `minitest-reporters` installed as a gem but not declared in your `Gemfile`
+make sure to always prepend your test run command with `bundle exec` (but we sure that you always do it).
+Otherwise, you'll get an error caused by Minitest plugin system, which scans all the entries in the
+`$LOAD_PATH` for any `minitest/*_plugin.rb`, thus initialization of `minitest-reporters` plugin which is
+available in that case doesn't happens correctly.

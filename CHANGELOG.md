@@ -10,6 +10,10 @@ Support RSpec 3.1.0+ in general.
 
 RSpecDissect `let` tracking supports only RSpec 3.3.0+.
 
+- [#38](https://github.com/palkan/test-prof/pull/38) Factory Doctor Minitest integration. ([@IDolgirev][])
+
+It is possible now to use Factory Doctor with Minitest
+
 ## 0.4.0
 
 ### Features:
