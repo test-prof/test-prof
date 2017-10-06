@@ -4,12 +4,12 @@ require "test_prof/ext/float_duration"
 require "test_prof/ext/string_truncate"
 require "test_prof/ext/string_strip_heredoc"
 
-module TestProf
-  module EventProf
-    class MinitestFormatter # :nodoc:
-      using FloatDuration
-      using StringTruncate
-      using StringStripHeredoc
+module Minitest
+  module TestProf
+    class EventProfFormatter # :nodoc:
+      using ::TestProf::FloatDuration
+      using ::TestProf::StringTruncate
+      using ::TestProf::StringStripHeredoc
 
       def initialize(profiler)
         @profiler = profiler
