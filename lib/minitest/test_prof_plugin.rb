@@ -11,7 +11,7 @@ module Minitest # :nodoc:
         opts[:rank_by]      = ENV['EVENT_PROF_RANK'].to_sym if ENV['EVENT_PROF_RANK']
         opts[:top_count]    = ENV['EVENT_PROF_TOP'].to_i if ENV['EVENT_PROF_TOP']
         opts[:per_example]  = true if ENV['EVENT_PROF_EXAMPLES']
-        opts[:fdoc]         = ENV['FDOC'] if ENV['FDOC']
+        opts[:fdoc]         = true if ENV['FDOC']
       end
     end
   end
