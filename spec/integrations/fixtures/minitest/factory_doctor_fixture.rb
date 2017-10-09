@@ -29,10 +29,10 @@ describe "User" do
     assert @user.clone.name.include?('cloned')
   end
 
-  # TODO: Rewrite when suitable solution for ignoring examples in Minitest
-  # will be discussed
-  # it "is ignored", :fd_ignore do
-  #   user.name = ''
-  #   expect(user).not_to be_valid
-  # end
+  it "is ignored" do
+    fd_ignore
+
+    @user.name = ''
+    refute @user.valid?
+  end
 end

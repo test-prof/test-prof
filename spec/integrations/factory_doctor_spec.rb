@@ -18,6 +18,13 @@ describe "FactoryDoctor" do
       expect(output).not_to include("is ignored")
       expect(output).not_to include("creates and reloads user")
     end
+
+    it "print message when no bad examples", :aggregate_failures do
+      output = run_minitest('factory_doctor', env: { 'FDOC' => '1', 'TESTOPTS' => '--name=test_0005_is_ignored' })
+
+      expect(output).to include("FactoryDoctor enabled")
+      expect(output).to include('FactoryDoctor says: "Looks good to me!"')
+    end
   end
 
   context "RSpec integration" do
