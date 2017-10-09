@@ -30,7 +30,6 @@ module Minitest
       def report
         @profiler.group_finished(@current_group)
         result = @formatter.prepare_results
-        puts "\n"
         log :info, result
       end
 

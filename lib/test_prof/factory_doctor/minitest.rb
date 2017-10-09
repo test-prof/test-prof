@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 require 'minitest/base_reporter'
-require 'test_prof'
+require 'minitest/fd_ignorable'
 require 'test_prof/factory_doctor'
-require "test_prof/ext/float_duration"
-require "test_prof/ext/string_strip_heredoc"
+require 'test_prof/ext/float_duration'
+require 'test_prof/ext/string_strip_heredoc'
 
 module Minitest
   module TestProf
@@ -16,21 +16,21 @@ module Minitest
 
       def initialize(io = $stdout, options = {})
         super
-        @doctor = configure_doctor
+        ::TestProf::FactoryDoctor.init
         @count = 0
         @time = 0.0
         @example_groups = Hash.new { |h, k| h[k] = [] }
       end
 
       def prerecord(_group, _example)
-        @doctor.start
+        ::TestProf::FactoryDoctor.start
       end
 
       def record(example)
-        @doctor.stop
-        return if example.skipped?
+        ::TestProf::FactoryDoctor.stop
+        return if example.skipped? || example.fd_ignore?
 
-        result = @doctor.result
+        result = ::TestProf::FactoryDoctor.result
         return unless result.bad?
 
         group = {
@@ -80,11 +80,6 @@ module Minitest
 
       def pluralize_records(count)
         count == 1 ? '1 record' : "#{count} records"
-      end
-
-      def configure_doctor
-        ::TestProf::FactoryDoctor.init
-        ::TestProf::FactoryDoctor
       end
     end
   end

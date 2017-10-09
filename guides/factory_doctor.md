@@ -89,7 +89,18 @@ or use CLI option as shown below:
 ruby ... --factory-doctor
 ```
 
-At the moment, we don't have option to force Factory Doctor to ignore some groups/examples in Minitest.
+The same option to force Factory Doctor to ignore specific examples is also available for Minitest.
+Just use `fd_ignore` inside your example:
+
+```ruby
+# won't be reported as offense
+it "is ignored" do
+  fd_ignore
+
+  @user.name = ''
+  refute @user.valid?
+end
+```
 
 ## Using with Minitest::Reporters
 
