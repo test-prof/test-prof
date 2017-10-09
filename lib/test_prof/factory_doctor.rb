@@ -135,7 +135,3 @@ end
 
 require "test_prof/factory_doctor/rspec" if defined?(RSpec::Core)
 require "test_prof/factory_doctor/minitest" if defined?(Minitest)
-
-TestProf.activate('FDOC') do
-  TestProf::FactoryDoctor.init
-end
