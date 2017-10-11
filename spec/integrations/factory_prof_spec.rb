@@ -22,5 +22,45 @@ describe "FactoryProf" do
 
       expect(File.exist?("tmp/factory-flame.html")).to eq true
     end
+
+    context "when no fabrication installed" do
+      specify "simple printer", :aggregate_failures do
+        output = run_rspec_with_clean_env('factory_prof_no_fabrication',
+                                          env: { 'FPROF' => '1',
+                                                 'BUNDLE_GEMFILE' => gemfile_name('no_fabrication') })
+        expect(output).to include("FactoryProf enabled (simple mode)")
+        expect(output).to include("No factories detected")
+        expect(output).not_to include("[TEST PROF ERROR]")
+      end
+
+      specify "flamegraph printer" do
+        output = run_rspec_with_clean_env('factory_prof_no_fabrication',
+                                          env: { 'FPROF' => 'flamegraph',
+                                                 'BUNDLE_GEMFILE' => gemfile_name('no_fabrication') })
+        expect(output).to include("FactoryProf enabled (flamegraph mode)")
+        expect(output).to include("No factories detected")
+        expect(output).not_to include("[TEST PROF ERROR]")
+      end
+    end
+
+    context "when no factory_girl installed" do
+      specify "simple printer", :aggregate_failures do
+        output = run_rspec_with_clean_env('factory_prof_no_factory_girl',
+                                          env: { 'FPROF' => '1',
+                                                 'BUNDLE_GEMFILE' => gemfile_name('no_factory_girl') })
+        expect(output).to include("FactoryProf enabled (simple mode)")
+        expect(output).to include("No factories detected")
+        expect(output).not_to include("[TEST PROF ERROR]")
+      end
+
+      specify "flamegraph printer" do
+        output = run_rspec_with_clean_env('factory_prof_no_factory_girl',
+                                          env: { 'FPROF' => 'flamegraph',
+                                                 'BUNDLE_GEMFILE' => gemfile_name('no_factory_girl') })
+        expect(output).to include("FactoryProf enabled (flamegraph mode)")
+        expect(output).to include("No factories detected")
+        expect(output).not_to include("[TEST PROF ERROR]")
+      end
+    end
   end
 end

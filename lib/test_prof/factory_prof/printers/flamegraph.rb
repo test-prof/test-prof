@@ -9,6 +9,7 @@ module TestProf::FactoryProf
         include TestProf::Logging
 
         def dump(result)
+          return log(:info, "No factories detected") if result.raw_stats == {}
           report_data = {
             total_stacks: result.stacks.size,
             total: result.total
