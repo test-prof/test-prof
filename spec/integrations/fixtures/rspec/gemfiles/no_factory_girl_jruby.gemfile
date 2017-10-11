@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+# Specify your gem's dependencies in test-prof.gemspec
+gemspec path: '../../../../../'
+
+gem "activerecord-jdbcsqlite3-adapter"
+gem "activerecord", "~> 4.2"
+
+gem "fabrication"
+
+gem "sidekiq", "~> 4.0"
+gem "timecop", "~> 0.9.1"

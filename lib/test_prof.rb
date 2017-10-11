@@ -47,11 +47,11 @@ module TestProf
 
     # Require gem and shows a custom
     # message if it fails to load
-    def require(gem_name, msg)
+    def require(gem_name, msg = nil)
       Kernel.require gem_name
       block_given? ? yield : true
     rescue LoadError
-      log :error, msg
+      log(:error, msg) if msg
       false
     end
 

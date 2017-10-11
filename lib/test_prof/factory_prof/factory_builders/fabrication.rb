@@ -10,9 +10,9 @@ module TestProf
       class Fabrication
         # Monkey-patch Fabrication
         def self.patch
-          TestProf.require 'fabrication', ""
-          ::Fabricate.singleton_class.prepend(FabricationPatch) if
-            defined?(::Fabrication)
+          TestProf.require 'fabrication' do
+            ::Fabricate.singleton_class.prepend(FabricationPatch)
+          end
         end
 
         def self.track(factory, &block)

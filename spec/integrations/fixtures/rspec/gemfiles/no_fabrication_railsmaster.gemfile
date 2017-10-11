@@ -1,0 +1,12 @@
+source 'https://rubygems.org'
+
+# Specify your gem's dependencies in test-prof.gemspec
+gemspec path: '../../../../../'
+
+gem 'arel', git: 'https://github.com/rails/arel.git'
+gem 'rails', git: 'https://github.com/rails/rails.git'
+gem "factory_girl", "~> 4.8.0"
+gem "sqlite3"
+gem "sidekiq", "~> 4.0"
+gem "timecop", "~> 0.9.1"
+

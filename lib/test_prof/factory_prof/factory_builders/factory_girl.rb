@@ -10,8 +10,9 @@ module TestProf
       class FactoryGirl
         # Monkey-patch FactoryGirl
         def self.patch
-          ::FactoryGirl::FactoryRunner.prepend(FactoryGirlPatch) if
-            defined?(::FactoryGirl)
+          TestProf.require 'factory_girl' do
+            ::FactoryGirl::FactoryRunner.prepend(FactoryGirlPatch)
+          end
         end
 
         def self.track(strategy, factory, &block)

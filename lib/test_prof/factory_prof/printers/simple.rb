@@ -10,6 +10,7 @@ module TestProf::FactoryProf
         using TestProf::StringStripHeredoc
 
         def dump(result)
+          return log(:info, "No factories detected") if result.raw_stats == {}
           msgs = []
 
           msgs <<
