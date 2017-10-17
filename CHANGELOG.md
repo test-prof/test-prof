@@ -1,5 +1,15 @@
 # Change log
 
+## master
+
+- [#44](https://github.com/palkan/test-prof/pull/44) Suppor older versions of RSpec. ([@palkan][])
+
+Support RSpec 3.1.0+ in general.
+
+`let_it_be` supports only RSpec 3.3.0+.
+
+RSpecDissect `let` tracking supports only RSpec 3.3.0+.
+
 ## 0.4.0
 
 ### Features:
