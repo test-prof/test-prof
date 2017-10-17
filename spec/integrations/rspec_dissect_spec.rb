@@ -11,16 +11,23 @@ describe "RSpecDissect" do
     expect(output).to include("RSpecDissect report")
     expect(output).to match(/Total time:\s+\d{2}:\d{2}\.\d{3}/)
     expect(output).to match(/Total `before\(:each\)` time:\s+\d{2}:\d{2}\.\d{3}/)
-    expect(output).to match(/Total `let` time:\s+\d{2}:\d{2}\.\d{3}/)
 
     expect(output).to include_lines(
       "Top 5 slowest suites (by `before(:each)` time):",
       "Subject + Before (./rspec_dissect_fixture.rb:22) – ",
-      "Only let (./rspec_dissect_fixture.rb:42) – ",
-      "Top 5 slowest suites (by `let` time):",
-      "Only let (./rspec_dissect_fixture.rb:42) – ",
-      "Subject + Before (./rspec_dissect_fixture.rb:22) – "
+      "Only let (./rspec_dissect_fixture.rb:42) – "
     )
+
+    if TestProf::RSpecDissect.memoization_available?
+      expect(output).to match(/Total `let` time:\s+\d{2}:\d{2}\.\d{3}/)
+      expect(output).to include_lines(
+        "Top 5 slowest suites (by `let` time):",
+        "Only let (./rspec_dissect_fixture.rb:42) – ",
+        "Subject + Before (./rspec_dissect_fixture.rb:22) – "
+      )
+    else
+      expect(output).to include("Total `let` time: NOT SUPPORTED (requires RSpec >= 3.3.0)")
+    end
   end
 
   specify "it works with specified top count", :aggregate_failures do
@@ -30,10 +37,15 @@ describe "RSpecDissect" do
 
     expect(output).to include_lines(
       "Top 1 slowest suites (by `before(:each)` time):",
-      "Subject + Before (./rspec_dissect_fixture.rb:22) – ",
-      "Top 1 slowest suites (by `let` time):",
-      "Only let (./rspec_dissect_fixture.rb:42) – "
+      "Subject + Before (./rspec_dissect_fixture.rb:22) – "
     )
+
+    if TestProf::RSpecDissect.memoization_available?
+      expect(output).to include_lines(
+        "Top 1 slowest suites (by `let` time):",
+        "Only let (./rspec_dissect_fixture.rb:42) – "
+      )
+    end
   end
 
   context "with RStamp" do

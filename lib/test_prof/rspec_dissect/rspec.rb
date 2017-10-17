@@ -7,6 +7,7 @@ require "test_prof/ext/string_strip_heredoc"
 
 module TestProf
   module RSpecDissect
+    # rubocop:disable Metrics/ClassLength
     class Listener # :nodoc:
       include Logging
       using FloatDuration
@@ -16,6 +17,9 @@ module TestProf
       NOTIFICATIONS = %i[
         example_finished
         example_group_finished
+        example_passed
+        example_failed
+        example_pending
       ].freeze
 
       def initialize
@@ -34,6 +38,11 @@ module TestProf
         @examples_count += 1
         @examples_time += notification.example.execution_result.run_time
       end
+
+      # NOTE: RSpec < 3.4.0 doesn't have example_finished event
+      alias example_passed example_finished
+      alias example_failed example_finished
+      alias example_pending example_finished
 
       def example_group_finished(notification)
         return unless notification.group.top_level?
@@ -65,9 +74,14 @@ module TestProf
 
             Total time: #{@total_examples_time.duration}
             Total `before(:each)` time: #{RSpecDissect.total_before_time.duration}
-            Total `let` time: #{RSpecDissect.total_memo_time.duration}
-
           MSG
+
+        msgs <<
+          if RSpecDissect.memoization_available?
+            "Total `let` time: #{RSpecDissect.total_memo_time.duration}\n\n"
+          else
+            "Total `let` time: NOT SUPPORTED (requires RSpec >= 3.3.0)\n\n"
+          end
 
         msgs <<
           <<-MSG.strip_heredoc
@@ -82,18 +96,20 @@ module TestProf
             GROUP
         end
 
-        msgs <<
-          <<-MSG.strip_heredoc
-
-            Top #{top_count} slowest suites (by `let` time):
-
-          MSG
-
-        @memo_results.each do |group|
+        if RSpecDissect.memoization_available?
           msgs <<
-            <<-GROUP.strip_heredoc
-              #{group[:desc].truncate} (#{group[:loc]}) – #{group[:memo].duration} of #{group[:total].duration} (#{group[:count]})
-            GROUP
+            <<-MSG.strip_heredoc
+
+              Top #{top_count} slowest suites (by `let` time):
+
+            MSG
+
+          @memo_results.each do |group|
+            msgs <<
+              <<-GROUP.strip_heredoc
+                #{group[:desc].truncate} (#{group[:loc]}) – #{group[:memo].duration} of #{group[:total].duration} (#{group[:count]})
+              GROUP
+          end
         end
 
         log :info, msgs.join
