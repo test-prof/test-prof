@@ -14,7 +14,9 @@ module TestProf
 
       NOTIFICATIONS = %i[
         example_started
-        example_finished
+        example_passed
+        example_failed
+        example_pending
       ].freeze
 
       def initialize
@@ -44,6 +46,11 @@ module TestProf
         @count += 1
         @time += result.time
       end
+
+      # NOTE: RSpec < 3.4.0 doesn't have example_finished event
+      alias example_passed example_finished
+      alias example_failed example_finished
+      alias example_pending example_finished
 
       def print
         return log(:info, SUCCESS_MESSAGE) if @example_groups.empty?
