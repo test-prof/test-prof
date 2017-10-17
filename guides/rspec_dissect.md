@@ -31,6 +31,8 @@ BookedSlotsController (./spec/controllers/booked_slots_controller_spec.rb:3) –
 AvailableSlotsController (./spec/controllers/available_slots_controller_spec.rb:3) – 00:18.481 of 00:23.366 (85)
 ```
 
+**NOTE**: Tracking `let` time only supported in RSpec >= 3.3.0.
+
 ## Instructions
 
 RSpecDissect can only be used with RSpec (which is clear from the name).

@@ -62,8 +62,11 @@ module TestProf
 
       def init
         RSpec::Core::Example.prepend(ExampleInstrumentation)
-        RSpec::Core::MemoizedHelpers::ThreadsafeMemoized.prepend(MemoizedInstrumentation)
-        RSpec::Core::MemoizedHelpers::NonThreadSafeMemoized.prepend(MemoizedInstrumentation)
+
+        if memoization_available?
+          RSpec::Core::MemoizedHelpers::ThreadsafeMemoized.prepend(MemoizedInstrumentation)
+          RSpec::Core::MemoizedHelpers::NonThreadSafeMemoized.prepend(MemoizedInstrumentation)
+        end
 
         @data = {}
 
@@ -90,6 +93,11 @@ module TestProf
         METRICS.each do |type|
           @data[type.to_s] = 0.0
         end
+      end
+
+      # Whether we are able to track `let` usage
+      def memoization_available?
+        defined?(::RSpec::Core::MemoizedHelpers::ThreadsafeMemoized)
       end
 
       METRICS.each do |type|
