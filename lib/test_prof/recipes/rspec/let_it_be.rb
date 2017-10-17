@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof"
 require_relative "./before_all"
 
 module TestProf
@@ -11,6 +12,11 @@ module TestProf
         modules.fetch(group) do
           Module.new.tap { |mod| group.prepend(mod) }
         end
+      end
+
+      # Only works with RSpec 3.2.0
+      def supported?
+        TestProf::Utils.verify_gem_version('rspec', at_least: '3.2.0')
       end
 
       private
@@ -25,6 +31,11 @@ module TestProf
     PREFIX = RUBY_ENGINE == 'jruby' ? "@__jruby_is_not_cat_friendly__".freeze : "@😸".freeze
 
     def let_it_be(identifier, **options, &block)
+      unless LetItBe.supported?
+        TestProf.log :warn, "let_it_be requires RSpec >= 3.2.0. Fallback to let!"
+        return let!(identifier, &block)
+      end
+
       initializer = proc do
         instance_variable_set(:"#{PREFIX}#{identifier}", instance_exec(&block))
       end

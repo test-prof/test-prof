@@ -53,6 +53,8 @@ end
 
 That's it! Just replace `let!` with `let_it_be`. That's equal to the `before_all` approach but requires less refactoring.
 
+**NOTE**: requries RSpec >= 3.2.0.
+
 ## Instructions
 
 In your `spec_helper.rb`:
