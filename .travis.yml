@@ -11,6 +11,10 @@ matrix:
       gemfile: gemfiles/jruby.gemfile
     - rvm: 2.4.1
       gemfile: Gemfile
+    - rvm: 2.4.1
+      gemfile: gemfiles/rspec31.gemfile
+    - rvm: 2.4.1
+      gemfile: gemfiles/rspec33.gemfile
     - rvm: 2.3.1
       gemfile: Gemfile
     - rvm: 2.2.0

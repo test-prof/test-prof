@@ -13,3 +13,9 @@ gem "sidekiq", "~> 4.0"
 gem "timecop", "~> 0.9.1"
 
 gem "pry-byebug"
+
+local_gemfile = "Gemfile.local"
+
+if File.exist?(local_gemfile)
+  eval(File.read(local_gemfile)) # rubocop:disable Security/Eval
+end

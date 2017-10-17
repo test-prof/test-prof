@@ -18,7 +18,8 @@ RSpec.configure do |config|
   config.filter_run focus: true
   config.run_all_when_everything_filtered = true
 
-  config.example_status_persistence_file_path = 'tmp/.rspec-status'
+  config.example_status_persistence_file_path = 'tmp/.rspec-status' if
+    config.respond_to?(:example_status_persistence_file_path=)
 
   config.define_derived_metadata(file_path: %r{/spec/integrations/}) do |metadata|
     metadata[:type] = :integration
