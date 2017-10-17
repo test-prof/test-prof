@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
+
+$LOAD_PATH.delete_if { |p| p =~ /factory_girl/ }
+
 require "test-prof"
 
 context "when no factory_girl installed" do
