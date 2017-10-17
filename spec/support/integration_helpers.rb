@@ -4,7 +4,7 @@ module IntegrationHelpers
   def run_rspec(path, chdir: nil, success: true, env: {})
     output, status = Open3.capture2(
       env,
-      "rspec #{path}_fixture.rb",
+      "bundle exec rspec #{path}_fixture.rb",
       chdir: chdir || File.expand_path("../../integrations/fixtures/rspec", __FILE__)
     )
     expect(status).to be_success, "Test #{path} failed with: #{output}" if success
@@ -15,7 +15,7 @@ module IntegrationHelpers
     output, status = Bundler.with_clean_env do
       Open3.capture2(
         env,
-        "rspec #{path}_fixture.rb",
+        "bundle exec rspec #{path}_fixture.rb",
         chdir: chdir || File.expand_path("../../integrations/fixtures/rspec", __FILE__)
       )
     end
@@ -26,7 +26,7 @@ module IntegrationHelpers
   def run_minitest(path, chdir: nil, success: true, env: {})
     output, status = Open3.capture2(
       env,
-      "ruby #{path}_fixture.rb",
+      "bundle exec ruby #{path}_fixture.rb",
       chdir: chdir || File.expand_path("../../integrations/fixtures/minitest", __FILE__)
     )
     expect(status).to be_success, "Test #{path} failed with: #{output}" if success
