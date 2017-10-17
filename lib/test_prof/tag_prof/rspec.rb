@@ -12,7 +12,8 @@ module TestProf
 
       NOTIFICATIONS = %i[
         example_started
-        example_finished
+        example_failed
+        example_passed
       ].freeze
 
       def initialize
@@ -27,13 +28,15 @@ module TestProf
       end
 
       def example_finished(notification)
-        return if notification.example.pending?
-
         tag = notification.example.metadata.fetch(@tag, :__unknown__)
 
         @tags[tag][:count] += 1
         @tags[tag][:time] += (TestProf.now - @ts)
       end
+
+      # NOTE: RSpec < 3.4.0 doesn't have example_finished event
+      alias example_passed example_finished
+      alias example_failed example_finished
 
       def print
         msgs = []
