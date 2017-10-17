@@ -5,6 +5,7 @@ module TestProf
   module Logging
     COLORS = {
       info: "\e[34m", # blue
+      warn: "\e[33m", # yellow
       error: "\e[31m", # red
     }.freeze
 

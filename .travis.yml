@@ -12,7 +12,7 @@ matrix:
     - rvm: 2.4.1
       gemfile: Gemfile
     - rvm: 2.4.1
-      gemfile: gemfiles/rspec31.gemfile
+      gemfile: gemfiles/rspec32.gemfile
     - rvm: 2.4.1
       gemfile: gemfiles/rspec33.gemfile
     - rvm: 2.3.1
