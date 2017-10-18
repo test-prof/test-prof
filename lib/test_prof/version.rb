@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module TestProf
-  VERSION = "0.4.0".freeze
+  VERSION = "0.4.1".freeze
 end
