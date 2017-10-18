@@ -110,13 +110,9 @@ end
 
 ## What's next?
 
-Or TODO list:
 
-- Better Minitest integration (PRs welcome!)
+Have an idea? [Propose](https://github.com/palkan/test-prof/issues/new) a feature request!
 
-- Improve FactoryDoctor
-
-- Add more RuboCop cops (e.g. `CreateListLimit`)
 
 ## License
 
