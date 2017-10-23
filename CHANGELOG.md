@@ -1,8 +1,12 @@
 # Change log
 
+## 0.4.2
+
+- Fix bug with multiple `before_all` within one group. ([@palkan][])
+
 ## 0.4.1
 
-- [#44](https://github.com/palkan/test-prof/pull/44) Suppor older versions of RSpec. ([@palkan][])
+- [#44](https://github.com/palkan/test-prof/pull/44) Support older versions of RSpec. ([@palkan][])
 
 Support RSpec 3.1.0+ in general.
 

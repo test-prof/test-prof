@@ -6,7 +6,7 @@ module TestProf
     def before_all(&block)
       raise ArgumentError, "Block is required!" unless block_given?
 
-      return if within_before_all?
+      return before(:all, &block) if within_before_all?
 
       @__before_all_activated__ = true
 

@@ -30,4 +30,30 @@ describe "User", :transactional do
       expect(User.count).to eq 0
     end
   end
+
+  context "inner before_all" do
+    before_all do
+      @user2 = FactoryGirl.create(:user)
+    end
+
+    specify { expect(User.find(@user2.id)).to be_a(User) }
+
+    specify { expect(User.count).to eq 1 }
+  end
+
+  context "multiple before_all" do
+    before_all do
+      @user2 = FactoryGirl.create(:user)
+    end
+
+    before_all do
+      @user3 = FactoryGirl.create(:user)
+    end
+
+    specify { expect(User.find(@user2.id)).to be_a(User) }
+
+    specify { expect(User.find(@user3.id)).to be_a(User) }
+
+    specify { expect(User.count).to eq 2 }
+  end
 end
