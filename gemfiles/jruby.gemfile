@@ -6,7 +6,7 @@ gem "activerecord-jdbcsqlite3-adapter"
 # see https://github.com/jruby/activerecord-jdbc-adapter/issues/747
 gem "activerecord", "~> 4.2"
 
-gem "factory_girl", "~> 4.8.0"
+gem "factory_bot", "~> 4.8.0"
 gem "fabrication"
 
 gem "sidekiq", "~> 4.0"
