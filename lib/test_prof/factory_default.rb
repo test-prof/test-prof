@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_prof/factory_default/factory_girl_patch"
+require "test_prof/factory_default/factory_bot_patch"
 
 module TestProf
   # FactoryDefault allows use to re-use associated objects
@@ -10,7 +10,7 @@ module TestProf
       def create_default(name, *args, &block)
         set_factory_default(
           name,
-          FactoryGirl.create(name, *args, &block)
+          TestProf::FactoryBot.create(name, *args, &block)
         )
       end
 
@@ -21,11 +21,11 @@ module TestProf
 
     class << self
       def init
-        FactoryGirl::Syntax::Methods.include DefaultSyntax
-        FactoryGirl.extend DefaultSyntax
-        FactoryGirl::Strategy::Create.prepend StrategyExt
-        FactoryGirl::Strategy::Build.prepend StrategyExt
-        FactoryGirl::Strategy::Stub.prepend StrategyExt
+        TestProf::FactoryBot::Syntax::Methods.include DefaultSyntax
+        TestProf::FactoryBot.extend DefaultSyntax
+        TestProf::FactoryBot::Strategy::Create.prepend StrategyExt
+        TestProf::FactoryBot::Strategy::Build.prepend StrategyExt
+        TestProf::FactoryBot::Strategy::Stub.prepend StrategyExt
 
         @store = {}
       end

@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 require "active_record"
-require "factory_girl"
 require "fabrication"
+require "test_prof"
+require "test_prof/factory_bot"
 
 ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 
@@ -35,13 +36,13 @@ class Post < ActiveRecord::Base
   belongs_to :user
 end
 
-FactoryGirl.define do
+TestProf::FactoryBot.define do
   factory :user do
     sequence(:name) { |n| "John #{n}" }
 
     trait :with_posts do
       after(:create) do
-        FactoryGirl.create_pair(:post)
+        TestProf::FactoryBot.create_pair(:post)
       end
     end
   end

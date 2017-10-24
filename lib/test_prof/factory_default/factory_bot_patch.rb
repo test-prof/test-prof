@@ -3,7 +3,7 @@
 module TestProf
   module FactoryDefault # :nodoc: all
     module RunnerExt
-      refine FactoryGirl::FactoryRunner do
+      refine TestProf::FactoryBot::FactoryRunner do
         def name
           @name
         end

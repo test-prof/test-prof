@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_prof/factory_doctor/factory_girl_patch"
+require "test_prof/factory_doctor/factory_bot_patch"
 
 module TestProf
   # FactoryDoctor is a tool that helps you identify
@@ -49,9 +49,9 @@ module TestProf
 
         log :info, "FactoryDoctor enabled"
 
-        # Monkey-patch FactoryGirl
-        ::FactoryGirl::FactoryRunner.prepend(FactoryGirlPatch) if
-          defined?(::FactoryGirl)
+        # Monkey-patch FactoryBot / FactoryGirl
+        TestProf::FactoryBot::FactoryRunner.prepend(FactoryBotPatch) if
+          defined?(TestProf::FactoryBot)
 
         subscribe!
 

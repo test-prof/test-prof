@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_prof/ext/string_strip_heredoc"
+require "test_prof/factory_bot"
 
 using TestProf::StringStripHeredoc
 
@@ -18,7 +19,7 @@ module TestProf::EventProf::CustomEvents
     class << self
       def setup!
         @depth = 0
-        FactoryGirl::FactoryRunner.prepend RunnerPatch
+        TestProf::FactoryBot::FactoryRunner.prepend RunnerPatch
       end
 
       def track(factory)
@@ -45,11 +46,11 @@ end
 
 TestProf.activate('EVENT_PROF', 'factory.create') do
   if TestProf.require(
-    'factory_girl',
+    'factory_bot',
     <<-MSG.strip_heredoc
-      Failed to load FactoryGirl.
+      Failed to load FactoryBot.
 
-      Make sure that "factory_girl" gem is in your Gemfile.
+      Make sure that "factory_bot" gem is in your Gemfile.
     MSG
   )
     TestProf::EventProf::CustomEvents::FactoryCreate.setup!

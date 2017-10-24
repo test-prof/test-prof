@@ -28,21 +28,21 @@ describe TestProf::AnyFixture, :transactional do
     it "tracks AR queries and delete affected tables" do
       # add a record outside of any fixture to check
       # that we delete all records from the tables
-      FactoryGirl.create(:user)
+      TestProf::FactoryBot.create(:user)
 
       expect do
-        subject.register(:user) { FactoryGirl.create(:user) }
+        subject.register(:user) { TestProf::FactoryBot.create(:user) }
       end.to change(User, :count).by(1)
 
       expect do
-        subject.register(:post) { FactoryGirl.create(:post) }
+        subject.register(:post) { TestProf::FactoryBot.create(:post) }
       end.to change(User, :count).by(1)
                                  .and change(Post, :count).by(1)
 
       subject.clean
 
       # Try to re-register user - should have no effect
-      subject.register(:user) { FactoryGirl.create(:user) }
+      subject.register(:user) { TestProf::FactoryBot.create(:user) }
 
       expect(User.count).to eq 0
       expect(Post.count).to eq 0
@@ -52,13 +52,13 @@ describe TestProf::AnyFixture, :transactional do
   describe "#reset" do
     it "delete affected tables and reset cache" do
       expect do
-        subject.register(:user) { FactoryGirl.create(:user) }
+        subject.register(:user) { TestProf::FactoryBot.create(:user) }
       end.to change(User, :count).by(1)
 
       subject.reset
       expect(User.count).to eq 0
 
-      subject.register(:user) { FactoryGirl.create(:user) }
+      subject.register(:user) { TestProf::FactoryBot.create(:user) }
 
       expect(User.count).to eq 1
     end
