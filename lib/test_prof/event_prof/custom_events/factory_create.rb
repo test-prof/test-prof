@@ -45,14 +45,15 @@ module TestProf::EventProf::CustomEvents
 end
 
 TestProf.activate('EVENT_PROF', 'factory.create') do
-  if TestProf.require(
-    'factory_bot',
-    <<-MSG.strip_heredoc
-      Failed to load FactoryBot.
-
-      Make sure that "factory_bot" gem is in your Gemfile.
-    MSG
-  )
+  if defined? TestProf::FactoryBot
     TestProf::EventProf::CustomEvents::FactoryCreate.setup!
+  else
+    TestProf.log(:error,
+                 <<-MSG.strip_heredoc
+                   Failed to load factory_bot / factory_girl.
+
+                   Make sure that any of them is in your Gemfile.
+                 MSG
+                )
   end
 end
