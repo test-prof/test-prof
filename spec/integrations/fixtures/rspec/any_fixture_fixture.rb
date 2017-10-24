@@ -8,7 +8,7 @@ require "test_prof/recipes/rspec/any_fixture"
 shared_context "user", user: true do
   before(:all) do
     @user = TestProf::AnyFixture.register(:user) do
-      FactoryGirl.create(:user)
+      TestProf::FactoryBot.create(:user)
     end
   end
 
@@ -29,7 +29,7 @@ describe "User", :user do
 end
 
 describe "Post", :user do
-  let(:post) { FactoryGirl.create(:post, user: user) }
+  let(:post) { TestProf::FactoryBot.create(:post, user: user) }
   after { post.destroy }
 
   it "creates post with the same user" do

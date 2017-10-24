@@ -6,7 +6,7 @@ require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/let_it_be"
 
 RSpec.configure do |config|
-  config.include FactoryGirl::Syntax::Methods
+  config.include TestProf::FactoryBot::Syntax::Methods
 end
 
 describe "User", :transactional do

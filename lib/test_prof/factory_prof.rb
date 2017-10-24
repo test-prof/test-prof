@@ -2,14 +2,14 @@
 
 require "test_prof/factory_prof/printers/simple"
 require "test_prof/factory_prof/printers/flamegraph"
-require "test_prof/factory_prof/factory_builders/factory_girl"
+require "test_prof/factory_prof/factory_builders/factory_bot"
 require "test_prof/factory_prof/factory_builders/fabrication"
 
 module TestProf
   # FactoryProf collects "factory stacks" that can be used to build
   # flamegraphs or detect most popular factories
   module FactoryProf
-    FACTORY_BUILDERS = [FactoryBuilders::FactoryGirl,
+    FACTORY_BUILDERS = [FactoryBuilders::FactoryBot,
                         FactoryBuilders::Fabrication].freeze
 
     # FactoryProf configuration

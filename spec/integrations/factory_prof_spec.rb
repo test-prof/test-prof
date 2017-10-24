@@ -32,9 +32,9 @@ describe "FactoryProf" do
       end
     end
 
-    context "when no factory_girl installed" do
+    context "when no factory_bot installed" do
       specify "simple printer", :aggregate_failures do
-        output = run_rspec('factory_prof_no_factory_girl', env: { 'FPROF' => '1' })
+        output = run_rspec('factory_prof_no_factory_bot', env: { 'FPROF' => '1' })
         expect(output).to include("FactoryProf enabled (simple mode)")
         expect(output).to include("No factories detected")
         expect(output).not_to include("[TEST PROF ERROR]")

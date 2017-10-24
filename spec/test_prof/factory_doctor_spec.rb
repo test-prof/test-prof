@@ -2,7 +2,7 @@
 
 require "spec_helper"
 
-# Init FactoryDoctor and patch FactoryGirl
+# Init FactoryDoctor and patch TestProf::FactoryBot
 TestProf::FactoryDoctor.init
 
 describe TestProf::FactoryDoctor, :transactional do
@@ -16,7 +16,7 @@ describe TestProf::FactoryDoctor, :transactional do
     subject(:result) { described_class.result }
 
     it "is not bad when nothing created" do
-      FactoryGirl.build_stubbed(:user)
+      TestProf::FactoryBot.build_stubbed(:user)
       User.first
       expect(result).not_to be_bad
       expect(result.count).to eq 0
@@ -25,14 +25,14 @@ describe TestProf::FactoryDoctor, :transactional do
     end
 
     it "detects one useless object" do
-      FactoryGirl.create(:user)
+      TestProf::FactoryBot.create(:user)
       expect(result).to be_bad
       expect(result.count).to eq 1
       expect(result.time).to be > 0
     end
 
     it "detects not useless object when select" do
-      user = FactoryGirl.create(:user)
+      user = TestProf::FactoryBot.create(:user)
       user.reload
 
       expect(result).not_to be_bad
@@ -42,7 +42,7 @@ describe TestProf::FactoryDoctor, :transactional do
     end
 
     it "detects not useless object when update" do
-      user = FactoryGirl.create(:user)
+      user = TestProf::FactoryBot.create(:user)
       user.update!(name: 'Phil')
 
       expect(result).not_to be_bad
@@ -52,7 +52,7 @@ describe TestProf::FactoryDoctor, :transactional do
     end
 
     it "detects many objects" do
-      FactoryGirl.create_pair(:user)
+      TestProf::FactoryBot.create_pair(:user)
 
       expect(result).to be_bad
       expect(result.count).to eq 2
@@ -62,7 +62,7 @@ describe TestProf::FactoryDoctor, :transactional do
     describe "#ignore" do
       it "does not track create" do
         described_class.ignore do
-          FactoryGirl.create(:user)
+          TestProf::FactoryBot.create(:user)
         end
 
         expect(result).not_to be_bad
@@ -71,7 +71,7 @@ describe TestProf::FactoryDoctor, :transactional do
       end
 
       it "does not track queries" do
-        user = FactoryGirl.create(:user)
+        user = TestProf::FactoryBot.create(:user)
 
         described_class.ignore { user.reload }
 

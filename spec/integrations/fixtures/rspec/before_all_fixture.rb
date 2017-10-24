@@ -8,7 +8,7 @@ require "test_prof/recipes/rspec/before_all"
 describe "User", :transactional do
   context "with before_all" do
     before_all do
-      @user = FactoryGirl.create(:user)
+      @user = TestProf::FactoryBot.create(:user)
     end
 
     let(:user) { User.find(@user.id) }
@@ -33,7 +33,7 @@ describe "User", :transactional do
 
   context "inner before_all" do
     before_all do
-      @user2 = FactoryGirl.create(:user)
+      @user2 = TestProf::FactoryBot.create(:user)
     end
 
     specify { expect(User.find(@user2.id)).to be_a(User) }
@@ -43,11 +43,11 @@ describe "User", :transactional do
 
   context "multiple before_all" do
     before_all do
-      @user2 = FactoryGirl.create(:user)
+      @user2 = TestProf::FactoryBot.create(:user)
     end
 
     before_all do
-      @user3 = FactoryGirl.create(:user)
+      @user3 = TestProf::FactoryBot.create(:user)
     end
 
     specify { expect(User.find(@user2.id)).to be_a(User) }

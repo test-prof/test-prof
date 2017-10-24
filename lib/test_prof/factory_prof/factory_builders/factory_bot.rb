@@ -1,18 +1,18 @@
 # frozen_string_literal: true
 
-require "test_prof/factory_prof/factory_girl_patch"
+require "test_prof/factory_prof/factory_bot_patch"
+require "test_prof/factory_bot"
 
 module TestProf
   module FactoryProf
     module FactoryBuilders
       # implementation of #patch and #track methods
       # to provide unified interface for all factory-building gems
-      class FactoryGirl
-        # Monkey-patch FactoryGirl
+      class FactoryBot
+        # Monkey-patch FactoryBot / FactoryGirl
         def self.patch
-          TestProf.require 'factory_girl' do
-            ::FactoryGirl::FactoryRunner.prepend(FactoryGirlPatch)
-          end
+          TestProf::FactoryBot::FactoryRunner.prepend(FactoryBotPatch) if
+            defined? TestProf::FactoryBot
         end
 
         def self.track(strategy, factory, &block)

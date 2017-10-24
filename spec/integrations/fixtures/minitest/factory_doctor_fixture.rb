@@ -7,11 +7,11 @@ require "test-prof"
 
 describe "User" do
   before do
-    @user = FactoryGirl.create(:user)
+    @user = TestProf::FactoryBot.create(:user)
   end
 
   it "generates random names" do
-    user2 = FactoryGirl.create(:user)
+    user2 = TestProf::FactoryBot.create(:user)
     refute_equal @user.name, user2.name
   end
 
@@ -21,7 +21,7 @@ describe "User" do
   end
 
   it "creates and reloads user" do
-    @user = FactoryGirl.create(:user, name: 'John')
+    @user = TestProf::FactoryBot.create(:user, name: 'John')
     assert User.find(@user.id).name, 'John'
   end
 
