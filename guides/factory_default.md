@@ -2,6 +2,8 @@
 
 _Factory Default_ aims to help you cope with _factory cascades_ (see [FactoryProf](https://github.com/palkan/test-prof/tree/master/guides/factory_prof.md)) by reusing associated records.
 
+**NOTE**. Only works with FactoryGirl/FactoryBot.
+
 It can be very useful when you're working on a typical SaaS application (or other hierarchical data).
 
 Consider an example. Assume we have the following factories:
@@ -82,7 +84,7 @@ describe "PATCH #update" do
 end
 ```
 
-*NOTE*. This feature introduces a bit of _magic_ to your tests, so use it with caution ('cause tests should be human-readable first). Good idea is to use defaults for top-level entities only (such as tenants in multi-tenancy apps).
+**NOTE**. This feature introduces a bit of _magic_ to your tests, so use it with caution ('cause tests should be human-readable first). Good idea is to use defaults for top-level entities only (such as tenants in multi-tenancy apps).
 
 ## Instructions
 
@@ -92,18 +94,18 @@ In your `spec_helper.rb`:
 require "test_prof/recipes/rspec/factory_default"
 ```
 
-This adds two new methods to FactoryGirl:
+This adds two new methods to FactoryBot:
 
-- `FactoryGirl#set_factory_default(factory, object)` – use the `object` as default for associations built with `factory`
+- `FactoryBot#set_factory_default(factory, object)` – use the `object` as default for associations built with `factory`
 
 Example:
 
 ```ruby
 let(:user) { create(:user) }
 
-before { FactoryGirl.set_factory_default(:user, user) }
+before { FactoryBot.set_factory_default(:user, user) }
 ```
 
-- `FactoryGirl#create_default(factory, *args)` – is a shortcut for `create` + `set_factory_default`.
+- `FactoryBot#create_default(factory, *args)` – is a shortcut for `create` + `set_factory_default`.
 
-*NOTE*. Defaults are cleaned up after each example.
+**NOTE**. Defaults are cleaned up after each example.
