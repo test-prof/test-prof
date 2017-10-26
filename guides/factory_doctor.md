@@ -55,7 +55,7 @@ end
 
 ## Instructions
 
-Currently, FactoryDoctor works only with FactoryGirl.
+Currently, FactoryDoctor works only with FactoryGirl/FactoryBot.
 
 ## RSpec
 
