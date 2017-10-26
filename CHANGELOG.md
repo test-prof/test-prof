@@ -1,5 +1,10 @@
 # Change log
 
+## master branch
+
+- [#46](https://github.com/palkan/test-prof/pull/46) Support FactoryBot, which is [former FactoryGirl](https://github.com/thoughtbot/factory_bot/pull/1051), 
+  while maintaining compatibility with latter. ([@Shkrt][])
+
 ## 0.4.2
 
 - Fix bug with multiple `before_all` within one group. ([@palkan][])
