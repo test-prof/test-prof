@@ -46,6 +46,16 @@ module TestProf
         'call_tree' => 'CallTreePrinter'
       }.freeze
 
+      # Mapping from printer to report file extension
+      # NOTE: txt is not included and considered default
+      PRINTER_EXTENSTION = {
+        'graph_html' => 'html',
+        'dot' => 'dot',
+        '.' => 'dot',
+        'call_stack' => 'html',
+        'call_tree' => 'dat'
+      }.freeze
+
       attr_accessor :printer, :mode, :min_percent,
                     :include_threads, :eliminate_methods
 
@@ -111,7 +121,8 @@ module TestProf
 
       def build_path(name, printer)
         TestProf.artifact_path(
-          "ruby-prof-report-#{printer}-#{config.mode}-#{name}.html"
+          "ruby-prof-report-#{printer}-#{config.mode}-#{name}" \
+          ".#{RubyProf::Configuration::PRINTER_EXTENSTION.fetch(printer, 'txt')}"
         )
       end
 
