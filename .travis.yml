@@ -24,3 +24,5 @@ matrix:
   allow_failures:
     - rvm: ruby-head
       gemfile: gemfiles/railsmaster.gemfile
+    - rvm: jruby-9.1.0.0
+      gemfile: gemfiles/jruby.gemfile
