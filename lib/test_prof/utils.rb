@@ -11,8 +11,12 @@ module TestProf
         version = Gem.loaded_specs[gem_name].try(:version)
         return false if version.blank?
 
-        (at_least.nil? || Gem::Version.new(at_least) <= version) &&
-          (at_most.nil? || Gem::Version.new(at_most) >= version)
+        supported_version?(version, at_least, at_most)
+      end
+
+      def supported_version?(gem_version, at_least, at_most)
+        (at_least.nil? || Gem::Version.new(at_least) <= gem_version) &&
+          (at_most.nil? || Gem::Version.new(at_most) >= gem_version)
       end
     end
   end

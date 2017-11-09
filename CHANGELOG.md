@@ -2,6 +2,10 @@
 
 ## master branch
 
+## 0.4.5
+
+- Fix bug when using rspec-rails over rspec. ([@desoleary][])
+
 - [#46](https://github.com/palkan/test-prof/pull/46) Support FactoryBot, which is [former FactoryGirl](https://github.com/thoughtbot/factory_bot/pull/1051), 
   while maintaining compatibility with latter. ([@Shkrt][])
 
