@@ -20,6 +20,10 @@ describe TestProf::Utils do
         .to raise_error(ArgumentError)
     end
 
+    it 'handles unexpected gem name' do
+      expect(described_class.verify_gem_version('unexpected-gem-name', at_least: '0')).to eq false
+    end
+
     it "verifies with at_least" do
       expect(described_class.verify_gem_version('abc', at_least: '0.12.100')).to eq true
       expect(described_class.verify_gem_version('abc', at_least: '1.9.100')).to eq false
