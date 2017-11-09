@@ -1,5 +1,9 @@
 # Change log
 
+## master
+
+- Fix bug when using rspec-rails over rspec. ([@desoleary][])
+
 ## 0.4.5
 
 - Fix circular require in `lib/factory_doctor/minitest`. ([@palkan][])
@@ -134,4 +138,4 @@ Ensure output dir exists in `#artifact_path` method.
 [@danielwestendorf]: https://github.com/danielwestendorf
 [@Shkrt]: https://github.com/Shkrt
 [@IDolgirev]: https://github.com/IDolgirev
-
+[@desoleary]: https://github.com/desoleary

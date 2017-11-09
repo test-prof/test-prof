@@ -16,7 +16,7 @@ module TestProf
 
       # Only works with RSpec 3.2.0
       def supported?
-        TestProf::Utils.verify_gem_version('rspec', at_least: '3.2.0')
+        TestProf::Utils.verify_gem_version('rspec-core', at_least: '3.2.0')
       end
 
       private
