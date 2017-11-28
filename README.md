@@ -2,6 +2,9 @@
 
 # Ruby Tests Profiling Toolbox
 
+<img align="right" height="150" width="129"
+     title="TestProf logo" src="./assets/testprof.png">
+
 TestProf is a collection of different tools to analyze your test suite performance.
 
 Why does test suite performance matter? First of all, testing is a part of a developer's feedback loop (see [@searls](https://github.com/searls) [talk](https://vimeo.com/145917204)) and, secondly, it is a part of a deployment cycle.
