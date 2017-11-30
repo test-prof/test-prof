@@ -3,7 +3,7 @@
 # Ruby Tests Profiling Toolbox
 
 <img align="right" height="150" width="129"
-     title="TestProf logo" src="./assets/testprof.png">
+     title="TestProf logo" src="./assets/logo.svg">
 
 TestProf is a collection of different tools to analyze your test suite performance.
 
