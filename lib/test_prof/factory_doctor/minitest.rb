@@ -2,7 +2,6 @@
 
 require 'minitest/base_reporter'
 require 'minitest/fd_ignorable'
-require 'test_prof/factory_doctor'
 require 'test_prof/ext/float_duration'
 require 'test_prof/ext/string_strip_heredoc'
 
