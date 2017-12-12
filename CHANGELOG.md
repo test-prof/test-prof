@@ -10,7 +10,7 @@
 
 ## 0.4.3
 
-- [#46](https://github.com/palkan/test-prof/pull/46) Support FactoryBot, which is [former FactoryGirl](https://github.com/thoughtbot/factory_bot/pull/1051), 
+- [#46](https://github.com/palkan/test-prof/pull/46) Support FactoryBot, which is [former FactoryGirl](https://github.com/thoughtbot/factory_bot/pull/1051),
   while maintaining compatibility with latter. ([@Shkrt][])
 
 ## 0.4.2
