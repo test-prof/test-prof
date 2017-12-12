@@ -72,7 +72,7 @@ end
 create(:comment) #=> creates 5 records
 
 # And the corresponding stack is:
-[:comment, :answer, :question, :author, :author, :author]
+# [:comment, :answer, :question, :author, :author, :author]
 ```
 
 The wider column the more often this stack appears.

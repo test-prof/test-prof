@@ -27,10 +27,10 @@ Or you can try `before(:all)`:
 describe BeatleWeightedSearchQuery do
   before(:all) do
     @paul = create(:beatle, name: 'Paul')
-    ...
+    # ...
   end
 
-  ...
+  # ...
 end
 ```
 
@@ -43,10 +43,10 @@ And that's how `before_all` works:
 describe BeatleWeightedSearchQuery do
   before_all do
     @paul = create(:beatle, name: 'Paul')
-    ...
+    # ...
   end
 
-  ...
+  # ...
 end
 ```
 
@@ -57,7 +57,7 @@ That's all!
 In your `spec_helper.rb`:
 
 ```ruby
-require "test_prof/recipes/rspec/before_all"
+require 'test_prof/recipes/rspec/before_all'
 ```
 
 ## Caveats
@@ -72,13 +72,13 @@ end
 
 let(:user) { @user }
 
-it "when user is admin" do
+it 'when user is admin' do
   # we modified our object in-place!
   user.update!(role: 1)
   expect(user).to be_admin
 end
 
-it "when user is regular" do
+it 'when user is regular' do
   # now @user's state depends on the order of specs!
   expect(user).not_to be_admin
 end
