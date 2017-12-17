@@ -154,6 +154,7 @@ module TestProf
         RSpecDissect.config.top_count
       end
     end
+    # rubocop:enable Metrics/ClassLength
   end
 end
 

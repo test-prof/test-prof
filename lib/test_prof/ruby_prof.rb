@@ -103,9 +103,8 @@ module TestProf
       def dump(name)
         result = @profiler.stop
 
-        if config.eliminate_methods?
-          result.eliminate_methods!(config.eliminate_methods)
-        end
+        result.eliminate_methods!(config.eliminate_methods) if
+          config.eliminate_methods?
 
         printer_type, printer_class = config.resolve_printer
         path = build_path name, printer_type
