@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require 'rubocop'
+require 'test_prof/utils'
 
 module RuboCop
   module Cop
@@ -37,7 +38,22 @@ module RuboCop
           pending
         ].freeze
 
+        class << self
+          def supported?
+            return @supported if instance_variable_defined?(:@supported)
+            @supported = TestProf::Utils.verify_gem_version('rubocop', at_least: '0.51.0')
+
+            unless @supported
+              warn "RSpec/AggregateFailures cop requires RuboCop >= 0.51.0. Skipping"
+            end
+
+            @supported
+          end
+        end
+
         def on_block(node)
+          return unless self.class.supported?
+
           method, _args, body = *node
           return unless body && body.begin_type?
 
@@ -48,8 +64,8 @@ module RuboCop
 
           add_offense(
             node,
-            :expression,
-            'Use :aggregate_failures instead of several one-liners.'
+            location: :expression,
+            message: 'Use :aggregate_failures instead of several one-liners.'
           )
         end
 

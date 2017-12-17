@@ -2,7 +2,11 @@
 
 ## master
 
-- Fix bug when using rspec-rails over rspec. ([@desoleary][])
+- Upgrade RSpec/AggregateFailures to RuboCop 0.52.0. ([@palkan][])
+
+  RuboCop < 0.51.0 is not supported anymore.
+
+- [Fixes [#49](https://github.com/palkan/test-prof/issues/49)] Correcly detect RSpec version in `let_it_be`. ([@desoleary][])
 
 ## 0.4.5
 
