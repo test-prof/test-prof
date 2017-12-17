@@ -25,12 +25,12 @@ We already have [`before_all`](https://github.com/palkan/test-prof/tree/master/g
 describe BeatleWeightedSearchQuery do
   before_all do
     @paul = create(:beatle, name: 'Paul')
-    ...
+    # ...
   end
 
   specify { expect(subject.call('joh')).to contain_exactly(@john) }
 
-  ...
+  # ...
 end
 ```
 
@@ -60,7 +60,7 @@ That's it! Just replace `let!` with `let_it_be`. That's equal to the `before_all
 In your `spec_helper.rb`:
 
 ```ruby
-require "test_prof/recipes/rspec/let_it_be"
+require 'test_prof/recipes/rspec/let_it_be'
 ```
 
 In your tests:
@@ -69,7 +69,7 @@ In your tests:
 describe MySuperDryService do
   let_it_be(:user) { create(:user) }
 
-  ...
+  # ...
 end
 ```
 

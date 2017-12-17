@@ -1,12 +1,20 @@
 # Change log
 
-## master branch
-
-## 0.4.5
+## master
 
 - Fix bug when using rspec-rails over rspec. ([@desoleary][])
 
-- [#46](https://github.com/palkan/test-prof/pull/46) Support FactoryBot, which is [former FactoryGirl](https://github.com/thoughtbot/factory_bot/pull/1051), 
+## 0.4.5
+
+- Fix circular require in `lib/factory_doctor/minitest`. ([@palkan][])
+
+## 0.4.4
+
+- [Fixes [#48](https://github.com/palkan/test-prof/issues/48)] Respect RubyProf reports files extensions. ([@palkan][])
+
+## 0.4.3
+
+- [#46](https://github.com/palkan/test-prof/pull/46) Support FactoryBot, which is [former FactoryGirl](https://github.com/thoughtbot/factory_bot/pull/1051),
   while maintaining compatibility with latter. ([@Shkrt][])
 
 ## 0.4.2

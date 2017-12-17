@@ -33,8 +33,8 @@ TestProf::RubyProf.run
 TestProf provides a built-in shared context for RSpec to profile examples individually:
 
 ```ruby
-it "is doing heavy stuff", :rprof do
-  ...
+it 'is doing heavy stuff', :rprof do
+  # ...
 end
 ```
 

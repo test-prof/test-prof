@@ -3,7 +3,7 @@
 One common bad pattern that slows our tests down is unnecessary database manipulation. Consider a _bad_ example:
 
 ```ruby
-it "validates name presence" do
+it 'validates name presence' do
   user = create(:user)
   user.name = ''
   expect(user).not_to be_valid
@@ -13,7 +13,7 @@ end
 Here we create a new user record, run all callbacks and validations and save it to the database. We don't need all these! Here is a _good_ example:
 
 ```ruby
-it "validates name presence" do
+it 'validates name presence' do
   user = build_stubbed(:user)
   user.name = ''
   expect(user).not_to be_valid
@@ -46,7 +46,7 @@ You can also tell FactoryDoctor to ignore specific examples/groups. Just add the
 
 ```ruby
 # won't be reported as offense
-it "is ignored", :fd_ignore do
+it 'is ignored', :fd_ignore do
   user = create(:user)
   user.name = ''
   expect(user).not_to be_valid
@@ -94,7 +94,7 @@ Just use `fd_ignore` inside your example:
 
 ```ruby
 # won't be reported as offense
-it "is ignored" do
+it 'is ignored' do
   fd_ignore
 
   @user.name = ''

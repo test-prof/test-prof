@@ -40,8 +40,7 @@ That's the quick workaround:
 
 ```ruby
 RSpec.configure do |config|
-
-  ...
+  # ...
   config.define_derived_metadata(file_path: %r{/spec/}) do |metadata|
     # do not overwrite type if it's already set
     next if metadata.key?(:type)

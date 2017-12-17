@@ -10,9 +10,9 @@ matrix:
     - rvm: jruby-9.1.0.0
       gemfile: gemfiles/jruby.gemfile
     - rvm: 2.4.1
-      gemfile:
-        - Gemfile
-        - gemfiles/default_factory_girl.gemfile
+      gemfile: Gemfile
+    - rvm: 2.4.1
+      gemfile: gemfiles/default_factory_girl.gemfile
     - rvm: 2.4.1
       gemfile: gemfiles/rspec32.gemfile
     - rvm: 2.4.1
