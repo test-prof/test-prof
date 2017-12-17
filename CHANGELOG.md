@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.4.6
+
 - Upgrade RSpec/AggregateFailures to RuboCop 0.52.0. ([@palkan][])
 
   RuboCop < 0.51.0 is not supported anymore.
