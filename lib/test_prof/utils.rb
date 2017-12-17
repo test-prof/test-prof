@@ -8,10 +8,15 @@ module TestProf
         raise ArgumentError, "Please, provide `at_least` or `at_most` argument" if
           at_least.nil? && at_most.nil?
 
-        version = Gem.loaded_specs[gem_name].version
+        version = Gem.loaded_specs[gem_name].try(:version)
+        return false if version.blank?
 
-        (at_least.nil? || Gem::Version.new(at_least) <= version) &&
-          (at_most.nil? || Gem::Version.new(at_most) >= version)
+        supported_version?(version, at_least, at_most)
+      end
+
+      def supported_version?(gem_version, at_least, at_most)
+        (at_least.nil? || Gem::Version.new(at_least) <= gem_version) &&
+          (at_most.nil? || Gem::Version.new(at_most) >= gem_version)
       end
     end
   end

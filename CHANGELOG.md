@@ -1,5 +1,9 @@
 # Change log
 
+## master
+
+- Fix bug when using rspec-rails over rspec. ([@desoleary][])
+
 ## 0.4.5
 
 - Fix circular require in `lib/factory_doctor/minitest`. ([@palkan][])
