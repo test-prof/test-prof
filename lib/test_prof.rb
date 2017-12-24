@@ -73,7 +73,7 @@ module TestProf
 
     # Return a path to store artifact
     def artifact_path(filename)
-      FileUtils.mkdir_p(config.output_dir)
+      create_artifact_dir
 
       with_timestamps(
         ::File.join(
@@ -81,6 +81,10 @@ module TestProf
           filename
         )
       )
+    end
+
+    def create_artifact_dir
+      FileUtils.mkdir_p(config.output_dir)[0]
     end
 
     private
