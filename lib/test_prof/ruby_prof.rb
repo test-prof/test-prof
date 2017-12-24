@@ -110,12 +110,13 @@ module TestProf
 
         printer_type, printer_class = config.resolve_printer
 
-        if %w(call_tree multi).include?(printer_type)
+        if %w[call_tree multi].include?(printer_type)
           path = TestProf.create_artifact_dir
           printer_class.new(result).print(
-              path: path,
-              profile: "#{RubyProf::Configuration::LOGFILE_PREFIX}-#{printer_type}-#{config.mode}-#{name}",
-              min_percent: config.min_percent
+            path: path,
+            profile: "#{RubyProf::Configuration::LOGFILE_PREFIX}-#{printer_type}-" \
+              "#{config.mode}-#{name}",
+            min_percent: config.min_percent
           )
         else
           path = build_path name, printer_type
