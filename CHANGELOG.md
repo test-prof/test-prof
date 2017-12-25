@@ -2,7 +2,9 @@
 
 ## master
 
-- Fix RubyProf Printers Support ([@rabotyaga][])
+## 0.4.7
+
+- [#57](https://github.com/palkan/test-prof/pull/57) Fix RubyProf Printers Support ([@rabotyaga][])
 
 ## 0.4.6
 
@@ -147,3 +149,4 @@ Ensure output dir exists in `#artifact_path` method.
 [@Shkrt]: https://github.com/Shkrt
 [@IDolgirev]: https://github.com/IDolgirev
 [@desoleary]: https://github.com/desoleary
+[@rabotyaga]: https://github.com/rabotyaga
