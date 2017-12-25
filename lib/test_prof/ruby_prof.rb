@@ -37,13 +37,14 @@ module TestProf
 
       PRINTERS = {
         'flat' => 'FlatPrinter',
-        'flat_wln' => 'FlatWithLineNumbers',
+        'flat_wln' => 'FlatPrinterWithLineNumbers',
         'graph' => 'GraphPrinter',
         'graph_html' => 'GraphHtmlPrinter',
         'dot' => 'DotPrinter',
         '.' => 'DotPrinter',
         'call_stack' => 'CallStackPrinter',
-        'call_tree' => 'CallTreePrinter'
+        'call_tree' => 'CallTreePrinter',
+        'multi' => 'MultiPrinter'
       }.freeze
 
       # Mapping from printer to report file extension
@@ -52,9 +53,10 @@ module TestProf
         'graph_html' => 'html',
         'dot' => 'dot',
         '.' => 'dot',
-        'call_stack' => 'html',
-        'call_tree' => 'dat'
+        'call_stack' => 'html'
       }.freeze
+
+      LOGFILE_PREFIX = "ruby-prof-report".freeze
 
       attr_accessor :printer, :mode, :min_percent,
                     :include_threads, :eliminate_methods
@@ -107,10 +109,21 @@ module TestProf
           config.eliminate_methods?
 
         printer_type, printer_class = config.resolve_printer
-        path = build_path name, printer_type
 
-        File.open(path, 'w') do |f|
-          printer_class.new(result).print(f, min_percent: config.min_percent)
+        if %w[call_tree multi].include?(printer_type)
+          path = TestProf.create_artifact_dir
+          printer_class.new(result).print(
+            path: path,
+            profile: "#{RubyProf::Configuration::LOGFILE_PREFIX}-#{printer_type}-" \
+              "#{config.mode}-#{name}",
+            min_percent: config.min_percent
+          )
+        else
+          path = build_path name, printer_type
+          File.open(path, 'w') do |f|
+            printer_class.new(result).print(f, min_percent: config.min_percent)
+          end
+
         end
 
         log :info, "RubyProf report generated: #{path}"
@@ -120,7 +133,7 @@ module TestProf
 
       def build_path(name, printer)
         TestProf.artifact_path(
-          "ruby-prof-report-#{printer}-#{config.mode}-#{name}" \
+          "#{RubyProf::Configuration::LOGFILE_PREFIX}-#{printer}-#{config.mode}-#{name}" \
           ".#{RubyProf::Configuration::PRINTER_EXTENSTION.fetch(printer, 'txt')}"
         )
       end
