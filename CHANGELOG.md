@@ -2,6 +2,8 @@
 
 ## master
 
+- Fix RubyProf Printers Support ([@rabotyaga][])
+
 ## 0.4.6
 
 - Upgrade RSpec/AggregateFailures to RuboCop 0.52.0. ([@palkan][])
