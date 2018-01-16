@@ -59,7 +59,7 @@ module TestProf
     # equal to the provided value (if any).
     # Contains workaround for applications using Spring.
     def activate(env_var, val = nil)
-      if defined?(::Spring)
+      if defined?(::Spring::Application)
         ::Spring.after_fork { activate!(env_var, val) { yield } }
       else
         activate!(env_var, val) { yield }
