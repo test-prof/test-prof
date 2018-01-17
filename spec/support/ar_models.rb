@@ -5,6 +5,9 @@ require "fabrication"
 require "test_prof"
 require "test_prof/factory_bot"
 
+require 'activerecord-jdbc-adapter' if defined? JRUBY_VERSION
+require 'activerecord-jdbcsqlite3-adapter' if defined? JRUBY_VERSION
+
 ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
 
 ActiveRecord::Schema.define do
