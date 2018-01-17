@@ -1,6 +1,17 @@
 # Change log
 
-## master
+## 0.4.8
+
+- Add `minitest` 5.11 support. ([@palkan][])
+
+- Fix `spring` detection. ([@palkan][])
+
+  Some `spring`-related gems do not check whether Spring is running and load
+  Spring modules. Thus we have `Spring` defined (and even `Spring.after_fork` defined) but no-op.
+
+  Now we require that `Spring::Applcation` is defined in order to rely on Spring.
+
+  Possibly fixes [#47](https://github.com/palkan/test-prof/issues/47).
 
 ## 0.4.7
 
