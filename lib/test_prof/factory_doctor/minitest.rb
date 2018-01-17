@@ -1,12 +1,20 @@
 # frozen_string_literal: true
 
 require 'minitest/base_reporter'
-require 'minitest/fd_ignorable'
 require 'test_prof/ext/float_duration'
 require 'test_prof/ext/string_strip_heredoc'
 
 module Minitest
-  module TestProf
+  module TestProf # :nodoc:
+    # Add fd_ignore methods
+    module FactoryDoctorIgnore
+      def fd_ignore
+        ::TestProf::FactoryDoctor.ignore!
+      end
+    end
+
+    Minitest::Test.include FactoryDoctorIgnore
+
     class FactoryDoctorReporter < BaseReporter # :nodoc:
       using ::TestProf::FloatDuration
       using ::TestProf::StringStripHeredoc
@@ -27,13 +35,16 @@ module Minitest
 
       def record(example)
         ::TestProf::FactoryDoctor.stop
-        return if example.skipped? || example.fd_ignore?
+        return if example.skipped? || ::TestProf::FactoryDoctor.ignore?
 
         result = ::TestProf::FactoryDoctor.result
         return unless result.bad?
 
+        # Minitest::Result (>= 5.11) has `klass` method
+        group_name = example.respond_to?(:klass) ? example.klass : example.class.name
+
         group = {
-          description: example.class.name,
+          description: group_name,
           location: location_without_line_number(example)
         }
 

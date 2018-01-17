@@ -36,3 +36,14 @@ describe "User" do
     refute @user.valid?
   end
 end
+
+class PlainMinitest < Minitest::Test
+  def setup
+    @user = TestProf::FactoryBot.create(:user)
+  end
+
+  def test_factory_doctor
+    @user.name = ''
+    refute @user.valid?
+  end
+end

@@ -86,6 +86,14 @@ module TestProf
         res
       end
 
+      def ignore!
+        @ignored = true
+      end
+
+      def ignore?
+        @ignored == true
+      end
+
       def within_factory(strategy)
         return yield if ignore? || !running? || (strategy != :create)
 
@@ -108,6 +116,7 @@ module TestProf
         @time = 0.0
         @count = 0
         @queries_count = 0
+        @ignored = false
       end
 
       def subscribe!
@@ -120,10 +129,6 @@ module TestProf
 
       def within_factory?
         @depth > 0
-      end
-
-      def ignore?
-        @ignored == true
       end
 
       def running?
