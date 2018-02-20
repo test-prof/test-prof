@@ -36,7 +36,7 @@ module TestProf
 
       def example_finished(notification)
         @examples_count += 1
-        @examples_time += notification.example.execution_result.run_time
+        @examples_time += notification.example.execution_result.run_time || 0 
       end
 
       # NOTE: RSpec < 3.4.0 doesn't have example_finished event
