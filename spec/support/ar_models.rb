@@ -18,7 +18,7 @@ ActiveRecord::Schema.define do
   create_table :posts do |t|
     t.text :text
     t.integer :user_id
-    t.foreign_key :users
+    t.foreign_key :users if ActiveRecord::VERSION::MAJOR >= 4
   end
 end
 
