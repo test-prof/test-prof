@@ -15,11 +15,9 @@ module TestProf
       using StringStripHeredoc
 
       NOTIFICATIONS = %i[
-        example_finished
         example_group_finished
         example_passed
         example_failed
-        example_pending
       ].freeze
 
       def initialize
@@ -39,10 +37,8 @@ module TestProf
         @examples_time += notification.example.execution_result.run_time
       end
 
-      # NOTE: RSpec < 3.4.0 doesn't have example_finished event
       alias example_passed example_finished
       alias example_failed example_finished
-      alias example_pending example_finished
 
       def example_group_finished(notification)
         return unless notification.group.top_level?

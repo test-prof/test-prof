@@ -1,5 +1,12 @@
 # Change log
 
+## master
+
+- [[Fix [#60](https://github.com/palkan/test-prof/issues/60) Fix RSpecDissect reporter hooks. ([@palkan][])
+
+  Consider only `example_failed` and `example_passed` to ensure that the `run_time`
+  is available.
+
 ## 0.4.8
 
 - Add `minitest` 5.11 support. ([@palkan][])
