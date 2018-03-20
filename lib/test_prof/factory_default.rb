@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof/factory_bot"
 require "test_prof/factory_default/factory_bot_patch"
 
 module TestProf
