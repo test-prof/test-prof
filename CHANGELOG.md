@@ -2,7 +2,11 @@
 
 ## master
 
-- [[Fix [#60](https://github.com/palkan/test-prof/issues/60) Fix RSpecDissect reporter hooks. ([@palkan][])
+## 0.4.9
+
+- [Fix [#64](https://github.com/palkan/test-prof/issues/64)] Fix dependencies requiring for FactoryDefault. ([@palkan][])
+
+- [Fix [#60](https://github.com/palkan/test-prof/issues/60)] Fix RSpecDissect reporter hooks. ([@palkan][])
 
   Consider only `example_failed` and `example_passed` to ensure that the `run_time`
   is available.
