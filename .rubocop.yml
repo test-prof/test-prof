@@ -16,6 +16,7 @@ AllCops:
     - 'Gemfile'
     - 'README.md'
     - '*.gemspec'
+    - '**/*.gemfile'
   DisplayCopNames: true
   StyleGuideCopsOnly: false
   TargetRubyVersion: 2.2
@@ -24,6 +25,12 @@ Rails:
   Enabled: false
 
 Naming/AccessorMethodName:
+  Enabled: false
+
+Naming/UncommunicativeMethodParamName:
+  Enabled: false
+
+Style/ExpandPathArguments:
   Enabled: false
 
 Style/TrivialAccessors:
