@@ -53,6 +53,10 @@ TestProf::FactoryBot.define do
   factory :post do
     sequence(:text) { |n| "Post ##{n}}" }
     user
+
+    trait :with_bad_user do
+      user { create(:user) }
+    end
   end
 end
 
