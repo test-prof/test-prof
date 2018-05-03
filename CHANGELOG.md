@@ -2,6 +2,8 @@
 
 ## master
 
+- [#70](https://github.com/palkan/test-prof/pull/70) Add `FactoryAllStub` recipe. ([@palkan][])
+
 ## 0.4.9
 
 - [Fix [#64](https://github.com/palkan/test-prof/issues/64)] Fix dependencies requiring for FactoryDefault. ([@palkan][])
@@ -34,7 +36,7 @@
 
   RuboCop < 0.51.0 is not supported anymore.
 
-- [Fixes [#49](https://github.com/palkan/test-prof/issues/49)] Correcly detect RSpec version in `let_it_be`. ([@desoleary][])
+- [Fixes [#49](https://github.com/palkan/test-prof/issues/49)] Correctly detect RSpec version in `let_it_be`. ([@desoleary][])
 
 ## 0.4.5
 
