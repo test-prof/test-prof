@@ -100,20 +100,42 @@ module TestProf
             AnyFixture stats:
           MSG
 
+        first_column = cache.stats.keys.map(&:size).max + 2
+
         msgs << format(
-          "%10s  %12s  %9s  %12s",
+          "%#{first_column}s  %12s  %9s  %12s",
           'key', 'build time', 'hit count', 'saved time'
         )
 
         msgs << ""
 
+        total_spent = 0.0
+        total_saved = 0.0
+        total_miss = 0.0
+
         cache.stats.to_a.sort_by { |(_, v)| -v[:hit] }.each do |(key, stats)|
+          total_spent += stats[:time]
+
+          saved = stats[:time] * stats[:hit]
+
+          total_saved += saved
+
+          total_miss += stats[:time] if stats[:hit].zero?
+
           msgs << format(
-            "%10s  %12s  %9d  %12s",
+            "%#{first_column}s  %12s  %9d  %12s",
             key, stats[:time].duration, stats[:hit],
-            (stats[:time] * stats[:hit]).duration
+            saved.duration
           )
         end
+
+        msgs <<
+          <<-MSG.strip_heredoc
+
+            Total time spent: #{total_spent.duration}
+            Total time saved: #{total_saved.duration}
+            Total time wasted: #{total_miss.duration}
+          MSG
 
         log :info, msgs.join("\n")
       end

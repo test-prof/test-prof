@@ -77,7 +77,7 @@ let(:account) { fixture(:account) }
 
 ### Stats report
 
-`AnyFixture` collects the usage information during the test run and reports it at the end:
+`AnyFixture` collects the usage information during the test run and could reports it at the end:
 
 
 ```
@@ -87,9 +87,13 @@ let(:account) { fixture(:account) }
 
       user     00:00.004          4     00:00.017
       post     00:00.002          1     00:00.002
+
+Total time spent: 00:00.006
+Total time saved: 00:00.019
+Total time wasted: 00:00.000
 ```
 
-You can disable the report by setting `TestProf::AnyFixture.reporting_enabled = false`.
+The reporting is off by default, to enable the reporting set `TestProf::AnyFixture.reporting_enabled = true` (or you can invoke it manually through `TestProf::AnyFixture.report_stats`).
 
 ## Caveats
 

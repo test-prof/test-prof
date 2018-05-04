@@ -12,6 +12,8 @@ else
   include TestProf::AnyFixture::DSL::Ext # rubocop:disable Style/MixinUsage
 end
 
+TestProf::AnyFixture.reporting_enabled = true
+
 shared_context "user", user: true do
   before(:all) do
     @user = fixture(:user) do
