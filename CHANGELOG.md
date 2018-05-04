@@ -19,6 +19,12 @@ let(:account) { fixture(:account) }
 
 - Add `AnyFixture` usage report. ([@palkan][])
 
+Enable `AnyFixture` usage reporting with:
+
+```ruby
+TestProf::AnyFixture.reporting_enabled = true
+```
+
 - Add `ActiveRecordSharedConnection` recipe. ([@palkan][])
 
 - [#70](https://github.com/palkan/test-prof/pull/70) Add `FactoryAllStub` recipe. ([@palkan][])
