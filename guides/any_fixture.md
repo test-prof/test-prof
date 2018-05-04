@@ -63,6 +63,8 @@ Now you can use `TestProf::AnyFixture` in your tests.
 We provide an optional _syntactic sugar_ (through Refinement) to make easier to define fixtures:
 
 ```ruby
+require 'test_prof/any_fixture/dsl'
+
 # Enable DSL
 using TestProf::AnyFixture::DSL
 

@@ -5,11 +5,16 @@ require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/any_fixture"
 
-# Detect Ruby 2.4+ by checking for Regexp#match?
-if /a/.respond_to?(:match?)
+# Ruby <2.4 cannot refine modules
+begin
+  require "test_prof/any_fixture/dsl"
   using TestProf::AnyFixture::DSL
-else
-  include TestProf::AnyFixture::DSL::Ext # rubocop:disable Style/MixinUsage
+rescue TypeError
+  include(Module.new do
+    def fixture(id, &block)
+      TestProf::AnyFixture.register(id, &block)
+    end
+  end)
 end
 
 TestProf::AnyFixture.reporting_enabled = true

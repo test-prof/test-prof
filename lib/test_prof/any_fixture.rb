@@ -11,19 +11,6 @@ module TestProf
     using FloatDuration
     using StringStripHeredoc
 
-    # Adds "global" `fixture` method (through refinement)
-    module DSL
-      module Ext # :nodoc:
-        def fixture(id, &block)
-          ::TestProf::AnyFixture.register(:"#{id}", &block)
-        end
-      end
-
-      refine Kernel do
-        include Ext
-      end
-    end
-
     class Cache # :nodoc:
       attr_reader :store, :stats
 
