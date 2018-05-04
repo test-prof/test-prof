@@ -16,6 +16,12 @@ RSpec.shared_context "any_fixture:clean", with_clean_fixture: true do
   end
 end
 
+# Enable reporting by default
+TestProf::AnyFixture.reporting_enabled = true
+
 RSpec.configure do |config|
-  config.after(:suite) { TestProf::AnyFixture.reset }
+  config.after(:suite) do
+    TestProf::AnyFixture.report_stats if TestProf::AnyFixture.reporting_enabled?
+    TestProf::AnyFixture.reset
+  end
 end

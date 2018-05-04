@@ -2,6 +2,25 @@
 
 ## master
 
+- Add `AnyFixture` DSL. ([@palkan][])
+
+Example:
+
+```ruby
+# Enable DSL
+using TestProf::AnyFixture::DSL
+
+# and then you can use `fixture` method (which is just an alias for `TestProf::AnyFixture.register`)
+before(:all) { fixture(:account) }
+
+# You can also use it to fetch the record (instead of storing it in instance variable)
+let(:account) { fixture(:account) }
+```
+
+- Add `AnyFixture` usage report. ([@palkan][])
+
+- Add `ActiveRecordSharedConnection` recipe. ([@palkan][])
+
 - [#70](https://github.com/palkan/test-prof/pull/70) Add `FactoryAllStub` recipe. ([@palkan][])
 
 ## 0.4.9

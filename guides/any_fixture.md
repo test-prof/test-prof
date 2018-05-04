@@ -50,13 +50,46 @@ end
 
 ## Instructions
 
-In your `spec_helper.rb`:
+In your `spec_helper.rb` (or `rails_helper.rb` if you have one):
 
 ```ruby
 require 'test_prof/recipes/rspec/any_fixture'
 ```
 
 Now you can use `TestProf::AnyFixture` in your tests.
+
+### DSL
+
+We provide an optional _syntactic sugar_ (through Refinement) to make easier to define fixtures:
+
+```ruby
+# Enable DSL
+using TestProf::AnyFixture::DSL
+
+# and then you can use `fixture` method (which is just an alias for `TestProf::AnyFixture.register`)
+before(:all) { fixture(:account) }
+
+# You can also use it to fetch the record (instead of storing it in instance variable)
+let(:account) { fixture(:account) }
+```
+
+**NOTE:** Only work for Ruby 2.4+.
+
+### Stats report
+
+`AnyFixture` collects the usage information during the test run and reports it at the end:
+
+
+```
+[TEST PROF INFO] AnyFixture stats:
+
+       key    build time  hit count    saved time
+
+      user     00:00.004          4     00:00.017
+      post     00:00.002          1     00:00.002
+```
+
+You can disable the report by setting `TestProf::AnyFixture.reporting_enabled = false`.
 
 ## Caveats
 
