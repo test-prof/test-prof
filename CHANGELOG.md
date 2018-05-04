@@ -23,7 +23,7 @@ let(:account) { fixture(:account) }
 
 - [#70](https://github.com/palkan/test-prof/pull/70) Add `FactoryAllStub` recipe. ([@palkan][])
 
-## 0.4.9
+## 0.4.9 (2018-03-20)
 
 - [Fix [#64](https://github.com/palkan/test-prof/issues/64)] Fix dependencies requiring for FactoryDefault. ([@palkan][])
 
@@ -32,7 +32,7 @@ let(:account) { fixture(:account) }
   Consider only `example_failed` and `example_passed` to ensure that the `run_time`
   is available.
 
-## 0.4.8
+## 0.4.8 (2018-01-17)
 
 - Add `minitest` 5.11 support. ([@palkan][])
 
@@ -45,11 +45,11 @@ let(:account) { fixture(:account) }
 
   Possibly fixes [#47](https://github.com/palkan/test-prof/issues/47).
 
-## 0.4.7
+## 0.4.7 (2017-12-25)
 
 - [#57](https://github.com/palkan/test-prof/pull/57) Fix RubyProf Printers Support ([@rabotyaga][])
 
-## 0.4.6
+## 0.4.6 (2017-12-17)
 
 - Upgrade RSpec/AggregateFailures to RuboCop 0.52.0. ([@palkan][])
 
@@ -57,24 +57,24 @@ let(:account) { fixture(:account) }
 
 - [Fixes [#49](https://github.com/palkan/test-prof/issues/49)] Correctly detect RSpec version in `let_it_be`. ([@desoleary][])
 
-## 0.4.5
+## 0.4.5 (2017-12-09)
 
 - Fix circular require in `lib/factory_doctor/minitest`. ([@palkan][])
 
-## 0.4.4
+## 0.4.4 (2017-11-08)
 
 - [Fixes [#48](https://github.com/palkan/test-prof/issues/48)] Respect RubyProf reports files extensions. ([@palkan][])
 
-## 0.4.3
+## 0.4.3 (2017-10-26)
 
 - [#46](https://github.com/palkan/test-prof/pull/46) Support FactoryBot, which is [former FactoryGirl](https://github.com/thoughtbot/factory_bot/pull/1051),
   while maintaining compatibility with latter. ([@Shkrt][])
 
-## 0.4.2
+## 0.4.2 (2017-10-23)
 
 - Fix bug with multiple `before_all` within one group. ([@palkan][])
 
-## 0.4.1
+## 0.4.1 (2017-10-18)
 
 - [#44](https://github.com/palkan/test-prof/pull/44) Support older versions of RSpec. ([@palkan][])
 
@@ -88,7 +88,7 @@ RSpecDissect `let` tracking supports only RSpec 3.3.0+.
 
 It is possible now to use Factory Doctor with Minitest
 
-## 0.4.0
+## 0.4.0 (2017-10-03)
 
 ### Features:
 
@@ -100,7 +100,7 @@ It is possible now to use Event Prof with Minitest
 
 FactoryProf now also accounts objects created by Fabrication gem (in addition to FactoryGirl)
 
-## 0.3.0
+## 0.3.0 (2017-09-21)
 
 ### Features:
 
@@ -137,21 +137,21 @@ Just like `let`, but persist the result for the whole group (i.e. `let` + `befor
 
 - Use RubyProf `FlatPrinter` by default (was `CallStackPrinter`). ([@palkan][])
 
-## 0.2.5
+## 0.2.5 (2017-08-30)
 
 - [#16](https://github.com/palkan/test-prof/pull/16) Support Ruby >= 2.2.0 (was >= 2.3.0). ([@palkan][])
 
-## 0.2.4
+## 0.2.4 (2017-08-29)
 
 - EventProf: Fix regression bug with examples profiling. ([@palkan][])
 
 There was a bug when an event occurs before the example has started (e.g. in `before(:context)` hook).
 
-## 0.2.3
+## 0.2.3 (2017-08-28)
 
 - Minor improvements. ([@palkan][])
 
-## 0.2.2
+## 0.2.2 (2017-08-23)
 
 - Fix time calculation when Time class is monkey-patched. ([@palkan][])
 
@@ -160,13 +160,13 @@ use it everywhere.
 
 Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 
-## 0.2.1
+## 0.2.1 (2017-08-19)
 
 - Detect `RSpec` by checking the presence of `RSpec::Core`. ([@palkan][])
 
 Fixes [#8](https://github.com/palkan/test-prof/issues/8).
 
-## 0.2.0
+## 0.2.0 (2017-08-18)
 
 - Ensure output directory exists. ([@danielwestendorf][])
 
@@ -178,11 +178,11 @@ Ensure output dir exists in `#artifact_path` method.
 
 - FactoryDoctor: print success message when no bad examples found. ([@palkan][])
 
-## 0.1.1
+## 0.1.1 (2017-08-17)
 
 - AnyFixture: clean tables in reverse order to not fail when foreign keys exist. ([@marshall-lee][])
 
-## 0.1.0
+## 0.1.0 (2017-08-15)
 
 - Initial version. ([@palkan][])
 
