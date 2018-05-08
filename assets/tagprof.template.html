@@ -90,7 +90,7 @@
       margin-right: 10px;
     }
 
-    .legend {
+    .legend, .totals {
       font-size: 14px;
     }
 
@@ -248,8 +248,10 @@
         .innerRadius(radius);
 
       var pie = d3.pie()
-        .value(function(d) { return d.count; })
-        .sort(null);
+        .value(function(d) { return d.time; })
+        .sort(function(a, b) {
+          return b.time - a.time;
+        });
 
       var tooltip = d3.select('#chart')
         .append('div')
@@ -266,6 +268,10 @@
       report_data.events = report_data.events || [];
 
       var dataset = report_data.data;
+      
+      dataset.sort(function(a, b){
+        return b.time - a.time;
+      });
 
       var totals = {};
 
@@ -385,6 +391,41 @@
         .attr('x', legendRectSize + legendSpacing)
         .attr('y', legendRectSize - legendSpacing)
         .text(function(d) { return d; });
+
+       var totalsContainer = svg.append('g')
+        .attr('class', 'totals')
+        .attr('transform', 'translate(-' + (radius - 100) +', -'+ (radius - 120) + ')');
+
+      var totalsArray = d3.keys(totals).map(function(key){
+        if(key == "count"){
+          return { key: key, value: totals[key] };
+        } else {
+          return { key: key, value: duration(totals[key]) };
+        }
+      });
+
+      totalsContainer.append('text')
+        .text("TOTALS")
+        .attr('x', 50);
+
+      var totalsLegend = totalsContainer.selectAll('total')
+        .data(totalsArray)
+        .enter()
+        .append('g')
+        .attr('class', 'total')
+        .attr('transform', function(d, i) {
+          var height = legendRectSize + legendSpacing;
+          var horz = 0;
+          var vert = i * height + 20;
+          return 'translate(' + horz + ',' + vert + ')';
+        });
+
+      totalsLegend.append('text')
+        .attr('x', 0)
+        .attr('y', legendRectSize - legendSpacing)
+        .text(function(d) { 
+          return d.key + ": " + d.value;
+        });
 
       var render = function(measurement) {
         currentMeasure = measurement;
