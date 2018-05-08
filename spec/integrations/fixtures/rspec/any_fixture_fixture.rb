@@ -17,8 +17,6 @@ rescue TypeError
   end)
 end
 
-TestProf::AnyFixture.reporting_enabled = true
-
 shared_context "user", user: true do
   before(:all) do
     @user = fixture(:user) do

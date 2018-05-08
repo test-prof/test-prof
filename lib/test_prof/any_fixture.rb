@@ -84,7 +84,7 @@ module TestProf
 
         msgs <<
           <<-MSG.strip_heredoc
-            AnyFixture stats:
+            AnyFixture usage stats:
           MSG
 
         first_column = cache.stats.keys.map(&:size).max + 2
@@ -137,5 +137,7 @@ module TestProf
         @tables_cache ||= {}
       end
     end
+
+    self.reporting_enabled = ENV['ANYFIXTURE_REPORT'] == '1'
   end
 end

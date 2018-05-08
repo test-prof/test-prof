@@ -77,13 +77,13 @@ let(:account) { fixture(:account) }
 
 **NOTE:** Only work for Ruby 2.4+.
 
-### Stats report
+### Usage report
 
 `AnyFixture` collects the usage information during the test run and could reports it at the end:
 
 
 ```
-[TEST PROF INFO] AnyFixture stats:
+[TEST PROF INFO] AnyFixture usage stats:
 
        key    build time  hit count    saved time
 
@@ -96,6 +96,8 @@ Total time wasted: 00:00.000
 ```
 
 The reporting is off by default, to enable the reporting set `TestProf::AnyFixture.reporting_enabled = true` (or you can invoke it manually through `TestProf::AnyFixture.report_stats`).
+
+You can also enable reporting through `ANYFIXTURE_REPORT=1` env variable.
 
 ## Caveats
 
