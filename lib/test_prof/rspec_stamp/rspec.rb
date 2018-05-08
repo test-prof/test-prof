@@ -58,14 +58,15 @@ end
 # Register EventProf listener
 TestProf.activate('RSTAMP') do
   RSpec.configure do |config|
-    listener = TestProf::RSpecStamp::RSpecListener.new
+    listener = nil
 
     config.before(:suite) do
+      listener = TestProf::RSpecStamp::RSpecListener.new
       config.reporter.register_listener(
         listener, *TestProf::RSpecStamp::RSpecListener::NOTIFICATIONS
       )
     end
 
-    config.after(:suite) { listener.stamp! }
+    config.after(:suite) { listener.stamp! unless listener.nil? }
   end
 end

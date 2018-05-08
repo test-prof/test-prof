@@ -23,6 +23,8 @@ module TestProf
 
       def initialize
         @profiler = EventProf.build
+
+        log :info, "EventProf enabled (#{@profiler.event})"
       end
 
       def example_group_started(notification)
@@ -131,14 +133,15 @@ end
 # Register EventProf listener
 TestProf.activate('EVENT_PROF') do
   RSpec.configure do |config|
-    listener = TestProf::EventProf::RSpecListener.new
+    listener = nil
 
     config.before(:suite) do
+      listener = TestProf::EventProf::RSpecListener.new
       config.reporter.register_listener(
         listener, *TestProf::EventProf::RSpecListener::NOTIFICATIONS
       )
     end
 
-    config.after(:suite) { listener.print }
+    config.after(:suite) { listener.print unless listener.nil? }
   end
 end

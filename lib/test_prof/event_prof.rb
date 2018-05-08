@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_prof/rspec_stamp"
+require "test_prof/event_prof/profiler"
 require "test_prof/event_prof/instrumentations/active_support"
 require "test_prof/utils/sized_ordered_set"
 
@@ -76,110 +77,11 @@ module TestProf
       def build
         Profiler.new(
           event: config.event,
-          instrumenter: config.resolve_instrumenter
+          instrumenter: config.resolve_instrumenter,
+          rank_by: config.rank_by,
+          top_count: config.top_count,
+          per_example: config.per_example?
         )
-      end
-    end
-
-    class Profiler # :nodoc:
-      include TestProf::Logging
-
-      attr_reader :event, :total_count, :total_time
-
-      def initialize(event:, instrumenter:)
-        @event = event
-
-        log :info, "EventProf enabled (#{@event})"
-
-        instrumenter.subscribe(event) { |time| track(time) }
-
-        @groups = Utils::SizedOrderedSet.new(
-          top_count, sort_by: rank_by
-        )
-
-        @examples = Utils::SizedOrderedSet.new(
-          top_count, sort_by: rank_by
-        )
-
-        @total_count = 0
-        @total_time = 0.0
-      end
-
-      def track(time)
-        return if @current_group.nil?
-        @total_time += time
-        @total_count += 1
-
-        @time += time
-        @count += 1
-
-        return if @current_example.nil?
-
-        @example_time += time
-        @example_count += 1
-      end
-
-      def group_started(id)
-        reset_group!
-        @current_group = id
-      end
-
-      def group_finished(id)
-        data = { id: id, time: @time, count: @count, examples: @total_examples }
-
-        @groups << data unless data[rank_by].zero?
-
-        @current_group = nil
-      end
-
-      def example_started(id)
-        return unless config.per_example?
-        reset_example!
-        @current_example = id
-      end
-
-      def example_finished(id)
-        @total_examples += 1
-        return unless config.per_example?
-
-        data = { id: id, time: @example_time, count: @example_count }
-        @examples << data unless data[rank_by].zero?
-        @current_example = nil
-      end
-
-      def results
-        {
-          groups: @groups.to_a
-        }.tap do |data|
-          next unless config.per_example?
-
-          data[:examples] = @examples.to_a
-        end
-      end
-
-      def rank_by
-        EventProf.config.rank_by
-      end
-
-      def top_count
-        EventProf.config.top_count
-      end
-
-      private
-
-      def config
-        EventProf.config
-      end
-
-      def reset_group!
-        @time = 0.0
-        @count = 0
-        @total_examples = 0
-      end
-
-      def reset_example!
-        @example_count = 0
-        @example_time = 0.0
       end
     end
   end

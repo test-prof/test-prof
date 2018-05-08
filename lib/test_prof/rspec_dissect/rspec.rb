@@ -157,14 +157,16 @@ end
 # Register RSpecDissect listener
 TestProf.activate('RD_PROF') do
   RSpec.configure do |config|
-    listener = TestProf::RSpecDissect::Listener.new
+    listener = nil
 
     config.before(:suite) do
+      listener = TestProf::RSpecDissect::Listener.new
+
       config.reporter.register_listener(
         listener, *TestProf::RSpecDissect::Listener::NOTIFICATIONS
       )
     end
 
-    config.after(:suite) { listener.print }
+    config.after(:suite) { listener.print unless listener.nil? }
   end
 end

@@ -44,14 +44,15 @@ end
 # Register TagProf listener
 TestProf.activate('TAG_PROF') do
   RSpec.configure do |config|
-    listener = TestProf::TagProf::RSpecListener.new
+    listener = nil
 
     config.before(:suite) do
+      listener = TestProf::TagProf::RSpecListener.new
       config.reporter.register_listener(
         listener, *TestProf::TagProf::RSpecListener::NOTIFICATIONS
       )
     end
 
-    config.after(:suite) { listener.report }
+    config.after(:suite) { listener.report unless listener.nil? }
   end
 end

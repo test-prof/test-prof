@@ -9,6 +9,9 @@ module Minitest
       def initialize(io = $stdout, options = {})
         super
         @profiler = configure_profiler(options)
+
+        log :info, "EventProf enabled (#{@profiler.event})"
+
         @formatter = EventProfFormatter.new(@profiler)
         @current_group = nil
         @current_example = nil
