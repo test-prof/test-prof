@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-require "json"
+require "test_prof/utils/html_builder"
 
 module TestProf::FactoryProf
   module Printers
     module Flamegraph # :nodoc: all
+      TEMPLATE = "flamegraph.template.html".freeze
+      OUTPUT_NAME = "factory-flame.html".freeze
+
       class << self
         include TestProf::Logging
 
@@ -17,7 +20,11 @@ module TestProf::FactoryProf
 
           report_data[:roots] = convert_stacks(result)
 
-          path = generate_html(report_data)
+          path = TestProf::Utils::HTMLBuilder.generate(
+            data: report_data,
+            template: TEMPLATE,
+            output: OUTPUT_NAME
+          )
 
           log :info, "FactoryFlame report generated: #{path}"
         end
@@ -54,17 +61,6 @@ module TestProf::FactoryProf
           end
 
           res
-        end
-
-        private
-
-        def generate_html(data)
-          template = File.read(TestProf.asset_path("flamegraph.template.html"))
-          template.sub! '/**REPORT-DATA**/', data.to_json
-
-          outpath = TestProf.artifact_path("factory-flame.html")
-          File.write(outpath, template)
-          outpath
         end
       end
     end
