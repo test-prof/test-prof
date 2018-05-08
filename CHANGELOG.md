@@ -2,6 +2,10 @@
 
 ## master
 
+- Add HTML report for `TagProf`. ([@palkan][])
+
+Generate HTML report by setting `TAG_PROF_FORMAT` to `html`.
+
 - Add `AnyFixture` DSL. ([@palkan][])
 
 Example:
