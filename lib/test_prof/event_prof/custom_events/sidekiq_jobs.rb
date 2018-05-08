@@ -27,7 +27,7 @@ module TestProf::EventProf::CustomEvents
   end
 end
 
-TestProf.activate('EVENT_PROF', 'sidekiq.jobs') do
+TestProf.activate('EVENT_PROF', /\bsidekiq\.jobs\b/) do
   if TestProf.require(
     'sidekiq/testing',
     <<-MSG.strip_heredoc

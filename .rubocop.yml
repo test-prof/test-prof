@@ -40,6 +40,9 @@ Style/Documentation:
   Exclude:
     - 'spec/**/*.rb'
 
+Style/CaseEquality:
+  Enabled: false
+
 Style/StringLiterals:
   Enabled: false
 

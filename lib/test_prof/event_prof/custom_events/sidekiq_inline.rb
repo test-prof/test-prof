@@ -40,7 +40,7 @@ module TestProf::EventProf::CustomEvents
   end
 end
 
-TestProf.activate('EVENT_PROF', 'sidekiq.inline') do
+TestProf.activate('EVENT_PROF', /\bsidekiq\.inline\b/) do
   if TestProf.require(
     'sidekiq/testing',
     <<-MSG.strip_heredoc

@@ -90,7 +90,7 @@ module TestProf
     private
 
     def activate!(env_var, val)
-      yield if ENV[env_var] && (val.nil? || ENV[env_var] == val)
+      yield if ENV[env_var] && (val.nil? || val === ENV[env_var])
     end
 
     def with_timestamps(path)
