@@ -3,6 +3,10 @@
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require "test-prof"
 
+TestProf.configure do |config|
+  config.output_dir = "../../../../tmp"
+end
+
 describe "Something" do
   it "fail me", type: :fail do
     expect(@value).to be_nil
