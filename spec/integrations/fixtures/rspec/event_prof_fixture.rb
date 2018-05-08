@@ -9,9 +9,9 @@ TestProf::EventProf.configure do |config|
 end
 
 module Instrumenter
-  def self.notify(_event, time)
+  def self.notify(event = "test.event", time)
     ActiveSupport::Notifications.publish(
-      'test.event',
+      event,
       0,
       time
     )
@@ -27,6 +27,7 @@ describe "Something" do
   it "invokes twice" do
     Instrumenter.notify 'test.event', 140
     Instrumenter.notify 'test.event', 240
+    Instrumenter.notify 'test.another_event', 110
     expect(true).to eq true
   end
 
@@ -35,6 +36,7 @@ describe "Something" do
     Instrumenter.notify 'test.event', 40
     Instrumenter.notify 'test.event', 42
     Instrumenter.notify 'test.event', 40
+    Instrumenter.notify 'test.another_event', 11
     expect(true).to eq true
   end
 end
@@ -46,6 +48,7 @@ describe "Another something" do
 
   it "do very long" do
     Instrumenter.notify 'test.event', 1000
+    Instrumenter.notify 'test.another_event', 1321
     expect(true).to eq true
   end
 end

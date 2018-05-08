@@ -10,7 +10,7 @@ module Minitest
         super
         @profiler = configure_profiler(options)
 
-        log :info, "EventProf enabled (#{@profiler.event})"
+        log :info, "EventProf enabled (#{@profiler.events.join(', ')})"
 
         @formatter = EventProfFormatter.new(@profiler)
         @current_group = nil

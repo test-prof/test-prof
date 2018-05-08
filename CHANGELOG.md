@@ -2,6 +2,8 @@
 
 ## master
 
+- Add ability to track multiple events at the same time with `EventProf`. ([@palkan][])
+
 - Add HTML report for `TagProf`. ([@palkan][])
 
 Generate HTML report by setting `TAG_PROF_FORMAT` to `html`.

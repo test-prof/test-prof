@@ -24,7 +24,7 @@ module TestProf
       def initialize
         @profiler = EventProf.build
 
-        log :info, "EventProf enabled (#{@profiler.event})"
+        log :info, "EventProf enabled (#{@profiler.events.join(', ')})"
       end
 
       def example_group_started(notification)
@@ -51,18 +51,22 @@ module TestProf
       alias example_pending example_finished
 
       def print
-        result = @profiler.results
+        @profiler.each(&method(:report))
+      end
+
+      def report(profiler)
+        result = profiler.results
 
         msgs = []
 
         msgs <<
           <<-MSG.strip_heredoc
-            EventProf results for #{@profiler.event}
+            EventProf results for #{profiler.event}
 
-            Total time: #{@profiler.total_time.duration}
-            Total events: #{@profiler.total_count}
+            Total time: #{profiler.total_time.duration}
+            Total events: #{profiler.total_count}
 
-            Top #{@profiler.top_count} slowest suites (by #{@profiler.rank_by}):
+            Top #{profiler.top_count} slowest suites (by #{profiler.rank_by}):
 
           MSG
 
@@ -77,7 +81,7 @@ module TestProf
         end
 
         if result[:examples]
-          msgs << "\nTop #{@profiler.top_count} slowest tests (by #{@profiler.rank_by}):\n\n"
+          msgs << "\nTop #{profiler.top_count} slowest tests (by #{profiler.rank_by}):\n\n"
 
           result[:examples].each do |example|
             description = example[:id].description
@@ -91,11 +95,11 @@ module TestProf
 
         log :info, msgs.join
 
-        stamp! if EventProf.config.stamp?
+        stamp!(profiler) if EventProf.config.stamp?
       end
 
-      def stamp!
-        result = @profiler.results
+      def stamp!(profiler)
+        result = profiler.results
 
         stamper = RSpecStamp::Stamper.new
 

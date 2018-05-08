@@ -92,5 +92,37 @@ module TestProf
         @example_time = 0.0
       end
     end
+
+    # Multiple profilers wrapper
+    class ProfilersGroup
+      attr_reader :profilers
+
+      def initialize(event:, **options)
+        events = event.split(",")
+        @profilers = events.map do |ev|
+          Profiler.new(event: ev, **options)
+        end
+      end
+
+      def each
+        if block_given?
+          @profilers.each(&Proc.new)
+        else
+          @profilers.each
+        end
+      end
+
+      def events
+        @profilers.map(&:event)
+      end
+
+      %i[group_started group_finished example_started example_finished].each do |name|
+        class_eval <<-CODE, __FILE__, __LINE__ + 1
+          def #{name}(id)
+            @profilers.each { |profiler| profiler.#{name}(id) }
+          end
+        CODE
+      end
+    end
   end
 end

@@ -73,9 +73,9 @@ module TestProf
         yield config
       end
 
-      # Returns new configured instance of profiler
+      # Returns new configured instance of profilers group
       def build
-        Profiler.new(
+        ProfilersGroup.new(
           event: config.event,
           instrumenter: config.resolve_instrumenter,
           rank_by: config.rank_by,

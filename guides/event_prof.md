@@ -43,6 +43,12 @@ Use `EVENT_PROF` environment variable set to event name:
 EVENT_PROF='sql.active_record' rspec ...
 ```
 
+You can track multiple events simultaneously:
+
+```sh
+EVENT_PROF='sql.active_record,perform.active_job' rspec ...
+```
+
 ### Minitest
 
 Use `EVENT_PROF` environment variable set to event name:
