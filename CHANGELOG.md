@@ -2,6 +2,8 @@
 
 ## master
 
+- Add logging helpers for Rails. ([@palkan][])
+
 - Add ability to track multiple events at the same time with `EventProf`. ([@palkan][])
 
 - Add HTML report for `TagProf`. ([@palkan][])

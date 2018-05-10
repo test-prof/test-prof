@@ -100,6 +100,8 @@ We also want to share some small code tricks which can help you to improve your 
 
 - [Active Record Shared Connection](https://github.com/palkan/test-prof/tree/master/guides/active_record_shared_connection.md)
 
+- [Rails Logging](https://github.com/palkan/test-prof/tree/master/guides/logging.md)
+
 ## Configuration
 
 TestProf global configuration is used by most of the profilers:
