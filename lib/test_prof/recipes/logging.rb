@@ -25,11 +25,13 @@ if defined?(RSpec)
 end
 
 TestProf.activate("LOG", "all") do
+  TestProf.log :info, "Rails verbose logging enabled"
   ActiveSupport::LogSubscriber.logger =
     Rails.logger =
       ActiveRecord::Base.logger = Logger.new(STDOUT)
 end
 
 TestProf.activate("LOG", "ar") do
+  TestProf.log :info, "Active Record verbose logging enabled"
   ActiveRecord::Base.logger = Logger.new(STDOUT)
 end
