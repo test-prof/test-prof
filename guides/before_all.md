@@ -54,7 +54,7 @@ That's all!
 
 ## Instructions
 
-In your `spec_helper.rb`:
+In your `rails_helper.rb` (or `spec_helper.rb` after *ActiveRecord* has been loaded):
 
 ```ruby
 require 'test_prof/recipes/rspec/before_all'
