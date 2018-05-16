@@ -4,22 +4,33 @@ module TestProf
   module TagProf # :nodoc:
     # Object holding all the stats for tags
     class Result
-      attr_reader :tag, :data
+      attr_reader :tag, :data, :events
 
-      def initialize(tag)
+      def initialize(tag, events = [])
         @tag = tag
-        @data = Hash.new { |h, k| h[k] = { value: k, count: 0, time: 0.0 } }
+        @events = events
+
+        @data = Hash.new do |h, k|
+          h[k] = { value: k, count: 0, time: 0.0 }
+          h[k].merge!(Hash[events.map { |event| [event, 0.0] }]) unless
+            events.empty?
+          h[k]
+        end
       end
 
-      def track(tag, time:)
+      def track(tag, time:, events: {})
         data[tag][:count] += 1
         data[tag][:time] += time
+        events.each do |k, v|
+          data[tag][k] += v
+        end
       end
 
       def to_json
         {
           tag: tag,
-          data: data.values
+          data: data.values,
+          events: events
         }.to_json
       end
     end

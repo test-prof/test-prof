@@ -2,6 +2,14 @@
 
 ## master
 
+- Add events support to TagProf. ([@palkan][])
+
+Example usage:
+
+```sh
+TAG_PROF=type TAG_PROF_EVENT=sql.active_record rspec
+```
+
 - Add logging helpers for Rails. ([@palkan][])
 
 - Add ability to track multiple events at the same time with `EventProf`. ([@palkan][])

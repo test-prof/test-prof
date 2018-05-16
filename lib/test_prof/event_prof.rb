@@ -74,9 +74,9 @@ module TestProf
       end
 
       # Returns new configured instance of profilers group
-      def build
+      def build(event = config.event)
         ProfilersGroup.new(
-          event: config.event,
+          event: event,
           instrumenter: config.resolve_instrumenter,
           rank_by: config.rank_by,
           top_count: config.top_count,

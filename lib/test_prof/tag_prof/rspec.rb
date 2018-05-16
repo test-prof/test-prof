@@ -14,20 +14,35 @@ module TestProf
       attr_reader :result, :printer
 
       def initialize
-        @result = Result.new ENV['TAG_PROF'].to_sym
         @printer = ENV['TAG_PROF_FORMAT'] == 'html' ? Printers::HTML : Printers::Simple
+
+        @result =
+          if ENV['TAG_PROF_EVENT'].nil?
+            Result.new ENV['TAG_PROF'].to_sym
+          else
+            require "test_prof/event_prof"
+
+            @events_profiler = EventProf.build(ENV['TAG_PROF_EVENT'])
+
+            Result.new ENV['TAG_PROF'].to_sym, @events_profiler.events
+          end
 
         log :info, "TagProf enabled (#{result.tag})"
       end
 
       def example_started(_notification)
         @ts = TestProf.now
+        # enable event profiling
+        @events_profiler.group_started(true) if @events_profiler
       end
 
       def example_finished(notification)
         tag = notification.example.metadata.fetch(result.tag, :__unknown__)
 
-        result.track(tag, time: TestProf.now - @ts)
+        result.track(tag, time: TestProf.now - @ts, events: fetch_events_data)
+
+        # reset and disable event profilers
+        @events_profiler.group_started(nil) if @events_profiler
       end
 
       # NOTE: RSpec < 3.4.0 doesn't have example_finished event
@@ -36,6 +51,18 @@ module TestProf
 
       def report
         printer.dump(result)
+      end
+
+      private
+
+      def fetch_events_data
+        return {} unless @events_profiler
+
+        Hash[
+          @events_profiler.profilers.map do |profiler|
+            [profiler.event, profiler.time]
+          end
+        ]
       end
     end
   end

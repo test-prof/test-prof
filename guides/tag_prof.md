@@ -40,6 +40,28 @@ To activate TagProf use `TAG_PROF` environment variable:
 TAG_PROF=type rspec
 ```
 
+## Profiling events
+
+You can combine TagProf with [EventProf](./event_prof.md) to track not only the total time spent but also the time spent for the specified activities (through events):
+
+```
+TAG_PROF=type TAG_PROF_EVENT=sql.active_record rspec
+```
+
+Example output:
+
+```sh
+[TEST PROF INFO] TagProf report for type
+
+       type          time   sql.active_record  total  %total   %time           avg
+
+    request     00:04.808           00:01.402     42   33.87   54.70     00:00.114
+ controller     00:02.855           00:00.921     42   33.87   32.48     00:00.067
+      model     00:01.127           00:00.446     40   32.26   12.82     00:00.028
+```
+
+Multiple events are also supported.
+
 ## Pro-Tip: More Types
 
 By default, RSpec only infers types for default Rails app entities (such as controllers, models, mailers, etc.).
