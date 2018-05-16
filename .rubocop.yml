@@ -24,6 +24,9 @@ AllCops:
 Rails:
   Enabled: false
 
+Lint/SplatKeywordArguments:
+  Enabled: false
+
 Naming/AccessorMethodName:
   Enabled: false
 
