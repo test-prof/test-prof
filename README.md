@@ -28,7 +28,7 @@ Of course, we have some [solutions](https://test-prof.evilmartians.io/#tips-and-
 
 [![](./docs/assets/images/coggle.png)](http://bit.ly/test-prof-map)
 
-📑 [Documentation][https://test-prof.evilmartians.io]
+📑 [Documentation](https://test-prof.evilmartians.io)
 
 Supported Ruby versions:
 
