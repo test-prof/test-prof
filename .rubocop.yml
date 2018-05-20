@@ -6,7 +6,7 @@ AllCops:
     - 'lib/**/*.rb'
     - 'lib/**/*.rake'
     - 'spec/**/*.rb'
-    - 'guides/*.md'
+    - 'docs/*.md'
   Exclude:
     - 'bin/**/*'
     - 'spec/dummy/**/*'

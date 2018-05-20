@@ -1,10 +1,11 @@
-[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build Status](https://travis-ci.org/palkan/test-prof.svg?branch=master)](https://travis-ci.org/palkan/test-prof) [![Code Triagers Badge](https://www.codetriage.com/palkan/test-prof/badges/users.svg)](https://www.codetriage.com/palkan/test-prof)
-[![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](https://test-prof.evilmartians.io)
+[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build Status](https://travis-ci.org/palkan/test-prof.svg?branch=master)](https://travis-ci.org/palkan/test-prof)
 
-# Ruby Tests Profiling Toolbox
+# TestProf
+
+> Ruby tests profiling and optimization toolbox
 
 <img align="right" height="150" width="129"
-     title="TestProf logo" src="./docs/assets/images/logo.svg">
+     title="TestProf logo" class="home-logo" src="./assets/images/logo.svg">
 
 TestProf is a collection of different tools to analyze your test suite performance.
 
@@ -24,11 +25,9 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 - etc.
 
-Of course, we have some [solutions](https://test-prof.evilmartians.io/#tips-and-tricks-or-recipes) for common performance issues too, bundled into the gem.
+Of course, we have some [solutions](#recipes) for common performance issues too, bundled into the gem.
 
-[![](./docs/assets/images/coggle.png)](http://bit.ly/test-prof-map)
-
-📑 [Documentation][https://test-prof.evilmartians.io]
+[![](./assets/images/coggle.png)](http://bit.ly/test-prof-map)
 
 Supported Ruby versions:
 
@@ -61,9 +60,45 @@ end
 
 And that's it)
 
-## Usage
+## Profilers
 
-Check out our [docs][].
+- [RubyProf Integration](./ruby_prof.md)
+
+- [StackProf Integration](./stack_prof.md)
+
+- [Event Profiler](./event_prof.md) (e.g. ActiveSupport notifications)
+
+- [Tag Profiler](./tag_prof.md)
+
+- [Factory Doctor](./factory_doctor.md)
+
+- [Factory Profiler](./factory_prof.md)
+
+- [RSpecDissect Profiler](./rspec_dissect.md)
+
+- [RuboCop cops](./rubocop.md)
+
+## Recipes
+
+We also want to share some small code tricks which can help you to improve your test suite performance and efficiency:
+
+- [`before_all` Hook](./before_all.md)
+
+- [`let_it_be` Helper](./let_it_be.md)
+
+- [AnyFixture](./any_fixture.md)
+
+- [FactoryDefault](./factory_default.md)
+
+- [FactoryAllStub](./factory_all_stub.md)
+
+- [RSpec Stamp](./rspec_stamp.md)
+
+- [Tests Sampling](./tests_sampling.md)
+
+- [Active Record Shared Connection](./active_record_shared_connection.md)
+
+- [Rails Logging](./logging.md)
 
 ## What's next?
 
@@ -73,5 +108,3 @@ Have an idea? [Propose](https://github.com/palkan/test-prof/issues/new) a featur
 ## License
 
 The gem is available as open source under the terms of the [MIT License](http://opensource.org/licenses/MIT).
-
-[docs]: https://test-prof.evilmartians.io

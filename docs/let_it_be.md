@@ -19,7 +19,7 @@ end
 
 We don't need to re-create the Fab Four for every example, do we?
 
-We already have [`before_all`](https://github.com/palkan/test-prof/tree/master/guides/before_all.md) to solve the problem of _repeatable_ data:
+We already have [`before_all`](./before_all.md) to solve the problem of _repeatable_ data:
 
 ```ruby
 describe BeatleWeightedSearchQuery do

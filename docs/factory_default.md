@@ -1,6 +1,6 @@
 # FactoryDefault
 
-_Factory Default_ aims to help you cope with _factory cascades_ (see [FactoryProf](https://github.com/palkan/test-prof/tree/master/guides/factory_prof.md)) by reusing associated records.
+_Factory Default_ aims to help you cope with _factory cascades_ (see [FactoryProf](./factory_prof.md)) by reusing associated records.
 
 **NOTE**. Only works with FactoryGirl/FactoryBot.
 
