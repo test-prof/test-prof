@@ -58,7 +58,7 @@ require 'test_prof/recipes/rspec/any_fixture'
 
 Now you can use `TestProf::AnyFixture` in your tests.
 
-### DSL
+## DSL
 
 We provide an optional _syntactic sugar_ (through Refinement) to make easier to define fixtures:
 
@@ -77,7 +77,7 @@ let(:account) { fixture(:account) }
 
 **NOTE:** Only work for Ruby 2.4+.
 
-### Usage report
+## Usage report
 
 `AnyFixture` collects the usage information during the test run and could reports it at the end:
 

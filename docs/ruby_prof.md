@@ -38,7 +38,7 @@ it 'is doing heavy stuff', :rprof do
 end
 ```
 
-### Configuration
+## Configuration
 
 The most useful configuration option is `printer` – it allows you to specify a RubyProf [printer](https://github.com/ruby-prof/ruby-prof#printers).
 

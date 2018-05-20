@@ -88,7 +88,7 @@ for the list of available events if you're using Rails.
 
 If you're using [rom-rb](http://rom-rb.org) you might be interested in profiling `'sql.rom'` event.
 
-### Configuration
+## Configuration
 
 By default, EventProf collects information only about top-level groups (aka suites),
 but you can also profile individual examples. Just set the configuration option:

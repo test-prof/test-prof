@@ -38,7 +38,7 @@ it 'is doing heavy stuff', :sprof do
 end
 ```
 
-### Configuration
+## Configuration
 
 You can change StackProf mode (which is `wall` by default) through `TEST_STACK_PROF_MODE` env variable.
 
