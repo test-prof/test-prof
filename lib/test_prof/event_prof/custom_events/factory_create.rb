@@ -44,7 +44,7 @@ module TestProf::EventProf::CustomEvents
   end
 end
 
-TestProf.activate('EVENT_PROF', /\bfactory\.create\b/) do
+TestProf::EventProf::CustomEvents.register("factory.create") do
   if defined? TestProf::FactoryBot
     TestProf::EventProf::CustomEvents::FactoryCreate.setup!
   else

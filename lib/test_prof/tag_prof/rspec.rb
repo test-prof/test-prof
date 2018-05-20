@@ -83,3 +83,10 @@ TestProf.activate('TAG_PROF') do
     config.after(:suite) { listener.report unless listener.nil? }
   end
 end
+
+# Activate custom events
+TestProf.activate('TAG_PROF_EVENT') do
+  require "test_prof/event_prof"
+
+  TestProf::EventProf::CustomEvents.activate_all(ENV['TAG_PROF_EVENT'])
+end

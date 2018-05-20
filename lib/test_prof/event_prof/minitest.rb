@@ -67,7 +67,10 @@ module Minitest
           config.rank_by = options[:rank_by] if options[:rank_by]
           config.top_count = options[:top_count] if options[:top_count]
           config.per_example = options[:per_example] if options[:per_example]
+
+          ::TestProf::EventProf::CustomEvents.activate_all config.event
         end
+
         ::TestProf::EventProf.build
       end
     end

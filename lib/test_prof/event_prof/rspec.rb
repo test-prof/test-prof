@@ -136,6 +136,8 @@ end
 
 # Register EventProf listener
 TestProf.activate('EVENT_PROF') do
+  TestProf::EventProf::CustomEvents.activate_all(ENV['EVENT_PROF'])
+
   RSpec.configure do |config|
     listener = nil
 
