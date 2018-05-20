@@ -24,7 +24,7 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 - etc.
 
-Of course, we have some [solutions](https://test-prof.evilmartians.io/#tips-and-tricks-or-recipes) for common performance issues too, bundled into the gem.
+Of course, we have some [solutions](https://test-prof.evilmartians.io/#/?id=recipes) for common performance issues too, bundled into the gem.
 
 [![](./docs/assets/images/coggle.png)](http://bit.ly/test-prof-map)
 
