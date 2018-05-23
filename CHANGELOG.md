@@ -2,6 +2,8 @@
 
 ## master
 
+- Disable referential integrity when cleaning AnyFixture. ([@palkan][])
+
 - Add events support to TagProf. ([@palkan][])
 
 Example usage:

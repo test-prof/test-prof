@@ -101,6 +101,8 @@ You can also enable reporting through `ANYFIXTURE_REPORT=1` env variable.
 
 ## Caveats
 
+**UPD:** Since v0.5.0 AnyFixture disable referential integrity (if possible) to prevent the following problem.
+
 `AnyFixture` cleans tables in the reverse order as compared to the order they were populated. That
 means when you register a fixture which references a not-yet-registered table, a
 foreign-key violation error *might* occur (if any). An example is worth more than 1000

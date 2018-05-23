@@ -60,10 +60,12 @@ module TestProf
 
       # Clean all affected tables (but do not reset cache)
       def clean
-        tables_cache.keys.reverse_each do |table|
-          ActiveRecord::Base.connection.execute %(
-            DELETE FROM #{table}
-          )
+        disable_referential_integrity do
+          tables_cache.keys.reverse_each do |table|
+            ActiveRecord::Base.connection.execute %(
+              DELETE FROM #{table}
+            )
+          end
         end
       end
 
@@ -135,6 +137,12 @@ module TestProf
 
       def tables_cache
         @tables_cache ||= {}
+      end
+
+      def disable_referential_integrity
+        connection = ActiveRecord::Base.connection
+        return yield unless connection.respond_to?(:disable_referential_integrity)
+        connection.disable_referential_integrity { yield }
       end
     end
 
