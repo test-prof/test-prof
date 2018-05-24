@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "spec_helper"
-require "test_prof/recipes/active_record_shared_connection"
+require "test_prof/recipes/active_record_one_love"
 
 describe TestProf::ActiveRecordSharedConnection, :transactional do
   subject { described_class }
