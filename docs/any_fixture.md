@@ -32,7 +32,7 @@ RSpec.shared_context 'account', account: true do
   let(:account) { TestProf::AnyFixture.register(:account) }
 
   # Or hard-reload object if there is chance of in-place modification
-  let(:account) { Account.find(TestProf::AnyFixture.register(:account)).id) }
+  let(:account) { Account.find(TestProf::AnyFixture.register(:account).id) }
 end
 
 # Then in your tests
@@ -48,6 +48,8 @@ describe PostsController, :account do
   # ...
 end
 ```
+
+See real life [example](http://bit.ly/any-fixture).
 
 ## Instructions
 
@@ -84,10 +86,10 @@ TestProf also provides an extension to _hard-reload_ ActiveRecord objects:
 
 ```ruby
 # instead of
-let(:account) { Account.find(fixture(:account)).id) }
+let(:account) { Account.find(fixture(:account).id) }
 
 # load refinement
-require "test_prof/ext/active_record_refind"
+require 'test_prof/ext/active_record_refind'
 
 using TestProf::Ext::ActiveRecordRefind
 
