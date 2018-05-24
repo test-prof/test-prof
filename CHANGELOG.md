@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `ActiveRecordRefind` refinement. ([@palkan][])
+
 - Disable referential integrity when cleaning AnyFixture. ([@palkan][])
 
 - Add events support to TagProf. ([@palkan][])

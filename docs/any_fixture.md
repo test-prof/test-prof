@@ -28,10 +28,11 @@ RSpec.shared_context 'account', account: true do
     end
   end
 
-  let(:account) { @account }
+  # Use .register here to track the usage stats (see below)
+  let(:account) { TestProf::AnyFixture.register(:account) }
 
   # Or hard-reload object if there is chance of in-place modification
-  let(:account) { Account.find(@account.id) }
+  let(:account) { Account.find(TestProf::AnyFixture.register(:account)).id) }
 end
 
 # Then in your tests
@@ -76,6 +77,22 @@ let(:account) { fixture(:account) }
 ```
 
 **NOTE:** Only work for Ruby 2.4+.
+
+## `ActiveRecord#refind`
+
+TestProf also provides an extension to _hard-reload_ ActiveRecord objects:
+
+```ruby
+# instead of
+let(:account) { Account.find(fixture(:account)).id) }
+
+# load refinement
+require "test_prof/ext/active_record_refind"
+
+using TestProf::Ext::ActiveRecordRefind
+
+let(:account) { fixture(:account).refind }
+```
 
 ## Usage report
 

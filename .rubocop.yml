@@ -43,6 +43,9 @@ Style/Documentation:
   Exclude:
     - 'spec/**/*.rb'
 
+Style/AsciiComments:
+  Enabled: false
+
 Style/CaseEquality:
   Enabled: false
 
