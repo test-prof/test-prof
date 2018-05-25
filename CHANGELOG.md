@@ -2,9 +2,9 @@
 
 ## master
 
-- Add `ActiveRecordRefind` refinement. ([@palkan][])
+## 0.5.0 (2018-04-25)
 
-- Disable referential integrity when cleaning AnyFixture. ([@palkan][])
+### Features
 
 - Add events support to TagProf. ([@palkan][])
 
@@ -14,13 +14,31 @@ Example usage:
 TAG_PROF=type TAG_PROF_EVENT=sql.active_record rspec
 ```
 
+[📝 Docs](https://test-prof.evilmartians.io/#/tag_prof?id=profiling-events)
+
 - Add logging helpers for Rails. ([@palkan][])
 
-- Add ability to track multiple events at the same time with `EventProf`. ([@palkan][])
+Enalbe verbose logging globally:
+
+```sh
+LOG=all rspec
+```
+
+Or per example (group):
+
+```ruby
+it 'does smth weird', :log do
+  # ...
+end
+```
+
+[📝 Docs](https://test-prof.evilmartians.io/#/logging)
 
 - Add HTML report for `TagProf`. ([@palkan][])
 
 Generate HTML report by setting `TAG_PROF_FORMAT` to `html`.
+
+- Add ability to track multiple events at the same time with `EventProf`. ([@palkan][])
 
 - Add `AnyFixture` DSL. ([@palkan][])
 
@@ -37,17 +55,38 @@ before(:all) { fixture(:account) }
 let(:account) { fixture(:account) }
 ```
 
+[📝 Docs](https://test-prof.evilmartians.io/#/any_fixture?id=dsl)
+
 - Add `AnyFixture` usage report. ([@palkan][])
 
-Enable `AnyFixture` usage reporting with:
+Enable `AnyFixture` usage reporting with `ANYFIXTURE_REPORTING=1` or with:
 
 ```ruby
 TestProf::AnyFixture.reporting_enabled = true
 ```
 
+[📝 Docs](https://test-prof.evilmartians.io/#/any_fixture?id=usage-report)
+
 - Add `ActiveRecordSharedConnection` recipe. ([@palkan][])
 
+Force ActiveRecord to use the same connection between threads (to avoid database cleaning in browser tests).
+
+[📝 Docs](https://test-prof.evilmartians.io/#/active_record_shared_connection)
+
 - [#70](https://github.com/palkan/test-prof/pull/70) Add `FactoryAllStub` recipe. ([@palkan][])
+
+[📝 Docs](https://test-prof.evilmartians.io/#/factory_all_stub)
+
+- Add `ActiveRecordRefind` refinement. ([@palkan][])
+
+[📝 Docs](https://test-prof.evilmartians.io/#/any_fixture?id=activerecordrefind)
+
+### Fixes & Improvements
+
+- **Brand new documentatation website: https://test-prof.evilmartians.io/**
+
+- Disable referential integrity when cleaning AnyFixture. ([@palkan][])
+
 
 ## 0.4.9 (2018-03-20)
 
