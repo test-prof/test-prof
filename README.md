@@ -69,6 +69,7 @@ Check out our [docs][].
 
 Have an idea? [Propose](https://github.com/palkan/test-prof/issues/new) a feature request!
 
+Already using TestProf? [Share your story!](https://github.com/palkan/test-prof/issues/73)
 
 ## License
 

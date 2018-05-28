@@ -104,6 +104,7 @@ We also want to share some small code tricks which can help you to improve your 
 
 Have an idea? [Propose](https://github.com/palkan/test-prof/issues/new) a feature request!
 
+Already using TestProf? [Share your story!](https://github.com/palkan/test-prof/issues/73)
 
 ## License
 
