@@ -27,15 +27,10 @@ module RuboCop
         # From https://github.com/backus/rubocop-rspec/blob/master/lib/rubocop/rspec/language.rb
         GROUP_BLOCKS = %i[
           describe context feature example_group
-          xdescribe xcontext xfeature
-          fdescribe fcontext ffeature
         ].freeze
 
         EXAMPLE_BLOCKS = %i[
-          it specify example scenario its
-          fit fspecify fexample fscenario focus
-          xit xspecify xexample xscenario ski
-          pending
+          it specify example scenario
         ].freeze
 
         class << self
