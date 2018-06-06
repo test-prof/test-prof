@@ -2,6 +2,11 @@
 
 ## master
 
+- [Fix [#75](https://github.com/palkan/test-prof/issues/75)] Fix `RSpec/Aggregate` failures with non-regular examples. ([@palkan][])
+
+Do not take into account `xit`, `pending`, `its`, etc. examples,
+only consider regular `it`, `specify`, `scenario`, `example`.
+
 ## 0.5.0 (2018-04-25)
 
 ### Features

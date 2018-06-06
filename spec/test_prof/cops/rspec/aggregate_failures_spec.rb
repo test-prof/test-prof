@@ -53,6 +53,14 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
     expect(cop.offenses).to be_empty
   end
 
+  it 'accepts non-regular one-liners' do
+    inspect_source(['context "request" do',
+                    '  its(:foo) { is_expected.to be_success }',
+                    '  pending { is_expected.to fail }',
+                    'end'])
+    expect(cop.offenses).to be_empty
+  end
+
   it 'accepts one-liners separated by multiliners' do
     inspect_source(['context "request" do',
                     '  it { is_expected.to be_success }',
