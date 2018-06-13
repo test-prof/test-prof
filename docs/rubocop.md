@@ -21,6 +21,12 @@ RSpec/AggregateFailures:
     - 'spec/**/*.rb'
 ```
 
+Or you can just require it dynamically:
+
+```sh
+bundle exec rubocop -r 'test_prof/rubocop' --only RSpec/AggregateFailures
+```
+
 ## RSpec/AggregateFailures
 
 This cop encourages you to use one of the greatest features of the recent RSpec – aggregating failures within an example.
