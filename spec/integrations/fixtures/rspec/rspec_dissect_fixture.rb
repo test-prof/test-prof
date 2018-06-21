@@ -21,9 +21,10 @@ end
 
 describe "Subject + Before" do
   subject(:work) { Work.new }
+  let(:no_work) { Work.new }
 
   specify do
-    expect(work).not_to be_nil
+    expect(no_work).not_to be_nil
   end
 
   it "does nothing" do

@@ -2,6 +2,29 @@
 
 ## master
 
+- Show top `let` declarations per example group in RSpecDissect profiler. ([@palkan][])
+
+The output now includes the following information:
+
+```
+Top 5 slowest suites (by `let` time):
+
+FunnelsController (./spec/controllers/funnels_controller_spec.rb:3) – 00:38.532 of 00:43.649 (133)
+ ↳ user – 3
+ ↳ funnel – 2
+ApplicantsController (./spec/controllers/applicants_controller_spec.rb:3) – 00:33.252 of 00:41.407 (222)
+ ↳ user – 10
+ ↳ funnel – 5
+ ```
+
+Enabled by default. Disable it with:
+
+```ruby
+TestProf::RSpecDissect.configure do |config|
+  config.let_stats_enabled = false
+end
+```
+
 - Add ability to run only `let` or `before` profiler with RSpecDissect. ([@palkan][])
 
 - [Fix [#75](https://github.com/palkan/test-prof/issues/75)] Fix `RSpec/Aggregate` failures with non-regular examples. ([@palkan][])

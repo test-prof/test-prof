@@ -14,13 +14,13 @@ module TestProf
     end
 
     module MemoizedInstrumentation # :nodoc:
-      def fetch_or_store(*)
+      def fetch_or_store(id, *)
         res = nil
         Thread.current[:_rspec_dissect_let_depth] ||= 0
         Thread.current[:_rspec_dissect_let_depth] += 1
         begin
           res = if Thread.current[:_rspec_dissect_let_depth] == 1
-                  RSpecDissect.track(:let) { super }
+                  RSpecDissect.track(:let, id) { super }
                 else
                   super
                 end
@@ -35,11 +35,16 @@ module TestProf
     class Configuration
       MODES = %w[all let before].freeze
 
-      attr_accessor :top_count
+      attr_accessor :top_count, :let_stats_enabled,
+                    :let_top_count
+
+      alias let_stats_enabled? let_stats_enabled
 
       attr_reader :mode
 
       def initialize
+        @let_stats_enabled = true
+        @let_top_count = (ENV['RD_PROF_LET_TOP'] || 3).to_i
         @top_count = (ENV['RD_PROF_TOP'] || 5).to_i
         @stamp = ENV['RD_PROF_STAMP']
         @mode = ENV['RD_PROF'] == '1' ? 'all' : ENV['RD_PROF']
@@ -101,19 +106,20 @@ module TestProf
         log :info, "RSpecDissect enabled"
       end
 
-      def track(type)
+      def track(type, meta = nil)
         start = TestProf.now
         res = yield
         delta = (TestProf.now - start)
         type = type.to_s
-        @data[type] += delta
+        @data[type][:time] += delta
+        @data[type][:meta] << meta unless meta.nil?
         @data["total_#{type}"] += delta
         res
       end
 
       def reset!
         METRICS.each do |type|
-          @data[type.to_s] = 0.0
+          @data[type.to_s] = { time: 0.0, meta: [] }
         end
       end
 
@@ -123,21 +129,15 @@ module TestProf
       end
 
       def time_for(key)
-        @data[key.to_s]
+        @data[key.to_s][:time]
+      end
+
+      def meta_for(key)
+        @data[key.to_s][:meta]
       end
 
       def total_time_for(key)
         @data["total_#{key}"]
-      end
-
-      METRICS.each do |type|
-        define_method("#{type}_time") do
-          @data[type.to_s]
-        end
-
-        define_method("total_#{type}_time") do
-          @data["total_#{type}"]
-        end
       end
     end
   end

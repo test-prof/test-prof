@@ -15,18 +15,22 @@ describe "RSpecDissect" do
     expect(output).to include_lines(
       "Top 5 slowest suites (by `before(:each)` time):",
       "Subject + Before (./rspec_dissect_fixture.rb:22) – ",
-      "Only let (./rspec_dissect_fixture.rb:42) – "
+      "Only let (./rspec_dissect_fixture.rb:43) – "
     )
 
     if TestProf::RSpecDissect.memoization_available?
       expect(output).to match(/Total `let` time:\s+\d{2}:\d{2}\.\d{3}/)
       expect(output).to include_lines(
         "Top 5 slowest suites (by `let` time):",
-        "Only let (./rspec_dissect_fixture.rb:42) – ",
-        "Subject + Before (./rspec_dissect_fixture.rb:22) – "
+        "Only let (./rspec_dissect_fixture.rb:43) – ",
+        " ↳ work – 1",
+        " ↳ more_work – 1",
+        "Subject + Before (./rspec_dissect_fixture.rb:22) – ",
+        " ↳ work – 2",
+        " ↳ no_work – 1"
       )
     else
-      expect(output).to include("Total `let` time: NOT SUPPORTED (requires RSpec >= 3.3.0)")
+      expect(output).to include("`let` profiling is not supported (requires RSpec >= 3.3.0)")
     end
   end
 
@@ -43,7 +47,7 @@ describe "RSpecDissect" do
     if TestProf::RSpecDissect.memoization_available?
       expect(output).to include_lines(
         "Top 1 slowest suites (by `let` time):",
-        "Only let (./rspec_dissect_fixture.rb:42) – "
+        "Only let (./rspec_dissect_fixture.rb:43) – "
       )
     end
   end

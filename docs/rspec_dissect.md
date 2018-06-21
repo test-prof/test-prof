@@ -25,11 +25,23 @@ Analytics::Wor...rsion::Summary (./spec/services/analytics/workflow_conversion/s
 Top 5 slowest suites (by `let` time):
 
 FunnelsController (./spec/controllers/funnels_controller_spec.rb:3) – 00:38.532 of 00:43.649 (133)
+ ↳ user – 3
+ ↳ funnel – 2
 ApplicantsController (./spec/controllers/applicants_controller_spec.rb:3) – 00:33.252 of 00:41.407 (222)
+ ↳ user – 10
+ ↳ funnel – 5
+ ↳ applicant – 2
 Webhooks::DispatchTransition (./spec/services/webhooks/dispatch_transition_spec.rb:3) – 00:30.320 of 00:33.706 (327)
-BookedSlotsController (./spec/controllers/booked_slots_controller_spec.rb:3) – 00:25.710 of 00:27.893 (50)
+ ↳ user – 30
+BookedSlotsController (./spec/controllers/booked_slots_controller_spec.rb:3) – 00:25.710 of 00:27.893 e(50)
+ ↳ user – 21
+ ↳ stage – 14
 AvailableSlotsController (./spec/controllers/available_slots_controller_spec.rb:3) – 00:18.481 of 00:23.366 (85)
+ ↳ user – 15
+ ↳ stage – 10
 ```
+
+As you can see, the `let` profiler also tracks the provides the information on how many times each `let` declarations has been used within a group (shows top-3 by default).
 
 **NOTE**: Tracking `let` time only supported in RSpec >= 3.3.0.
 
@@ -50,6 +62,16 @@ RD_PROF=1 RD_PROF_TOP=10 rspec ...
 ```
 
 You can also track only `let` or `before` usage by specifying `RD_PROF=let` and `RD_PROF=before` respectively.
+
+For `let` profiler you can also specify the number of top `let` declarations to print through `RD_PROF_LET_TOP=10` env var.
+
+To disable `let` stats add:
+
+```ruby
+TestProf::RSpecDissect.configure do |config|
+  config.let_stats_enabled = false
+end
+```
 
 ## Using with RSpecStamp
 
