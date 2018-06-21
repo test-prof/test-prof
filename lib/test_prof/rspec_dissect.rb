@@ -16,16 +16,16 @@ module TestProf
     module MemoizedInstrumentation # :nodoc:
       def fetch_or_store(*)
         res = nil
-        Thread.current[:_rspec_dissect_memo_depth] ||= 0
-        Thread.current[:_rspec_dissect_memo_depth] += 1
+        Thread.current[:_rspec_dissect_let_depth] ||= 0
+        Thread.current[:_rspec_dissect_let_depth] += 1
         begin
-          res = if Thread.current[:_rspec_dissect_memo_depth] == 1
-                  RSpecDissect.track(:memo) { super }
+          res = if Thread.current[:_rspec_dissect_let_depth] == 1
+                  RSpecDissect.track(:let) { super }
                 else
                   super
                 end
         ensure
-          Thread.current[:_rspec_dissect_memo_depth] -= 1
+          Thread.current[:_rspec_dissect_let_depth] -= 1
         end
         res
       end
@@ -33,13 +33,31 @@ module TestProf
 
     # RSpecDisect configuration
     class Configuration
+      MODES = %w[all let before].freeze
+
       attr_accessor :top_count
+
+      attr_reader :mode
 
       def initialize
         @top_count = (ENV['RD_PROF_TOP'] || 5).to_i
         @stamp = ENV['RD_PROF_STAMP']
+        @mode = ENV['RD_PROF'] == '1' ? 'all' : ENV['RD_PROF']
+
+        unless MODES.include?(mode)
+          raise "Unknown RSpecDissect mode: #{mode};" \
+                "available modes: #{MODES.join(', ')}"
+        end
 
         RSpecStamp.config.tags = @stamp if stamp?
+      end
+
+      def let?
+        mode == "all" || mode == "let"
+      end
+
+      def before?
+        mode == "all" || mode == "before"
       end
 
       def stamp?
@@ -47,7 +65,7 @@ module TestProf
       end
     end
 
-    METRICS = %w[before memo].freeze
+    METRICS = %w[before let].freeze
 
     class << self
       include Logging
@@ -76,6 +94,10 @@ module TestProf
 
         reset!
 
+        if config.let? && !memoization_available?
+          log :warn, "RSpecDissect: `let` profiling is not supported (requires RSpec >= 3.3.0)\n"
+        end
+
         log :info, "RSpecDissect enabled"
       end
 
@@ -100,6 +122,14 @@ module TestProf
         defined?(::RSpec::Core::MemoizedHelpers::ThreadsafeMemoized)
       end
 
+      def time_for(key)
+        @data[key.to_s]
+      end
+
+      def total_time_for(key)
+        @data["total_#{key}"]
+      end
+
       METRICS.each do |type|
         define_method("#{type}_time") do
           @data[type.to_s]
@@ -113,6 +143,8 @@ module TestProf
   end
 end
 
+require "test_prof/rspec_dissect/collectors/let"
+require "test_prof/rspec_dissect/collectors/before"
 require "test_prof/rspec_dissect/rspec" if defined?(RSpec::Core)
 
 TestProf.activate('RD_PROF') do

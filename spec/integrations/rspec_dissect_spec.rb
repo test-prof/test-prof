@@ -48,6 +48,37 @@ describe "RSpecDissect" do
     end
   end
 
+  if TestProf::RSpecDissect.memoization_available?
+    specify "it works when mode is before", :aggregate_failures do
+      output = run_rspec('rspec_dissect', env: { 'RD_PROF' => 'before', 'RD_PROF_TOP' => '1' })
+
+      expect(output).to include("5 examples, 0 failures")
+
+      expect(output).to include_lines(
+        "Top 1 slowest suites (by `before(:each)` time):",
+        "Subject + Before (./rspec_dissect_fixture.rb:22) – "
+      )
+
+      expect(output).not_to include(
+        "Top 1 slowest suites (by `let` time):"
+      )
+    end
+
+    specify "it works when mode is let", :aggregate_failures do
+      output = run_rspec('rspec_dissect', env: { 'RD_PROF' => 'let', 'RD_PROF_TOP' => '1' })
+
+      expect(output).to include("5 examples, 0 failures")
+
+      expect(output).not_to include(
+        "Top 1 slowest suites (by `before(:each)` time):"
+      )
+
+      expect(output).to include_lines(
+        "Top 1 slowest suites (by `let` time):"
+      )
+    end
+  end
+
   context "with RStamp" do
     before do
       FileUtils.cp(

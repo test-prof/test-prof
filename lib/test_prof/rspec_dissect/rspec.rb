@@ -1,17 +1,13 @@
 # frozen_string_literal: true
 
 require "test_prof/ext/float_duration"
-require "test_prof/ext/string_truncate"
-require "test_prof/utils/sized_ordered_set"
 require "test_prof/ext/string_strip_heredoc"
 
 module TestProf
   module RSpecDissect
-    # rubocop:disable Metrics/ClassLength
     class Listener # :nodoc:
       include Logging
       using FloatDuration
-      using StringTruncate
       using StringStripHeredoc
 
       NOTIFICATIONS = %i[
@@ -21,12 +17,16 @@ module TestProf
       ].freeze
 
       def initialize
-        @before_results = Utils::SizedOrderedSet.new(
-          top_count, sort_by: :before
-        )
-        @memo_results = Utils::SizedOrderedSet.new(
-          top_count, sort_by: :memo
-        )
+        @collectors = []
+
+        if RSpecDissect.config.let?
+          collectors << Collectors::Let.new(top_count: RSpecDissect.config.top_count)
+        end
+
+        if RSpecDissect.config.before?
+          collectors << Collectors::Before.new(top_count: RSpecDissect.config.top_count)
+        end
+
         @examples_count = 0
         @examples_time = 0.0
         @total_examples_time = 0.0
@@ -46,13 +46,11 @@ module TestProf
         data = {}
         data[:total] = @examples_time
         data[:count] = @examples_count
-        data[:before] = RSpecDissect.before_time
-        data[:memo] = RSpecDissect.memo_time
         data[:desc] = notification.group.top_level_description
         data[:loc] = notification.group.metadata[:location]
 
-        @before_results << data
-        @memo_results << data
+        collectors.each { |c| c.populate!(data) }
+        collectors.each { |c| c << data }
 
         @total_examples_time += @examples_time
         @examples_count = 0
@@ -69,43 +67,16 @@ module TestProf
             RSpecDissect report
 
             Total time: #{@total_examples_time.duration}
-            Total `before(:each)` time: #{RSpecDissect.total_before_time.duration}
           MSG
 
-        msgs <<
-          if RSpecDissect.memoization_available?
-            "Total `let` time: #{RSpecDissect.total_memo_time.duration}\n\n"
-          else
-            "Total `let` time: NOT SUPPORTED (requires RSpec >= 3.3.0)\n\n"
-          end
-
-        msgs <<
-          <<-MSG.strip_heredoc
-            Top #{top_count} slowest suites (by `before(:each)` time):
-
-          MSG
-
-        @before_results.each do |group|
-          msgs <<
-            <<-GROUP.strip_heredoc
-              #{group[:desc].truncate} (#{group[:loc]}) – #{group[:before].duration} of #{group[:total].duration} (#{group[:count]})
-            GROUP
+        collectors.each do |c|
+          msgs << c.total_time_message
         end
 
-        if RSpecDissect.memoization_available?
-          msgs <<
-            <<-MSG.strip_heredoc
+        msgs << "\n"
 
-              Top #{top_count} slowest suites (by `let` time):
-
-            MSG
-
-          @memo_results.each do |group|
-            msgs <<
-              <<-GROUP.strip_heredoc
-                #{group[:desc].truncate} (#{group[:loc]}) – #{group[:memo].duration} of #{group[:total].duration} (#{group[:count]})
-              GROUP
-          end
+        collectors.each do |c|
+          msgs << c.print_results
         end
 
         log :info, msgs.join
@@ -118,7 +89,9 @@ module TestProf
 
         examples = Hash.new { |h, k| h[k] = [] }
 
-        (@before_results.to_a + @memo_results.to_a)
+        all_results = collectors.inject([]) { |acc, c| acc + c.results.to_a }
+
+        all_results
           .map { |obj| obj[:loc] }.each do |location|
           file, line = location.split(":")
           examples[file] << line.to_i
@@ -146,11 +119,12 @@ module TestProf
 
       private
 
+      attr_reader :collectors
+
       def top_count
         RSpecDissect.config.top_count
       end
     end
-    # rubocop:enable Metrics/ClassLength
   end
 end
 

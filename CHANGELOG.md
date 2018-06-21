@@ -2,6 +2,8 @@
 
 ## master
 
+- Add ability to run only `let` or `before` profiler with RSpecDissect. ([@palkan][])
+
 - [Fix [#75](https://github.com/palkan/test-prof/issues/75)] Fix `RSpec/Aggregate` failures with non-regular examples. ([@palkan][])
 
 Do not take into account `xit`, `pending`, `its`, etc. examples,

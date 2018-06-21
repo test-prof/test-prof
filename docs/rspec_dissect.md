@@ -49,6 +49,8 @@ You can also specify the number of top slow groups through `RD_PROF_TOP` variabl
 RD_PROF=1 RD_PROF_TOP=10 rspec ...
 ```
 
+You can also track only `let` or `before` usage by specifying `RD_PROF=let` and `RD_PROF=before` respectively.
+
 ## Using with RSpecStamp
 
 RSpecDissect can be used with [RSpec Stamp](./rspec_stamp.md) to automatically mark _slow_ examples with custom tags. For example:
