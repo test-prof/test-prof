@@ -2,6 +2,8 @@
 
 ## master
 
+- Refactor `:with_clean_fixture` to clean data once per group. ([@palkan][])
+
 - Show top `let` declarations per example group in RSpecDissect profiler. ([@palkan][])
 
 The output now includes the following information:

@@ -33,8 +33,8 @@ describe "User", :user do
     expect(user).not_to be_valid
   end
 
-  context "with clean fixture", :transactional, :with_clean_fixture do
-    specify "no users" do
+  context "with clean fixture", :transactional do
+    specify "no users", :with_clean_fixture do
       expect(User.count).to eq 0
     end
   end

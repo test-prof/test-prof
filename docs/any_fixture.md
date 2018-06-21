@@ -53,6 +53,8 @@ See real life [example](http://bit.ly/any-fixture).
 
 ## Instructions
 
+### RSpec
+
 In your `spec_helper.rb` (or `rails_helper.rb` if you have one):
 
 ```ruby
@@ -60,6 +62,18 @@ require 'test_prof/recipes/rspec/any_fixture'
 ```
 
 Now you can use `TestProf::AnyFixture` in your tests.
+
+### Minitest
+
+When using AnyFixture with Minitest you should take care of cleaning the database after each test run by yourself. For example:
+
+```ruby
+# test_helper.rb
+
+require 'test_prof/any_fixture'
+
+at_exit { TestProf::AnyFixture.clean }
+```
 
 ## DSL
 
@@ -95,6 +109,27 @@ using TestProf::Ext::ActiveRecordRefind
 
 let(:account) { fixture(:account).refind }
 ```
+
+## Temporary disable fixtures
+
+Some of your tests might rely on _clean database_. Thus running them along with AnyFixture-dependent tests could produce failures.
+
+You can disable (or delete) all created fixture while running a specified example or group using the `:with_clean_fixture` shared context:
+
+```ruby
+context 'global state', :with_clean_fixture do
+  # or include explicitly
+  # include_context "any_fixture:clean"
+
+  specify 'table is empty or smth like this' do
+    # ...
+  end
+end
+```
+
+How does it work? It wraps the example group into a transaction (using [`before_all`](./before_all.md)) and calls `TestProf::AnyFixture.clean` before running the examples.
+
+Thus, this context is a little bit _heavy_. Try to avoid such situations and write specs independent on global state.
 
 ## Usage report
 
