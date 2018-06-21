@@ -54,10 +54,35 @@ That's all!
 
 ## Instructions
 
+### RSpec
+
 In your `rails_helper.rb` (or `spec_helper.rb` after *ActiveRecord* has been loaded):
 
 ```ruby
 require 'test_prof/recipes/rspec/before_all'
+```
+
+### Minitest (Experimental)
+
+\*_Experimental_ means that I haven't tried it in _production_.
+
+It is possible to use `before_all` with Minitest too:
+
+```ruby
+require 'test_prof/recipes/minitest/before_all'
+
+class MyBeatlesTest < Minitest::Test
+  include TestProf::Minitest::BeforeAll
+
+  before_all do
+    @paul = create(:beatle, name: 'Paul')
+    @ringo = create(:beatle, name: 'Ringo')
+    @george = create(:beatle, name: 'George')
+    @john = create(:beatle, name: 'John')
+  end
+
+  # define tests which could access the object defined within `before_all`
+end
 ```
 
 ## Caveats
@@ -95,4 +120,9 @@ end
 # Note, that @user.reload may not be enough,
 # 'cause it doesn't reset associations
 let(:user) { User.find(@user.id) }
+
+# or with Minitest
+def setup
+  @user = User.find(@user.id)
+end
 ```

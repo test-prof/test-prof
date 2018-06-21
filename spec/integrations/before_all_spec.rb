@@ -3,9 +3,19 @@
 require "spec_helper"
 
 describe "BeforeAll" do
-  specify "it works" do
-    output = run_rspec('before_all')
+  context "RSpec" do
+    specify "it works" do
+      output = run_rspec('before_all')
 
-    expect(output).to include("8 examples, 0 failures")
+      expect(output).to include("8 examples, 0 failures")
+    end
+  end
+
+  context "Minitest" do
+    specify "it works" do
+      output = run_minitest('before_all')
+
+      expect(output).to include("3 runs, 3 assertions, 0 failures, 0 errors, 0 skips")
+    end
   end
 end
