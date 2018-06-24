@@ -8,7 +8,7 @@ require "minitest/autorun"
 require "test_prof/recipes/minitest/before_all"
 
 describe "User" do
-  include TestProf::Minitest::BeforeAll
+  include TestProf::BeforeAll::Minitest
   prepend TransactionalMinitest
 
   before_all do

@@ -1,10 +1,12 @@
 # frozen_string_literal: true
 
+require "test_prof/before_all"
+
 module TestProf
-  module Minitest
+  module BeforeAll
     # Add before_all hook to Minitest: wrap all examples into a transaction and
     # store instance variables
-    module BeforeAll # :nodoc: all
+    module Minitest # :nodoc: all
       class Executor
         attr_reader :active
 
@@ -18,7 +20,7 @@ module TestProf
           return if active?
           @active = true
           @examples_left = test_class.runnable_methods.size
-          ActiveRecord::Base.connection.begin_transaction(joinable: false)
+          BeforeAll.begin_transaction
           capture!
         end
 
@@ -27,7 +29,7 @@ module TestProf
           return unless @examples_left.zero?
 
           @active = false
-          ActiveRecord::Base.connection.rollback_transaction
+          BeforeAll.rollback_transaction
         end
 
         def capture!
