@@ -109,3 +109,5 @@ before { FactoryBot.set_factory_default(:user, user) }
 - `FactoryBot#create_default(factory, *args)` – is a shortcut for `create` + `set_factory_default`.
 
 **NOTE**. Defaults are cleaned up after each example.
+
+If you want to preserve traits you can add `FactoryDefault.preserve_traits = true` in your test.
