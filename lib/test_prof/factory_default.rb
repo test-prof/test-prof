@@ -9,10 +9,9 @@ module TestProf
   module FactoryDefault
     module DefaultSyntax # :nodoc:
       def create_default(name, *args, &block)
-        set_factory_default(
-          name,
-          TestProf::FactoryBot.create(name, *args, &block)
-        )
+        obj = TestProf::FactoryBot.create(name, *args, &block)
+        return obj if FactoryDefault.preserve_traits
+        set_factory_default(name, obj)
       end
 
       def set_factory_default(name, obj)
@@ -21,6 +20,8 @@ module TestProf
     end
 
     class << self
+      attr_accessor :preserve_traits
+
       def init
         TestProf::FactoryBot::Syntax::Methods.include DefaultSyntax
         TestProf::FactoryBot.extend DefaultSyntax
@@ -29,6 +30,8 @@ module TestProf
         TestProf::FactoryBot::Strategy::Stub.prepend StrategyExt
 
         @store = {}
+        # by default should be false for backward compatibility
+        @preserve_traits = false
       end
 
       def register(name, obj)
