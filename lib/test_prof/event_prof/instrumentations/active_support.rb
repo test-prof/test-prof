@@ -4,11 +4,17 @@ module TestProf::EventProf
   module Instrumentations
     # Wrapper over ActiveSupport::Notifications
     module ActiveSupport
-      def self.subscribe(event)
-        raise ArgumentError, 'Block is required!' unless block_given?
+      class << self
+        def subscribe(event)
+          raise ArgumentError, 'Block is required!' unless block_given?
 
-        ::ActiveSupport::Notifications.subscribe(event) do |_event, start, finish, *_args|
-          yield (finish - start)
+          ::ActiveSupport::Notifications.subscribe(event) do |_event, start, finish, *_args|
+            yield (finish - start)
+          end
+        end
+
+        def instrument(event)
+          ::ActiveSupport::Notifications.instrument(event) { yield }
         end
       end
     end

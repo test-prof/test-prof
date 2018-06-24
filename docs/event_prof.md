@@ -181,3 +181,30 @@ EVENT_PROF=sidekiq.inline bundle exec rspec
 ```
 
 Use this event to profile the time spent running Sidekiq jobs.
+
+## Profile arbitrary methods
+
+You can also add your custom events to profile specific methods (for example, after figuring out some hot calls with [RubyProf](./ruby_prof.md) or [StackProf](./stack_prof.md)).
+
+For example, having a class doing some heavy work:
+
+```ruby
+class Work
+  def do(*args)
+    # do something
+  end
+end
+```
+
+You can profile it by adding a _monitor_:
+
+```ruby
+# provide a class, event name and methods to monitor
+TestProf::EventProf.monitor(Work, 'my.work', :do)
+```
+
+And then run EventProf as usual:
+
+```sh
+EVENT_PROF=my.work bundle exec rake test
+```

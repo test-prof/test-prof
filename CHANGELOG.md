@@ -2,6 +2,21 @@
 
 ## master
 
+- Add `EventProf.monitor` to instrument arbitrary methods. ([@palkan][])
+
+Add custom instrumetation easily:
+
+```ruby
+class Work
+  def do
+    # ...
+  end
+end
+
+# Instrument Work#do calls with "my.work" event
+TestProf::EventProf.monitor(Work, "my.work", :do)
+```
+
 - Adapterize `before_all`. ([@palkan][])
 
 Now it's possible to write your own adapter for `before_all` to manage

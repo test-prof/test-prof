@@ -182,4 +182,20 @@ describe "EventProf RSpec" do
       expect(output).to match(%r{BatchJob \(./event_prof_sidekiq_fixture.rb:39\) – \d{2}:\d{2}.\d{3} \(4 / 2\)})
     end
   end
+
+  context "with monitor" do
+    it "profiles custom methods" do
+      output = run_rspec(
+        'event_prof_monitor',
+        env: { 'EVENT_PROF' => 'test.event' }
+      )
+
+      expect(output).to include("EventProf results for test.event")
+      expect(output).to include("Total events: 3")
+      expect(output).to include_lines(
+        "invokes twice (./event_prof_monitor_fixture.rb:30)",
+        "invokes once (./event_prof_monitor_fixture.rb:26)"
+      )
+    end
+  end
 end

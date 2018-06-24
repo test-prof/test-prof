@@ -3,6 +3,7 @@
 require "test_prof/rspec_stamp"
 require "test_prof/event_prof/profiler"
 require "test_prof/event_prof/instrumentations/active_support"
+require "test_prof/event_prof/monitor"
 require "test_prof/utils/sized_ordered_set"
 
 module TestProf
@@ -77,11 +78,25 @@ module TestProf
       def build(event = config.event)
         ProfilersGroup.new(
           event: event,
-          instrumenter: config.resolve_instrumenter,
+          instrumenter: instrumenter,
           rank_by: config.rank_by,
           top_count: config.top_count,
           per_example: config.per_example?
         )
+      end
+
+      def instrumenter
+        @instrumenter ||= config.resolve_instrumenter
+      end
+
+      # Instrument specified module methods.
+      # Wraps them with `instrumenter.instrument(event) { ... }`.
+      #
+      # Use it to profile arbitrary methods:
+      #
+      #   TestProf::EventProf.monitor(MyModule, "my_module.call", :call)
+      def monitor(mod, event, *mids)
+        Monitor.call(mod, event, *mids)
       end
     end
   end
