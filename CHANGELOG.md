@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `FactoryDefault.preserve_traits` to preserve traits. ([@mordorreal][])
+
 - Add `EventProf.monitor` to instrument arbitrary methods. ([@palkan][])
 
 Add custom instrumetation easily:
