@@ -45,3 +45,13 @@ You can change StackProf mode (which is `wall` by default) through `TEST_STACK_P
 If you want to generate flame graphs you should collect _raw_ data. Turn _raw_ collection on by passing `TEST_STACK_PROF=raw`.
 
 See [stack_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/stack_prof.rb) for all available configuration options and their usage.
+
+## Profiling application boot
+
+The application boot time could also makes testing slower. Try to profile your boot process with StackProf using the following command:
+
+```sh
+TEST_STACK_PROF=boot TEST_STACK_PROF_RAW=1 rspec ./spec/some_spec.rb
+```
+
+**NOTE:** we recommend to anylize the boot time using flame graphs, that's why we need a `TEST_STACK_PROF_RAW=1` option.

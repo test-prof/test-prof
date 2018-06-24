@@ -28,8 +28,12 @@ module TestProf
 
       def initialize
         @mode = ENV.fetch('TEST_STACK_PROF_MODE', :wall).to_sym
-        @raw = ENV['TEST_STACK_PROF'] == 'raw' || ENV['TEST_STACK_PROF_RAW'] == 1
+        @raw = ENV['TEST_STACK_PROF'] == 'raw' || ENV['TEST_STACK_PROF_RAW'] == '1'
         @target = ENV['TEST_STACK_PROF'] == 'boot' ? :boot : :suite
+      end
+
+      def raw?
+        @raw == true
       end
 
       def boot?
@@ -60,7 +64,8 @@ module TestProf
 
         @locked = true
 
-        log :info, "StackProf enabled: mode – #{config.mode}, target – #{config.target}"
+        log :info, "StackProf enabled#{config.raw? ? ' (raw)' : ''}: " \
+                   "mode – #{config.mode}, target – #{config.target}"
 
         at_exit { dump("total") } if config.suite?
       end
