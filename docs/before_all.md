@@ -72,7 +72,7 @@ It is possible to use `before_all` with Minitest too:
 require 'test_prof/recipes/minitest/before_all'
 
 class MyBeatlesTest < Minitest::Test
-  include TestProf::Minitest::BeforeAll
+  include TestProf::BeforeAll::Minitest
 
   before_all do
     @paul = create(:beatle, name: 'Paul')
@@ -83,6 +83,30 @@ class MyBeatlesTest < Minitest::Test
 
   # define tests which could access the object defined within `before_all`
 end
+```
+
+## Database adapters
+
+You can use `before_all` not only with ActiveRecord (which is supported out-of-the-box) but with other database tools too.
+
+All you need is to build a custom adapter and configure `before_all` to use it:
+
+```ruby
+class MyDBAdapter
+  # before_all adapters must implement two methods:
+  # - begin_transaction
+  # - rollback_transaction
+  def begin_transaction
+    # ...
+  end
+
+  def rollback_transaction
+    # ...
+  end
+end
+
+# And then set adapter for `BeforeAll` module
+TestProf::BeforeAll.adapter = MyDBAdapter.new
 ```
 
 ## Caveats

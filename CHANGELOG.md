@@ -2,7 +2,12 @@
 
 ## master
 
-- Add `before_all` for Minitest ([@palkan][])
+- Adapterize `before_all`. ([@palkan][])
+
+Now it's possible to write your own adapter for `before_all` to manage
+transactions.
+
+- Add `before_all` for Minitest. ([@palkan][])
 
 - Refactor `:with_clean_fixture` to clean data once per group. ([@palkan][])
 
