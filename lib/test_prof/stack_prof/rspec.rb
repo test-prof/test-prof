@@ -11,3 +11,10 @@ RSpec.shared_context "stackprof", sprof: true do
     TestProf::StackProf.dump ex.full_description.parameterize
   end
 end
+
+# Handle boot profiling
+RSpec.configure do |config|
+  config.append_before(:suite) do
+    TestProf::StackProf.dump("boot") if TestProf::StackProf.config.boot?
+  end
+end

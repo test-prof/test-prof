@@ -24,11 +24,20 @@ module TestProf
   module StackProf
     # StackProf configuration
     class Configuration
-      attr_accessor :mode, :interval, :raw
+      attr_accessor :mode, :interval, :raw, :target
 
       def initialize
         @mode = ENV.fetch('TEST_STACK_PROF_MODE', :wall).to_sym
         @raw = ENV['TEST_STACK_PROF'] == 'raw' || ENV['TEST_STACK_PROF_RAW'] == 1
+        @target = ENV['TEST_STACK_PROF'] == 'boot' ? :boot : :suite
+      end
+
+      def boot?
+        target == :boot
+      end
+
+      def suite?
+        target == :suite
       end
     end
 
@@ -45,17 +54,15 @@ module TestProf
       end
 
       # Run StackProf and automatically dump
-      # a report when the process exits.
-      #
-      # Use this method to profile the whole run.
+      # a report when the process exits or when the application is booted.
       def run
         return unless profile
 
         @locked = true
 
-        log :info, "StackProf enabled"
+        log :info, "StackProf enabled: mode – #{config.mode}, target – #{config.target}"
 
-        at_exit { dump("total") }
+        at_exit { dump("total") } if config.suite?
       end
 
       def profile(name = nil)
