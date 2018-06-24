@@ -62,8 +62,10 @@ module TestProf
       if defined?(::Spring::Application)
         notify_spring_detected
         ::Spring.after_fork do
-          notify_spring_activate env_var
-          activate!(env_var, val) { yield }
+          activate!(env_var, val) do
+            notify_spring_activate env_var
+            yield
+          end
         end
       else
         activate!(env_var, val) { yield }
