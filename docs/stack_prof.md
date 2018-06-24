@@ -51,7 +51,7 @@ See [stack_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_pro
 The application boot time could also makes testing slower. Try to profile your boot process with StackProf using the following command:
 
 ```sh
-TEST_STACK_PROF=boot TEST_STACK_PROF_RAW=1 rspec ./spec/some_spec.rb
+TEST_STACK_PROF=boot rspec ./spec/some_spec.rb
 ```
 
-**NOTE:** we recommend to anylize the boot time using flame graphs, that's why we need a `TEST_STACK_PROF_RAW=1` option.
+**NOTE:** we recommend to anylize the boot time using flame graphs, that's why raw data collection is always on in `boot` mode.
