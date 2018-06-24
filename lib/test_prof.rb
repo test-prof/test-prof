@@ -60,6 +60,7 @@ module TestProf
     # Contains workaround for applications using Spring.
     def activate(env_var, val = nil)
       if defined?(::Spring::Application)
+        notify_spring_activate
         ::Spring.after_fork { activate!(env_var, val) { yield } }
       else
         activate!(env_var, val) { yield }
@@ -97,6 +98,12 @@ module TestProf
       return path unless config.timestamps?
       timestamps = "-#{now.to_i}"
       "#{path.sub(/\.\w+$/, '')}#{timestamps}#{::File.extname(path)}"
+    end
+
+    def notify_spring_activate
+      return if instance_variable_defined?(:@spring_notified)
+      log :info, "Spring detected. Activating profilers with `Spring.after_fork`"
+      @spring_notified = true
     end
   end
 
