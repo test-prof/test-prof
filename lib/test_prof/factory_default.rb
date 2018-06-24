@@ -51,7 +51,7 @@ module TestProf
       end
 
       def reset
-        @store.clear
+        store.clear
       end
 
       private
