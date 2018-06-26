@@ -41,4 +41,47 @@ describe "Post" do
       expect(post.user).to eq user2
     end
   end
+
+  context "with preserved traits" do
+    let(:traited_post) { TestProf::FactoryBot.create(:post, :with_traited_user) }
+    let(:traited_user) { TestProf::FactoryBot.create_default(:user, :traited, tag: 'foo') }
+
+    context "global setting" do
+      before { TestProf::FactoryDefault.preserve_traits = true }
+
+      it "can still be set default" do
+        expect(traited_user.tag).to eq 'foo'
+        expect(post.user).to eq traited_user
+      end
+
+      it "uses different objects for default and for traits" do
+        expect {
+          user
+          post
+          expect(post.user).to eq user
+          expect(traited_post.user).not_to eq user
+          expect(TestProf::FactoryBot.create(:post, :with_traited_user).user).not_to eq traited_post.user
+        }.to change(User, :count).by(3)
+      end
+    end
+
+    context "local override" do
+      before { TestProf::FactoryDefault.preserve_traits = false }
+      let(:override_user) { TestProf::FactoryBot.create_default(:user, preserve_traits: true) }
+      let(:other_traited_post) { TestProf::FactoryBot.create(:post, :with_traited_user) }
+
+      it "uses different objects for default and for traits" do
+        expect {
+          user
+          post
+          expect(post.user).to eq user
+          expect(traited_post.user).to eq user
+
+          override_user
+          expect(other_traited_post.user).not_to eq override_user
+          expect(other_traited_post.user).not_to eq traited_post.user
+        }.to change(User, :count).by(3)
+      end
+    end
+  end
 end

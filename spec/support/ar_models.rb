@@ -13,6 +13,7 @@ ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:'
 ActiveRecord::Schema.define do
   create_table :users do |t|
     t.string :name
+    t.string :tag
   end
 
   create_table :posts do |t|
@@ -48,6 +49,14 @@ TestProf::FactoryBot.define do
         TestProf::FactoryBot.create_pair(:post)
       end
     end
+
+    trait :traited do
+      tag 'traited'
+    end
+
+    trait :other_trait do
+      tag 'other_trait'
+    end
   end
 
   factory :post do
@@ -56,6 +65,14 @@ TestProf::FactoryBot.define do
 
     trait :with_bad_user do
       user { create(:user) }
+    end
+
+    trait :with_traited_user do
+      association :user, factory: %i[user traited]
+    end
+
+    trait :with_other_traited_user do
+      association :user, factory: %i[user other_trait]
     end
   end
 end

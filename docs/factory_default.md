@@ -109,3 +109,22 @@ before { FactoryBot.set_factory_default(:user, user) }
 - `FactoryBot#create_default(factory, *args)` – is a shortcut for `create` + `set_factory_default`.
 
 **NOTE**. Defaults are cleaned up after each example.
+
+### Working with traits
+
+When you have traits in your associations like:
+
+```ruby
+factory :post do
+  association :user, factory: %i[user able_to_post]
+end
+
+factory :view do
+  association :user, factory: %i[user unable_to_post_only_view]
+end
+```
+
+and set a default for `user` factory - you will find the same object used in all of the above factories. Sometimes this may break your logic.
+
+To prevent this - set `FactoryDefault.preserve_traits = true` or use per-factory override
+`create_default(:user, preserve_traits: true)`. This reverts back to original FactoryBot behavior for associations that have explicit traits defined.

@@ -7,6 +7,14 @@ module TestProf
         def name
           @name
         end
+
+        def traits
+          @traits
+        end
+
+        def overrides
+          @overrides
+        end
       end
     end
 
@@ -14,8 +22,8 @@ module TestProf
 
     module StrategyExt
       def association(runner)
-        return super unless FactoryDefault.exists?(runner.name)
-        FactoryDefault.get(runner.name)
+        return super unless FactoryDefault.exists?(runner.name, runner.traits)
+        FactoryDefault.get(runner.name, runner.traits)
       end
     end
   end
