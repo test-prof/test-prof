@@ -1,14 +1,45 @@
 # frozen_string_literal: true
 
-# Shared example for RSpec to profile specific examples with StackProf
-RSpec.shared_context "stackprof", sprof: true do
-  prepend_before do
-    @stack_prof_report = TestProf::StackProf.profile
-  end
+module TestProf
+  module StackProf
+    # Reporter for RSpec to profile specific examples with StackProf
+    class Listener # :nodoc:
+      NOTIFICATIONS = %i[
+        example_started
+        example_failed
+        example_passed
+      ].freeze
 
-  append_after do |ex|
-    next unless @stack_prof_report
-    TestProf::StackProf.dump ex.full_description.parameterize
+      def example_started(notification)
+        TestProf::StackProf.profile if profile?(notification.example)
+      end
+
+      def example_finished(notification)
+        return unless profile?(notification.example)
+        TestProf::StackProf.dump(
+          notification.example.full_description.parameterize
+        )
+      end
+
+      alias example_passed example_finished
+      alias example_failed example_finished
+
+      private
+
+      def profile?(example)
+        example.metadata.key?(:sprof)
+      end
+    end
+  end
+end
+
+RSpec.configure do |config|
+  config.before(:suite) do
+    listener = TestProf::StackProf::Listener.new
+
+    config.reporter.register_listener(
+      listener, *TestProf::StackProf::Listener::NOTIFICATIONS
+    )
   end
 end
 

@@ -12,7 +12,7 @@ describe TestProf::StackProf do
     specify "defaults", :aggregate_failures do
       expect(subject.mode).to eq :wall
       expect(subject.interval).to be_nil
-      expect(subject.raw).to eq false
+      expect(subject.raw).to eq true
     end
   end
 
@@ -26,19 +26,19 @@ describe TestProf::StackProf do
     specify "with default config" do
       expect(stack_prof).to receive(:start).with(
         mode: :wall,
-        raw: false
+        raw: true
       )
 
       described_class.profile
     end
 
     specify "with custom config" do
-      described_class.config.raw = true
+      described_class.config.raw = false
       described_class.config.mode = :cpu
 
       expect(stack_prof).to receive(:start).with(
         mode: :cpu,
-        raw: true
+        raw: false
       )
 
       described_class.profile
@@ -46,9 +46,9 @@ describe TestProf::StackProf do
 
     specify "when block is given" do
       expect(stack_prof).to receive(:run).with(
-        out: File.join(TestProf.config.output_dir, "stack-prof-report-wall-stub.dump").to_s,
+        out: File.join(TestProf.config.output_dir, "stack-prof-report-wall-raw-stub.dump").to_s,
         mode: :wall,
-        raw: false
+        raw: true
       )
 
       described_class.profile("stub") { 0 == 1 }
@@ -64,7 +64,7 @@ describe TestProf::StackProf do
 
     it "stops profiling and stores results" do
       expect(stack_prof).to receive(:results).with(
-        File.join(TestProf.config.output_dir, "stack-prof-report-wall-stub.dump").to_s
+        File.join(TestProf.config.output_dir, "stack-prof-report-wall-raw-stub.dump").to_s
       )
       expect(stack_prof).to receive(:stop)
       described_class.dump("stub")

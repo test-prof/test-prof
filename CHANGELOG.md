@@ -2,6 +2,8 @@
 
 ## master
 
+- Collect _raw_ data with StackProf by default. ([@palkan][])
+
 - Add `EventProf.monitor` to instrument arbitrary methods. ([@palkan][])
 
 Add custom instrumetation easily:
