@@ -47,7 +47,7 @@ module TestProf
         return unless record
 
         if traits && !traits.empty?
-          return nil if FactoryDefault.preserve_traits || record[:preserve_traits]
+          return if FactoryDefault.preserve_traits || record[:preserve_traits]
         end
         record[:object]
       end

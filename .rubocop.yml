@@ -71,6 +71,10 @@ Style/GlobalVars:
     - 'spec/integrations/fixtures/**/*'
     - 'spec/bugs/fixtures/**/*'
 
+Style/ReturnNil:
+  Enabled: true
+  EnforcedStyle: return
+
 Layout/SpaceInsideStringInterpolation:
   EnforcedStyle: no_space
 
