@@ -11,10 +11,6 @@ module TestProf
         def traits
           @traits
         end
-
-        def overrides
-          @overrides
-        end
       end
     end
 

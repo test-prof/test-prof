@@ -52,10 +52,6 @@ module TestProf
         record[:object]
       end
 
-      def exists?(name, traits = nil)
-        get(name, traits) && true || false
-      end
-
       def remove(name)
         store.delete(name)
       end
