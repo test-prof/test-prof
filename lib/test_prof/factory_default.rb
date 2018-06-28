@@ -9,18 +9,21 @@ module TestProf
   module FactoryDefault
     module DefaultSyntax # :nodoc:
       def create_default(name, *args, &block)
-        set_factory_default(
-          name,
-          TestProf::FactoryBot.create(name, *args, &block)
-        )
+        options = args.extract_options!
+        preserve = options.delete(:preserve_traits)
+
+        obj = TestProf::FactoryBot.create(name, *args, options, &block)
+        set_factory_default(name, obj, preserve_traits: preserve)
       end
 
-      def set_factory_default(name, obj)
-        FactoryDefault.register(name, obj)
+      def set_factory_default(name, obj, preserve_traits: nil)
+        FactoryDefault.register(name, obj, preserve_traits: preserve_traits)
       end
     end
 
     class << self
+      attr_accessor :preserve_traits
+
       def init
         TestProf::FactoryBot::Syntax::Methods.include DefaultSyntax
         TestProf::FactoryBot.extend DefaultSyntax
@@ -29,18 +32,24 @@ module TestProf
         TestProf::FactoryBot::Strategy::Stub.prepend StrategyExt
 
         @store = {}
+        # default is false to retain backward compatibility
+        @preserve_traits = false
       end
 
-      def register(name, obj)
-        store[name] = obj
+      def register(name, obj, **options)
+        options[:preserve_traits] = true if FactoryDefault.preserve_traits
+        store[name] = { object: obj, **options }
+        obj
       end
 
-      def get(name)
-        store[name]
-      end
+      def get(name, traits = nil)
+        record = store[name]
+        return unless record
 
-      def exists?(name)
-        store.key?(name)
+        if traits && !traits.empty?
+          return if FactoryDefault.preserve_traits || record[:preserve_traits]
+        end
+        record[:object]
       end
 
       def remove(name)

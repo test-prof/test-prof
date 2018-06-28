@@ -58,6 +58,12 @@ end
 Do not take into account `xit`, `pending`, `its`, etc. examples,
 only consider regular `it`, `specify`, `scenario`, `example`.
 
+- [Fix [#80](https://github.com/palkan/test-prof/issues/80)] Added ability to preserve traits. ([@Vasfed][])
+
+Disabled by default for compatibility. Enable globally by `FactoryDefault.preserve_traits = true` or for single `create_default`: `create_default(:user, preserve_traits: true)`
+
+When enabled - default object will be used only when there's no [traits](https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md#traits) in association.
+
 ## 0.5.0 (2018-04-25)
 
 ### Features
@@ -314,3 +320,4 @@ Ensure output dir exists in `#artifact_path` method.
 [@IDolgirev]: https://github.com/IDolgirev
 [@desoleary]: https://github.com/desoleary
 [@rabotyaga]: https://github.com/rabotyaga
+[@Vasfed]: https://github.com/Vasfed
