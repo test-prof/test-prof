@@ -31,7 +31,7 @@ Of course, we have some [solutions](#recipes) for common performance issues too,
 
 Supported Ruby versions:
 
-- Ruby (MRI) >= 2.2.0
+- Ruby (MRI) >= 2.2.0 (**NOTE:** the next release will require 2.3+)
 
 - JRuby >= 9.1.0.0
 

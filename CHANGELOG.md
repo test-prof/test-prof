@@ -2,7 +2,9 @@
 
 ## master
 
-- Collect _raw_ data with StackProf by default. ([@palkan][])
+## 0.6.0 (2018-06-29)
+
+### Features
 
 - Add `EventProf.monitor` to instrument arbitrary methods. ([@palkan][])
 
@@ -19,14 +21,20 @@ end
 TestProf::EventProf.monitor(Work, "my.work", :do)
 ```
 
+[📝 Docs](https://test-prof.evilmartians.io/#/event_prof?id=profile-arbitrary-methods)
+
 - Adapterize `before_all`. ([@palkan][])
 
 Now it's possible to write your own adapter for `before_all` to manage
 transactions.
 
+[📝 Docs](https://test-prof.evilmartians.io/#/before_all?id=database-adapters)
+
 - Add `before_all` for Minitest. ([@palkan][])
 
-- Refactor `:with_clean_fixture` to clean data once per group. ([@palkan][])
+[📝 Docs](https://test-prof.evilmartians.io/#/before_all?id=minitest-experimental)
+
+### Fixes & Improvements
 
 - Show top `let` declarations per example group in RSpecDissect profiler. ([@palkan][])
 
@@ -51,18 +59,22 @@ TestProf::RSpecDissect.configure do |config|
 end
 ```
 
-- Add ability to run only `let` or `before` profiler with RSpecDissect. ([@palkan][])
-
-- [Fix [#75](https://github.com/palkan/test-prof/issues/75)] Fix `RSpec/Aggregate` failures with non-regular examples. ([@palkan][])
-
-Do not take into account `xit`, `pending`, `its`, etc. examples,
-only consider regular `it`, `specify`, `scenario`, `example`.
-
 - [Fix [#80](https://github.com/palkan/test-prof/issues/80)] Added ability to preserve traits. ([@Vasfed][])
 
 Disabled by default for compatibility. Enable globally by `FactoryDefault.preserve_traits = true` or for single `create_default`: `create_default(:user, preserve_traits: true)`
 
 When enabled - default object will be used only when there's no [traits](https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md#traits) in association.
+
+- Add ability to run only `let` or `before` profiler with RSpecDissect. ([@palkan][])
+
+- Collect _raw_ data with StackProf by default. ([@palkan][])
+
+- Refactor `:with_clean_fixture` to clean data once per group. ([@palkan][])
+
+- [Fix [#75](https://github.com/palkan/test-prof/issues/75)] Fix `RSpec/Aggregate` failures with non-regular examples. ([@palkan][])
+
+Do not take into account `xit`, `pending`, `its`, etc. examples,
+only consider regular `it`, `specify`, `scenario`, `example`.
 
 ## 0.5.0 (2018-04-25)
 
