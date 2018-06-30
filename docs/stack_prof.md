@@ -52,4 +52,4 @@ The application boot time could also makes testing slower. Try to profile your b
 TEST_STACK_PROF=boot rspec ./spec/some_spec.rb
 ```
 
-**NOTE:** we recommend to anylize the boot time using flame graphs, that's why raw data collection is always on in `boot` mode.
+**NOTE:** we recommend to analyze the boot time using flame graphs, that's why raw data collection is always on in `boot` mode.
