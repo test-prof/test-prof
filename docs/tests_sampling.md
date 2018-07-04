@@ -1,6 +1,6 @@
 # Tests Sampling
 
-Sometimes it's useful to run profilers against randomly chosen tests. Unfortunetaly, test frameworks don's support such functionality. That's why we've included small patches for RSpec and Minitest in TestProf.
+Sometimes it's useful to run profilers against randomly chosen tests. Unfortunetaly, test frameworks don't support such functionality. That's why we've included small patches for RSpec and Minitest in TestProf.
 
 
 ## Instructions
