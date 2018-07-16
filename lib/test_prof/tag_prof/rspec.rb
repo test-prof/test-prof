@@ -33,7 +33,7 @@ module TestProf
       def example_started(_notification)
         @ts = TestProf.now
         # enable event profiling
-        @events_profiler.group_started(true) if @events_profiler
+        @events_profiler&.group_started(true)
       end
 
       def example_finished(notification)
@@ -42,7 +42,7 @@ module TestProf
         result.track(tag, time: TestProf.now - @ts, events: fetch_events_data)
 
         # reset and disable event profilers
-        @events_profiler.group_started(nil) if @events_profiler
+        @events_profiler&.group_started(nil)
       end
 
       # NOTE: RSpec < 3.4.0 doesn't have example_finished event
@@ -80,7 +80,7 @@ TestProf.activate('TAG_PROF') do
       )
     end
 
-    config.after(:suite) { listener.report unless listener.nil? }
+    config.after(:suite) { listener&.report }
   end
 end
 

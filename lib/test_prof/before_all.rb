@@ -5,7 +5,7 @@ module TestProf
   module BeforeAll
     class AdapterMissing < StandardError # :nodoc:
       MSG = "Please, provide an adapter for `before_all` " \
-            "through `TestProf::BeforeAll.adapter = MyAdapter`".freeze
+            "through `TestProf::BeforeAll.adapter = MyAdapter`"
 
       def initialize
         super(MSG)

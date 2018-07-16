@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "test_prof/ext/string_strip_heredoc"
-
 module TestProf
   # RubyProf wrapper.
   #
@@ -45,7 +43,7 @@ module TestProf
         'call_stack' => 'html'
       }.freeze
 
-      LOGFILE_PREFIX = "ruby-prof-report".freeze
+      LOGFILE_PREFIX = "ruby-prof-report"
 
       attr_accessor :printer, :mode, :min_percent,
                     :include_threads, :exclude_common_methods,
@@ -138,7 +136,6 @@ module TestProf
 
     class << self
       include Logging
-      using StringStripHeredoc
 
       def config
         @config ||= Configuration.new
@@ -206,7 +203,7 @@ module TestProf
         ENV["RUBY_PROF_MEASURE_MODE"] = config.mode.to_s
         @initialized = TestProf.require(
           'ruby-prof',
-          <<-MSG.strip_heredoc
+          <<~MSG
             Please, install 'ruby-prof' first:
                # Gemfile
               gem 'ruby-prof', '>= 0.16.0', require: false
@@ -218,7 +215,7 @@ module TestProf
         if Utils.verify_gem_version('ruby-prof', at_least: '0.17.0')
           true
         else
-          log :error, <<-MGS.strip_heredoc
+          log :error, <<~MGS
             Please, upgrade 'ruby-prof' to version >= 0.17.0.
           MGS
           false

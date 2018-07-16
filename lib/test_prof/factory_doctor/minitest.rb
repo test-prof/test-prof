@@ -2,7 +2,6 @@
 
 require 'minitest/base_reporter'
 require 'test_prof/ext/float_duration'
-require 'test_prof/ext/string_strip_heredoc'
 
 module Minitest
   module TestProf # :nodoc:
@@ -17,9 +16,8 @@ module Minitest
 
     class FactoryDoctorReporter < BaseReporter # :nodoc:
       using ::TestProf::FloatDuration
-      using ::TestProf::StringStripHeredoc
 
-      SUCCESS_MESSAGE = 'FactoryDoctor says: "Looks good to me!"'.freeze
+      SUCCESS_MESSAGE = 'FactoryDoctor says: "Looks good to me!"'
 
       def initialize(io = $stdout, options = {})
         super
@@ -65,7 +63,7 @@ module Minitest
         msgs = []
 
         msgs <<
-          <<-MSG.strip_heredoc
+          <<~MSG
             FactoryDoctor report
 
             Total (potentially) bad examples: #{@count}

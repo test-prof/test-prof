@@ -1,9 +1,5 @@
 # frozen_string_literal: true
 
-require "test_prof/ext/string_strip_heredoc"
-
-using TestProf::StringStripHeredoc
-
 module TestProf::EventProf::CustomEvents
   module SidekiqJobs # :nodoc: all
     module ClientPatch
@@ -30,7 +26,7 @@ end
 TestProf::EventProf::CustomEvents.register("sidekiq.jobs") do
   if TestProf.require(
     'sidekiq/testing',
-    <<-MSG.strip_heredoc
+    <<~MSG
       Failed to load Sidekiq.
 
       Make sure that "sidekiq" gem is in your Gemfile.

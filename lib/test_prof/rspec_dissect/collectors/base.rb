@@ -3,12 +3,10 @@
 require "test_prof/utils/sized_ordered_set"
 require "test_prof/ext/float_duration"
 require "test_prof/ext/string_truncate"
-require "test_prof/ext/string_strip_heredoc"
 
 module TestProf # :nodoc: all
   using FloatDuration
   using StringTruncate
-  using StringStripHeredoc
 
   module RSpecDissect
     module Collectors
@@ -44,7 +42,7 @@ module TestProf # :nodoc: all
         end
 
         def print_result_header
-          <<-MSG.strip_heredoc
+          <<~MSG
 
             Top #{top_count} slowest suites (by `#{print_name}` time):
 
@@ -52,7 +50,7 @@ module TestProf # :nodoc: all
         end
 
         def print_group_result(group)
-          <<-GROUP.strip_heredoc
+          <<~GROUP
             #{group[:desc].truncate} (#{group[:loc]}) – #{group[name].duration} of #{group[:total].duration} (#{group[:count]})
           GROUP
         end

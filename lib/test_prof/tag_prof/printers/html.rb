@@ -3,8 +3,8 @@
 module TestProf::TagProf
   module Printers
     module HTML # :nodoc: all
-      TEMPLATE = "tagprof.template.html".freeze
-      OUTPUT_NAME = "tag-prof.html".freeze
+      TEMPLATE = "tagprof.template.html"
+      OUTPUT_NAME = "tag-prof.html"
 
       class << self
         include TestProf::Logging

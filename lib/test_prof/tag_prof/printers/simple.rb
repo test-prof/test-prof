@@ -1,21 +1,19 @@
 # frozen_string_literal: true
 
 require "test_prof/ext/float_duration"
-require "test_prof/ext/string_strip_heredoc"
 
 module TestProf::TagProf
   module Printers
     module Simple # :nodoc: all
       class << self
         include TestProf::Logging
-        using TestProf::StringStripHeredoc
         using TestProf::FloatDuration
 
         def dump(result)
           msgs = []
 
           msgs <<
-            <<-MSG.strip_heredoc
+            <<~MSG
               TagProf report for #{result.tag}
             MSG
 

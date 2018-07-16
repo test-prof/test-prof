@@ -2,6 +2,10 @@
 
 ## master
 
+- **Ruby 2.3+ is required**. ([@palkan][])
+
+Ruby 2.2 EOL was on 2018-03-31.
+
 - Upgrade RubyProf integration to `ruby-prof >= 0.17`. ([@palkan][])
 
 Use `exclude_common_methods!` instead of the deprecated `eliminate_methods!`.

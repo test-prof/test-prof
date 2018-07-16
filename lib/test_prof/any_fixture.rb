@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "test_prof/ext/float_duration"
-require "test_prof/ext/string_strip_heredoc"
 
 module TestProf
   # Make DB fixtures from blocks.
@@ -9,7 +8,6 @@ module TestProf
     INSERT_RXP = /^INSERT INTO ([\S]+)/
 
     using FloatDuration
-    using StringStripHeredoc
 
     class Cache # :nodoc:
       attr_reader :store, :stats
@@ -85,7 +83,7 @@ module TestProf
         msgs = []
 
         msgs <<
-          <<-MSG.strip_heredoc
+          <<~MSG
             AnyFixture usage stats:
           MSG
 
@@ -119,7 +117,7 @@ module TestProf
         end
 
         msgs <<
-          <<-MSG.strip_heredoc
+          <<~MSG
 
             Total time spent: #{total_spent.duration}
             Total time saved: #{total_saved.duration}

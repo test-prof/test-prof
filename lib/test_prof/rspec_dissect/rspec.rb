@@ -1,14 +1,12 @@
 # frozen_string_literal: true
 
 require "test_prof/ext/float_duration"
-require "test_prof/ext/string_strip_heredoc"
 
 module TestProf
   module RSpecDissect
     class Listener # :nodoc:
       include Logging
       using FloatDuration
-      using StringStripHeredoc
 
       NOTIFICATIONS = %i[
         example_group_finished
@@ -63,7 +61,7 @@ module TestProf
         msgs = []
 
         msgs <<
-          <<-MSG.strip_heredoc
+          <<~MSG
             RSpecDissect report
 
             Total time: #{@total_examples_time.duration}
@@ -104,7 +102,7 @@ module TestProf
         msgs = []
 
         msgs <<
-          <<-MSG.strip_heredoc
+          <<~MSG
             RSpec Stamp results
 
             Total patches: #{stamper.total}
@@ -141,6 +139,6 @@ TestProf.activate('RD_PROF') do
       )
     end
 
-    config.after(:suite) { listener.print unless listener.nil? }
+    config.after(:suite) { listener&.print }
   end
 end

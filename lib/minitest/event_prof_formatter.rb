@@ -2,14 +2,12 @@
 
 require "test_prof/ext/float_duration"
 require "test_prof/ext/string_truncate"
-require "test_prof/ext/string_strip_heredoc"
 
 module Minitest
   module TestProf
     class EventProfFormatter # :nodoc:
       using ::TestProf::FloatDuration
       using ::TestProf::StringTruncate
-      using ::TestProf::StringStripHeredoc
 
       def initialize(profilers)
         @profilers = profilers
@@ -29,7 +27,7 @@ module Minitest
 
       def total_results(profiler)
         @results <<
-          <<-MSG.strip_heredoc
+          <<~MSG
             EventProf results for #{profiler.event}
 
             Total time: #{profiler.total_time.duration}
@@ -46,7 +44,7 @@ module Minitest
           location = group[:id][:location]
 
           @results <<
-            <<-GROUP.strip_heredoc
+            <<~GROUP
               #{description.truncate} (#{location}) – #{group[:time].duration} (#{group[:count]} / #{group[:examples]})
             GROUP
         end
@@ -61,7 +59,7 @@ module Minitest
           location = example[:id][:location]
 
           @results <<
-            <<-GROUP.strip_heredoc
+            <<~GROUP
               #{description.truncate} (#{location}) – #{example[:time].duration} (#{example[:count]})
             GROUP
         end

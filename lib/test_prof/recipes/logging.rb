@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 if defined?(RSpec)
   RSpec.shared_context "logging:verbose", log: true do
     around(:each) do |ex|

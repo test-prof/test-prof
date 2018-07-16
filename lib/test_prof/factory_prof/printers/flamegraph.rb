@@ -5,8 +5,8 @@ require "test_prof/utils/html_builder"
 module TestProf::FactoryProf
   module Printers
     module Flamegraph # :nodoc: all
-      TEMPLATE = "flamegraph.template.html".freeze
-      OUTPUT_NAME = "factory-flame.html".freeze
+      TEMPLATE = "flamegraph.template.html"
+      OUTPUT_NAME = "factory-flame.html"
 
       class << self
         include TestProf::Logging

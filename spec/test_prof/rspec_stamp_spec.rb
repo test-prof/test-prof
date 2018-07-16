@@ -2,9 +2,6 @@
 
 require "spec_helper"
 require "test_prof/rspec_stamp"
-require "test_prof/ext/string_strip_heredoc"
-
-using TestProf::StringStripHeredoc
 
 describe TestProf::RSpecStamp do
   subject { described_class }
@@ -45,7 +42,7 @@ describe TestProf::RSpecStamp do
     subject { described_class.apply_tags(code, lines, tags) }
 
     let(:source) do
-      <<-CODE.strip_heredoc
+      <<~CODE
         it "doesn't do what it should do" do
           expect(subject.body).to eq("OK")
         end
@@ -53,7 +50,7 @@ describe TestProf::RSpecStamp do
     end
 
     let(:expected) do
-      <<-CODE.strip_heredoc
+      <<~CODE
         it "doesn't do what it should do", :todo do
           expect(subject.body).to eq("OK")
         end
@@ -67,7 +64,7 @@ describe TestProf::RSpecStamp do
 
     context "with several examples" do
       let(:source) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           it 'succeeds' do
             expect(subject.body).to eq("OK")
           end
@@ -83,7 +80,7 @@ describe TestProf::RSpecStamp do
       end
 
       let(:expected) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           it 'succeeds' do
             expect(subject.body).to eq("OK")
           end
@@ -107,7 +104,7 @@ describe TestProf::RSpecStamp do
 
       context "patch all" do
         let(:expected) do
-          <<-CODE.strip_heredoc
+          <<~CODE
             it 'succeeds', :todo do
               expect(subject.body).to eq("OK")
             end
@@ -133,7 +130,7 @@ describe TestProf::RSpecStamp do
 
     context "without description" do
       let(:source) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           specify do
             expect(subject.body).to eq("Not Found")
           end
@@ -141,7 +138,7 @@ describe TestProf::RSpecStamp do
       end
 
       let(:expected) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           specify 'works', :todo do
             expect(subject.body).to eq("Not Found")
           end
@@ -156,13 +153,13 @@ describe TestProf::RSpecStamp do
 
     context "one-liner" do
       let(:source) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           it("is") { expect(subject.body).to eq("Not Found") }
         CODE
       end
 
       let(:expected) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           it('is', :todo) { expect(subject.body).to eq("Not Found") }
         CODE
       end
@@ -175,13 +172,13 @@ describe TestProf::RSpecStamp do
 
     context "one-liner without description" do
       let(:source) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           it { expect(subject.body).to eq("Not Found") }
         CODE
       end
 
       let(:expected) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           it('works', :todo) { expect(subject.body).to eq("Not Found") }
         CODE
       end
@@ -194,7 +191,7 @@ describe TestProf::RSpecStamp do
 
     context "with existing tags" do
       let(:source) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           it 'is "KOI"', :log do
             expect(subject.body).to eq("Not Found")
           end
@@ -202,7 +199,7 @@ describe TestProf::RSpecStamp do
       end
 
       let(:expected) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           it 'is "KOI"', :log, :todo do
             expect(subject.body).to eq("Not Found")
           end
@@ -217,7 +214,7 @@ describe TestProf::RSpecStamp do
 
     context "with several tags" do
       let(:source) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           specify do
             expect(subject.body).to eq("Not Found")
           end
@@ -225,7 +222,7 @@ describe TestProf::RSpecStamp do
       end
 
       let(:expected) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           specify 'works', :todo, a: :b, c: 'd' do
             expect(subject.body).to eq("Not Found")
           end
@@ -241,7 +238,7 @@ describe TestProf::RSpecStamp do
 
       context "with existing tags" do
         let(:source) do
-          <<-CODE.strip_heredoc
+          <<~CODE
             it 'is', :log, level: 'debug', elastic: true do
               expect(subject.body).to eq("Not Found")
             end
@@ -249,7 +246,7 @@ describe TestProf::RSpecStamp do
         end
 
         let(:expected) do
-          <<-CODE.strip_heredoc
+          <<~CODE
             it 'is', :log, :todo, level: 'debug', elastic: true, a: :b, c: 'd' do
               expect(subject.body).to eq("Not Found")
             end
@@ -266,7 +263,7 @@ describe TestProf::RSpecStamp do
         let(:tags) { [{ log: :none }, :todo, { level: :info }] }
 
         let(:source) do
-          <<-CODE.strip_heredoc
+          <<~CODE
             it 'is', :log, level: :debug do
               expect(subject.body).to eq("Not Found")
             end
@@ -274,7 +271,7 @@ describe TestProf::RSpecStamp do
         end
 
         let(:expected) do
-          <<-CODE.strip_heredoc
+          <<~CODE
             it 'is', :todo, log: :none, level: :info do
               expect(subject.body).to eq("Not Found")
             end
@@ -290,7 +287,7 @@ describe TestProf::RSpecStamp do
 
     context "with multiline description" do
       let(:source) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           it %q{
             succeeds
             this time
@@ -308,7 +305,7 @@ describe TestProf::RSpecStamp do
 
     context "with example groups" do
       let(:source) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           RSpec.describe User::Story, :account do
             it 'succeeds' do
               expect(subject.body).to eq("OK")
@@ -326,7 +323,7 @@ describe TestProf::RSpecStamp do
       end
 
       let(:expected) do
-        <<-CODE.strip_heredoc
+        <<~CODE
           RSpec.describe User::Story, :account, :todo do
             it 'succeeds' do
               expect(subject.body).to eq("OK")
@@ -352,7 +349,7 @@ describe TestProf::RSpecStamp do
 
       context "with existing tags" do
         let(:source) do
-          <<-CODE.strip_heredoc
+          <<~CODE
             RSpec.describe User::Story, :slow do
               it 'succeeds' do
                 expect(subject.body).to eq("OK")
@@ -362,7 +359,7 @@ describe TestProf::RSpecStamp do
         end
 
         let(:expected) do
-          <<-CODE.strip_heredoc
+          <<~CODE
             RSpec.describe User::Story, slow: :todo do
               it 'succeeds' do
                 expect(subject.body).to eq("OK")
@@ -383,7 +380,7 @@ describe TestProf::RSpecStamp do
 
       context "with existing hash tags" do
         let(:source) do
-          <<-CODE.strip_heredoc
+          <<~CODE
             RSpec.describe User::Story, todo: :slow do
               it 'succeeds' do
                 expect(subject.body).to eq("OK")
@@ -393,7 +390,7 @@ describe TestProf::RSpecStamp do
         end
 
         let(:expected) do
-          <<-CODE.strip_heredoc
+          <<~CODE
             RSpec.describe User::Story, :todo do
               it 'succeeds' do
                 expect(subject.body).to eq("OK")

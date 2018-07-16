@@ -22,8 +22,8 @@ module TestProf
         end
 
         def remove_tag(tag)
-          @tags.delete(tag) if @tags
-          @htags.delete_if { |(k, _v)| k == tag } if @htags
+          @tags&.delete(tag)
+          @htags&.delete_if { |(k, _v)| k == tag }
         end
       end
 

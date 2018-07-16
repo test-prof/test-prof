@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "test_prof/ext/string_strip_heredoc"
-
 module TestProf
   # StackProf wrapper.
   #
@@ -47,7 +45,6 @@ module TestProf
 
     class << self
       include Logging
-      using StringStripHeredoc
 
       def config
         @config ||= Configuration.new
@@ -103,7 +100,7 @@ module TestProf
 
         html_path = path.gsub(/\.dump$/, '.html')
 
-        log :info, <<-MSG.strip_heredoc
+        log :info, <<~MSG
           Run the following command to generate a flame graph report:
 
           stackprof --flamegraph #{path} > #{html_path} && stackprof --flamegraph-viewer=#{html_path}
@@ -126,7 +123,7 @@ module TestProf
         return @initialized if instance_variable_defined?(:@initialized)
         @initialized = TestProf.require(
           'stackprof',
-          <<-MSG.strip_heredoc
+          <<~MSG
             Please, install 'stackprof' first:
                # Gemfile
               gem 'stackprof', '>= 0.2.9', require: false
@@ -138,7 +135,7 @@ module TestProf
         if Utils.verify_gem_version('stackprof', at_least: '0.2.9')
           true
         else
-          log :error, <<-MSG.strip_heredoc
+          log :error, <<~MSG
             Please, upgrade 'stackprof' to version >= 0.2.9.
           MSG
           false

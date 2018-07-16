@@ -1,9 +1,6 @@
 # frozen_string_literal: true
 
-require "test_prof/ext/string_strip_heredoc"
 require "test_prof/factory_bot"
-
-using TestProf::StringStripHeredoc
 
 module TestProf::EventProf::CustomEvents
   module FactoryCreate # :nodoc: all
@@ -49,7 +46,7 @@ TestProf::EventProf::CustomEvents.register("factory.create") do
     TestProf::EventProf::CustomEvents::FactoryCreate.setup!
   else
     TestProf.log(:error,
-                 <<-MSG.strip_heredoc
+                 <<~MSG
                    Failed to load factory_bot / factory_girl.
 
                    Make sure that any of them is in your Gemfile.

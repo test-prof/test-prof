@@ -19,7 +19,7 @@ AllCops:
     - '**/*.gemfile'
   DisplayCopNames: true
   StyleGuideCopsOnly: false
-  TargetRubyVersion: 2.2
+  TargetRubyVersion: 2.3
 
 Rails:
   Enabled: false
@@ -34,6 +34,9 @@ Naming/UncommunicativeMethodParamName:
   Enabled: false
 
 Style/ExpandPathArguments:
+  Enabled: false
+
+Style/NumericPredicate:
   Enabled: false
 
 Style/TrivialAccessors:
