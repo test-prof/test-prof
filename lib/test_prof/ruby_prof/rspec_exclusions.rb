@@ -57,22 +57,6 @@ module TestProf
             :execute_with
           ],
 
-          RSpec::Support::ReentrantMutex => [
-            :synchronize
-          ],
-
-          RSpec::Core::MemoizedHelpers::ThreadsafeMemoized => [
-            :fetch_or_store
-          ],
-
-          RSpec::Core::MemoizedHelpers::NonThreadSafeMemoized => [
-            :fetch_or_store
-          ],
-
-          RSpec::Core::MemoizedHelpers::ContextHookMemoized => [
-            :fetch_or_store
-          ],
-
           RSpec::Core::Configuration => [
             :with_suite_hooks
           ],
@@ -80,7 +64,29 @@ module TestProf
           RSpec::Core::Reporter => [
             :report
           ]
-        }
+        }.tap do |data|
+          if defined?(RSpec::Support::ReentrantMutex)
+            data[RSpec::Support::ReentrantMutex] = [
+              :synchronize
+            ]
+          end
+
+          if defined?(RSpec::Core::MemoizedHelpers::ThreadsafeMemoized)
+            data.merge!(
+              RSpec::Core::MemoizedHelpers::ThreadsafeMemoized => [
+                :fetch_or_store
+              ],
+
+              RSpec::Core::MemoizedHelpers::NonThreadSafeMemoized => [
+                :fetch_or_store
+              ],
+
+              RSpec::Core::MemoizedHelpers::ContextHookMemoized => [
+                :fetch_or_store
+              ]
+            )
+          end
+        end
       end
     end
   end
