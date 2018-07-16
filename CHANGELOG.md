@@ -2,6 +2,20 @@
 
 ## master
 
+- Upgrade RubyProf integration to `ruby-prof >= 0.17`. ([@palkan][])
+
+Use `exclude_common_methods!` instead of the deprecated `eliminate_methods!`.
+
+Add RSpec specific exclusions.
+
+Add ability to specify custom exclusions through `config.custom_exclusions`, e.g.:
+
+```ruby
+TestProf::RubyProf.configure do |config|
+  config.custom_exclusions = { User => %i[save save!] }
+end
+```
+
 ## 0.6.0 (2018-06-29)
 
 ### Features

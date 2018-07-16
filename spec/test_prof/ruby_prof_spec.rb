@@ -35,6 +35,8 @@ describe TestProf::RubyProf do
 
     before do
       stub_const("RubyProf::Profile", ruby_prof)
+      allow(profile).to receive(:exclude_common_methods!)
+      allow(profile).to receive(:exclude_methods!)
       expect(profile).to receive(:start)
     end
 
@@ -69,13 +71,14 @@ describe TestProf::RubyProf do
       stub_const("::RubyProf::Profile", ruby_prof)
       expect(ruby_prof).to receive(:new).and_return(profile)
       expect(profile).to receive(:start)
+      allow(profile).to receive(:exclude_methods!)
       expect(profile).to receive(:stop).and_return(result)
     end
 
     subject { described_class.profile }
 
     specify "with default config" do
-      expect(result).to receive(:eliminate_methods!)
+      expect(profile).to receive(:exclude_common_methods!)
 
       stub_const("::RubyProf::FlatPrinter", printer_class)
       expect(printer_class).to receive(:new).with(result).and_return(printer)
@@ -88,13 +91,20 @@ describe TestProf::RubyProf do
 
     specify "with custom config" do
       described_class.config.printer = :call_stack
-      described_class.config.eliminate_methods = []
+      described_class.config.exclude_common_methods = false
+      described_class.config.test_prof_exclusions_enabled = false
+      described_class.config.custom_exclusions = {
+        TestProf => %i[log print]
+      }
       described_class.config.min_percent = 2
       described_class.config.mode = :cpu
 
       TestProf.config.timestamps = true
 
-      expect(result).not_to receive(:eliminate_methods!)
+      expect(profile).not_to receive(:exclude_common_methods!)
+      expect(profile).to receive(:exclude_methods!).once.with(
+        TestProf, :log, :print
+      )
 
       stub_const("RubyProf::CallStackPrinter", printer_class)
       expect(printer_class).to receive(:new).with(result).and_return(printer)

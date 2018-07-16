@@ -24,17 +24,6 @@ module TestProf
   module RubyProf
     # RubyProf configuration
     class Configuration
-      # Default list of methods to exclude from profile.
-      # Contains a lot of RSpec stuff.
-      ELIMINATE_METHODS = [
-        /instance_exec/,
-        /ExampleGroup>?#run/,
-        /Procsy/,
-        /AroundHook#execute_with/,
-        /HookCollections/,
-        /Array#(map|each)/
-      ].freeze
-
       PRINTERS = {
         'flat' => 'FlatPrinter',
         'flat_wln' => 'FlatPrinterWithLineNumbers',
@@ -59,7 +48,9 @@ module TestProf
       LOGFILE_PREFIX = "ruby-prof-report".freeze
 
       attr_accessor :printer, :mode, :min_percent,
-                    :include_threads, :eliminate_methods
+                    :include_threads, :exclude_common_methods,
+                    :test_prof_exclusions_enabled,
+                    :custom_exclusions
 
       def initialize
         @printer = ENV['TEST_RUBY_PROF'].to_sym if PRINTERS.key?(ENV['TEST_RUBY_PROF'])
@@ -67,16 +58,21 @@ module TestProf
         @mode = ENV.fetch('TEST_RUBY_PROF_MODE', :wall).to_sym
         @min_percent = 1
         @include_threads = false
-        @eliminate_methods = ELIMINATE_METHODS
+        @exclude_common_methods = true
+        @test_prof_exclusions_enabled = true
+        @custom_exclusions = {}
       end
 
       def include_threads?
         include_threads == true
       end
 
-      def eliminate_methods?
-        !eliminate_methods.nil? &&
-          !eliminate_methods.empty?
+      def exclude_common_methods?
+        exclude_common_methods == true
+      end
+
+      def test_prof_exclusions_enabled?
+        @test_prof_exclusions_enabled == true
       end
 
       # Returns an array of printer type (ID) and class.
@@ -104,9 +100,6 @@ module TestProf
       # using provided name.
       def dump(name)
         result = @profiler.stop
-
-        result.eliminate_methods!(config.eliminate_methods) if
-          config.eliminate_methods?
 
         printer_type, printer_class = config.resolve_printer
 
@@ -183,6 +176,20 @@ module TestProf
           config.include_threads?
 
         profiler = ::RubyProf::Profile.new(options)
+        profiler.exclude_common_methods! if config.exclude_common_methods?
+
+        if config.test_prof_exclusions_enabled?
+          # custom test-prof exclusions
+          exclude_rspec_methods(profiler)
+
+          # custom global exclusions
+          exclude_common_methods(profiler)
+        end
+
+        config.custom_exclusions.each do |klass, mids|
+          profiler.exclude_methods! klass, *mids
+        end
+
         profiler.start
 
         Report.new(profiler)
@@ -208,20 +215,49 @@ module TestProf
       end
 
       def check_ruby_prof_version
-        if Utils.verify_gem_version('ruby-prof', at_least: '0.16.0')
+        if Utils.verify_gem_version('ruby-prof', at_least: '0.17.0')
           true
         else
           log :error, <<-MGS.strip_heredoc
-            Please, upgrade 'ruby-prof' to version >= 0.16.0.
+            Please, upgrade 'ruby-prof' to version >= 0.17.0.
           MGS
           false
         end
+      end
+
+      def exclude_rspec_methods(profiler)
+        return unless defined?(RSpec::Core)
+
+        RSpecExclusions.generate.each do |klass, mids|
+          profiler.exclude_methods!(klass, *mids)
+        end
+      end
+
+      def exclude_common_methods(profiler)
+        profiler.exclude_methods!(
+          TSort,
+          :tsort_each
+        )
+
+        profiler.exclude_methods!(
+          TSort.singleton_class,
+          :tsort_each, :each_strongly_connected_component,
+          :each_strongly_connected_component_from
+        )
+
+        profiler.exclude_methods!(
+          BasicObject,
+          :instance_exec
+        )
       end
     end
   end
 end
 
-require "test_prof/ruby_prof/rspec" if defined?(RSpec::Core)
+if defined?(RSpec::Core)
+  require "test_prof/ruby_prof/rspec"
+  require "test_prof/ruby_prof/rspec_exclusions"
+end
 
 # Hook to run RubyProf globally
 TestProf.activate('TEST_RUBY_PROF') do
