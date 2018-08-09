@@ -9,7 +9,7 @@ module TestProf
   module LetItBe
     class << self
       def module_for(group)
-        modules.fetch(group) do
+        modules[group] ||= begin
           Module.new.tap { |mod| group.prepend(mod) }
         end
       end
