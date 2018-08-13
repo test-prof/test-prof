@@ -18,10 +18,13 @@ if defined?(RSpec)
 
   RSpec.shared_context "logging:active_record", log: :ar do
     around(:each) do |ex|
-      logger = ActiveRecord::Base.logger
-      ActiveRecord::Base.logger = Logger.new(STDOUT)
+      *loggers = ActiveRecord::Base.logger,
+                 ActiveSupport::LogSubscriber.logger
+      ActiveSupport::LogSubscriber.logger =
+        ActiveRecord::Base.logger = Logger.new(STDOUT)
       ex.run
-      ActiveRecord::Base.logger = logger
+      ActiveSupport::LogSubscriber.logger,
+      ActiveRecord::Base.logger = *loggers
     end
   end
 end
@@ -35,5 +38,6 @@ end
 
 TestProf.activate("LOG", "ar") do
   TestProf.log :info, "Active Record verbose logging enabled"
-  ActiveRecord::Base.logger = Logger.new(STDOUT)
+  ActiveSupport::LogSubscriber.logger =
+    ActiveRecord::Base.logger = Logger.new(STDOUT)
 end
