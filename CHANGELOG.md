@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.0 (2018-08-12)
+
 - **Ruby 2.3+ is required**. ([@palkan][])
 
 Ruby 2.2 EOL was on 2018-03-31.
