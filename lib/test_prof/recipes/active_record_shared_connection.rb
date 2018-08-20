@@ -14,7 +14,21 @@ module TestProf
         self.connection = nil
       end
 
+      def ignore
+        raise ArgumentError, "Block is required" unless block_given?
+
+        @ignores ||= []
+
+        ignores << Proc.new
+      end
+
+      def ignored?(config)
+        !ignores.nil? && ignores.any? { |clbk| clbk.call(config) }
+      end
+
       private
+
+      attr_reader :ignores
 
       def connection=(conn)
         @connection = conn
@@ -43,6 +57,7 @@ module TestProf
 
     module Ext
       def connection
+        return super if ActiveRecordSharedConnection.ignored?(connection_config)
         ActiveRecordSharedConnection.connection || super
       end
     end

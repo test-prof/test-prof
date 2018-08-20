@@ -2,6 +2,8 @@
 
 ## master
 
+- Add ability to ignore connection configurations in shared connection.([@palkan][])
+
 ## 0.7.0 (2018-08-12)
 
 - **Ruby 2.3+ is required**. ([@palkan][])
