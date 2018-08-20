@@ -2,7 +2,16 @@
 
 ## master
 
+## 0.7.1 (2018-08-20)
+
 - Add ability to ignore connection configurations in shared connection.([@palkan][])
+
+Example:
+
+```ruby
+# Do not use shared connection for sqlite db
+TestProf::ActiveRecordSharedConnection.ignore { |config| config[:adapter] == "sqlite3" }
+```
 
 ## 0.7.0 (2018-08-12)
 
