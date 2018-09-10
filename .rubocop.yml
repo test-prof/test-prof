@@ -24,14 +24,16 @@ AllCops:
 Rails:
   Enabled: false
 
-Lint/SplatKeywordArguments:
-  Enabled: false
-
 Naming/AccessorMethodName:
   Enabled: false
 
 Naming/UncommunicativeMethodParamName:
   Enabled: false
+
+Naming/FileName:
+  Exclude:
+    - 'lib/test-prof.rb'
+    - '*.md'
 
 Style/ExpandPathArguments:
   Enabled: false
@@ -85,6 +87,9 @@ Lint/AmbiguousRegexpLiteral:
   Enabled: false
 
 Layout/EmptyLinesAroundArguments:
+  Enabled: false
+
+Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
 Metrics/MethodLength:
