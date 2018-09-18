@@ -4,6 +4,19 @@ require 'rubocop/rspec/support'
 require 'test_prof/cops/rspec/aggregate_failures'
 
 describe RuboCop::Cop::RSpec::AggregateFailures, :config do
+  # Restore rubocop <0.59 behaviour
+  prepend(Module.new do
+    def inspect_source(source)
+      source = source.join($RS) if source.is_a?(Array)
+      super(source)
+    end
+
+    def autocorrect_source(source)
+      source = source.join($RS) if source.is_a?(Array)
+      super(source)
+    end
+  end)
+
   subject(:cop) { described_class.new(config) }
 
   it 'rejects two one-liners in a row' do
