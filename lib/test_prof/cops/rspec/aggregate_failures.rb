@@ -30,7 +30,7 @@ module RuboCop
         ].freeze
 
         EXAMPLE_BLOCKS = %i[
-          it specify example scenario
+          it its specify example scenario
         ].freeze
 
         class << self
@@ -134,12 +134,23 @@ module RuboCop
         def header_from(node)
           method, _args, _body = *node
           _receiver, method_name, _object = *method
+          method_name = :it if method_name == :its
           %(#{method_name} "works", :aggregate_failures do)
         end
 
         def body_from(node, base_indent = '')
-          _method, _args, body = *node
-          "#{base_indent}#{indent}#{body.source}"
+          method, _args, body = *node
+
+          if method.method_name == :its
+            attribute = method.arguments.first.value
+            expectation = body.method_name
+            match = body.arguments.first.source
+            body_source = "expect(subject.#{attribute}).#{expectation} #{match}"
+          else
+            body_source = body.source
+          end
+
+          "#{base_indent}#{indent}#{body_source}"
         end
 
         def indent
