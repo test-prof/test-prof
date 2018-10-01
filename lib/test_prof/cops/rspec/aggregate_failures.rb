@@ -15,12 +15,14 @@ module RuboCop
       #  it { is_expected.to be_success }
       #  it { is_expected.to have_header('X-TOTAL-PAGES', 10) }
       #  it { is_expected.to have_header('X-NEXT-PAGE', 2) }
+      #  its(:status) { is_expected.to eq(200) }
       #
       #  # good
       #  it "returns the second page", :aggregate_failures do
       #    is_expected.to be_success
       #    is_expected.to have_header('X-TOTAL-PAGES', 10)
       #    is_expected.to have_header('X-NEXT-PAGE', 2)
+      #    expect(subject.status).to eq(200)
       #  end
       #
       class AggregateFailures < RuboCop::Cop::Cop
@@ -142,15 +144,27 @@ module RuboCop
           method, _args, body = *node
 
           if method.method_name == :its
-            attribute = method.arguments.first.value
-            expectation = body.method_name
-            match = body.arguments.first.source
-            body_source = "expect(subject.#{attribute}).#{expectation} #{match}"
+            body_source = body_from_its(method, body)
           else
             body_source = body.source
           end
 
           "#{base_indent}#{indent}#{body_source}"
+        end
+
+        def body_from_its(method, body)
+          subject_attribute = method.arguments.first
+          expectation = body.method_name
+          match = body.arguments.first.source
+
+          if subject_attribute.array_type?
+            hash_keys = subject_attribute.values.map(&:value).join(", ")
+            attribute = "dig(#{hash_keys})"
+          else
+            attribute = subject_attribute.value
+          end
+
+          "expect(subject.#{attribute}).#{expectation} #{match}"
         end
 
         def indent

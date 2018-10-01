@@ -120,6 +120,17 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
     expect(cop.offenses).to be_empty
   end
 
+  it 'handles its edge cases' do
+    inspect_source(['context "request" do',
+                    '  its(:status) { is_expected.to eq 200 }',
+                    '  its("body.size") { is_expected.to eq 100 }',
+                    '  its([:size, "count"]) { is_expected.to eq [100, 100] }',
+                    '  its(:body) { is_expected.to be_json_eql(%({"data":{"status":"OK}})).excluding("id") }',
+                    'end'])
+    expect(cop.offenses.size).to eq(1)
+    expect(cop.messages.first).to eq('Use :aggregate_failures instead of several one-liners.' )
+  end
+
   describe "#autocorrect" do
     it "corrects two one-liners" do
       new_source = autocorrect_source(
@@ -237,6 +248,32 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
          '    end',
          '  end',
          'end'].join("\n")
+      )
+    end
+
+    it "corrects its edge cases"  do
+      new_source = autocorrect_source(
+        [
+          'context "request" do',
+          '  its(:status) { is_expected.to eq 200 }',
+          '  its("body.size") { is_expected.to eq 100 }',
+          '  its([:size, "count"]) { is_expected.to eq [100, 100] }',
+          '  its(:body) { is_expected.to be_json_eql(%({"data":{"status":"OK}})).excluding("id") }',
+          'end'
+        ]
+      )
+
+      expect(new_source).to eq(
+        [
+          'context "request" do',
+          '  it "works", :aggregate_failures do',
+          '    expect(subject.status).to eq 200',
+          '    expect(subject.body.size).to eq 100',
+          '    expect(subject.dig(size, count)).to eq [100, 100]',
+          '    expect(subject.body).to be_json_eql(%({"data":{"status":"OK}})).excluding("id")',
+          '  end',
+          'end'
+        ].join("\n")
       )
     end
   end
