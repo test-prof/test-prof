@@ -40,12 +40,14 @@ Consider an example:
 it { is_expected.to be_success }
 it { is_expected.to have_header('X-TOTAL-PAGES', 10) }
 it { is_expected.to have_header('X-NEXT-PAGE', 2) }
+its(:status) { is_expected.to eq(200) }
 
 # good
 it 'returns the second page', :aggregate_failures do
   is_expected.to be_success
   is_expected.to have_header('X-TOTAL-PAGES', 10)
   is_expected.to have_header('X-NEXT-PAGE', 2)
+  expect(subject.status).to eq(200)
 end
 ```
 
