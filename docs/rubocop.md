@@ -53,4 +53,6 @@ end
 
 This cop supports auto-correct feature, so you can automatically refactor you legacy tests!
 
+**NOTE**: `its` examples shown here have been deprecated as of RSpec 3, but users of the [rspec-its gem](https://github.com/rspec/rspec-its) can leverage this cop to cut out that dependency.
+
 **NOTE**: auto-correction may break your tests (especially the ones using block-matchers, such as `change`).
