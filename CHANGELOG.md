@@ -2,6 +2,8 @@
 
 ## master
 
+- Add `RSpec/AggregateFailures` support for non-regular 'its' examples. ([@broels][])
+
 ## 0.7.1 (2018-08-20)
 
 - Add ability to ignore connection configurations in shared connection.([@palkan][])

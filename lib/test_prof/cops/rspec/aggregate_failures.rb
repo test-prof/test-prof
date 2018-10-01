@@ -15,12 +15,14 @@ module RuboCop
       #  it { is_expected.to be_success }
       #  it { is_expected.to have_header('X-TOTAL-PAGES', 10) }
       #  it { is_expected.to have_header('X-NEXT-PAGE', 2) }
+      #  its(:status) { is_expected.to eq(200) }
       #
       #  # good
       #  it "returns the second page", :aggregate_failures do
       #    is_expected.to be_success
       #    is_expected.to have_header('X-TOTAL-PAGES', 10)
       #    is_expected.to have_header('X-NEXT-PAGE', 2)
+      #    expect(subject.status).to eq(200)
       #  end
       #
       class AggregateFailures < RuboCop::Cop::Cop
@@ -30,7 +32,7 @@ module RuboCop
         ].freeze
 
         EXAMPLE_BLOCKS = %i[
-          it specify example scenario
+          it its specify example scenario
         ].freeze
 
         class << self
@@ -134,12 +136,29 @@ module RuboCop
         def header_from(node)
           method, _args, _body = *node
           _receiver, method_name, _object = *method
+          method_name = :it if method_name == :its
           %(#{method_name} "works", :aggregate_failures do)
         end
 
         def body_from(node, base_indent = '')
-          _method, _args, body = *node
-          "#{base_indent}#{indent}#{body.source}"
+          method, _args, body = *node
+          body_source = method.method_name == :its ? body_from_its(method, body) : body.source
+          "#{base_indent}#{indent}#{body_source}"
+        end
+
+        def body_from_its(method, body)
+          subject_attribute = method.arguments.first
+          expectation = body.method_name
+          match = body.arguments.first.source
+
+          if subject_attribute.array_type?
+            hash_keys = subject_attribute.values.map(&:value).join(", ")
+            attribute = "dig(#{hash_keys})"
+          else
+            attribute = subject_attribute.value
+          end
+
+          "expect(subject.#{attribute}).#{expectation} #{match}"
         end
 
         def indent

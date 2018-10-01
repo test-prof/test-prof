@@ -40,15 +40,19 @@ Consider an example:
 it { is_expected.to be_success }
 it { is_expected.to have_header('X-TOTAL-PAGES', 10) }
 it { is_expected.to have_header('X-NEXT-PAGE', 2) }
+its(:status) { is_expected.to eq(200) }
 
 # good
 it 'returns the second page', :aggregate_failures do
   is_expected.to be_success
   is_expected.to have_header('X-TOTAL-PAGES', 10)
   is_expected.to have_header('X-NEXT-PAGE', 2)
+  expect(subject.status).to eq(200)
 end
 ```
 
 This cop supports auto-correct feature, so you can automatically refactor you legacy tests!
+
+**NOTE**: `its` examples shown here have been deprecated as of RSpec 3, but users of the [rspec-its gem](https://github.com/rspec/rspec-its) can leverage this cop to cut out that dependency.
 
 **NOTE**: auto-correction may break your tests (especially the ones using block-matchers, such as `change`).

@@ -92,6 +92,10 @@ Layout/EmptyLinesAroundArguments:
 Layout/EmptyLineAfterGuardClause:
   Enabled: false
 
+Metrics/ClassLength:
+  Exclude:
+    - 'lib/test_prof/cops/rspec/aggregate_failures.rb'
+
 Metrics/MethodLength:
   Enabled: false
 
