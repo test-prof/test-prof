@@ -128,7 +128,7 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
                     '  its(:body) { is_expected.to be_json_eql(%({"data":{"status":"OK}})).excluding("id") }',
                     'end'])
     expect(cop.offenses.size).to eq(1)
-    expect(cop.messages.first).to eq('Use :aggregate_failures instead of several one-liners.' )
+    expect(cop.messages.first).to eq('Use :aggregate_failures instead of several one-liners.')
   end
 
   describe "#autocorrect" do
@@ -251,7 +251,7 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
       )
     end
 
-    it "corrects its edge cases"  do
+    it "corrects its edge cases" do
       new_source = autocorrect_source(
         [
           'context "request" do',

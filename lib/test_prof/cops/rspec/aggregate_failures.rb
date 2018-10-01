@@ -142,13 +142,7 @@ module RuboCop
 
         def body_from(node, base_indent = '')
           method, _args, body = *node
-
-          if method.method_name == :its
-            body_source = body_from_its(method, body)
-          else
-            body_source = body.source
-          end
-
+          body_source = method.method_name == :its ? body_from_its(method, body) : body.source
           "#{base_indent}#{indent}#{body_source}"
         end
 
