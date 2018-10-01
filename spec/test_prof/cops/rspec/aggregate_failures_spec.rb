@@ -53,7 +53,7 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
     expect(cop.messages.first).to eq('Use :aggregate_failures instead of several one-liners.')
   end
 
-  it 'rejects one-liners with nested context' do
+  it 'accepts one-liners with nested context' do
     inspect_source(['context "request" do',
                     '  it { is_expected.to be_success }',
                     '  it "works" do',
