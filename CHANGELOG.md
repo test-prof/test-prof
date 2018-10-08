@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.2 (2018-10-08)
+
 - Add `RSpec/AggregateFailures` support for non-regular 'its' examples. ([@broels][])
 
 ## 0.7.1 (2018-08-20)
