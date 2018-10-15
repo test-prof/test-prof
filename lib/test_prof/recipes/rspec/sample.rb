@@ -1,13 +1,40 @@
 # frozen_string_literal: true
 
 module TestProf
-  # Add ability to run only a specified number of example groups (randomly selected)
-  module RSpecSample
-    def ordered_example_groups
-      @example_groups = @example_groups.sample(ENV['SAMPLE'].to_i) unless ENV['SAMPLE'].nil?
-      super
+  # Instance variable writer for RSpec::Core::World
+  module RSpecWorldSamplePatch
+    def filtered_examples=(val)
+      @filtered_examples = val
     end
   end
 end
 
-RSpec::Core::World.prepend(TestProf::RSpecSample)
+if ENV["SAMPLE"]
+  RSpec::Core::World.include(TestProf::RSpecWorldSamplePatch)
+
+  RSpec.configure do |config|
+    config.before(:suite) do
+      filtered_examples = RSpec.world.filtered_examples.values.flatten
+      sample = filtered_examples.sample(ENV["SAMPLE"].to_i)
+      RSpec.world.filtered_examples = Hash.new do |hash, group|
+        hash[group] = group.examples & sample
+      end
+    end
+  end
+end
+
+if ENV["GROUP_SAMPLE"]
+  RSpec::Core::World.include(TestProf::RSpecWorldSamplePatch)
+
+  RSpec.configure do |config|
+    config.before(:suite) do
+      filtered_groups = RSpec.world.filtered_examples.reject do |_group, examples|
+        examples.empty?
+      end.keys
+      sample = filtered_groups.sample(ENV["GROUP_SAMPLE"].to_i)
+      RSpec.world.filtered_examples = Hash.new do |hash, group|
+        hash[group] = sample.include?(group) ? group.examples : []
+      end
+    end
+  end
+end
