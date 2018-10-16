@@ -2,6 +2,8 @@
 
 ## master
 
+- Add a header with the general information on factories usage [#99](https://github.com/palkan/test-prof/issues/99) ([@szemek][])
+
 ## 0.7.2 (2018-10-08)
 
 - Add `RSpec/AggregateFailures` support for non-regular 'its' examples. ([@broels][])
