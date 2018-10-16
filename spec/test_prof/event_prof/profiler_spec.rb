@@ -18,6 +18,10 @@ describe TestProf::EventProf::Profiler do
   subject { described_class.new(event: "test.event", instrumenter: InstrumenterStub, **options) }
 
   describe "#result" do
+    before(:each) do
+      subject.stub(:take_time).and_return(500)
+    end
+
     let(:results) do
       subject
 
@@ -60,9 +64,9 @@ describe TestProf::EventProf::Profiler do
     it "returns top slow groups and totals" do
       expect(results).to eq(
         groups: [
-          { id: 'C', examples: 2, time: 440, count: 2 },
-          { id: 'B', examples: 2, time: 420, count: 3 },
-          { id: 'A', examples: 1, time: 100, count: 1 }
+          { id: 'C', examples: 2, run_time: 500, time: 440, count: 2 },
+          { id: 'B', examples: 2, run_time: 500, time: 420, count: 3 },
+          { id: 'A', examples: 1, run_time: 500, time: 100, count: 1 }
         ]
       )
       expect(subject.total_time).to eq 960
@@ -75,9 +79,9 @@ describe TestProf::EventProf::Profiler do
       it "returns top groups by event occurances" do
         expect(results).to eq(
           groups: [
-            { id: 'B', examples: 2, time: 420, count: 3 },
-            { id: 'C', examples: 2, time: 440, count: 2 },
-            { id: 'A', examples: 1, time: 100, count: 1 }
+            { id: 'B', examples: 2, run_time: 500, time: 420, count: 3 },
+            { id: 'C', examples: 2, run_time: 500, time: 440, count: 2 },
+            { id: 'A', examples: 1, run_time: 500, time: 100, count: 1 }
           ]
         )
       end
@@ -89,8 +93,8 @@ describe TestProf::EventProf::Profiler do
       it "returns top groups by event occurances" do
         expect(results).to eq(
           groups: [
-            { id: 'C', examples: 2, time: 440, count: 2 },
-            { id: 'B', examples: 2, time: 420, count: 3 }
+            { id: 'C', examples: 2, run_time: 500, time: 440, count: 2 },
+            { id: 'B', examples: 2, run_time: 500, time: 420, count: 3 }
           ]
         )
       end
@@ -102,15 +106,15 @@ describe TestProf::EventProf::Profiler do
       it "returns top groups and examples" do
         expect(results).to eq(
           groups: [
-            { id: 'C', examples: 2, time: 440, count: 2 },
-            { id: 'B', examples: 2, time: 420, count: 3 },
-            { id: 'A', examples: 1, time: 100, count: 1 }
+            { id: 'C', examples: 2, run_time: 500, time: 440, count: 2 },
+            { id: 'B', examples: 2, run_time: 500, time: 420, count: 3 },
+            { id: 'A', examples: 1, run_time: 500, time: 100, count: 1 }
           ],
           examples: [
-            { id: 'C1', time: 440, count: 2 },
-            { id: 'B1', time: 380, count: 2 },
-            { id: 'A1', time: 100, count: 1 },
-            { id: 'B2', time: 40,  count: 1 }
+            { id: 'C1', run_time: 500, time: 440, count: 2 },
+            { id: 'B1', run_time: 500, time: 380, count: 2 },
+            { id: 'A1', run_time: 500, time: 100, count: 1 },
+            { id: 'B2', run_time: 500, time: 40,  count: 1 }
           ]
         )
       end
