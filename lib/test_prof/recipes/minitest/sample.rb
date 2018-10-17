@@ -10,16 +10,39 @@ module TestProf
       Minitest::Spec
     ].freeze
 
-    def run(*)
-      unless ENV['SAMPLE'].nil?
-        sample_size = ENV['SAMPLE'].to_i
+    class << self
+      def suites
         # Make sure that sample contains only _real_ suites
-        runnables = Minitest::Runnable.runnables
-                                      .sample(sample_size + CORE_RUNNABLES.size)
-                                      .reject { |suite| CORE_RUNNABLES.include?(suite) }
-                                      .take(sample_size)
+        Minitest::Runnable.runnables
+                          .reject { |suite| CORE_RUNNABLES.include?(suite) }
+      end
+
+      def sample_groups(sample_size)
+        saved_suites = suites
         Minitest::Runnable.reset
-        runnables.each { |r| Minitest::Runnable.runnables << r }
+        saved_suites.sample(sample_size).each { |r| Minitest::Runnable.runnables << r }
+      end
+
+      def sample_examples(sample_size)
+        all_examples = suites.flat_map do |runnable|
+          runnable.runnable_methods.map { |method| [runnable, method] }
+        end
+        sample = all_examples.sample(sample_size)
+        # Filter examples by overriding #runnable_methods for all suites
+        suites.each do |runnable|
+          runnable.define_singleton_method(:runnable_methods) do
+            super() & sample.select { |ex| ex.first.equal?(runnable) }.map(&:last)
+          end
+        end
+      end
+    end
+
+    # Overrides Minitest.run
+    def run(*)
+      if ENV['SAMPLE']
+        MinitestSample.sample_examples(ENV['SAMPLE'].to_i)
+      elsif ENV['GROUP_SAMPLE']
+        MinitestSample.sample_groups(ENV['GROUP_SAMPLE'].to_i)
       end
       super
     end
