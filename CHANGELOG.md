@@ -370,3 +370,4 @@ Ensure output dir exists in `#artifact_path` method.
 [@desoleary]: https://github.com/desoleary
 [@rabotyaga]: https://github.com/rabotyaga
 [@Vasfed]: https://github.com/Vasfed
+[@szemek]: https://github.com/szemek
