@@ -41,8 +41,8 @@ module TestProf
     def run(*)
       if ENV['SAMPLE']
         MinitestSample.sample_examples(ENV['SAMPLE'].to_i)
-      elsif ENV['GROUP_SAMPLE']
-        MinitestSample.sample_groups(ENV['GROUP_SAMPLE'].to_i)
+      elsif ENV['SAMPLE_GROUPS']
+        MinitestSample.sample_groups(ENV['SAMPLE_GROUPS'].to_i)
       end
       super
     end

@@ -30,14 +30,14 @@ describe "Tests Sampling" do
       expect(output).to include("1 example, 0 failures")
     end
 
-    specify "GROUP_SAMPLE=1" do
-      output = run_rspec('sample', env: { 'GROUP_SAMPLE' => '1' })
+    specify "SAMPLE_GROUPS=1" do
+      output = run_rspec('sample', env: { 'SAMPLE_GROUPS' => '1' })
 
       expect(output).to include("1 example, 0 failures")
     end
 
-    specify "GROUP_SAMPLE=2" do
-      output = run_rspec('sample', env: { 'GROUP_SAMPLE' => '2' })
+    specify "SAMPLE_GROUPS=2" do
+      output = run_rspec('sample', env: { 'SAMPLE_GROUPS' => '2' })
 
       expect(output).to include("2 examples, 0 failures")
     end
@@ -56,14 +56,14 @@ describe "Tests Sampling" do
       expect(output).to include("1 runs, 1 assertions, 0 failures, 0 errors, 0 skips")
     end
 
-    specify "GROUP_SAMPLE=1" do
-      output = run_minitest('sample', env: { 'GROUP_SAMPLE' => '1' })
+    specify "SAMPLE_GROUPS=1" do
+      output = run_minitest('sample', env: { 'SAMPLE_GROUPS' => '1' })
 
       expect(output).to include("2 runs, 2 assertions, 0 failures, 0 errors, 0 skips")
     end
 
-    specify "GROUP_SAMPLE=2" do
-      output = run_minitest('sample', env: { 'GROUP_SAMPLE' => '2' })
+    specify "SAMPLE_GROUPS=2" do
+      output = run_minitest('sample', env: { 'SAMPLE_GROUPS' => '2' })
 
       expect(output).to include("4 runs, 4 assertions, 0 failures, 0 errors, 0 skips")
     end

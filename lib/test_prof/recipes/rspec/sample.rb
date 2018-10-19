@@ -23,7 +23,7 @@ if ENV["SAMPLE"]
   end
 end
 
-if ENV["GROUP_SAMPLE"]
+if ENV["SAMPLE_GROUPS"]
   RSpec::Core::World.include(TestProf::RSpecWorldSamplePatch)
 
   RSpec.configure do |config|
@@ -31,7 +31,7 @@ if ENV["GROUP_SAMPLE"]
       filtered_groups = RSpec.world.filtered_examples.reject do |_group, examples|
         examples.empty?
       end.keys
-      sample = filtered_groups.sample(ENV["GROUP_SAMPLE"].to_i)
+      sample = filtered_groups.sample(ENV["SAMPLE_GROUPS"].to_i)
       RSpec.world.filtered_examples = Hash.new do |hash, group|
         hash[group] = sample.include?(group) ? group.examples : []
       end

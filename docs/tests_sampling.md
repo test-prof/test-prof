@@ -21,17 +21,17 @@ And then just add `SAMPLE` env variable with the number examples you want to run
 SAMPLE=10 rspec
 ```
 
-You can also run random set of example groups (or suites) using `GROUPS_SAMPLE` variable:
+You can also run random set of example groups (or suites) using `SAMPLE_GROUPS` variable:
 
 ```sh
-GROUPS_SAMPLE=10 rspec
+SAMPLE_GROUPS=10 rspec
 ```
 
 Note that you can use tests sampling with RSpec filters:
 
 ```sh
 SAMPLE=10 rspec --tag=api
-GROUPS_SAMPLE=10 rspec -e api
+SAMPLE_GROUPS=10 rspec -e api
 ```
 
 That's it. Enjoy!
