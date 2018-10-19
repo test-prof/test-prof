@@ -10,9 +10,17 @@ module TestProf::FactoryProf
           return log(:info, "No factories detected") if result.raw_stats == {}
           msgs = []
 
+          total = result.stats.sum { |stat| stat[:total] }
+          total_top_level = result.stats.sum { |stat| stat[:top_level] }
+          total_uniq_factories = result.stats.map { |stat| stat[:name] }.uniq.count
+
           msgs <<
             <<~MSG
               Factories usage
+
+               Total: #{total}
+               Total top-level: #{total_top_level}
+               Total uniq factories: #{total_uniq_factories}
 
                total      top-level                            name
             MSG
