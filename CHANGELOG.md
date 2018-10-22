@@ -4,6 +4,12 @@
 
 - Add a header with the general information on factories usage [#99](https://github.com/palkan/test-prof/issues/99) ([@szemek][])
 
+- Improve test sampling.([@mkldon][])
+
+ ```bash
+ SAMPLE=10 rake test # runs 10 random test examples
+ SAMPLE_GROUPS=10 rake test # runs 10 random example groups
+ ```
 ## 0.7.2 (2018-10-08)
 
 - Add `RSpec/AggregateFailures` support for non-regular 'its' examples. ([@broels][])
@@ -371,3 +377,4 @@ Ensure output dir exists in `#artifact_path` method.
 [@rabotyaga]: https://github.com/rabotyaga
 [@Vasfed]: https://github.com/Vasfed
 [@szemek]: https://github.com/szemek
+[@mkldon]: https://github.com/mkldon
