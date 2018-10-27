@@ -6,7 +6,7 @@ require "test_prof/rspec_stamp/parser"
 module TestProf
   # Mark RSpec examples with provided tags
   module RSpecStamp
-    EXAMPLE_RXP = /(\s*)(\w+\s*(?:.*)\s*)(do|{)/
+    EXAMPLE_RXP = /(\s*)(\w+\s*(?:.*)\s*)(do|{)/.freeze
 
     # RSpecStamp configuration
     class Configuration

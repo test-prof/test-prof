@@ -35,7 +35,7 @@ module TestProf
       \AROLLBACK|
       \ARELEASE|
       \ASAVEPOINT
-    )}xi
+    )}xi.freeze
 
     class << self
       include TestProf::Logging
