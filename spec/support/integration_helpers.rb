@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
 module IntegrationHelpers
-  def run_rspec(path, chdir: nil, success: true, env: {})
+  def run_rspec(path, chdir: nil, success: true, env: {}, options: "")
     output, status = Open3.capture2(
       env,
-      "bundle exec rspec #{path}_fixture.rb",
+      "bundle exec rspec #{options} #{path}_fixture.rb",
       chdir: chdir || File.expand_path("../../integrations/fixtures/rspec", __FILE__)
     )
     expect(status).to be_success, "Test #{path} failed with: #{output}" if success

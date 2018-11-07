@@ -11,7 +11,7 @@
  SAMPLE_GROUPS=10 rake test # runs 10 random example groups
  ```
 
- - Extend Event Prof formatter results that includes the absolute run time and percentage of event time percentage [#100](https://github.com/palkan/test-prof/issues/100) ([@dmagro][])
+- Extend Event Prof formatter results that includes the absolute run time and percentage of event time percentage [#100](https://github.com/palkan/test-prof/issues/100) ([@dmagro][])
 
 ## 0.7.2 (2018-10-08)
 
@@ -379,4 +379,6 @@ Ensure output dir exists in `#artifact_path` method.
 [@desoleary]: https://github.com/desoleary
 [@rabotyaga]: https://github.com/rabotyaga
 [@Vasfed]: https://github.com/Vasfed
+[@szemek]: https://github.com/szemek
+[@mkldon]: https://github.com/mkldon
 [@dmagro]: https://github.com/dmagro

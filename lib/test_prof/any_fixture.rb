@@ -5,7 +5,7 @@ require "test_prof/ext/float_duration"
 module TestProf
   # Make DB fixtures from blocks.
   module AnyFixture
-    INSERT_RXP = /^INSERT INTO ([\S]+)/
+    INSERT_RXP = /^INSERT INTO ([\S]+)/.freeze
 
     using FloatDuration
 

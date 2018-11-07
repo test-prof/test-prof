@@ -15,6 +15,12 @@ describe "One more thing" do
   end
 end
 
+describe "Something with tag", sometag: true do
+  it "always passes with tag" do
+    expect(true).to eq true
+  end
+end
+
 describe "One more light" do
   it "flickers" do
     expect(true).to eq true

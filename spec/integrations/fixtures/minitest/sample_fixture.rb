@@ -8,10 +8,18 @@ class SomethingTest < Minitest::Test
   def test_pass
     assert true
   end
+
+  def test_pass2
+    assert true
+  end
 end
 
 class AnotherSomethingTest < Minitest::Test
   def test_pass
+    assert true
+  end
+
+  def test_pass2
     assert true
   end
 end
@@ -19,5 +27,9 @@ end
 class NothingTest < Minitest::Test
   def test_pass
     refute false
+  end
+
+  def test_pass2
+    assert true
   end
 end
