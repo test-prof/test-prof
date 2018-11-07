@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.3 (2018-11-07)
+
 - Add a header with the general information on factories usage [#99](https://github.com/palkan/test-prof/issues/99) ([@szemek][])
 
 - Improve test sampling.([@mkldon][])
@@ -11,7 +13,7 @@
  SAMPLE_GROUPS=10 rake test # runs 10 random example groups
  ```
 
-- Extend Event Prof formatter results that includes the absolute run time and percentage of event time percentage [#100](https://github.com/palkan/test-prof/issues/100) ([@dmagro][])
+- Extend Event Prof formatter to include the absolute run time and the percentage of the event tim [#100](https://github.com/palkan/test-prof/issues/100) ([@dmagro][])
 
 ## 0.7.2 (2018-10-08)
 
