@@ -11,6 +11,7 @@ end
 
 module Instrumenter
   def self.notify(_event, time)
+    sleep 0.1
     ActiveSupport::Notifications.publish(
       'test.event',
       0,
@@ -21,21 +22,21 @@ end
 
 describe "Something" do
   it "invokes once" do
-    Instrumenter.notify 'test.event', 40.1
+    Instrumenter.notify 'test.event', 0.0401
     assert true
   end
 
   it "invokes twice" do
-    Instrumenter.notify 'test.event', 140
-    Instrumenter.notify 'test.event', 240
+    Instrumenter.notify 'test.event', 0.014
+    Instrumenter.notify 'test.event', 0.024
     assert true
   end
 
   it "invokes many times" do
-    Instrumenter.notify 'test.event', 14
-    Instrumenter.notify 'test.event', 40
-    Instrumenter.notify 'test.event', 42
-    Instrumenter.notify 'test.event', 40
+    Instrumenter.notify 'test.event', 0.014
+    Instrumenter.notify 'test.event', 0.04
+    Instrumenter.notify 'test.event', 0.042
+    Instrumenter.notify 'test.event', 0.04
     assert true
   end
 end
@@ -46,9 +47,9 @@ describe "Another something" do
   end
 
   it "do very long and invokes 3 times" do
-    Instrumenter.notify 'test.event', 1000
-    Instrumenter.notify 'test.event', 1000
-    Instrumenter.notify 'test.event', 1000
+    Instrumenter.notify 'test.event', 0.1
+    Instrumenter.notify 'test.event', 0.1
+    Instrumenter.notify 'test.event', 0.1
     assert true
   end
 end

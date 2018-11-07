@@ -54,6 +54,7 @@ module TestProf
 
       def report(profiler)
         result = profiler.results
+        time_percentage = time_percentage(profiler.total_time, profiler.absolute_run_time)
 
         msgs = []
 
@@ -61,7 +62,7 @@ module TestProf
           <<~MSG
             EventProf results for #{profiler.event}
 
-            Total time: #{profiler.total_time.duration}
+            Total time: #{profiler.total_time.duration} of #{profiler.absolute_run_time.duration} (#{time_percentage}%)
             Total events: #{profiler.total_count}
 
             Top #{profiler.top_count} slowest suites (by #{profiler.rank_by}):
@@ -71,10 +72,13 @@ module TestProf
         result[:groups].each do |group|
           description = group[:id].top_level_description
           location = group[:id].metadata[:location]
+          time = group[:time]
+          run_time = group[:run_time]
+          time_percentage = time_percentage(time, run_time)
 
           msgs <<
             <<~GROUP
-              #{description.truncate} (#{location}) – #{group[:time].duration} (#{group[:count]} / #{group[:examples]})
+              #{description.truncate} (#{location}) – #{time.duration} (#{group[:count]} / #{group[:examples]}) of #{run_time.duration} (#{time_percentage}%)
             GROUP
         end
 
@@ -84,9 +88,13 @@ module TestProf
           result[:examples].each do |example|
             description = example[:id].description
             location = example[:id].metadata[:location]
+            time = example[:time]
+            run_time = example[:run_time]
+            time_percentage = time_percentage(time, run_time)
+
             msgs <<
               <<~GROUP
-                #{description.truncate} (#{location}) – #{example[:time].duration} (#{example[:count]})
+                #{description.truncate} (#{location}) – #{time.duration} (#{example[:count]}) of #{run_time.duration} (#{time_percentage}%)
               GROUP
           end
         end
@@ -127,6 +135,10 @@ module TestProf
           MSG
 
         log :info, msgs.join
+      end
+
+      def time_percentage(time, total_time)
+        (time / total_time * 100).round(2)
       end
     end
   end

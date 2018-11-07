@@ -4,7 +4,7 @@ module TestProf
   module EventProf
     class Profiler # :nodoc:
       attr_reader :event, :total_count, :total_time, :rank_by, :top_count, :per_example,
-                  :time, :count, :example_time, :example_count
+                  :time, :count, :example_time, :example_count, :absolute_run_time
 
       alias per_example? per_example
 
@@ -26,6 +26,7 @@ module TestProf
 
         @total_count = 0
         @total_time = 0.0
+        @absolute_run_time = 0.0
       end
 
       def track(time)
@@ -48,7 +49,16 @@ module TestProf
       end
 
       def group_finished(id)
-        data = { id: id, time: @time, count: @count, examples: @total_examples }
+        group_run_time = take_time(@group_ts)
+        @absolute_run_time += group_run_time
+
+        data = {
+          id: id,
+          time: @time,
+          run_time: group_run_time,
+          count: @count,
+          examples: @total_examples
+        }
 
         @groups << data unless data[rank_by].zero?
 
@@ -65,19 +75,31 @@ module TestProf
         @total_examples += 1
         return unless per_example?
 
-        data = { id: id, time: @example_time, count: @example_count }
+        example_run_time = take_time(@example_ts)
+        data = {
+          id: id,
+          time: @example_time,
+          run_time: example_run_time,
+          count: @example_count
+        }
+
         @examples << data unless data[rank_by].zero?
         @current_example = nil
       end
 
       def results
-        {
+        results = {
           groups: @groups.to_a
         }.tap do |data|
           next unless per_example?
 
           data[:examples] = @examples.to_a
         end
+        results
+      end
+
+      def take_time(start_ts)
+        TestProf.now - start_ts
       end
 
       private
@@ -86,11 +108,13 @@ module TestProf
         @time = 0.0
         @count = 0
         @total_examples = 0
+        @group_ts = TestProf.now
       end
 
       def reset_example!
         @example_count = 0
         @example_time = 0.0
+        @example_ts = TestProf.now
       end
     end
 

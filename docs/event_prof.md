@@ -9,22 +9,22 @@ Example output:
 ```sh
 [TEST PROF INFO] EventProf results for sql.active_record
 
-Total time: 00:00.256
+Total time: 00:00.256 of 00:00.512 (50.00%)
 Total events: 1031
 
 Top 5 slowest suites (by time):
 
-AnswersController (./spec/controllers/answers_controller_spec.rb:3) – 00:00.119 (549 / 20)
-QuestionsController (./spec/controllers/questions_controller_spec.rb:3) – 00:00.105 (360 / 18)
-CommentsController (./spec/controllers/comments_controller_spec.rb:3) – 00:00.032 (122 / 4)
+AnswersController (./spec/controllers/answers_controller_spec.rb:3) – 00:00.119 (549 / 20) of 00:00.200 (59.50%)
+QuestionsController (./spec/controllers/questions_controller_spec.rb:3) – 00:00.105 (360 / 18) of 00:00.125 (84.00%)
+CommentsController (./spec/controllers/comments_controller_spec.rb:3) – 00:00.032 (122 / 4) of 00:00.064 (50.00%)
 
 Top 5 slowest tests (by time):
 
-destroys question (./spec/controllers/questions_controller_spec.rb:38) – 00:00.022 (29)
-change comments count (./spec/controllers/comments_controller_spec.rb:7) – 00:00.011 (34)
-change Votes count (./spec/shared_examples/controllers/voted_examples.rb:23) – 00:00.008 (25)
-change Votes count (./spec/shared_examples/controllers/voted_examples.rb:23) – 00:00.008 (32)
-fails (./spec/shared_examples/controllers/invalid_examples.rb:3) – 00:00.007 (34)
+destroys question (./spec/controllers/questions_controller_spec.rb:38) – 00:00.022 (29) of 00:00.064 (34.38%)
+change comments count (./spec/controllers/comments_controller_spec.rb:7) – 00:00.011 (34) of 00:00.022 (50.00%)
+change Votes count (./spec/shared_examples/controllers/voted_examples.rb:23) – 00:00.008 (25) of 00:00.022 (36.36%)
+change Votes count (./spec/shared_examples/controllers/voted_examples.rb:23) – 00:00.008 (32) of 00:00.035 (22.86%)
+fails (./spec/shared_examples/controllers/invalid_examples.rb:3) – 00:00.007 (34) of 00:00.014 (50.00%)
 
 ```
 
