@@ -16,6 +16,11 @@ module TestProf
           end
 
           def rollback_transaction
+            if ::ActiveRecord::Base.connection.open_transactions.zero?
+              warn "!!! before_all transaction has been already rollbacked and " \
+                   "could work incorrectly"
+              return
+            end
             ::ActiveRecord::Base.connection.rollback_transaction
           end
         end
