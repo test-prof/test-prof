@@ -2,7 +2,7 @@ source 'https://rubygems.org'
 
 gem 'arel', github: 'rails/arel'
 gem 'rails', github: 'rails/rails'
-gem 'rubocop, github: 'rubocop-hq/rubocop'
+gem 'rubocop', github: 'rubocop-hq/rubocop'
 
 gem "fabrication"
 gem "factory_bot", "~> 4.8.0"
