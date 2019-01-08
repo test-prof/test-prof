@@ -9,7 +9,7 @@ gem "activerecord", "~> 5.0"
 gem "factory_bot", "~> 4.8.0"
 gem "fabrication"
 
-gem "sidekiq", "~> 4.0"
+gem "sidekiq", "~> 5.2"
 gem "timecop", "~> 0.9.1"
 
 gem "pry-byebug"
