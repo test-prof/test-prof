@@ -28,3 +28,20 @@ TestProf.configure do |config|
   config.color = true
 end
 ```
+
+You can also dynamically add artifacts/reports suffixes via `TEST_PROF_REPORT` env variable.
+It is useful if you're not using timestamps and want to generate multiple reports with different setups and compare them.
+
+For example, let's compare tests load time with and without `bootsnap` using [`stackprof`](./stack_prof.md):
+
+```sh
+# Generate first report using `-with-bootsnap` suffix
+$ TEST_STACK_PROF=boot TEST_PROF_NAME=with-bootsnap bundle exec rake
+$ #=> StackProf report generated: tmp/test_prof/stack-prof-report-wall-raw-boot-with-bootsnap.dump
+
+# Assume that you disabled bootsnap and want to generate a new report
+$ TEST_STACK_PROF=boot TEST_PROF_NAME=no-bootsnap bundle exec rake
+$ #=> StackProf report generated: tmp/test_prof/stack-prof-report-wall-raw-boot-no-bootsnap.dump
+```
+
+Now you have two stackprof reports with clear names!
