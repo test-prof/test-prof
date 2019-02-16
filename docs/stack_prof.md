@@ -38,11 +38,23 @@ it 'is doing heavy stuff', :sprof do
 end
 ```
 
-## Configuration
+## Report formats
 
-You can change StackProf mode (which is `wall` by default) through `TEST_STACK_PROF_MODE` env variable.
+Stackprof provides a CLI tool to manipulate generated reports (e.g. convert to different formats).
 
-See [stack_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/stack_prof.rb) for all available configuration options and their usage.
+By default, Test Prof shows you a command\* to generate an HTML report for analyzing flamegraphs, so you should run it yourself.
+
+\* only if you're collecting _raw_ samples data, which is the default Test Prof behaviour.
+
+Sometimes it's useful to have a JSON report (e.g. to use it with [speedscope](https://www.speedscope.app)), but `stackprof` only supports this in [`master`](https://github.com/tmm1/stackprof/pull/103).
+
+That's why Test Prof has support for generating JSON reports from _raw_ dumps. For that, use `TEST_STACK_PROF_FORMAT=json` or configure the default format in your code:
+
+```ruby
+TestProf::StackProf.configure do |config|
+  config.format = 'json'
+end
+```
 
 ## Profiling application boot
 
@@ -53,3 +65,9 @@ TEST_STACK_PROF=boot rspec ./spec/some_spec.rb
 ```
 
 **NOTE:** we recommend to analyze the boot time using flame graphs, that's why raw data collection is always on in `boot` mode.
+
+## Configuration
+
+You can change StackProf mode (which is `wall` by default) through `TEST_STACK_PROF_MODE` env variable.
+
+See [stack_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/stack_prof.rb) for all available configuration options and their usage.

@@ -22,12 +22,20 @@ module TestProf
   module StackProf
     # StackProf configuration
     class Configuration
-      attr_accessor :mode, :interval, :raw, :target
+      FORMATS = %w[html json].freeze
+
+      attr_accessor :mode, :interval, :raw, :target, :format
 
       def initialize
         @mode = ENV.fetch('TEST_STACK_PROF_MODE', :wall).to_sym
         @target = ENV['TEST_STACK_PROF'] == 'boot' ? :boot : :suite
         @raw = ENV['TEST_STACK_PROF_RAW'] != '0'
+        @format =
+          if FORMATS.include?(ENV['TEST_STACK_PROF_FORMAT'])
+            ENV['TEST_STACK_PROF_FORMAT']
+          else
+            'html'
+          end
       end
 
       def raw?
@@ -98,13 +106,7 @@ module TestProf
 
         return unless config.raw
 
-        html_path = path.gsub(/\.dump$/, '.html')
-
-        log :info, <<~MSG
-          Run the following command to generate a flame graph report:
-
-          stackprof --flamegraph #{path} > #{html_path} && stackprof --flamegraph-viewer=#{html_path}
-        MSG
+        send("dump_#{config.format}_report", path)
       end
 
       private
@@ -140,6 +142,28 @@ module TestProf
           MSG
           false
         end
+      end
+
+      def dump_html_report(path)
+        html_path = path.gsub(/\.dump$/, '.html')
+
+        log :info, <<~MSG
+          Run the following command to generate a flame graph report:
+
+          stackprof --flamegraph #{path} > #{html_path} && stackprof --flamegraph-viewer=#{html_path}
+        MSG
+      end
+
+      def dump_json_report(path)
+        report = ::StackProf::Report.new(
+          Marshal.load(IO.binread(path)) # rubocop:disable Security/MarshalLoad
+        )
+        json_path = path.gsub(/\.dump$/, '.json')
+        File.write(json_path, JSON.generate(report.data))
+
+        log :info, <<~MSG
+          StackProf JSON report generated: #{json_path}
+        MSG
       end
     end
   end

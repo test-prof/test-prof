@@ -2,6 +2,10 @@
 
 ## master
 
+## 0.7.4 (2019-02-16)
+
+- Add JSON report support for StackProf. ([@palkan][])
+
 - Add ability to specify report/artifact name suffixes. ([@palkan][])
 
 ## 0.7.3 (2018-11-07)
