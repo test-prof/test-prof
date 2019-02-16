@@ -2,6 +2,8 @@
 
 ## master
 
+- Add ability to specify report/artifact name suffixes. ([@palkan][])
+
 ## 0.7.3 (2018-11-07)
 
 - Add a header with the general information on factories usage [#99](https://github.com/palkan/test-prof/issues/99) ([@szemek][])

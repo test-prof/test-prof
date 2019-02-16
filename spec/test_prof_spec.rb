@@ -31,6 +31,26 @@ describe TestProf do
       it { expect(described_class.artifact_path("c.html")).to eq 'tmp/test/c-123454321.html' }
       it { expect(described_class.artifact_path("c")).to eq 'tmp/test/c-123454321' }
     end
+
+    context "with report suffix" do
+      before do
+        described_class.config.report_suffix = "run-1"
+      end
+
+      it { expect(described_class.artifact_path("c.html")).to eq 'tmp/test/c-run-1.html' }
+      it { expect(described_class.artifact_path("c")).to eq 'tmp/test/c-run-1' }
+    end
+
+    context "with report suffix and timestamps" do
+      before do
+        described_class.config.report_suffix = "run-2"
+        described_class.config.timestamps = true
+        expect(described_class).to receive(:now).and_return(double("now", to_i: 123_454_321))
+      end
+
+      it { expect(described_class.artifact_path("c.html")).to eq 'tmp/test/c-run-2-123454321.html' }
+      it { expect(described_class.artifact_path("c")).to eq 'tmp/test/c-run-2-123454321' }
+    end
   end
 
   describe "#require" do

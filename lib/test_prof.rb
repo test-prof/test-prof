@@ -84,7 +84,9 @@ module TestProf
       with_timestamps(
         ::File.join(
           config.output_dir,
-          filename
+          with_report_suffix(
+            filename
+          )
         )
       )
     end
@@ -105,6 +107,12 @@ module TestProf
       "#{path.sub(/\.\w+$/, '')}#{timestamps}#{::File.extname(path)}"
     end
 
+    def with_report_suffix(path)
+      return path if config.report_suffix.nil?
+
+      "#{path.sub(/\.\w+$/, '')}-#{config.report_suffix}#{::File.extname(path)}"
+    end
+
     def notify_spring_detected
       return if instance_variable_defined?(:@spring_notified)
       log :info, "Spring detected"
@@ -118,16 +126,18 @@ module TestProf
 
   # TestProf configuration
   class Configuration
-    attr_accessor :output,      # IO to write output messages.
-                  :color,       # Whether to colorize output or not
-                  :output_dir,  # Directory to store artifacts
-                  :timestamps   # Whethere to use timestamped names for artifacts
+    attr_accessor :output,       # IO to write output messages.
+                  :color,        # Whether to colorize output or not
+                  :output_dir,   # Directory to store artifacts
+                  :timestamps, # Whethere to use timestamped names for artifacts,
+                  :report_suffix # Custom suffix for reports/artifacts
 
     def initialize
       @output = $stdout
       @color = true
       @output_dir = "tmp/test_prof"
       @timestamps = false
+      @report_suffix = ENV['TEST_PROF_REPORT']
     end
 
     def color?
