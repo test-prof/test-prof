@@ -52,6 +52,8 @@ end
 
 That's all!
 
+**NOTE**: requires RSpec >= 3.3.0.
+
 ## Instructions
 
 ### RSpec

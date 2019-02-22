@@ -4,12 +4,12 @@ $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 
-shared_context "with user" do
+shared_context "with user", with_user: true do
   let_it_be(:context_user) { create(:user, name: "Lolo") }
 end
 
 RSpec.configure do |config|
-  config.include_context "with user", with_user: true
+  config.include_context "with user", with_user: true if config.respond_to?(:include_context)
 end
 
 require "test_prof/recipes/rspec/let_it_be"

@@ -19,6 +19,8 @@ matrix:
     - rvm: 2.4.1
       gemfile: gemfiles/default_factory_girl.gemfile
     - rvm: 2.4.1
+      gemfile: gemfiles/rspec33.gemfile
+    - rvm: 2.4.1
       gemfile: gemfiles/rspec34.gemfile
     - rvm: 2.3.1
       gemfile: Gemfile

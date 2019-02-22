@@ -5,14 +5,14 @@ require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/before_all"
 
-shared_context "with user" do
+shared_context "with user", with_user: true do
   before_all do
     @context_user = TestProf::FactoryBot.create(:user, name: "Lolo")
   end
 end
 
 RSpec.configure do |config|
-  config.include_context "with user", with_user: true
+  config.include_context "with user", with_user: true if config.respond_to?(:include_context)
 end
 
 describe "User", :transactional do
