@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof"
 require "test_prof/factory_bot"
 require "test_prof/factory_doctor/factory_bot_patch"
 
@@ -139,5 +140,5 @@ module TestProf
   end
 end
 
-require "test_prof/factory_doctor/rspec" if defined?(RSpec::Core)
-require "test_prof/factory_doctor/minitest" if defined?(Minitest)
+require "test_prof/factory_doctor/rspec" if TestProf.rspec?
+require "test_prof/factory_doctor/minitest" if TestProf.minitest?

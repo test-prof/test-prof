@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "test_prof"
+
 module TestProf
   # StackProf wrapper.
   #
@@ -169,7 +171,7 @@ module TestProf
   end
 end
 
-require "test_prof/stack_prof/rspec" if defined?(RSpec::Core)
+require "test_prof/stack_prof/rspec" if TestProf.rspec?
 
 # Hook to run StackProf globally
 TestProf.activate('TEST_STACK_PROF') do

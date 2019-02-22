@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "test_prof"
+
 module TestProf
   # RubyProf wrapper.
   #
@@ -223,7 +225,7 @@ module TestProf
       end
 
       def exclude_rspec_methods(profiler)
-        return unless defined?(RSpec::Core)
+        return unless TestProf.rspec?
 
         RSpecExclusions.generate.each do |klass, mids|
           profiler.exclude_methods!(klass, *mids)
@@ -251,7 +253,7 @@ module TestProf
   end
 end
 
-if defined?(RSpec::Core)
+if TestProf.rspec?
   require "test_prof/ruby_prof/rspec"
   require "test_prof/ruby_prof/rspec_exclusions"
 end

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "test_prof"
+
 require "test_prof/tag_prof/result"
 require "test_prof/tag_prof/printers/simple"
 require "test_prof/tag_prof/printers/html"
@@ -9,4 +11,4 @@ module TestProf
   end
 end
 
-require "test_prof/tag_prof/rspec" if defined?(RSpec::Core)
+require "test_prof/tag_prof/rspec" if TestProf.rspec?

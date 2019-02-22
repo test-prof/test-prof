@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
-if defined?(RSpec)
+require "test_prof"
+
+if TestProf.rspec?
   RSpec.shared_context "logging:verbose", log: true do
     around(:each) do |ex|
       *loggers = ActiveSupport::LogSubscriber.logger,

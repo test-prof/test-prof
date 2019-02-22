@@ -34,6 +34,16 @@ module TestProf
       yield config
     end
 
+    # Returns true if we're inside RSpec
+    def rspec?
+      defined?(RSpec::Core)
+    end
+
+    # Returns true if we're inside Minitest
+    def minitest?
+      defined?(Minitest)
+    end
+
     # Avoid issues with wrong time due to monkey-patches (e.g. timecop)
     # See https://github.com/rspec/rspec-core/blob/v3.6.0/lib/rspec/core.rb#L147
     #

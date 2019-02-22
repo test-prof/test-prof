@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof"
 require "test_prof/rspec_stamp"
 require "test_prof/logging"
 
@@ -145,7 +146,7 @@ end
 
 require "test_prof/rspec_dissect/collectors/let"
 require "test_prof/rspec_dissect/collectors/before"
-require "test_prof/rspec_dissect/rspec" if defined?(RSpec::Core)
+require "test_prof/rspec_dissect/rspec" if TestProf.rspec?
 
 TestProf.activate('RD_PROF') do
   TestProf::RSpecDissect.init

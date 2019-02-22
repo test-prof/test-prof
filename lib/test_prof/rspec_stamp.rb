@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof"
 require "test_prof/logging"
 require "test_prof/rspec_stamp/parser"
 
@@ -181,4 +182,4 @@ module TestProf
   end
 end
 
-require "test_prof/rspec_stamp/rspec" if defined?(RSpec::Core)
+require "test_prof/rspec_stamp/rspec" if TestProf.rspec?

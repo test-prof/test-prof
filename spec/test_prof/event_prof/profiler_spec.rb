@@ -19,7 +19,7 @@ describe TestProf::EventProf::Profiler do
 
   describe "#result" do
     before(:each) do
-      subject.stub(:take_time).and_return(500)
+      allow(subject).to receive(:take_time).and_return(500)
     end
 
     let(:results) do

@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof"
 require "test_prof/rspec_stamp"
 require "test_prof/event_prof/profiler"
 require "test_prof/event_prof/instrumentations/active_support"
@@ -103,5 +104,5 @@ module TestProf
 end
 
 require "test_prof/event_prof/custom_events"
-require "test_prof/event_prof/rspec" if defined?(RSpec::Core)
-require "test_prof/event_prof/minitest" if defined?(Minitest)
+require "test_prof/event_prof/rspec" if TestProf.rspec?
+require "test_prof/event_prof/minitest" if TestProf.minitest?
