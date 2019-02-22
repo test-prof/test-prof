@@ -5,6 +5,16 @@ require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/before_all"
 
+shared_context "with user" do
+  before_all do
+    @context_user = TestProf::FactoryBot.create(:user, name: "Lolo")
+  end
+end
+
+RSpec.configure do |config|
+  config.include_context "with user", with_user: true
+end
+
 describe "User", :transactional do
   context "with before_all" do
     before_all do
@@ -55,5 +65,13 @@ describe "User", :transactional do
     specify { expect(User.find(@user3.id)).to be_a(User) }
 
     specify { expect(User.count).to eq 2 }
+  end
+end
+
+describe "User", :transactional, :with_user do
+  context "with shared context" do
+    it "works", :with_user do
+      expect(User.where(name: "Lolo").count).to eq 1
+    end
   end
 end

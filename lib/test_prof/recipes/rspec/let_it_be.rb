@@ -86,6 +86,4 @@ module TestProf
   end
 end
 
-RSpec.configure do |config|
-  config.extend TestProf::LetItBe
-end
+RSpec::Core::ExampleGroup.extend TestProf::LetItBe

@@ -3,6 +3,15 @@
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
+
+shared_context "with user" do
+  let_it_be(:context_user) { create(:user, name: "Lolo") }
+end
+
+RSpec.configure do |config|
+  config.include_context "with user", with_user: true
+end
+
 require "test_prof/recipes/rspec/let_it_be"
 
 RSpec.configure do |config|
@@ -120,5 +129,13 @@ describe "User", :transactional do
 
   context "without let_it_be" do
     specify { expect(User.count).to eq 0 }
+  end
+end
+
+describe "User", :transactional, :with_user do
+  context "with shared context" do
+    it "works", :with_user do
+      expect(User.where(name: "Lolo").count).to eq 1
+    end
   end
 end
