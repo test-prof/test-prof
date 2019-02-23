@@ -17,6 +17,7 @@ AllCops:
     - 'README.md'
     - '*.gemspec'
     - '**/*.gemfile'
+    - 'gemfiles/**/*'
   DisplayCopNames: true
   StyleGuideCopsOnly: false
   TargetRubyVersion: 2.3
