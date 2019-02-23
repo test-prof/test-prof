@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.7.5 (2019-02-22)
+
 - Make `let_it_be` and `before_all` work with `include_context`. ([@palkan][])
 
   Fixes [#117](https://github.com/palkan/test-prof/issues/117)
