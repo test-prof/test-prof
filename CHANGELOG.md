@@ -2,6 +2,10 @@
 
 ## master
 
+- Make `let_it_be` and `before_all` work with `include_context`. ([@palkan][])
+
+  Fixes [#117](https://github.com/palkan/test-prof/issues/117)
+
 ## 0.7.4 (2019-02-16)
 
 - Add JSON report support for StackProf. ([@palkan][])

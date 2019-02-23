@@ -51,11 +51,11 @@ TestProf::FactoryBot.define do
     end
 
     trait :traited do
-      tag 'traited'
+      tag { 'traited' }
     end
 
     trait :other_trait do
-      tag 'other_trait'
+      tag { 'other_trait' }
     end
   end
 

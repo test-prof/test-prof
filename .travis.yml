@@ -1,5 +1,6 @@
 sudo: false
 language: ruby
+cache: bundler
 
 before_install:
   - gem uninstall -v '>= 2' -i $(rvm gemdir)@global -ax bundler || true
@@ -10,7 +11,7 @@ matrix:
   include:
     - rvm: 2.6.1
       gemfile: gemfiles/railsmaster.gemfile
-    - rvm: jruby-9.1.0.0
+    - rvm: jruby-9.2.6.0
       gemfile: gemfiles/jruby.gemfile
     - rvm: 2.5.0
       gemfile: Gemfile
@@ -29,5 +30,5 @@ matrix:
   allow_failures:
     - rvm: 2.6.1
       gemfile: gemfiles/railsmaster.gemfile
-    - rvm: jruby-9.1.0.0
+    - rvm: jruby-9.2.6.0
       gemfile: gemfiles/jruby.gemfile
