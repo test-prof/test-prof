@@ -33,6 +33,20 @@ describe TestProf::FactoryProf, :transactional do
         expect(result.stacks.first).to eq([:user])
       end
 
+      it "handles associations" do
+        TestProf::FactoryBot.create(:post)
+
+        expect(result.stacks).to contain_exactly(
+          %i[post user]
+        )
+        expect(result.stats).to eq(
+          [
+            { name: :post, total: 1, top_level: 1 },
+            { name: :user, total: 1, top_level: 0 }
+          ]
+        )
+      end
+
       it "contains many stacks" do
         TestProf::FactoryBot.create_pair(:user)
         TestProf::FactoryBot.create(:post)
