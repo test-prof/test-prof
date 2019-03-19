@@ -158,13 +158,21 @@ module TestProf
 
         @locked = true
 
-        log :info, "RubyProf enabled"
+        log :info, "RubyProf enabled globally"
 
         at_exit { report.dump("total") }
       end
 
       def profile
-        return if locked?
+        if locked?
+          log :warn, <<~MSG
+            RubyProf is activated globally, you cannot generate per-example report.
+
+            Make sure you haven's set the TEST_RUBY_PROF environmental variable.
+          MSG
+          return
+        end
+
         return unless init_ruby_prof
 
         options = {

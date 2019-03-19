@@ -38,6 +38,8 @@ it 'is doing heavy stuff', :sprof do
 end
 ```
 
+**NOTE:** per-example profiling doesn't work when the global profiling is activated.
+
 ## Report formats
 
 Stackprof provides a CLI tool to manipulate generated reports (e.g. convert to different formats).

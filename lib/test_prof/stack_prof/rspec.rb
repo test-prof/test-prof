@@ -11,11 +11,14 @@ module TestProf
       ].freeze
 
       def example_started(notification)
-        TestProf::StackProf.profile if profile?(notification.example)
+        return unless profile?(notification.example)
+        notification.example.metadata[:sprof_report] = TestProf::StackProf.profile
       end
 
       def example_finished(notification)
         return unless profile?(notification.example)
+        return unless notification.example.metadata[:sprof_report] == false
+
         TestProf::StackProf.dump(
           notification.example.full_description.parameterize
         )

@@ -18,7 +18,7 @@ module TestProf
 
       def example_finished(notification)
         return unless profile?(notification.example)
-        notification.example.metadata[:rprof_report].dump(
+        notification.example.metadata[:rprof_report]&.dump(
           notification.example.full_description.parameterize
         )
       end

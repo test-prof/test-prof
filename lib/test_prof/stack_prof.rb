@@ -71,15 +71,23 @@ module TestProf
 
         @locked = true
 
-        log :info, "StackProf enabled#{config.raw? ? ' (raw)' : ''}: " \
+        log :info, "StackProf#{config.raw? ? ' (raw)' : ''} enabled globally: " \
                    "mode – #{config.mode}, target – #{config.target}"
 
         at_exit { dump("total") } if config.suite?
       end
 
       def profile(name = nil)
-        return if locked?
-        return unless init_stack_prof
+        if locked?
+          log :warn, <<~MSG
+            StackProf is activated globally, you cannot generate per-example report.
+
+            Make sure you haven's set the TEST_STACK_PROF environmental variable.
+          MSG
+          return false
+        end
+
+        return false unless init_stack_prof
 
         options = {
           mode: config.mode,

@@ -38,6 +38,8 @@ it 'is doing heavy stuff', :rprof do
 end
 ```
 
+**NOTE:** per-example profiling doesn't work when the global profiling is activated.
+
 ## Configuration
 
 The most useful configuration option is `printer` – it allows you to specify a RubyProf [printer](https://github.com/ruby-prof/ruby-prof#printers).
@@ -57,6 +59,8 @@ end
 ```
 
 By default, we use `FlatPrinter`.
+
+**NOTE:** to specify the printer for per-example profiles use `TEST_RUBY_PROF_PRINTER` env variable ('cause using `TEST_RUBY_PROF` activates the global profiling).
 
 Also, you can specify RubyProf mode (`wall`, `cpu`, etc) through `TEST_RUBY_PROF_MODE` env variable.
 
