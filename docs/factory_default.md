@@ -108,7 +108,7 @@ before { FactoryBot.set_factory_default(:user, user) }
 
 - `FactoryBot#create_default(factory, *args)` – is a shortcut for `create` + `set_factory_default`.
 
-**NOTE**. Defaults are cleaned up after each example.
+**NOTE**. Defaults are **cleaned up after each example** by default. That means you cannot create defaults within `before(:all)` / [`before_all`](./before_all.md) / [`let_it_be`](./let_it_be.md) definitions. That could be changed in the future, for now [check this workaround](https://github.com/palkan/test-prof/issues/125#issuecomment-471706752).
 
 ### Working with traits
 
