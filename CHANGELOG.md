@@ -2,6 +2,14 @@
 
 ## master
 
+- Make `before_all` for Active Record `lock_thread` aware. ([@palkan][])
+
+  `before_all` can went crazy if you open multiple connections within it 
+  (since it tracks the number of open transactions).
+  Rails 5+ `lock_thread` feature only locks the connection thread in
+  `before`/`setup` hook thus making it possible to have multiple connections/transactions
+  in `before_all` (e.g. performing jobs with Active Job async adapter).
+
 ## 0.7.5 (2019-02-22)
 
 - Make `let_it_be` and `before_all` work with `include_context`. ([@palkan][])

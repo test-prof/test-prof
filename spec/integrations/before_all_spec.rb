@@ -7,7 +7,7 @@ describe "BeforeAll" do
     specify "it works" do
       output = run_rspec('before_all')
 
-      expect(output).to include("9 examples, 0 failures")
+      expect(output).to include("11 examples, 0 failures")
     end
 
     specify "it works with custom adapter" do
