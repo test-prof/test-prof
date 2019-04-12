@@ -5,13 +5,13 @@ require "spec_helper"
 describe "BeforeAll" do
   context "RSpec" do
     specify "it works" do
-      output = run_rspec('before_all')
+      output = run_rspec("before_all")
 
       expect(output).to include("11 examples, 0 failures")
     end
 
     specify "it works with custom adapter" do
-      output = run_rspec('before_all_custom_adapter')
+      output = run_rspec("before_all_custom_adapter")
 
       expect(output).to include("3 examples, 0 failures")
     end
@@ -19,7 +19,7 @@ describe "BeforeAll" do
 
   context "Minitest" do
     specify "it works" do
-      output = run_minitest('before_all')
+      output = run_minitest("before_all")
 
       expect(output).to include("3 runs, 3 assertions, 0 failures, 0 errors, 0 skips")
     end

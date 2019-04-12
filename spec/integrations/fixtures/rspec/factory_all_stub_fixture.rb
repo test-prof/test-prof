@@ -27,7 +27,7 @@ describe "User", :transactional, factory: :stub do
     end
 
     it "validates name" do
-      user.name = ''
+      user.name = ""
       expect(user).not_to be_valid
     end
   end

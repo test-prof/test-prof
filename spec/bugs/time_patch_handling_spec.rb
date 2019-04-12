@@ -6,9 +6,9 @@ require "spec_helper"
 describe "Time.now patching handling (e.g. Timecop)", type: :integration do
   specify "works with ad-hoc patch" do
     output = run_rspec(
-      'time_patch',
+      "time_patch",
       chdir: File.join(__dir__, "fixtures"),
-      env: { 'TAG_PROF' => 'a' }
+      env: {"TAG_PROF" => "a"}
     )
 
     matches = output.match(/x\s+\d{2}\:(\d{2})\.(\d{3})\s+/)
@@ -19,9 +19,9 @@ describe "Time.now patching handling (e.g. Timecop)", type: :integration do
 
   specify "works with timecop" do
     output = run_rspec(
-      'timecop',
+      "timecop",
       chdir: File.join(__dir__, "fixtures"),
-      env: { 'TAG_PROF' => 'a' }
+      env: {"TAG_PROF" => "a"}
     )
 
     matches = output.match(/x\s+\d{2}\:(\d{2})\.(\d{3})\s+/)

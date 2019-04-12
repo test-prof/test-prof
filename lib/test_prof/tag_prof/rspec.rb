@@ -13,17 +13,17 @@ module TestProf
       attr_reader :result, :printer
 
       def initialize
-        @printer = ENV['TAG_PROF_FORMAT'] == 'html' ? Printers::HTML : Printers::Simple
+        @printer = ENV["TAG_PROF_FORMAT"] == "html" ? Printers::HTML : Printers::Simple
 
         @result =
-          if ENV['TAG_PROF_EVENT'].nil?
-            Result.new ENV['TAG_PROF'].to_sym
+          if ENV["TAG_PROF_EVENT"].nil?
+            Result.new ENV["TAG_PROF"].to_sym
           else
             require "test_prof/event_prof"
 
-            @events_profiler = EventProf.build(ENV['TAG_PROF_EVENT'])
+            @events_profiler = EventProf.build(ENV["TAG_PROF_EVENT"])
 
-            Result.new ENV['TAG_PROF'].to_sym, @events_profiler.events
+            Result.new ENV["TAG_PROF"].to_sym, @events_profiler.events
           end
 
         log :info, "TagProf enabled (#{result.tag})"
@@ -64,7 +64,7 @@ module TestProf
 end
 
 # Register TagProf listener
-TestProf.activate('TAG_PROF') do
+TestProf.activate("TAG_PROF") do
   RSpec.configure do |config|
     listener = nil
 
@@ -80,8 +80,8 @@ TestProf.activate('TAG_PROF') do
 end
 
 # Activate custom events
-TestProf.activate('TAG_PROF_EVENT') do
+TestProf.activate("TAG_PROF_EVENT") do
   require "test_prof/event_prof"
 
-  TestProf::EventProf::CustomEvents.activate_all(ENV['TAG_PROF_EVENT'])
+  TestProf::EventProf::CustomEvents.activate_all(ENV["TAG_PROF_EVENT"])
 end

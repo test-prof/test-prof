@@ -14,7 +14,7 @@ module TestProf
       def suites
         # Make sure that sample contains only _real_ suites
         Minitest::Runnable.runnables
-                          .reject { |suite| CORE_RUNNABLES.include?(suite) }
+          .reject { |suite| CORE_RUNNABLES.include?(suite) }
       end
 
       def sample_groups(sample_size)
@@ -39,10 +39,10 @@ module TestProf
 
     # Overrides Minitest.run
     def run(*)
-      if ENV['SAMPLE']
-        MinitestSample.sample_examples(ENV['SAMPLE'].to_i)
-      elsif ENV['SAMPLE_GROUPS']
-        MinitestSample.sample_groups(ENV['SAMPLE_GROUPS'].to_i)
+      if ENV["SAMPLE"]
+        MinitestSample.sample_examples(ENV["SAMPLE"].to_i)
+      elsif ENV["SAMPLE_GROUPS"]
+        MinitestSample.sample_groups(ENV["SAMPLE_GROUPS"].to_i)
       end
       super
     end

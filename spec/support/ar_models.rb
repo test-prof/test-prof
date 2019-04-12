@@ -5,10 +5,10 @@ require "fabrication"
 require "test_prof"
 require "test_prof/factory_bot"
 
-require 'activerecord-jdbc-adapter' if defined? JRUBY_VERSION
-require 'activerecord-jdbcsqlite3-adapter' if defined? JRUBY_VERSION
+require "activerecord-jdbc-adapter" if defined? JRUBY_VERSION
+require "activerecord-jdbcsqlite3-adapter" if defined? JRUBY_VERSION
 
-ActiveRecord::Base.establish_connection(adapter: 'sqlite3', database: ':memory:')
+ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
 
 ActiveRecord::Schema.define do
   create_table :users do |t|
@@ -23,7 +23,7 @@ ActiveRecord::Schema.define do
   end
 end
 
-ActiveRecord::Base.logger = Logger.new(STDOUT) if ENV['LOG']
+ActiveRecord::Base.logger = Logger.new(STDOUT) if ENV["LOG"]
 
 class User < ActiveRecord::Base
   validates :name, presence: true
@@ -51,11 +51,11 @@ TestProf::FactoryBot.define do
     end
 
     trait :traited do
-      tag { 'traited' }
+      tag { "traited" }
     end
 
     trait :other_trait do
-      tag { 'other_trait' }
+      tag { "other_trait" }
     end
   end
 

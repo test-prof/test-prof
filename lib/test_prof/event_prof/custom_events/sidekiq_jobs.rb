@@ -16,7 +16,7 @@ module TestProf::EventProf::CustomEvents
 
       def track
         ActiveSupport::Notifications.instrument(
-          'sidekiq.jobs'
+          "sidekiq.jobs"
         ) { yield }
       end
     end
@@ -25,7 +25,7 @@ end
 
 TestProf::EventProf::CustomEvents.register("sidekiq.jobs") do
   if TestProf.require(
-    'sidekiq/testing',
+    "sidekiq/testing",
     <<~MSG
       Failed to load Sidekiq.
 

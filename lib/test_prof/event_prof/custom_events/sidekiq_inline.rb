@@ -22,7 +22,7 @@ module TestProf::EventProf::CustomEvents
           res =
             if @depth == 1
               ActiveSupport::Notifications.instrument(
-                'sidekiq.inline'
+                "sidekiq.inline"
               ) { yield }
             else
               yield
@@ -38,7 +38,7 @@ end
 
 TestProf::EventProf::CustomEvents.register("sidekiq.inline") do
   if TestProf.require(
-    'sidekiq/testing',
+    "sidekiq/testing",
     <<~MSG
       Failed to load Sidekiq.
 

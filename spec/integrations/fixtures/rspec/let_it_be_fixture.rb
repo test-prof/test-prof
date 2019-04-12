@@ -52,7 +52,7 @@ describe "User", :transactional do
       end
 
       it "validates name" do
-        user.name = ''
+        user.name = ""
         expect(user).not_to be_valid
       end
 
@@ -85,7 +85,7 @@ describe "User", :transactional do
       let(:user) { post.user }
 
       it "validates name" do
-        user.name = ''
+        user.name = ""
         expect(user).not_to be_valid
       end
 
@@ -115,8 +115,8 @@ describe "User", :transactional do
 
     it "creates let-like method" do
       expect(user).to eq @user
-      @user.name = ''
-      expect(user.name).to eq ''
+      @user.name = ""
+      expect(user.name).to eq ""
       expect(user).not_to be_valid
     end
 

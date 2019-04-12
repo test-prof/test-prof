@@ -13,13 +13,13 @@ describe "User" do
   end
 
   it "validates name" do
-    user.name = ''
+    user.name = ""
     expect(user).not_to be_valid
   end
 
   it "creates and reloads user" do
-    user = TestProf::FactoryBot.create(:user, name: 'John')
-    expect(User.find(user.id).name).to eq 'John'
+    user = TestProf::FactoryBot.create(:user, name: "John")
+    expect(User.find(user.id).name).to eq "John"
   end
 
   it "clones" do
@@ -27,7 +27,7 @@ describe "User" do
   end
 
   it "is ignored", :fd_ignore do
-    user.name = ''
+    user.name = ""
     expect(user).not_to be_valid
   end
 end

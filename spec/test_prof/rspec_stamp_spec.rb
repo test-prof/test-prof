@@ -23,12 +23,12 @@ describe TestProf::RSpecStamp do
 
     it "handle string hash tags" do
       subject.tags = "fix:me"
-      expect(subject.tags).to eq([{ fix: :me }])
+      expect(subject.tags).to eq([{fix: :me}])
     end
 
     it "handle several tags" do
       subject.tags = "todo,fix:me"
-      expect(subject.tags).to eq([:todo, { fix: :me }])
+      expect(subject.tags).to eq([:todo, {fix: :me}])
     end
   end
 
@@ -229,7 +229,7 @@ describe TestProf::RSpecStamp do
         CODE
       end
 
-      let(:tags) { [{ a: :b }, :todo, { c: 'd' }] }
+      let(:tags) { [{a: :b}, :todo, {c: "d"}] }
 
       specify do
         is_expected.to eq 0
@@ -260,7 +260,7 @@ describe TestProf::RSpecStamp do
       end
 
       context "when tags already set" do
-        let(:tags) { [{ log: :none }, :todo, { level: :info }] }
+        let(:tags) { [{log: :none}, :todo, {level: :info}] }
 
         let(:source) do
           <<~CODE
@@ -370,7 +370,7 @@ describe TestProf::RSpecStamp do
 
         let(:lines) { [1] }
 
-        let(:tags) { [{ slow: :todo }] }
+        let(:tags) { [{slow: :todo}] }
 
         specify do
           is_expected.to eq 0

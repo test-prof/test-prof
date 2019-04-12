@@ -45,7 +45,7 @@ module TestProf::FactoryProf
                 node = paths[path]
                 node[:value] += 1
               else
-                node = { name: sample, value: 1, total: result.raw_stats.fetch(sample)[:total] }
+                node = {name: sample, value: 1, total: result.raw_stats.fetch(sample)[:total]}
                 paths[path] = node
 
                 if parent.nil?

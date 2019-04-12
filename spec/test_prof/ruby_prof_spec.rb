@@ -19,11 +19,11 @@ describe TestProf::RubyProf do
     describe "#resolve_printer" do
       it "works with custom class" do
         subject.printer = TestProf
-        expect(subject.resolve_printer).to eq(['custom', TestProf])
+        expect(subject.resolve_printer).to eq(["custom", TestProf])
       end
 
       it "raises when unknown printer" do
-        subject.printer = 'unknown'
+        subject.printer = "unknown"
         expect { subject.resolve_printer }.to raise_error(ArgumentError)
       end
     end

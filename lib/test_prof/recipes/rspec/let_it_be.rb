@@ -23,7 +23,7 @@ module TestProf
     # Use uniq prefix for instance variables to avoid collisions
     # We want to use the power of Ruby's unicode support)
     # And we love cats!)
-    PREFIX = RUBY_ENGINE == 'jruby' ? "@__jruby_is_not_cat_friendly__" : "@😸"
+    PREFIX = RUBY_ENGINE == "jruby" ? "@__jruby_is_not_cat_friendly__" : "@😸"
 
     def let_it_be(identifier, **options, &block)
       initializer = proc do
@@ -62,7 +62,7 @@ module TestProf
       LetItBe.module_for(self).module_eval do
         define_method(identifier) do
           # Trying to detect the context (couldn't find other way so far)
-          if @__inspect_output =~ /\(:context\)/
+          if /\(:context\)/.match?(@__inspect_output)
             instance_variable_get(:"#{PREFIX}#{identifier}")
           else
             # Fallback to let definition

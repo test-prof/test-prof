@@ -20,7 +20,7 @@ describe "User" do
   end
 
   it "validates name" do
-    @user.name = ''
+    @user.name = ""
     refute @user.valid?
   end
 

@@ -45,7 +45,7 @@ module TestProf
       attr_reader :count, :time, :queries_count
 
       # Patch factory lib, init counters
-      def init(event = 'sql.active_record')
+      def init(event = "sql.active_record")
         @event = event
         reset!
 
@@ -57,7 +57,7 @@ module TestProf
 
         subscribe!
 
-        @stamp = ENV['FDOC_STAMP']
+        @stamp = ENV["FDOC_STAMP"]
 
         RSpecStamp.config.tags = @stamp if stamp?
       end

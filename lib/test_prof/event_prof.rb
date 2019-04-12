@@ -31,19 +31,19 @@ module TestProf
     class Configuration
       # Map of supported instrumenters
       INSTRUMENTERS = {
-        active_support: 'ActiveSupport'
+        active_support: "ActiveSupport"
       }.freeze
 
       attr_accessor :instrumenter, :top_count, :per_example,
                     :rank_by, :event
 
       def initialize
-        @event = ENV['EVENT_PROF']
+        @event = ENV["EVENT_PROF"]
         @instrumenter = :active_support
-        @top_count = (ENV['EVENT_PROF_TOP'] || 5).to_i
-        @per_example = ENV['EVENT_PROF_EXAMPLES'] == '1'
-        @rank_by = (ENV['EVENT_PROF_RANK'] || :time).to_sym
-        @stamp = ENV['EVENT_PROF_STAMP']
+        @top_count = (ENV["EVENT_PROF_TOP"] || 5).to_i
+        @per_example = ENV["EVENT_PROF_EXAMPLES"] == "1"
+        @rank_by = (ENV["EVENT_PROF_RANK"] || :time).to_sym
+        @stamp = ENV["EVENT_PROF_STAMP"]
 
         RSpecStamp.config.tags = @stamp if stamp?
       end

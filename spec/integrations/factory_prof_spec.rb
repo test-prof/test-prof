@@ -5,7 +5,7 @@ require "spec_helper"
 describe "FactoryProf" do
   context "RSpec integration" do
     specify "simple printer", :aggregate_failures do
-      output = run_rspec('factory_prof', env: { 'FPROF' => '1' })
+      output = run_rspec("factory_prof", env: {"FPROF" => "1"})
 
       expect(output).to include("FactoryProf enabled (simple mode)")
 
@@ -15,7 +15,7 @@ describe "FactoryProf" do
     end
 
     specify "flamegraph printer" do
-      output = run_rspec('factory_prof', env: { 'FPROF' => 'flamegraph' })
+      output = run_rspec("factory_prof", env: {"FPROF" => "flamegraph"})
 
       expect(output).to include("FactoryProf enabled (flamegraph mode)")
 
@@ -26,7 +26,7 @@ describe "FactoryProf" do
 
     context "when no fabrication installed" do
       specify "simple printer", :aggregate_failures do
-        output = run_rspec('factory_prof_no_fabrication', env: { 'FPROF' => '1' })
+        output = run_rspec("factory_prof_no_fabrication", env: {"FPROF" => "1"})
         expect(output).to include("FactoryProf enabled (simple mode)")
         expect(output).to include("No factories detected")
         expect(output).not_to include("[TEST PROF ERROR]")
@@ -35,7 +35,7 @@ describe "FactoryProf" do
 
     context "when no factory_bot installed" do
       specify "simple printer", :aggregate_failures do
-        output = run_rspec('factory_prof_no_factory_bot', env: { 'FPROF' => '1' })
+        output = run_rspec("factory_prof_no_factory_bot", env: {"FPROF" => "1"})
         expect(output).to include("FactoryProf enabled (simple mode)")
         expect(output).to include("No factories detected")
         expect(output).not_to include("[TEST PROF ERROR]")

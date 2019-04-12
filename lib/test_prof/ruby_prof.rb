@@ -25,24 +25,24 @@ module TestProf
     # RubyProf configuration
     class Configuration
       PRINTERS = {
-        'flat' => 'FlatPrinter',
-        'flat_wln' => 'FlatPrinterWithLineNumbers',
-        'graph' => 'GraphPrinter',
-        'graph_html' => 'GraphHtmlPrinter',
-        'dot' => 'DotPrinter',
-        '.' => 'DotPrinter',
-        'call_stack' => 'CallStackPrinter',
-        'call_tree' => 'CallTreePrinter',
-        'multi' => 'MultiPrinter'
+        "flat" => "FlatPrinter",
+        "flat_wln" => "FlatPrinterWithLineNumbers",
+        "graph" => "GraphPrinter",
+        "graph_html" => "GraphHtmlPrinter",
+        "dot" => "DotPrinter",
+        "." => "DotPrinter",
+        "call_stack" => "CallStackPrinter",
+        "call_tree" => "CallTreePrinter",
+        "multi" => "MultiPrinter"
       }.freeze
 
       # Mapping from printer to report file extension
       # NOTE: txt is not included and considered default
       PRINTER_EXTENSTION = {
-        'graph_html' => 'html',
-        'dot' => 'dot',
-        '.' => 'dot',
-        'call_stack' => 'html'
+        "graph_html" => "html",
+        "dot" => "dot",
+        "." => "dot",
+        "call_stack" => "html"
       }.freeze
 
       LOGFILE_PREFIX = "ruby-prof-report"
@@ -53,9 +53,9 @@ module TestProf
                     :custom_exclusions
 
       def initialize
-        @printer = ENV['TEST_RUBY_PROF'].to_sym if PRINTERS.key?(ENV['TEST_RUBY_PROF'])
-        @printer ||= ENV.fetch('TEST_RUBY_PROF_PRINTER', :flat).to_sym
-        @mode = ENV.fetch('TEST_RUBY_PROF_MODE', :wall).to_sym
+        @printer = ENV["TEST_RUBY_PROF"].to_sym if PRINTERS.key?(ENV["TEST_RUBY_PROF"])
+        @printer ||= ENV.fetch("TEST_RUBY_PROF_PRINTER", :flat).to_sym
+        @mode = ENV.fetch("TEST_RUBY_PROF_MODE", :wall).to_sym
         @min_percent = 1
         @include_threads = false
         @exclude_common_methods = true
@@ -77,7 +77,7 @@ module TestProf
 
       # Returns an array of printer type (ID) and class.
       def resolve_printer
-        return ['custom', printer] if printer.is_a?(Module)
+        return ["custom", printer] if printer.is_a?(Module)
 
         type = printer.to_s
 
@@ -113,7 +113,7 @@ module TestProf
           )
         else
           path = build_path name, printer_type
-          File.open(path, 'w') do |f|
+          File.open(path, "w") do |f|
             printer_class.new(result).print(f, min_percent: config.min_percent)
           end
 
@@ -127,7 +127,7 @@ module TestProf
       def build_path(name, printer)
         TestProf.artifact_path(
           "#{RubyProf::Configuration::LOGFILE_PREFIX}-#{printer}-#{config.mode}-#{name}" \
-          ".#{RubyProf::Configuration::PRINTER_EXTENSTION.fetch(printer, 'txt')}"
+          ".#{RubyProf::Configuration::PRINTER_EXTENSTION.fetch(printer, "txt")}"
         )
       end
 
@@ -212,7 +212,7 @@ module TestProf
         return @initialized if instance_variable_defined?(:@initialized)
         ENV["RUBY_PROF_MEASURE_MODE"] = config.mode.to_s
         @initialized = TestProf.require(
-          'ruby-prof',
+          "ruby-prof",
           <<~MSG
             Please, install 'ruby-prof' first:
                # Gemfile
@@ -222,7 +222,7 @@ module TestProf
       end
 
       def check_ruby_prof_version
-        if Utils.verify_gem_version('ruby-prof', at_least: '0.17.0')
+        if Utils.verify_gem_version("ruby-prof", at_least: "0.17.0")
           true
         else
           log :error, <<~MGS
@@ -267,6 +267,6 @@ if TestProf.rspec?
 end
 
 # Hook to run RubyProf globally
-TestProf.activate('TEST_RUBY_PROF') do
+TestProf.activate("TEST_RUBY_PROF") do
   TestProf::RubyProf.run
 end

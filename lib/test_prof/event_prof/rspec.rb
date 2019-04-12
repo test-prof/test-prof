@@ -20,7 +20,7 @@ module TestProf
       def initialize
         @profiler = EventProf.build
 
-        log :info, "EventProf enabled (#{@profiler.events.join(', ')})"
+        log :info, "EventProf enabled (#{@profiler.events.join(", ")})"
       end
 
       def example_group_started(notification)
@@ -138,8 +138,8 @@ module TestProf
 end
 
 # Register EventProf listener
-TestProf.activate('EVENT_PROF') do
-  TestProf::EventProf::CustomEvents.activate_all(ENV['EVENT_PROF'])
+TestProf.activate("EVENT_PROF") do
+  TestProf::EventProf::CustomEvents.activate_all(ENV["EVENT_PROF"])
 
   RSpec.configure do |config|
     listener = nil

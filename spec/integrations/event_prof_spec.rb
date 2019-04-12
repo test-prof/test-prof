@@ -4,7 +4,7 @@ require "spec_helper"
 
 describe "EventProf RSpec" do
   specify "with default options", :aggregate_failures do
-    output = run_rspec('event_prof', env: { 'EVENT_PROF' => 'test.event' })
+    output = run_rspec("event_prof", env: {"EVENT_PROF" => "test.event"})
 
     expect(output).to include("EventProf results for test.event")
     expect(output).to match(/Total time: 00:00\.359 of 00:01\.\d{3} \(\d{2}\.\d+%\)/)
@@ -24,8 +24,8 @@ describe "EventProf RSpec" do
 
   specify "with rank by count", :aggregate_failures do
     output = run_rspec(
-      'event_prof',
-      env: { 'EVENT_PROF' => 'test.event', 'EVENT_PROF_RANK' => 'count' }
+      "event_prof",
+      env: {"EVENT_PROF" => "test.event", "EVENT_PROF_RANK" => "count"}
     )
 
     expect(output).to include("EventProf results for test.event")
@@ -45,7 +45,7 @@ describe "EventProf RSpec" do
   end
 
   specify "with multiple events", :aggregate_failures do
-    output = run_rspec('event_prof', env: { 'EVENT_PROF' => 'test.event,test.another_event' })
+    output = run_rspec("event_prof", env: {"EVENT_PROF" => "test.event,test.another_event"})
 
     expect(output).to include("EventProf results for test.event")
     expect(output).to match(/Total time: 00:00\.359 of 00:01\.\d{3} \(\d{2}\.\d+%\)/)
@@ -72,8 +72,8 @@ describe "EventProf RSpec" do
 
     specify "it works with groups", :aggregate_failures do
       output = run_rspec(
-        'event_prof_stamp',
-        env: { 'EVENT_PROF' => 'test.event', 'EVENT_PROF_STAMP' => 'slow', 'EVENT_PROF_TOP' => '1' }
+        "event_prof_stamp",
+        env: {"EVENT_PROF" => "test.event", "EVENT_PROF_STAMP" => "slow", "EVENT_PROF_TOP" => "1"}
       )
 
       expect(output).to include("5 examples, 0 failures")
@@ -90,8 +90,8 @@ describe "EventProf RSpec" do
       expect(output).to include("Ignored files: 0")
 
       output2 = run_rspec(
-        'event_prof_stamp',
-        env: { 'SPEC_OPTS' => '--tag slow' }
+        "event_prof_stamp",
+        env: {"SPEC_OPTS" => "--tag slow"}
       )
 
       expect(output2).to include("3 examples, 0 failures")
@@ -99,10 +99,10 @@ describe "EventProf RSpec" do
 
     specify "it works with groups and examples", :aggregate_failures do
       output = run_rspec(
-        'event_prof_stamp',
+        "event_prof_stamp",
         env: {
-          'EVENT_PROF' => 'test.event', 'EVENT_PROF_STAMP' => 'slow:test_event',
-          'EVENT_PROF_TOP' => '1', 'EVENT_PROF_EXAMPLES' => '1'
+          "EVENT_PROF" => "test.event", "EVENT_PROF_STAMP" => "slow:test_event",
+          "EVENT_PROF_TOP" => "1", "EVENT_PROF_EXAMPLES" => "1"
         }
       )
 
@@ -121,8 +121,8 @@ describe "EventProf RSpec" do
       expect(output).to include("Ignored files: 0")
 
       output2 = run_rspec(
-        'event_prof_stamp',
-        env: { 'SPEC_OPTS' => '--tag slow:test_event' }
+        "event_prof_stamp",
+        env: {"SPEC_OPTS" => "--tag slow:test_event"}
       )
 
       expect(output2).to include("4 examples, 0 failures")
@@ -132,8 +132,8 @@ describe "EventProf RSpec" do
   context "with custom events" do
     it "works with factory.create" do
       output = run_rspec(
-        'event_prof_factory_create',
-        env: { 'EVENT_PROF' => 'factory.create' }
+        "event_prof_factory_create",
+        env: {"EVENT_PROF" => "factory.create"}
       )
 
       expect(output).to include("EventProf results for factory.create")
@@ -146,8 +146,8 @@ describe "EventProf RSpec" do
 
     it "works with sidekiq.inline" do
       output = run_rspec(
-        'event_prof_sidekiq',
-        env: { 'EVENT_PROF' => 'sidekiq.inline' }
+        "event_prof_sidekiq",
+        env: {"EVENT_PROF" => "sidekiq.inline"}
       )
 
       expect(output).to include("EventProf results for sidekiq.inline")
@@ -160,8 +160,8 @@ describe "EventProf RSpec" do
 
     it "works with sidekiq.jobs" do
       output = run_rspec(
-        'event_prof_sidekiq',
-        env: { 'EVENT_PROF' => 'sidekiq.jobs' }
+        "event_prof_sidekiq",
+        env: {"EVENT_PROF" => "sidekiq.jobs"}
       )
 
       expect(output).to include("EventProf results for sidekiq.jobs")
@@ -178,8 +178,8 @@ describe "EventProf RSpec" do
   context "with monitor" do
     it "profiles custom methods" do
       output = run_rspec(
-        'event_prof_monitor',
-        env: { 'EVENT_PROF' => 'test.event' }
+        "event_prof_monitor",
+        env: {"EVENT_PROF" => "test.event"}
       )
 
       expect(output).to include("EventProf results for test.event")

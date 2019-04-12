@@ -29,7 +29,7 @@ end
 
 describe "User", :user do
   it "creates user" do
-    user.name = ''
+    user.name = ""
     expect(user).not_to be_valid
   end
 

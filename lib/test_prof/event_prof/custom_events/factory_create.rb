@@ -26,7 +26,7 @@ module TestProf::EventProf::CustomEvents
           res =
             if @depth == 1
               ActiveSupport::Notifications.instrument(
-                'factory.create',
+                "factory.create",
                 name: factory
               ) { yield }
             else

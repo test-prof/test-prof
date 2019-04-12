@@ -70,7 +70,7 @@ Add ability to specify custom exclusions through `config.custom_exclusions`, e.g
 
 ```ruby
 TestProf::RubyProf.configure do |config|
-  config.custom_exclusions = { User => %i[save save!] }
+  config.custom_exclusions = {User => %i[save save!]}
 end
 ```
 
@@ -173,7 +173,7 @@ LOG=all rspec
 Or per example (group):
 
 ```ruby
-it 'does smth weird', :log do
+it "does smth weird", :log do
   # ...
 end
 ```

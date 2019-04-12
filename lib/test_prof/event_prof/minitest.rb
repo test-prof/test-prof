@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'minitest/base_reporter'
-require 'minitest/event_prof_formatter'
+require "minitest/base_reporter"
+require "minitest/event_prof_formatter"
 
 module Minitest
   module TestProf
@@ -10,7 +10,7 @@ module Minitest
         super
         @profiler = configure_profiler(options)
 
-        log :info, "EventProf enabled (#{@profiler.events.join(', ')})"
+        log :info, "EventProf enabled (#{@profiler.events.join(", ")})"
 
         @formatter = EventProfFormatter.new(@profiler)
         @current_group = nil
@@ -45,7 +45,7 @@ module Minitest
         end
 
         @current_example = {
-          name: example.gsub(/^test_(?:\d+_)?/, ''),
+          name: example.gsub(/^test_(?:\d+_)?/, ""),
           location: location_with_line_number(group, example)
         }
 

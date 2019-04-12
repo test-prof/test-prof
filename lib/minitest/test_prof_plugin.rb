@@ -1,17 +1,17 @@
 # frozen_string_literal: true
 
-require 'test_prof/event_prof/minitest'
-require 'test_prof/factory_doctor/minitest'
+require "test_prof/event_prof/minitest"
+require "test_prof/factory_doctor/minitest"
 
 module Minitest # :nodoc:
   module TestProf # :nodoc:
     def self.configure_options(options = {})
       options.tap do |opts|
-        opts[:event]        = ENV['EVENT_PROF'] if ENV['EVENT_PROF']
-        opts[:rank_by]      = ENV['EVENT_PROF_RANK'].to_sym if ENV['EVENT_PROF_RANK']
-        opts[:top_count]    = ENV['EVENT_PROF_TOP'].to_i if ENV['EVENT_PROF_TOP']
-        opts[:per_example]  = true if ENV['EVENT_PROF_EXAMPLES']
-        opts[:fdoc]         = true if ENV['FDOC']
+        opts[:event]        = ENV["EVENT_PROF"] if ENV["EVENT_PROF"]
+        opts[:rank_by]      = ENV["EVENT_PROF_RANK"].to_sym if ENV["EVENT_PROF_RANK"]
+        opts[:top_count]    = ENV["EVENT_PROF_TOP"].to_i if ENV["EVENT_PROF_TOP"]
+        opts[:per_example]  = true if ENV["EVENT_PROF_EXAMPLES"]
+        opts[:fdoc]         = true if ENV["FDOC"]
       end
     end
   end
@@ -29,7 +29,7 @@ module Minitest # :nodoc:
     opts.on "--event-prof-per-example", TrueClass, "Includes examples metrics to results" do |flag|
       options[:per_example] = flag
     end
-    opts.on "--factory-doctor", TrueClass, 'Enable Factory Doctor for your examples' do |flag|
+    opts.on "--factory-doctor", TrueClass, "Enable Factory Doctor for your examples" do |flag|
       options[:fdoc] = flag
     end
   end

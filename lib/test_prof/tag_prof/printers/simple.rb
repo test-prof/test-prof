@@ -20,8 +20,8 @@ module TestProf::TagProf
           header = []
 
           header << format(
-            '%15s  %12s  ',
-            result.tag, 'time'
+            "%15s  %12s  ",
+            result.tag, "time"
           )
 
           events_format = nil
@@ -36,8 +36,8 @@ module TestProf::TagProf
           end
 
           header << format(
-            '%6s  %6s  %6s  %12s',
-            'total', '%total', '%time', 'avg'
+            "%6s  %6s  %6s  %12s",
+            "total", "%total", "%time", "avg"
           )
 
           msgs << header.join

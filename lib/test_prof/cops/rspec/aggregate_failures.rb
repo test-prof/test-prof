@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'rubocop'
-require 'test_prof/utils'
+require "rubocop"
+require "test_prof/utils"
 
 module RuboCop
   module Cop
@@ -38,7 +38,7 @@ module RuboCop
         class << self
           def supported?
             return @supported if instance_variable_defined?(:@supported)
-            @supported = TestProf::Utils.verify_gem_version('rubocop', at_least: '0.51.0')
+            @supported = TestProf::Utils.verify_gem_version("rubocop", at_least: "0.51.0")
 
             unless @supported
               warn "RSpec/AggregateFailures cop requires RuboCop >= 0.51.0. Skipping"
@@ -62,7 +62,7 @@ module RuboCop
           add_offense(
             node,
             location: :expression,
-            message: 'Use :aggregate_failures instead of several one-liners.'
+            message: "Use :aggregate_failures instead of several one-liners."
           )
         end
 
@@ -140,7 +140,7 @@ module RuboCop
           %(#{method_name} "works", :aggregate_failures do)
         end
 
-        def body_from(node, base_indent = '')
+        def body_from(node, base_indent = "")
           method, _args, body = *node
           body_source = method.method_name == :its ? body_from_its(method, body) : body.source
           "#{base_indent}#{indent}#{body_source}"
@@ -162,7 +162,7 @@ module RuboCop
         end
 
         def indent
-          @indent ||= " " * (config.for_cop('IndentationWidth')['Width'] || 2)
+          @indent ||= " " * (config.for_cop("IndentationWidth")["Width"] || 2)
         end
       end
     end

@@ -126,7 +126,7 @@ module TestProf
         def parse_literal(expr)
           val = expr[1][1][1]
           val = val.to_sym if expr[0] == :symbol_literal ||
-                              expr[0] == :assoc_new
+            expr[0] == :assoc_new
           val
         end
 

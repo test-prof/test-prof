@@ -6,9 +6,9 @@ require "spec_helper"
 describe "RSpecDissect with pending examples", type: :integration do
   specify do
     output = run_rspec(
-      'rspec_dissect_pending',
+      "rspec_dissect_pending",
       chdir: File.join(__dir__, "fixtures"),
-      env: { 'RD_PROF' => '1' }
+      env: {"RD_PROF" => "1"}
     )
 
     expect(output).to include("3 examples, 0 failures, 2 pending")

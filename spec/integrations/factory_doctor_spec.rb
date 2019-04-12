@@ -5,7 +5,7 @@ require "spec_helper"
 describe "FactoryDoctor" do
   context "Minitest Integration" do
     it "works when there are bad examples", :aggregate_failures do
-      output = run_minitest('factory_doctor', env: { 'FDOC' => '1' })
+      output = run_minitest("factory_doctor", env: {"FDOC" => "1"})
 
       expect(output).to include("FactoryDoctor report")
       expect(output).to include("Total (potentially) bad examples: 4")
@@ -21,7 +21,7 @@ describe "FactoryDoctor" do
     end
 
     it "print message when no bad examples", :aggregate_failures do
-      output = run_minitest('factory_doctor', env: { 'FDOC' => '1', 'TESTOPTS' => '--name=test_0005_is_ignored' })
+      output = run_minitest("factory_doctor", env: {"FDOC" => "1", "TESTOPTS" => "--name=test_0005_is_ignored"})
 
       expect(output).to include("FactoryDoctor enabled")
       expect(output).to include('FactoryDoctor says: "Looks good to me!"')
@@ -30,7 +30,7 @@ describe "FactoryDoctor" do
 
   context "RSpec integration" do
     it "works when there are bad examples", :aggregate_failures do
-      output = run_rspec('factory_doctor', env: { 'FDOC' => '1' })
+      output = run_rspec("factory_doctor", env: {"FDOC" => "1"})
 
       expect(output).to include("FactoryDoctor report")
       expect(output).to include("Total (potentially) bad examples: 3")
@@ -45,7 +45,7 @@ describe "FactoryDoctor" do
     end
 
     it "print message when no bad examples", :aggregate_failures do
-      output = run_rspec('factory_doctor', env: { 'FDOC' => '1', 'SPEC_OPTS' => '-e "is ignored"' })
+      output = run_rspec("factory_doctor", env: {"FDOC" => "1", "SPEC_OPTS" => '-e "is ignored"'})
 
       expect(output).to include("FactoryDoctor enabled")
       expect(output).to include('FactoryDoctor says: "Looks good to me!"')
@@ -67,8 +67,8 @@ describe "FactoryDoctor" do
 
       specify "it works", :aggregate_failures do
         output = run_rspec(
-          'factory_doctor_stamp',
-          env: { 'FDOC' => '1', 'FDOC_STAMP' => 'fd_ignore' }
+          "factory_doctor_stamp",
+          env: {"FDOC" => "1", "FDOC_STAMP" => "fd_ignore"}
         )
 
         expect(output).to include("5 examples, 0 failures")
@@ -83,8 +83,8 @@ describe "FactoryDoctor" do
         expect(output).to include("Ignored files: 0")
 
         output2 = run_rspec(
-          'factory_doctor_stamp',
-          env: { 'FDOC' => '1' }
+          "factory_doctor_stamp",
+          env: {"FDOC" => "1"}
         )
 
         expect(output2).to include("5 examples, 0 failures")

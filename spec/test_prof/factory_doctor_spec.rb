@@ -43,7 +43,7 @@ describe TestProf::FactoryDoctor, :transactional do
 
     it "detects not useless object when update" do
       user = TestProf::FactoryBot.create(:user)
-      user.update!(name: 'Phil')
+      user.update!(name: "Phil")
 
       expect(result).not_to be_bad
       expect(result.count).to eq 1

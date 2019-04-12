@@ -19,7 +19,7 @@ describe TestProf do
     context "without timestamps" do
       before { described_class.config.timestamps = false }
 
-      it { expect(described_class.artifact_path("c.html")).to eq 'tmp/test/c.html' }
+      it { expect(described_class.artifact_path("c.html")).to eq "tmp/test/c.html" }
     end
 
     context "with timestamps" do
@@ -28,8 +28,8 @@ describe TestProf do
         expect(described_class).to receive(:now).and_return(double("now", to_i: 123_454_321))
       end
 
-      it { expect(described_class.artifact_path("c.html")).to eq 'tmp/test/c-123454321.html' }
-      it { expect(described_class.artifact_path("c")).to eq 'tmp/test/c-123454321' }
+      it { expect(described_class.artifact_path("c.html")).to eq "tmp/test/c-123454321.html" }
+      it { expect(described_class.artifact_path("c")).to eq "tmp/test/c-123454321" }
     end
 
     context "with report suffix" do
@@ -37,8 +37,8 @@ describe TestProf do
         described_class.config.report_suffix = "run-1"
       end
 
-      it { expect(described_class.artifact_path("c.html")).to eq 'tmp/test/c-run-1.html' }
-      it { expect(described_class.artifact_path("c")).to eq 'tmp/test/c-run-1' }
+      it { expect(described_class.artifact_path("c.html")).to eq "tmp/test/c-run-1.html" }
+      it { expect(described_class.artifact_path("c")).to eq "tmp/test/c-run-1" }
     end
 
     context "with report suffix and timestamps" do
@@ -48,8 +48,8 @@ describe TestProf do
         expect(described_class).to receive(:now).and_return(double("now", to_i: 123_454_321))
       end
 
-      it { expect(described_class.artifact_path("c.html")).to eq 'tmp/test/c-run-2-123454321.html' }
-      it { expect(described_class.artifact_path("c")).to eq 'tmp/test/c-run-2-123454321' }
+      it { expect(described_class.artifact_path("c.html")).to eq "tmp/test/c-run-2-123454321.html" }
+      it { expect(described_class.artifact_path("c")).to eq "tmp/test/c-run-2-123454321" }
     end
   end
 
@@ -59,7 +59,7 @@ describe TestProf do
         it "returns false without logging" do
           allow(Kernel).to receive(:require).with("non-existent").and_raise(LoadError)
           allow(described_class).to receive(:require).with("non-existent")
-                                                     .and_call_original
+            .and_call_original
           expect(described_class.require("non-existent")).to eq false
           expect(described_class).not_to receive(:log).with(:error, nil)
           described_class.require("non-existent", nil)
@@ -71,7 +71,7 @@ describe TestProf do
           it "yields block" do
             allow(Kernel).to receive(:require).with("something").and_return(true)
             allow(described_class).to receive(:require).with("something") { 2 + 2 }
-                                                       .and_call_original
+              .and_call_original
             expect(described_class.require("something") { 2 + 2 }).to eq 4
           end
         end
@@ -91,7 +91,7 @@ describe TestProf do
         it "returns false with log output" do
           allow(Kernel).to receive(:require).with("non-existent").and_raise(LoadError)
           allow(described_class).to receive(:require).with("non-existent", "message")
-                                                     .and_call_original
+            .and_call_original
           expect(described_class.require("non-existent", "message")).to eq false
           expect(described_class).to receive(:log).with(:error, "message")
           described_class.require("non-existent", "message")
@@ -103,7 +103,7 @@ describe TestProf do
           it "yields block" do
             allow(Kernel).to receive(:require).with("something").and_return(true)
             allow(described_class).to receive(:require).with("something", "message") { 2 + 2 }
-                                                       .and_call_original
+              .and_call_original
             expect(described_class.require("something", "message") { 2 + 2 }).to eq 4
           end
         end

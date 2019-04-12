@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'rubocop/rspec/support'
-require 'test_prof/cops/rspec/aggregate_failures'
+require "rubocop/rspec/support"
+require "test_prof/cops/rspec/aggregate_failures"
 
 describe RuboCop::Cop::RSpec::AggregateFailures, :config do
   # Restore rubocop <0.59 behaviour
@@ -19,185 +19,185 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
 
   subject(:cop) { described_class.new(config) }
 
-  it 'rejects two one-liners in a row' do
+  it "rejects two one-liners in a row" do
     inspect_source(['context "request" do',
-                    '  it { is_expected.to be_success }',
+                    "  it { is_expected.to be_success }",
                     '  it { expect(response.body).to eq "OK" }',
-                    'end'])
+                    "end"])
 
     expect(cop.offenses.size).to eq(1)
-    expect(cop.messages.first).to eq('Use :aggregate_failures instead of several one-liners.')
+    expect(cop.messages.first).to eq("Use :aggregate_failures instead of several one-liners.")
   end
 
-  it 'rejects two its one-liners in a row' do
+  it "rejects two its one-liners in a row" do
     inspect_source(['context "request" do',
-                    '  its(:status) { is_expected.to eq 200 }',
+                    "  its(:status) { is_expected.to eq 200 }",
                     '  its(:body) { is_expected.to eq "OK" }',
-                    'end'])
+                    "end"])
 
     expect(cop.offenses.size).to eq(1)
-    expect(cop.messages.first).to eq('Use :aggregate_failures instead of several one-liners.')
+    expect(cop.messages.first).to eq("Use :aggregate_failures instead of several one-liners.")
   end
 
-  it 'rejects two one-liners when blank lines and non-example blocks' do
+  it "rejects two one-liners when blank lines and non-example blocks" do
     inspect_source(['context "request" do',
-                    '  let(:user) { create(:user) } ',
+                    "  let(:user) { create(:user) } ",
                     '  before { get "/" }',
-                    '',
-                    '  it { is_expected.to be_success }',
-                    '  ',
-                    '      ',
+                    "",
+                    "  it { is_expected.to be_success }",
+                    "  ",
+                    "      ",
                     '  it { expect(response.body).to eq "OK" }',
-                    'end'])
+                    "end"])
     expect(cop.offenses.size).to eq(1)
-    expect(cop.messages.first).to eq('Use :aggregate_failures instead of several one-liners.')
+    expect(cop.messages.first).to eq("Use :aggregate_failures instead of several one-liners.")
   end
 
-  it 'accepts one-liners with nested context' do
+  it "accepts one-liners with nested context" do
     inspect_source(['context "request" do',
-                    '  it { is_expected.to be_success }',
+                    "  it { is_expected.to be_success }",
                     '  it "works" do',
-                    '    expect(subject).to be_ok',
-                    '  end',
+                    "    expect(subject).to be_ok",
+                    "  end",
                     '  it { expect(response.body).to eq "OK" }',
-                    '',
+                    "",
                     '  context "sub-request" do',
                     '    let(:params) { "?q=1" }',
-                    '    it { is_expected.to be_valid }',
-                    '  end',
-                    'end'])
+                    "    it { is_expected.to be_valid }",
+                    "  end",
+                    "end"])
     expect(cop.offenses).to be_empty
   end
 
-  it 'accepts single one-liner' do
+  it "accepts single one-liner" do
     inspect_source(['context "request" do',
-                    '  it { is_expected.to be_success }',
-                    'end'])
+                    "  it { is_expected.to be_success }",
+                    "end"])
     expect(cop.offenses).to be_empty
   end
 
-  it 'accepts single its one-liner' do
+  it "accepts single its one-liner" do
     inspect_source(['context "request" do',
-                    '  its(:status) { is_expected.to eq 200 }',
-                    'end'])
+                    "  its(:status) { is_expected.to eq 200 }",
+                    "end"])
     expect(cop.offenses).to be_empty
   end
 
-  it 'accepts non-regular one-liners' do
+  it "accepts non-regular one-liners" do
     inspect_source(['context "request" do',
-                    '  xit { is_expected.to be_success }',
-                    '  pending { is_expected.to fail }',
-                    'end'])
+                    "  xit { is_expected.to be_success }",
+                    "  pending { is_expected.to fail }",
+                    "end"])
     expect(cop.offenses).to be_empty
   end
 
-  it 'accepts one-liners separated by multiliners' do
+  it "accepts one-liners separated by multiliners" do
     inspect_source(['context "request" do',
-                    '  it { is_expected.to be_success }',
+                    "  it { is_expected.to be_success }",
                     '  it "works" do',
-                    '    expect(subject).to be_ok',
-                    '  end',
+                    "    expect(subject).to be_ok",
+                    "  end",
                     '  it { expect(response.body).to eq "OK" }',
-                    'end'])
+                    "end"])
     expect(cop.offenses).to be_empty
   end
 
-  it 'handles edge cases' do
+  it "handles edge cases" do
     inspect_source(['context "request" do',
                     '  include_examples "edges"',
                     '  xdescribe "POST #create" do',
-                    '  end',
-                    '',
-                    '  pending {}',
-                    'end'])
+                    "  end",
+                    "",
+                    "  pending {}",
+                    "end"])
     expect(cop.offenses).to be_empty
   end
 
-  it 'handles edge cases 2' do
+  it "handles edge cases 2" do
     inspect_source(['context "request" do',
                     '  include_examples "edges"',
-                    'end'])
+                    "end"])
     expect(cop.offenses).to be_empty
   end
 
-  it 'handles its edge cases' do
+  it "handles its edge cases" do
     inspect_source(['context "request" do',
-                    '  its(:status) { is_expected.to eq 200 }',
+                    "  its(:status) { is_expected.to eq 200 }",
                     '  its("body.size") { is_expected.to eq 100 }',
                     '  its([:size, "count"]) { is_expected.to eq [100, 100] }',
                     '  its(:body) { is_expected.to be_json_eql(%({"data":{"status":"OK}})).excluding("id") }',
-                    'end'])
+                    "end"])
     expect(cop.offenses.size).to eq(1)
-    expect(cop.messages.first).to eq('Use :aggregate_failures instead of several one-liners.')
+    expect(cop.messages.first).to eq("Use :aggregate_failures instead of several one-liners.")
   end
 
   describe "#autocorrect" do
     it "corrects two one-liners" do
       new_source = autocorrect_source(
         ['context "request" do',
-         '  it { is_expected.to be_success }',
+         "  it { is_expected.to be_success }",
          '  it { expect(response.body).to eq "OK" }',
-         'end']
+         "end"]
       )
 
       expect(new_source).to eq(
         ['context "request" do',
          '  it "works", :aggregate_failures do',
-         '    is_expected.to be_success',
+         "    is_expected.to be_success",
          '    expect(response.body).to eq "OK"',
-         '  end',
-         'end'].join("\n")
+         "  end",
+         "end"].join("\n")
       )
     end
 
     it "corrects two its one-liners" do
       new_source = autocorrect_source(
         ['context "request" do',
-         '  its(:status) { is_expected.to eq 200 }',
+         "  its(:status) { is_expected.to eq 200 }",
          '  its(:body) { is_expected.to eq "OK" }',
-         'end']
+         "end"]
       )
 
       expect(new_source).to eq(
         ['context "request" do',
          '  it "works", :aggregate_failures do',
-         '    expect(subject.status).to eq 200',
+         "    expect(subject.status).to eq 200",
          '    expect(subject.body).to eq "OK"',
-         '  end',
-         'end'].join("\n")
+         "  end",
+         "end"].join("\n")
       )
     end
 
-    it 'corrects indented one-liners when blank lines and non-example blocks' do
+    it "corrects indented one-liners when blank lines and non-example blocks" do
       new_source = autocorrect_source(
         ['describe "GET #index" do',
          '  context "request" do',
-         '    let(:user) { create(:user) } ',
+         "    let(:user) { create(:user) } ",
          '    before { get "/" }',
-         '',
-         '    it { is_expected.to be_success }',
-         '      ',
-         '      ',
+         "",
+         "    it { is_expected.to be_success }",
+         "      ",
+         "      ",
          '    it { expect(response.body).to eq "OK" }',
-         '      ',
-         '      ',
-         '    its(:status) { is_expected.to eq 200 }',
-         '  end',
-         'end']
+         "      ",
+         "      ",
+         "    its(:status) { is_expected.to eq 200 }",
+         "  end",
+         "end"]
       )
       expect(new_source).to eq(
         ['describe "GET #index" do',
          '  context "request" do',
-         '    let(:user) { create(:user) } ',
+         "    let(:user) { create(:user) } ",
          '    before { get "/" }',
-         '',
+         "",
          '    it "works", :aggregate_failures do',
-         '      is_expected.to be_success',
+         "      is_expected.to be_success",
          '      expect(response.body).to eq "OK"',
-         '      expect(subject.status).to eq 200',
-         '    end',
-         '  end',
-         'end'].join("\n")
+         "      expect(subject.status).to eq 200",
+         "    end",
+         "  end",
+         "end"].join("\n")
       )
     end
 
@@ -206,48 +206,48 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
         [
           'describe "GET #index" do',
           '  context "request" do',
-          '    let(:user) { create(:user) } ',
+          "    let(:user) { create(:user) } ",
           '    before { get "/" }',
-          '',
-          '    it { is_expected.to be_success }',
-          '      ',
-          '      ',
+          "",
+          "    it { is_expected.to be_success }",
+          "      ",
+          "      ",
           '    it { expect(response.body).to eq "OK" }',
-          '      ',
-          '      ',
-          '    its(:status) { is_expected.to eq 200 }',
-          '',
+          "      ",
+          "      ",
+          "    its(:status) { is_expected.to eq 200 }",
+          "",
           '    context "sub-request", :invalid do',
-          '      it { is_expected.not_to be_success }',
+          "      it { is_expected.not_to be_success }",
           '      it { expect(response.body).to eq "FAILED" }',
-          '      its(:status) { is_expected.to eq 404 }',
-          '    end',
-          '  end',
-          'end'
+          "      its(:status) { is_expected.to eq 404 }",
+          "    end",
+          "  end",
+          "end"
         ]
       )
 
       expect(new_source).to eq(
         ['describe "GET #index" do',
          '  context "request" do',
-         '    let(:user) { create(:user) } ',
+         "    let(:user) { create(:user) } ",
          '    before { get "/" }',
-         '',
+         "",
          '    it "works", :aggregate_failures do',
-         '      is_expected.to be_success',
+         "      is_expected.to be_success",
          '      expect(response.body).to eq "OK"',
-         '      expect(subject.status).to eq 200',
-         '    end',
-         '',
+         "      expect(subject.status).to eq 200",
+         "    end",
+         "",
          '    context "sub-request", :invalid do',
          '      it "works", :aggregate_failures do',
-         '        is_expected.not_to be_success',
+         "        is_expected.not_to be_success",
          '        expect(response.body).to eq "FAILED"',
-         '        expect(subject.status).to eq 404',
-         '      end',
-         '    end',
-         '  end',
-         'end'].join("\n")
+         "        expect(subject.status).to eq 404",
+         "      end",
+         "    end",
+         "  end",
+         "end"].join("\n")
       )
     end
 
@@ -255,11 +255,11 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
       new_source = autocorrect_source(
         [
           'context "request" do',
-          '  its(:status) { is_expected.to eq 200 }',
+          "  its(:status) { is_expected.to eq 200 }",
           '  its("body.size") { is_expected.to eq 100 }',
           '  its([:size, "count"]) { is_expected.to eq [100, 100] }',
           '  its(:body) { is_expected.to be_json_eql(%({"data":{"status":"OK}})).excluding("id") }',
-          'end'
+          "end"
         ]
       )
 
@@ -267,12 +267,12 @@ describe RuboCop::Cop::RSpec::AggregateFailures, :config do
         [
           'context "request" do',
           '  it "works", :aggregate_failures do',
-          '    expect(subject.status).to eq 200',
-          '    expect(subject.body.size).to eq 100',
-          '    expect(subject.dig(size, count)).to eq [100, 100]',
+          "    expect(subject.status).to eq 200",
+          "    expect(subject.body.size).to eq 100",
+          "    expect(subject.dig(size, count)).to eq [100, 100]",
           '    expect(subject.body).to be_json_eql(%({"data":{"status":"OK}})).excluding("id")',
-          '  end',
-          'end'
+          "  end",
+          "end"
         ].join("\n")
       )
     end

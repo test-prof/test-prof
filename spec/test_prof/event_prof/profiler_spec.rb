@@ -25,38 +25,38 @@ describe TestProf::EventProf::Profiler do
     let(:results) do
       subject
 
-      subject.group_started 'A'
+      subject.group_started "A"
 
-      subject.example_started 'A1'
-      InstrumenterStub.notify 'test.event', 100
-      subject.example_finished 'A1'
+      subject.example_started "A1"
+      InstrumenterStub.notify "test.event", 100
+      subject.example_finished "A1"
 
-      subject.group_finished 'A'
+      subject.group_finished "A"
 
-      subject.group_started 'B'
+      subject.group_started "B"
 
-      subject.example_started 'B1'
-      InstrumenterStub.notify 'test.event', 140
-      InstrumenterStub.notify 'test.event', 240
-      subject.example_finished 'B1'
+      subject.example_started "B1"
+      InstrumenterStub.notify "test.event", 140
+      InstrumenterStub.notify "test.event", 240
+      subject.example_finished "B1"
 
-      subject.example_started 'B2'
-      InstrumenterStub.notify 'test.event', 40
-      subject.example_finished 'B2'
+      subject.example_started "B2"
+      InstrumenterStub.notify "test.event", 40
+      subject.example_finished "B2"
 
-      subject.group_finished 'B'
+      subject.group_finished "B"
 
-      subject.group_started 'C'
+      subject.group_started "C"
 
-      subject.example_started 'C1'
-      InstrumenterStub.notify 'test.event', 400
-      InstrumenterStub.notify 'test.event', 40
-      subject.example_finished 'C1'
+      subject.example_started "C1"
+      InstrumenterStub.notify "test.event", 400
+      InstrumenterStub.notify "test.event", 40
+      subject.example_finished "C1"
 
-      subject.example_started 'C2'
-      subject.example_finished 'C2'
+      subject.example_started "C2"
+      subject.example_finished "C2"
 
-      subject.group_finished 'C'
+      subject.group_finished "C"
 
       subject.results
     end
@@ -64,9 +64,9 @@ describe TestProf::EventProf::Profiler do
     it "returns top slow groups and totals" do
       expect(results).to eq(
         groups: [
-          { id: 'C', examples: 2, run_time: 500, time: 440, count: 2 },
-          { id: 'B', examples: 2, run_time: 500, time: 420, count: 3 },
-          { id: 'A', examples: 1, run_time: 500, time: 100, count: 1 }
+          {id: "C", examples: 2, run_time: 500, time: 440, count: 2},
+          {id: "B", examples: 2, run_time: 500, time: 420, count: 3},
+          {id: "A", examples: 1, run_time: 500, time: 100, count: 1}
         ]
       )
       expect(subject.total_time).to eq 960
@@ -79,9 +79,9 @@ describe TestProf::EventProf::Profiler do
       it "returns top groups by event occurances" do
         expect(results).to eq(
           groups: [
-            { id: 'B', examples: 2, run_time: 500, time: 420, count: 3 },
-            { id: 'C', examples: 2, run_time: 500, time: 440, count: 2 },
-            { id: 'A', examples: 1, run_time: 500, time: 100, count: 1 }
+            {id: "B", examples: 2, run_time: 500, time: 420, count: 3},
+            {id: "C", examples: 2, run_time: 500, time: 440, count: 2},
+            {id: "A", examples: 1, run_time: 500, time: 100, count: 1}
           ]
         )
       end
@@ -93,8 +93,8 @@ describe TestProf::EventProf::Profiler do
       it "returns top groups by event occurances" do
         expect(results).to eq(
           groups: [
-            { id: 'C', examples: 2, run_time: 500, time: 440, count: 2 },
-            { id: 'B', examples: 2, run_time: 500, time: 420, count: 3 }
+            {id: "C", examples: 2, run_time: 500, time: 440, count: 2},
+            {id: "B", examples: 2, run_time: 500, time: 420, count: 3}
           ]
         )
       end
@@ -106,15 +106,15 @@ describe TestProf::EventProf::Profiler do
       it "returns top groups and examples" do
         expect(results).to eq(
           groups: [
-            { id: 'C', examples: 2, run_time: 500, time: 440, count: 2 },
-            { id: 'B', examples: 2, run_time: 500, time: 420, count: 3 },
-            { id: 'A', examples: 1, run_time: 500, time: 100, count: 1 }
+            {id: "C", examples: 2, run_time: 500, time: 440, count: 2},
+            {id: "B", examples: 2, run_time: 500, time: 420, count: 3},
+            {id: "A", examples: 1, run_time: 500, time: 100, count: 1}
           ],
           examples: [
-            { id: 'C1', run_time: 500, time: 440, count: 2 },
-            { id: 'B1', run_time: 500, time: 380, count: 2 },
-            { id: 'A1', run_time: 500, time: 100, count: 1 },
-            { id: 'B2', run_time: 500, time: 40,  count: 1 }
+            {id: "C1", run_time: 500, time: 440, count: 2},
+            {id: "B1", run_time: 500, time: 380, count: 2},
+            {id: "A1", run_time: 500, time: 100, count: 1},
+            {id: "B2", run_time: 500, time: 40,  count: 1}
           ]
         )
       end

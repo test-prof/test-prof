@@ -21,10 +21,10 @@ module TestProf
         Thread.current[:_rspec_dissect_let_depth] += 1
         begin
           res = if Thread.current[:_rspec_dissect_let_depth] == 1
-                  RSpecDissect.track(:let, id) { super }
-                else
-                  super
-                end
+            RSpecDissect.track(:let, id) { super }
+          else
+            super
+          end
         ensure
           Thread.current[:_rspec_dissect_let_depth] -= 1
         end
@@ -45,14 +45,14 @@ module TestProf
 
       def initialize
         @let_stats_enabled = true
-        @let_top_count = (ENV['RD_PROF_LET_TOP'] || 3).to_i
-        @top_count = (ENV['RD_PROF_TOP'] || 5).to_i
-        @stamp = ENV['RD_PROF_STAMP']
-        @mode = ENV['RD_PROF'] == '1' ? 'all' : ENV['RD_PROF']
+        @let_top_count = (ENV["RD_PROF_LET_TOP"] || 3).to_i
+        @top_count = (ENV["RD_PROF_TOP"] || 5).to_i
+        @stamp = ENV["RD_PROF_STAMP"]
+        @mode = ENV["RD_PROF"] == "1" ? "all" : ENV["RD_PROF"]
 
         unless MODES.include?(mode)
           raise "Unknown RSpecDissect mode: #{mode};" \
-                "available modes: #{MODES.join(', ')}"
+                "available modes: #{MODES.join(", ")}"
         end
 
         RSpecStamp.config.tags = @stamp if stamp?
@@ -114,7 +114,7 @@ module TestProf
 
       def reset!
         METRICS.each do |type|
-          @data[type.to_s] = { time: 0.0, meta: [] }
+          @data[type.to_s] = {time: 0.0, meta: []}
         end
       end
 
@@ -142,6 +142,6 @@ require "test_prof/rspec_dissect/collectors/let"
 require "test_prof/rspec_dissect/collectors/before"
 require "test_prof/rspec_dissect/rspec" if TestProf.rspec?
 
-TestProf.activate('RD_PROF') do
+TestProf.activate("RD_PROF") do
   TestProf::RSpecDissect.init
 end
