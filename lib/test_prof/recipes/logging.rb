@@ -3,7 +3,7 @@
 require "test_prof"
 
 if TestProf.rspec?
-  RSpec.shared_context "logging:verbose", log: true do
+  RSpec.shared_context "logging:verbose" do
     around(:each) do |ex|
       *loggers = ActiveSupport::LogSubscriber.logger,
                  Rails.logger,
@@ -18,7 +18,7 @@ if TestProf.rspec?
     end
   end
 
-  RSpec.shared_context "logging:active_record", log: :ar do
+  RSpec.shared_context "logging:active_record" do
     around(:each) do |ex|
       *loggers = ActiveRecord::Base.logger,
                  ActiveSupport::LogSubscriber.logger
@@ -28,6 +28,11 @@ if TestProf.rspec?
       ActiveSupport::LogSubscriber.logger,
       ActiveRecord::Base.logger = *loggers
     end
+  end
+
+  RSpec.configure do |config|
+    config.include_context "logging:active_record", log: :ar
+    config.include_context "logging:verbose", log: true
   end
 end
 
