@@ -31,11 +31,11 @@ Of course, we have some [solutions](#recipes) for common performance issues too,
 
 Supported Ruby versions:
 
-- Ruby (MRI) >= 2.3.0 (**NOTE:** for Ruby 2.2 use TestProf < 0.7.0)
+- Ruby (MRI) >= 2.4.0 (**NOTE:** for Ruby 2.2 use TestProf < 0.7.0 or Ruby 2.3 use TestProf ~> 0.7.0)
 
-- JRuby >= 9.1.0.0
+- JRuby >= 9.1.0.0 (**NOTE:** refinements-dependent features might require 9.2.7+)
 
-Support RSpec version (for RSpec features only): >= 3.5.0 (for older RSpec version use TestProf < 0.8.0).
+Supported RSpec version (for RSpec features only): >= 3.5.0 (for older RSpec version use TestProf < 0.8.0).
 
 <a href="https://evilmartians.com/">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
