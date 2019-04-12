@@ -26,12 +26,12 @@ module TestProf
         end
       end
 
-      def to_json
+      def to_json(*args)
         {
           tag: tag,
           data: data.values,
           events: events
-        }.to_json
+        }.to_json(*args)
       end
     end
   end

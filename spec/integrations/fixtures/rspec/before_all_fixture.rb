@@ -4,6 +4,8 @@ $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/before_all"
+# for threading tests
+require "test_prof/recipes/active_record_one_love" if ::ActiveRecord::VERSION::MAJOR < 5
 
 shared_context "with user", with_user: true do
   before_all do
