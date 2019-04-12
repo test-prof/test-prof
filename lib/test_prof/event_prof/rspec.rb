@@ -14,9 +14,7 @@ module TestProf
         example_group_started
         example_group_finished
         example_started
-        example_failed
-        example_passed
-        example_pending
+        example_finished
       ].freeze
 
       def initialize
@@ -42,11 +40,6 @@ module TestProf
       def example_finished(notification)
         @profiler.example_finished notification.example
       end
-
-      # NOTE: RSpec < 3.4.0 doesn't have example_finished event
-      alias example_passed example_finished
-      alias example_failed example_finished
-      alias example_pending example_finished
 
       def print
         @profiler.each(&method(:report))

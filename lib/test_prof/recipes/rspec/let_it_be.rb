@@ -14,11 +14,6 @@ module TestProf
         end
       end
 
-      # Only works with RSpec 3.2.0
-      def supported?
-        TestProf::Utils.verify_gem_version('rspec-core', at_least: '3.2.0')
-      end
-
       private
 
       def modules
@@ -31,11 +26,6 @@ module TestProf
     PREFIX = RUBY_ENGINE == 'jruby' ? "@__jruby_is_not_cat_friendly__" : "@😸"
 
     def let_it_be(identifier, **options, &block)
-      unless LetItBe.supported?
-        TestProf.log :warn, "let_it_be requires RSpec >= 3.2.0. Fallback to let!"
-        return let!(identifier, &block)
-      end
-
       initializer = proc do
         instance_variable_set(:"#{PREFIX}#{identifier}", instance_exec(&block))
       end

@@ -87,10 +87,8 @@ module TestProf
       def init
         RSpec::Core::Example.prepend(ExampleInstrumentation)
 
-        if memoization_available?
-          RSpec::Core::MemoizedHelpers::ThreadsafeMemoized.prepend(MemoizedInstrumentation)
-          RSpec::Core::MemoizedHelpers::NonThreadSafeMemoized.prepend(MemoizedInstrumentation)
-        end
+        RSpec::Core::MemoizedHelpers::ThreadsafeMemoized.prepend(MemoizedInstrumentation)
+        RSpec::Core::MemoizedHelpers::NonThreadSafeMemoized.prepend(MemoizedInstrumentation)
 
         @data = {}
 
@@ -99,10 +97,6 @@ module TestProf
         end
 
         reset!
-
-        if config.let? && !memoization_available?
-          log :warn, "RSpecDissect: `let` profiling is not supported (requires RSpec >= 3.3.0)\n"
-        end
 
         log :info, "RSpecDissect enabled"
       end

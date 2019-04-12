@@ -2,6 +2,8 @@
 
 ## master
 
+- **RSpec 3.5+ is requiered for RSpec features** ([@palkan][])
+
 - Make `before_all` for Active Record `lock_thread` aware. ([@palkan][])
 
   `before_all` can went crazy if you open multiple connections within it

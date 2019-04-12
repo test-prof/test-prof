@@ -35,6 +35,8 @@ Supported Ruby versions:
 
 - JRuby >= 9.1.0.0
 
+Support RSpec version (for RSpec features only): >= 3.5.0 (for older RSpec version use TestProf < 0.8.0).
+
 <a href="https://evilmartians.com/">
 <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
 

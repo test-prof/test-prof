@@ -7,8 +7,7 @@ module TestProf
 
       NOTIFICATIONS = %i[
         example_started
-        example_failed
-        example_passed
+        example_finished
       ].freeze
 
       attr_reader :result, :printer
@@ -44,10 +43,6 @@ module TestProf
         # reset and disable event profilers
         @events_profiler&.group_started(nil)
       end
-
-      # NOTE: RSpec < 3.4.0 doesn't have example_finished event
-      alias example_passed example_finished
-      alias example_failed example_finished
 
       def report
         printer.dump(result)

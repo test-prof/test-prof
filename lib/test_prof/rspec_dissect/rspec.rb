@@ -10,8 +10,7 @@ module TestProf
 
       NOTIFICATIONS = %i[
         example_group_finished
-        example_passed
-        example_failed
+        example_finished
       ].freeze
 
       def initialize
@@ -34,9 +33,6 @@ module TestProf
         @examples_count += 1
         @examples_time += notification.example.execution_result.run_time
       end
-
-      alias example_passed example_finished
-      alias example_failed example_finished
 
       def example_group_finished(notification)
         return unless notification.group.top_level?
