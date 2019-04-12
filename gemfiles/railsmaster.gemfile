@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
 gem 'rubocop', github: 'rubocop-hq/rubocop'
+gem 'rails', github: 'rails/rails'
 
 gem "fabrication"
 gem "factory_bot", "~> 5.0"
