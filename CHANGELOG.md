@@ -2,6 +2,8 @@
 
 ## master
 
+- **Ruby 2.4+ is requiered** ([@palkan][])
+
 - **RSpec 3.5+ is requiered for RSpec features** ([@palkan][])
 
 - Add `with_logging` and `with_ar_logging` helpers to logging recipe. ([@palkan][])
