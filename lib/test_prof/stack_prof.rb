@@ -29,14 +29,14 @@ module TestProf
       attr_accessor :mode, :interval, :raw, :target, :format
 
       def initialize
-        @mode = ENV.fetch('TEST_STACK_PROF_MODE', :wall).to_sym
-        @target = ENV['TEST_STACK_PROF'] == 'boot' ? :boot : :suite
-        @raw = ENV['TEST_STACK_PROF_RAW'] != '0'
+        @mode = ENV.fetch("TEST_STACK_PROF_MODE", :wall).to_sym
+        @target = ENV["TEST_STACK_PROF"] == "boot" ? :boot : :suite
+        @raw = ENV["TEST_STACK_PROF_RAW"] != "0"
         @format =
-          if FORMATS.include?(ENV['TEST_STACK_PROF_FORMAT'])
-            ENV['TEST_STACK_PROF_FORMAT']
+          if FORMATS.include?(ENV["TEST_STACK_PROF_FORMAT"])
+            ENV["TEST_STACK_PROF_FORMAT"]
           else
-            'html'
+            "html"
           end
       end
 
@@ -71,7 +71,7 @@ module TestProf
 
         @locked = true
 
-        log :info, "StackProf#{config.raw? ? ' (raw)' : ''} enabled globally: " \
+        log :info, "StackProf#{config.raw? ? " (raw)" : ""} enabled globally: " \
                    "mode – #{config.mode}, target – #{config.target}"
 
         at_exit { dump("total") } if config.suite?
@@ -123,7 +123,7 @@ module TestProf
 
       def build_path(name)
         TestProf.artifact_path(
-          "stack-prof-report-#{config.mode}#{config.raw ? '-raw' : ''}-#{name}.dump"
+          "stack-prof-report-#{config.mode}#{config.raw ? "-raw" : ""}-#{name}.dump"
         )
       end
 
@@ -134,7 +134,7 @@ module TestProf
       def init_stack_prof
         return @initialized if instance_variable_defined?(:@initialized)
         @initialized = TestProf.require(
-          'stackprof',
+          "stackprof",
           <<~MSG
             Please, install 'stackprof' first:
                # Gemfile
@@ -144,7 +144,7 @@ module TestProf
       end
 
       def check_stack_prof_version
-        if Utils.verify_gem_version('stackprof', at_least: '0.2.9')
+        if Utils.verify_gem_version("stackprof", at_least: "0.2.9")
           true
         else
           log :error, <<~MSG
@@ -155,7 +155,7 @@ module TestProf
       end
 
       def dump_html_report(path)
-        html_path = path.gsub(/\.dump$/, '.html')
+        html_path = path.gsub(/\.dump$/, ".html")
 
         log :info, <<~MSG
           Run the following command to generate a flame graph report:
@@ -168,7 +168,7 @@ module TestProf
         report = ::StackProf::Report.new(
           Marshal.load(IO.binread(path)) # rubocop:disable Security/MarshalLoad
         )
-        json_path = path.gsub(/\.dump$/, '.json')
+        json_path = path.gsub(/\.dump$/, ".json")
         File.write(json_path, JSON.generate(report.data))
 
         log :info, <<~MSG
@@ -182,6 +182,6 @@ end
 require "test_prof/stack_prof/rspec" if TestProf.rspec?
 
 # Hook to run StackProf globally
-TestProf.activate('TEST_STACK_PROF') do
+TestProf.activate("TEST_STACK_PROF") do
   TestProf::StackProf.run
 end

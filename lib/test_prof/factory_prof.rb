@@ -17,7 +17,7 @@ module TestProf
       attr_accessor :mode
 
       def initialize
-        @mode = ENV['FPROF'] == 'flamegraph' ? :flamegraph : :simple
+        @mode = ENV["FPROF"] == "flamegraph" ? :flamegraph : :simple
       end
 
       # Whether we want to generate flamegraphs
@@ -39,7 +39,7 @@ module TestProf
         return @stats if instance_variable_defined?(:@stats)
 
         @stats = @raw_stats.values
-                           .sort_by { |el| -el[:total] }
+          .sort_by { |el| -el[:total] }
       end
 
       def total
@@ -51,8 +51,8 @@ module TestProf
 
       def sorted_stats(key)
         @raw_stats.values
-                  .map { |el| [el[:name], el[key]] }
-                  .sort_by { |el| -el[1] }
+          .map { |el| [el[:name], el[key]] }
+          .sort_by { |el| -el[1] }
       end
     end
 
@@ -120,7 +120,7 @@ module TestProf
       def reset!
         @stacks = [] if config.flamegraph?
         @depth = 0
-        @stats = Hash.new { |h, k| h[k] = { name: k, total: 0, top_level: 0 } }
+        @stats = Hash.new { |h, k| h[k] = {name: k, total: 0, top_level: 0} }
         flush_stack
       end
 
@@ -137,6 +137,6 @@ module TestProf
   end
 end
 
-TestProf.activate('FPROF') do
+TestProf.activate("FPROF") do
   TestProf::FactoryProf.run
 end

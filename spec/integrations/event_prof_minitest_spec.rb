@@ -1,10 +1,10 @@
 # frozen_string_literal: true
 
-require 'spec_helper'
+require "spec_helper"
 
-describe 'EventProf' do
-  specify 'Minitest integration with default rank by time', :aggregate_failures do
-    output = run_minitest('event_prof', env: { 'EVENT_PROF' => 'test.event' })
+describe "EventProf" do
+  specify "Minitest integration with default rank by time", :aggregate_failures do
+    output = run_minitest("event_prof", env: {"EVENT_PROF" => "test.event"})
 
     expect(output).to include("EventProf results for test.event")
     expect(output).to match(/Total time: 00:00\.514 of 00:01\.\d{3} \(\d{2}\.\d+%\)/)
@@ -21,10 +21,10 @@ describe 'EventProf' do
     expect(output).to match(/invokes once \(\.\/event_prof_fixture\.rb:24\) – 00:00\.040 \(1\) of 00:00\.1\d{2} \(\d{2}\.\d+%\)/)
     expect(output).to match(/invokes twice \(\.\/event_prof_fixture\.rb:29\) – 00:00\.038 \(2\) of 00:00\.2\d{2} \(\d{1,2}.\d+%\)/)
   end
-  specify 'Minitest integration with rank by count', :aggregate_failures do
+  specify "Minitest integration with rank by count", :aggregate_failures do
     output = run_minitest(
-      'event_prof',
-      env: { 'EVENT_PROF' => 'test.event', 'EVENT_PROF_RANK' => 'count' }
+      "event_prof",
+      env: {"EVENT_PROF" => "test.event", "EVENT_PROF_RANK" => "count"}
     )
 
     expect(output).to include("EventProf results for test.event")
@@ -43,11 +43,11 @@ describe 'EventProf' do
     expect(output).to match(/invokes twice \(\.\/event_prof_fixture\.rb:29\) – 00:00\.038 \(2\) of 00:00\.2\d{2} \(\d{1,2}.\d+%\)/)
   end
 
-  context 'CustomEvents' do
+  context "CustomEvents" do
     it "works with factory.create" do
       output = run_minitest(
-        'event_prof_factory_create',
-        env: { 'EVENT_PROF' => 'factory.create' }
+        "event_prof_factory_create",
+        env: {"EVENT_PROF" => "factory.create"}
       )
 
       expect(output).to include("EventProf results for factory.create")
@@ -60,8 +60,8 @@ describe 'EventProf' do
 
     it "works with sidekiq.inline" do
       output = run_minitest(
-        'event_prof_sidekiq',
-        env: { 'EVENT_PROF' => 'sidekiq.inline' }
+        "event_prof_sidekiq",
+        env: {"EVENT_PROF" => "sidekiq.inline"}
       )
 
       expect(output).to include("EventProf results for sidekiq.inline")
@@ -74,8 +74,8 @@ describe 'EventProf' do
 
     it "works with sidekiq.jobs" do
       output = run_minitest(
-        'event_prof_sidekiq',
-        env: { 'EVENT_PROF' => 'sidekiq.jobs' }
+        "event_prof_sidekiq",
+        env: {"EVENT_PROF" => "sidekiq.jobs"}
       )
 
       expect(output).to include("EventProf results for sidekiq.jobs")

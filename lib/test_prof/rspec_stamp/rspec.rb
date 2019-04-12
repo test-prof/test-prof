@@ -53,7 +53,7 @@ module TestProf
 end
 
 # Register EventProf listener
-TestProf.activate('RSTAMP') do
+TestProf.activate("RSTAMP") do
   RSpec.configure do |config|
     listener = nil
 

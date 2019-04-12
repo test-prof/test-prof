@@ -27,7 +27,7 @@ module TestProf
 
         ts = TestProf.now
         store[key] = yield
-        stats[key] = { time: TestProf.now - ts, hit: 0 }
+        stats[key] = {time: TestProf.now - ts, hit: 0}
         store[key]
       end
 
@@ -91,7 +91,7 @@ module TestProf
 
         msgs << format(
           "%#{first_column}s  %12s  %9s  %12s",
-          'key', 'build time', 'hit count', 'saved time'
+          "key", "build time", "hit count", "saved time"
         )
 
         msgs << ""
@@ -144,6 +144,6 @@ module TestProf
       end
     end
 
-    self.reporting_enabled = ENV['ANYFIXTURE_REPORT'] == '1'
+    self.reporting_enabled = ENV["ANYFIXTURE_REPORT"] == "1"
   end
 end

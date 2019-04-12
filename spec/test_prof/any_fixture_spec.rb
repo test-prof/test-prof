@@ -10,8 +10,8 @@ describe TestProf::AnyFixture, :transactional do
 
   describe "#register" do
     it "invokes block only once for the same id" do
-      block = double('block', call: 1)
-      block2 = double('block2', call: 2)
+      block = double("block", call: 1)
+      block2 = double("block2", call: 2)
 
       expect(block).to receive(:call)
       expect(block2).not_to receive(:call)
@@ -37,7 +37,7 @@ describe TestProf::AnyFixture, :transactional do
       expect do
         subject.register(:post) { TestProf::FactoryBot.create(:post) }
       end.to change(User, :count).by(1)
-                                 .and change(Post, :count).by(1)
+        .and change(Post, :count).by(1)
 
       subject.clean
 

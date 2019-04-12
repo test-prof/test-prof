@@ -19,7 +19,7 @@ describe "User" do
 
     it "creates user with post" do
       expect do
-        TestProf::FactoryBot.create(:user, :with_posts, name: 'John')
+        TestProf::FactoryBot.create(:user, :with_posts, name: "John")
       end.to change(Post, :count).by(2)
     end
   end
@@ -34,7 +34,7 @@ describe "User" do
 
     it "creates user with post" do
       expect do
-        Fabricate(:user, name: 'John') do
+        Fabricate(:user, name: "John") do
           Fabricate.times(2, :post)
         end
       end.to change(Post, :count).by(2)

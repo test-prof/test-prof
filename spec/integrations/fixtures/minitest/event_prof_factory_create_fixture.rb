@@ -2,7 +2,7 @@
 
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require_relative "../../../support/ar_models"
-require 'minitest/autorun'
+require "minitest/autorun"
 require "test-prof"
 
 describe "Post" do
@@ -18,7 +18,7 @@ describe "User" do
   let(:user) { TestProf::FactoryBot.create(:user) }
 
   it "validates name" do
-    user.name = ''
+    user.name = ""
     assert_equal user.valid?, false
   end
 end

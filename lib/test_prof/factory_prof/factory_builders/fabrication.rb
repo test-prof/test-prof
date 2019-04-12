@@ -10,7 +10,7 @@ module TestProf
       class Fabrication
         # Monkey-patch Fabrication
         def self.patch
-          TestProf.require 'fabrication' do
+          TestProf.require "fabrication" do
             ::Fabricate.singleton_class.prepend(FabricationPatch)
           end
         end

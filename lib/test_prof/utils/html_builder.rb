@@ -9,7 +9,7 @@ module TestProf
       class << self
         def generate(data:, template:, output:)
           template = File.read(TestProf.asset_path(template))
-          template.sub! '/**REPORT-DATA**/', data.to_json
+          template.sub! "/**REPORT-DATA**/", data.to_json
 
           outpath = TestProf.artifact_path(output)
           File.write(outpath, template)

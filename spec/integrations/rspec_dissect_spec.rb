@@ -4,7 +4,7 @@ require "spec_helper"
 
 describe "RSpecDissect" do
   specify "it works", :aggregate_failures do
-    output = run_rspec('rspec_dissect', env: { 'RD_PROF' => '1' })
+    output = run_rspec("rspec_dissect", env: {"RD_PROF" => "1"})
 
     expect(output).to include("5 examples, 0 failures")
 
@@ -35,7 +35,7 @@ describe "RSpecDissect" do
   end
 
   specify "it works with specified top count", :aggregate_failures do
-    output = run_rspec('rspec_dissect', env: { 'RD_PROF' => '1', 'RD_PROF_TOP' => '1' })
+    output = run_rspec("rspec_dissect", env: {"RD_PROF" => "1", "RD_PROF_TOP" => "1"})
 
     expect(output).to include("5 examples, 0 failures")
 
@@ -54,7 +54,7 @@ describe "RSpecDissect" do
 
   if TestProf::RSpecDissect.memoization_available?
     specify "it works when mode is before", :aggregate_failures do
-      output = run_rspec('rspec_dissect', env: { 'RD_PROF' => 'before', 'RD_PROF_TOP' => '1' })
+      output = run_rspec("rspec_dissect", env: {"RD_PROF" => "before", "RD_PROF_TOP" => "1"})
 
       expect(output).to include("5 examples, 0 failures")
 
@@ -69,7 +69,7 @@ describe "RSpecDissect" do
     end
 
     specify "it works when mode is let", :aggregate_failures do
-      output = run_rspec('rspec_dissect', env: { 'RD_PROF' => 'let', 'RD_PROF_TOP' => '1' })
+      output = run_rspec("rspec_dissect", env: {"RD_PROF" => "let", "RD_PROF_TOP" => "1"})
 
       expect(output).to include("5 examples, 0 failures")
 
@@ -99,8 +99,8 @@ describe "RSpecDissect" do
 
     specify "it works", :aggregate_failures do
       output = run_rspec(
-        'rspec_dissect_stamp',
-        env: { 'RD_PROF' => '1', 'RD_PROF_STAMP' => 'slow', 'RD_PROF_TOP' => '1' }
+        "rspec_dissect_stamp",
+        env: {"RD_PROF" => "1", "RD_PROF_STAMP" => "slow", "RD_PROF_TOP" => "1"}
       )
 
       expect(output).to include("5 examples, 0 failures")
@@ -117,8 +117,8 @@ describe "RSpecDissect" do
       expect(output).to include("Ignored files: 0")
 
       output2 = run_rspec(
-        'rspec_dissect_stamp',
-        env: { 'SPEC_OPTS' => '--tag slow' }
+        "rspec_dissect_stamp",
+        env: {"SPEC_OPTS" => "--tag slow"}
       )
 
       expect(output2).to include("3 examples, 0 failures")

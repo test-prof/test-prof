@@ -32,16 +32,16 @@ describe TestProf::Utils::SizedOrderedSet do
     subject { described_class.new(5) { |a, b| a[:val] >= b[:val] } }
 
     it "sorts using the comparison and preserves order" do
-      subject << { val: 3, id: 0 }
-      subject << { val: 5 }
-      subject << { val: 3, id: 2 }
-      subject << { val: 4 }
-      subject << { val: 6 }
-      subject << { val: 0 }
-      subject << { val: 21 }
+      subject << {val: 3, id: 0}
+      subject << {val: 5}
+      subject << {val: 3, id: 2}
+      subject << {val: 4}
+      subject << {val: 6}
+      subject << {val: 0}
+      subject << {val: 21}
 
       expect(subject.each.to_a)
-        .to eq([{ val: 21 }, { val: 6 }, { val: 5 }, { val: 4 }, { val: 3, id: 0 }])
+        .to eq([{val: 21}, {val: 6}, {val: 5}, {val: 4}, {val: 3, id: 0}])
     end
   end
 
@@ -49,16 +49,16 @@ describe TestProf::Utils::SizedOrderedSet do
     subject { described_class.new(5, sort_by: :val) }
 
     it "sorts by key" do
-      subject << { val: 3, id: 0 }
-      subject << { val: 5 }
-      subject << { val: 3, id: 2 }
-      subject << { val: 4 }
-      subject << { val: 6 }
-      subject << { val: 0 }
-      subject << { val: 21 }
+      subject << {val: 3, id: 0}
+      subject << {val: 5}
+      subject << {val: 3, id: 2}
+      subject << {val: 4}
+      subject << {val: 6}
+      subject << {val: 0}
+      subject << {val: 21}
 
       expect(subject.each.to_a)
-        .to eq([{ val: 21 }, { val: 6 }, { val: 5 }, { val: 4 }, { val: 3, id: 0 }])
+        .to eq([{val: 21}, {val: 6}, {val: 5}, {val: 4}, {val: 3, id: 0}])
     end
   end
 end

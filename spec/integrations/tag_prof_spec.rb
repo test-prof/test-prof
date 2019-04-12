@@ -4,7 +4,7 @@ require "spec_helper"
 
 describe "TagProf" do
   specify "it works", :aggregate_failures do
-    output = run_rspec('tag_prof', env: { 'TAG_PROF' => 'type' })
+    output = run_rspec("tag_prof", env: {"TAG_PROF" => "type"})
 
     expect(output).to include("TagProf report for type")
     expect(output).to match(/type\s+time\s+total\s+\%total\s+%time\s+avg\n\n/)
@@ -14,7 +14,7 @@ describe "TagProf" do
   end
 
   specify "html report" do
-    output = run_rspec('tag_prof', env: { 'TAG_PROF' => 'type', 'TAG_PROF_FORMAT' => 'html' })
+    output = run_rspec("tag_prof", env: {"TAG_PROF" => "type", "TAG_PROF_FORMAT" => "html"})
 
     expect(output).to include("TagProf report generated:")
 
@@ -24,8 +24,8 @@ describe "TagProf" do
   context "with events" do
     specify "it works", :aggregate_failures do
       output = run_rspec(
-        'tag_prof',
-        env: { 'TAG_PROF' => 'type', 'TAG_PROF_EVENT' => 'test.event,test.event2' }
+        "tag_prof",
+        env: {"TAG_PROF" => "type", "TAG_PROF_EVENT" => "test.event,test.event2"}
       )
 
       expect(output).to include("TagProf report for type")

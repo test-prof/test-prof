@@ -3,7 +3,8 @@
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 
 module RSpec
-  def self.foo; end
+  def self.foo
+  end
 end
 
 require "minitest/autorun"

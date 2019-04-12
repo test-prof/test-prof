@@ -115,7 +115,7 @@ module TestProf
 end
 
 # Register FactoryDoctor listener
-TestProf.activate('FDOC') do
+TestProf.activate("FDOC") do
   TestProf::FactoryDoctor.init
 
   RSpec.configure do |config|

@@ -1,119 +1,55 @@
 require:
+  - standard/cop/semantic_blocks
   - rubocop-md
 
+inherit_gem:
+  standard: config/base.yml
+
 AllCops:
-  Include:
-    - 'lib/**/*.rb'
-    - 'lib/**/*.rake'
-    - 'spec/**/*.rb'
-    - 'docs/*.md'
   Exclude:
-    - 'bin/**/*'
-    - 'spec/dummy/**/*'
-    - 'vendor/**/*'
+    - 'bin/*'
     - 'tmp/**/*'
-    - 'Rakefile'
+    - 'docs/**/*'
     - 'Gemfile'
-    - 'README.md'
-    - '*.gemspec'
-    - '**/*.gemfile'
+    - 'vendor/**/*'
     - 'gemfiles/**/*'
   DisplayCopNames: true
-  StyleGuideCopsOnly: false
-  TargetRubyVersion: 2.3
+  TargetRubyVersion: 2.4
 
-Rails:
+Standard/SemanticBlocks:
   Enabled: false
 
-Naming/AccessorMethodName:
-  Enabled: false
+Style/FrozenStringLiteralComment:
+  Enabled: true
 
-Naming/UncommunicativeMethodParamName:
-  Enabled: false
+Style/TrailingCommaInArrayLiteral:
+  EnforcedStyleForMultiline: no_comma
+
+Style/TrailingCommaInHashLiteral:
+  EnforcedStyleForMultiline: no_comma
+
+Layout/AlignParameters:
+  EnforcedStyle: with_first_parameter
+
+Lint/Void:
+  Exclude:
+    - '**/*.md'
+
+# See https://github.com/rubocop-hq/rubocop/issues/4222
+Lint/AmbiguousBlockAssociation:
+  Exclude:
+    - 'spec/**/*'
+    - '**/*.md'
+
+Lint/DuplicateMethods:
+  Exclude:
+    - '**/*.md'
 
 Naming/FileName:
   Exclude:
     - 'lib/test-prof.rb'
-    - '*.md'
+    - '**/*.md'
 
-Style/ExpandPathArguments:
-  Enabled: false
-
-Style/NumericPredicate:
-  Enabled: false
-
-Style/TrivialAccessors:
-  Enabled: false
-
-Style/Documentation:
+Layout/InitialIndentation:
   Exclude:
-    - 'spec/**/*.rb'
-
-Style/AsciiComments:
-  Enabled: false
-
-Style/CaseEquality:
-  Enabled: false
-
-Style/StringLiterals:
-  Enabled: false
-
-Style/RegexpLiteral:
-  Enabled: false
-
-Style/ClassAndModuleChildren:
-  Enabled: false
-
-Style/BlockDelimiters:
-  Exclude:
-    - 'spec/**/*.rb'
-
-Style/ParallelAssignment:
-  Exclude:
-    - 'spec/**/*'
-
-Style/GlobalVars:
-  Exclude:
-    - 'spec/integrations/fixtures/**/*'
-    - 'spec/bugs/fixtures/**/*'
-
-Style/ReturnNil:
-  Enabled: true
-  EnforcedStyle: return
-
-Layout/SpaceInsideStringInterpolation:
-  EnforcedStyle: no_space
-
-Lint/AmbiguousRegexpLiteral:
-  Enabled: false
-
-Layout/EmptyLinesAroundArguments:
-  Enabled: false
-
-Layout/EmptyLineAfterGuardClause:
-  Enabled: false
-
-Metrics/ClassLength:
-  Exclude:
-    - 'lib/test_prof/cops/rspec/aggregate_failures.rb'
-
-Metrics/MethodLength:
-  Enabled: false
-
-Metrics/AbcSize:
-  Enabled: false
-
-Metrics/LineLength:
-  Max: 100
-  Exclude:
-    - 'spec/**/*.rb'
-
-Metrics/BlockLength:
-  Exclude:
-    - 'spec/**/*.rb'
-
-Rails/Date:
-  Enabled: false
-
-Rails/TimeZone:
-  Enabled: false
+    - 'CHANGELOG.md'

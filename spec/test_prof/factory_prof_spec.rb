@@ -41,8 +41,8 @@ describe TestProf::FactoryProf, :transactional do
         )
         expect(result.stats).to eq(
           [
-            { name: :post, total: 1, top_level: 1 },
-            { name: :user, total: 1, top_level: 0 }
+            {name: :post, total: 1, top_level: 1},
+            {name: :user, total: 1, top_level: 0}
           ]
         )
       end
@@ -62,8 +62,8 @@ describe TestProf::FactoryProf, :transactional do
         )
         expect(result.stats).to eq(
           [
-            { name: :user, total: 6, top_level: 3 },
-            { name: :post, total: 3, top_level: 1 }
+            {name: :user, total: 6, top_level: 3},
+            {name: :post, total: 3, top_level: 1}
           ]
         )
       end
@@ -98,8 +98,8 @@ describe TestProf::FactoryProf, :transactional do
         )
         expect(result.stats).to eq(
           [
-            { name: :user, total: 6, top_level: 3 },
-            { name: :post, total: 3, top_level: 1 }
+            {name: :user, total: 6, top_level: 3},
+            {name: :post, total: 3, top_level: 1}
           ]
         )
       end

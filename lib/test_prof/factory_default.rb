@@ -38,7 +38,7 @@ module TestProf
 
       def register(name, obj, **options)
         options[:preserve_traits] = true if FactoryDefault.preserve_traits
-        store[name] = { object: obj, **options }
+        store[name] = {object: obj, **options}
         obj
       end
 

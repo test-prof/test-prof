@@ -114,13 +114,13 @@ module TestProf
     def with_timestamps(path)
       return path unless config.timestamps?
       timestamps = "-#{now.to_i}"
-      "#{path.sub(/\.\w+$/, '')}#{timestamps}#{::File.extname(path)}"
+      "#{path.sub(/\.\w+$/, "")}#{timestamps}#{::File.extname(path)}"
     end
 
     def with_report_suffix(path)
       return path if config.report_suffix.nil?
 
-      "#{path.sub(/\.\w+$/, '')}-#{config.report_suffix}#{::File.extname(path)}"
+      "#{path.sub(/\.\w+$/, "")}-#{config.report_suffix}#{::File.extname(path)}"
     end
 
     def notify_spring_detected
@@ -147,7 +147,7 @@ module TestProf
       @color = true
       @output_dir = "tmp/test_prof"
       @timestamps = false
-      @report_suffix = ENV['TEST_PROF_REPORT']
+      @report_suffix = ENV["TEST_PROF_REPORT"]
     end
 
     def color?

@@ -19,13 +19,13 @@ end
 
 describe "Something" do
   it "fail me", type: :fail do
-    Instrumenter.notify 'test.event', 23
+    Instrumenter.notify "test.event", 23
     expect(@value).to be_nil
   end
 
   it "always passes", type: :pass do
-    Instrumenter.notify 'test.event', 2.4202
-    Instrumenter.notify 'test.event2', 14.0411
+    Instrumenter.notify "test.event", 2.4202
+    Instrumenter.notify "test.event2", 14.0411
     expect(true).to eq true
   end
 
@@ -38,7 +38,7 @@ describe "Something" do
     before { @value = true }
     subject { @value }
     specify do
-      Instrumenter.notify 'test.event', 10
+      Instrumenter.notify "test.event", 10
       is_expected.to eq true
     end
   end

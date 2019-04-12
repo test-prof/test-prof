@@ -26,7 +26,7 @@ module TestProf
 
       def <<(item)
         return if data.size == max_size &&
-                  comparator.call(data.last, item)
+          comparator.call(data.last, item)
 
         # Find an index of a smaller element
         index = data.bsearch_index { |x| !comparator.call(x, item) }

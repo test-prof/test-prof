@@ -26,10 +26,10 @@ describe "User" do
       )
     end
 
-    let(:user) { User.find_by!(name: 'Jack') }
+    let(:user) { User.find_by!(name: "Jack") }
 
     it "validates name" do
-      user.name = ''
+      user.name = ""
       expect(user).not_to be_valid
     end
 

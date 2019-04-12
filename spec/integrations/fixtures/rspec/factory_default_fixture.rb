@@ -44,13 +44,13 @@ describe "Post" do
 
   context "with preserved traits" do
     let(:traited_post) { TestProf::FactoryBot.create(:post, :with_traited_user) }
-    let(:traited_user) { TestProf::FactoryBot.create_default(:user, :traited, tag: 'foo') }
+    let(:traited_user) { TestProf::FactoryBot.create_default(:user, :traited, tag: "foo") }
 
     context "global setting" do
       before { TestProf::FactoryDefault.preserve_traits = true }
 
       it "can still be set default" do
-        expect(traited_user.tag).to eq 'foo'
+        expect(traited_user.tag).to eq "foo"
         expect(post.user).to eq traited_user
       end
 

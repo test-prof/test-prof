@@ -62,7 +62,7 @@ Add `test-prof` gem to your application:
 
 ```ruby
 group :test do
-  gem 'test-prof'
+  gem "test-prof"
 end
 ```
 

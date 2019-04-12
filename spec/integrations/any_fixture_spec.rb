@@ -4,12 +4,12 @@ require "spec_helper"
 
 describe "AnyFixture" do
   specify "it works" do
-    output = run_rspec('any_fixture')
+    output = run_rspec("any_fixture")
     expect(output).to include("4 examples, 0 failures")
   end
 
   specify "with usage report enabled" do
-    output = run_rspec('any_fixture', env: { 'ANYFIXTURE_REPORT' => '1' })
+    output = run_rspec("any_fixture", env: {"ANYFIXTURE_REPORT" => "1"})
 
     expect(output).to include("AnyFixture usage stats:")
     expect(output).to match(/key\s+build time\s+hit count\s+saved time\n\n/)

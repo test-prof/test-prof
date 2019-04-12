@@ -19,7 +19,7 @@ class Work
   end
 end
 
-describe 'Subject + Before' do
+describe "Subject + Before" do
   subject(:work) { Work.new }
 
   specify do
@@ -40,7 +40,7 @@ describe 'Subject + Before' do
   end
 end
 
-describe 'Only let' do
+describe "Only let" do
   let(:work) { Work.new }
   let(:work2) { Work.new }
 

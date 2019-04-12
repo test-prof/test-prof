@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
-require 'minitest/base_reporter'
-require 'test_prof/ext/float_duration'
+require "minitest/base_reporter"
+require "test_prof/ext/float_duration"
 
 module Minitest
   module TestProf # :nodoc:
@@ -47,7 +47,7 @@ module Minitest
         }
 
         @example_groups[group] << {
-          description: example.name.gsub(/^test_(?:\d+_)?/, ''),
+          description: example.name.gsub(/^test_(?:\d+_)?/, ""),
           location: location_with_line_number(example),
           factories: result.count,
           time: result.time
@@ -87,7 +87,7 @@ module Minitest
       private
 
       def pluralize_records(count)
-        count == 1 ? '1 record' : "#{count} records"
+        count == 1 ? "1 record" : "#{count} records"
       end
     end
   end

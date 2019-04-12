@@ -11,16 +11,16 @@ describe TestProf::EventProf do
   subject { described_class.build }
 
   describe ".build" do
-    before { described_class.config.event = 'test.event' }
+    before { described_class.config.event = "test.event" }
 
     it "subscribes to event" do
       expect(TestProf::EventProf::Instrumentations::ActiveSupport)
-        .to receive(:subscribe).with('test.event')
+        .to receive(:subscribe).with("test.event")
       subject
     end
 
     it "sets options" do
-      expect(subject.events).to eq ['test.event']
+      expect(subject.events).to eq ["test.event"]
       expect(subject.profilers.first.rank_by).to eq :time
       expect(subject.profilers.first.top_count).to eq 5
     end

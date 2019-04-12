@@ -16,8 +16,8 @@ module TestProf
 
       def initialize
         @ignore_files = [%r{spec/support}]
-        @dry_run = ENV['RSTAMP_DRY_RUN'] == '1'
-        self.tags = ENV['RSTAMP']
+        @dry_run = ENV["RSTAMP_DRY_RUN"] == "1"
+        self.tags = ENV["RSTAMP"]
       end
 
       def dry_run?
@@ -26,10 +26,10 @@ module TestProf
 
       def tags=(val)
         @tags = if val.is_a?(String)
-                  parse_tags(val)
-                else
-                  val
-                end
+          parse_tags(val)
+        else
+          val
+        end
       end
 
       private
@@ -38,10 +38,10 @@ module TestProf
         str.split(/\s*,\s*/).each_with_object([]) do |tag, acc|
           k, v = tag.split(":")
           acc << if v.nil?
-                   k.to_sym
-                 else
-                   Hash[k.to_sym, v.to_sym]
-                 end
+            k.to_sym
+          else
+            Hash[k.to_sym, v.to_sym]
+          end
         end
       end
     end
@@ -129,7 +129,7 @@ module TestProf
         parsed = Parser.parse(code)
         return false unless parsed
 
-        desc = parsed.desc_const || quote(parsed.desc || 'works')
+        desc = parsed.desc_const || quote(parsed.desc || "works")
 
         tags.each do |t|
           if t.is_a?(Hash)
@@ -156,9 +156,9 @@ module TestProf
           end
         end
 
-        replacement = "\\1#{parsed.fname}#{need_parens ? '(' : ' '}"\
-                      "#{[desc, tags_str, htags_str].compact.join(', ')}"\
-                      "#{need_parens ? ') ' : ' '}\\3"
+        replacement = "\\1#{parsed.fname}#{need_parens ? "(" : " "}"\
+                      "#{[desc, tags_str, htags_str].compact.join(", ")}"\
+                      "#{need_parens ? ") " : " "}\\3"
 
         if config.dry_run?
           log :info, "Patched: #{example.sub(EXAMPLE_RXP, replacement)}"

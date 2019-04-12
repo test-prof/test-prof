@@ -19,7 +19,7 @@ class Work
   end
 end
 
-TestProf::EventProf.monitor(Work, 'test.event', :one, :two)
+TestProf::EventProf.monitor(Work, "test.event", :one, :two)
 
 describe "Work" do
   let(:w) { Work.new }

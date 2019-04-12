@@ -17,7 +17,7 @@ describe "User" do
   let(:user) { TestProf::FactoryBot.create(:user) }
 
   it "validates name" do
-    user.name = ''
+    user.name = ""
     expect(user).not_to be_valid
   end
 end
