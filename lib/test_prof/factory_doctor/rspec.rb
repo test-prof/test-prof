@@ -131,12 +131,11 @@ TestProf.activate('FDOC') do
     config.after(:suite) { listener&.print }
   end
 
-  RSpec.shared_context "factory_doctor:ignore", fd_ignore: true do
+  RSpec.shared_context "factory_doctor:ignore" do
     around(:each) { |ex| TestProf::FactoryDoctor.ignore(&ex) }
   end
 
   RSpec.configure do |config|
-    next unless defined?(config.include_context)
     config.include_context "factory_doctor:ignore", fd_ignore: true
   end
 end
