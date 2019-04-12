@@ -6,8 +6,7 @@ module TestProf
     class Listener # :nodoc:
       NOTIFICATIONS = %i[
         example_started
-        example_failed
-        example_passed
+        example_finished
       ].freeze
 
       def example_started(notification)
@@ -22,9 +21,6 @@ module TestProf
           notification.example.full_description.parameterize
         )
       end
-
-      alias example_passed example_finished
-      alias example_failed example_finished
 
       private
 

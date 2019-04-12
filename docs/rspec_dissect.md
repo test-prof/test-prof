@@ -43,8 +43,6 @@ AvailableSlotsController (./spec/controllers/available_slots_controller_spec.rb:
 
 As you can see, the `let` profiler also tracks the provides the information on how many times each `let` declarations has been used within a group (shows top-3 by default).
 
-**NOTE**: Tracking `let` time only supported in RSpec >= 3.3.0.
-
 ## Instructions
 
 RSpecDissect can only be used with RSpec (which is clear from the name).
