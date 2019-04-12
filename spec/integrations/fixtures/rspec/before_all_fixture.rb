@@ -5,16 +5,16 @@ require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/before_all"
 # for threading tests
-require "test_prof/recipes/active_record_one_love" if ::ActiveRecord::VERSION::MAJOR < 5
+require "test_prof/recipes/active_record_one_love" if ::ActiveRecord::VERSION::MAJOR < 5 || defined?(JRUBY_VERSION)
 
-shared_context "with user", with_user: true do
+shared_context "with user" do
   before_all do
     @context_user = TestProf::FactoryBot.create(:user, name: "Lolo")
   end
 end
 
 RSpec.configure do |config|
-  config.include_context "with user", with_user: true if config.respond_to?(:include_context)
+  config.include_context "with user", with_user: true
 end
 
 describe "User", :transactional do
