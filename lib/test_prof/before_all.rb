@@ -18,6 +18,11 @@ module TestProf
       def begin_transaction
         raise AdapterMissing if adapter.nil?
         adapter.begin_transaction
+        yield
+      end
+
+      def within_transaction
+        yield
       end
 
       def rollback_transaction
@@ -32,4 +37,8 @@ if defined?(::ActiveRecord::Base)
   require "test_prof/before_all/adapters/active_record"
 
   TestProf::BeforeAll.adapter = TestProf::BeforeAll::Adapters::ActiveRecord
+end
+
+if defined?(::Isolator)
+  require "test_prof/before_all/isolator"
 end

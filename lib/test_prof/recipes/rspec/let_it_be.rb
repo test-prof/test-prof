@@ -31,7 +31,7 @@ module TestProf
       end
 
       if within_before_all?
-        before(:all, &initializer)
+        within_before_all(&initializer)
       else
         before_all(&initializer)
       end

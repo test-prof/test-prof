@@ -20,8 +20,9 @@ module TestProf
           return if active?
           @active = true
           @examples_left = test_class.runnable_methods.size
-          BeforeAll.begin_transaction
-          capture!
+          BeforeAll.begin_transaction do
+            capture!
+          end
         end
 
         def try_deactivate!
