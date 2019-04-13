@@ -2,6 +2,8 @@
 
 ## master
 
+## 0.8.0 (2019-04-12) 🚀
+
 - **Ruby 2.4+ is requiered** ([@palkan][])
 
 - **RSpec 3.5+ is requiered for RSpec features** ([@palkan][])
