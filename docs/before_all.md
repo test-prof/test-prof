@@ -152,3 +152,17 @@ def setup
   @user = User.find(@user.id)
 end
 ```
+
+
+## Usage with Isolator
+
+[Isolator](https://github.com/palkan/isolator) is a runtime detector of potential atomicity breaches within DB transactions (e.g. making HTTP calls or enqueueing background jobs).
+
+TestProf recognizes Isolator out-of-the-box and make it ignore `before_all` transactions.
+
+You just need to make sure that you require `isolator` after TestProf helpers or require the patch explicitly:
+
+```ruby
+# after loading before_all or/and let_it_be
+require "test_prof/before_all/isolator"
+```

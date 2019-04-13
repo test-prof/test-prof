@@ -6,6 +6,8 @@
 
 - **RSpec 3.5+ is requiered for RSpec features** ([@palkan][])
 
+- Make `before_all` compatible with [`isolator`](https://github.com/palkan/isolator). ([@palkan][])
+
 - Add `with_logging` and `with_ar_logging` helpers to logging recipe. ([@palkan][])
 
 - Make `before_all` for Active Record `lock_thread` aware. ([@palkan][])
