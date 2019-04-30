@@ -7,7 +7,21 @@ module TestProf
   # Just like `let`, but persist the result for the whole group.
   # NOTE: Experimental and magical, for more control use `before_all`.
   module LetItBe
+    class Configuration
+      def alias_to(name, **default_args)
+        LetItBe.define_let_it_be_alias(name, **default_args)
+      end
+    end
+
     class << self
+      def config
+        @config ||= Configuration.new
+      end
+
+      def configure
+        yield config
+      end
+
       def module_for(group)
         modules[group] ||= begin
           Module.new.tap { |mod| group.prepend(mod) }
@@ -24,6 +38,12 @@ module TestProf
     # We want to use the power of Ruby's unicode support)
     # And we love cats!)
     PREFIX = RUBY_ENGINE == "jruby" ? "@__jruby_is_not_cat_friendly__" : "@😸"
+
+    def self.define_let_it_be_alias(name, **default_args)
+      define_method(name) do |identifier, **options, &blk|
+        let_it_be(identifier, default_args.merge(options), &blk)
+      end
+    end
 
     def let_it_be(identifier, **options, &block)
       initializer = proc do
