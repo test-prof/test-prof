@@ -18,6 +18,10 @@ RSpec.configure do |config|
   config.include TestProf::FactoryBot::Syntax::Methods
 end
 
+TestProf::LetItBe.configure do |config|
+  config.alias_to :let_with_refind, refind: true
+end
+
 describe "User", :transactional do
   before(:all) do
     @cache = {}
@@ -125,6 +129,24 @@ describe "User", :transactional do
     end
 
     specify { expect(User.count).to eq 1 }
+  end
+
+  context "with aliased let_it_be used to default refind to true" do
+    let_with_refind(:user) { @user = create(:user) }
+
+    it "should refind" do
+      expect(@user).to eq(user)
+      expect(@user.object_id).not_to eq(user.object_id)
+    end
+  end
+
+  context "with aliased let_it_be used to default refind to true but overridden" do
+    let_with_refind(:user, refind: false) { @user = create(:user) }
+
+    it "should not refind" do
+      expect(@user).to eq(user)
+      expect(@user.object_id).to eq(user.object_id)
+    end
   end
 
   context "without let_it_be" do
