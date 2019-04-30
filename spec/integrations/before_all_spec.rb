@@ -10,6 +10,12 @@ describe "BeforeAll" do
       expect(output).to include("11 examples, 0 failures")
     end
 
+    specify "it sets up each before_all block" do
+      output = run_rspec("setup_before_all")
+
+      expect(output).to include("3 examples, 0 failures")
+    end
+
     specify "it works with custom adapter" do
       output = run_rspec("before_all_custom_adapter")
 
