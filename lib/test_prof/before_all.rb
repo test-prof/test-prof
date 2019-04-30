@@ -18,6 +18,7 @@ module TestProf
       def begin_transaction
         raise AdapterMissing if adapter.nil?
         adapter.begin_transaction
+        config.run_setup
         yield
       end
 
@@ -28,6 +29,42 @@ module TestProf
       def rollback_transaction
         raise AdapterMissing if adapter.nil?
         adapter.rollback_transaction
+      end
+
+      def config
+        @config ||= Configuration.new
+      end
+
+      def configure
+        yield config
+      end
+    end
+
+    class Hook
+      def initialize
+        @cbs = []
+      end
+
+      def on(&blk)
+        @cbs << blk
+      end
+
+      def run
+        @cbs.each(&:call)
+      end
+    end
+
+    class Configuration
+      def initialize
+        @setup_before_all_hook = Hook.new
+      end
+
+      def setup_before_all(&blk)
+        @setup_before_all_hook.on(&blk)
+      end
+
+      def run_setup
+        @setup_before_all_hook.run
       end
     end
   end
