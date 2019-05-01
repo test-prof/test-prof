@@ -3,7 +3,7 @@ source 'https://rubygems.org'
 # Specify your gem's dependencies in test-prof.gemspec
 gemspec
 
-gem "sqlite3", "~> 1.3.6"
+gem "sqlite3", "~> 1.4.1"
 gem "activerecord", "~> 5.0"
 
 gem "factory_bot", "~> 5.0"
