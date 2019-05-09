@@ -2,6 +2,23 @@
 
 ## master
 
+- Add global `before_all` hooks. ([@danielwaterworth][], [@palkan][])
+
+  Now you can run additional code before and after every `before_all` transaction
+  begins and rollbacks:
+
+  ```ruby
+  TestProf::BeforeAll.configure do |config|
+    config.before(:begin) do
+      # do something before transaction opens
+    end
+
+    config.after(:rollback) do
+      # do something after transaction closes
+    end
+  end
+  ```
+
 - Add ability to use `let_it_be` aliases with predefined options. ([@danielwaterworth][])
 
   ```ruby
