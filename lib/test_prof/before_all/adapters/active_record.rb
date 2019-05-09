@@ -12,7 +12,6 @@ module TestProf
       module ActiveRecord
         class << self
           def begin_transaction
-            lock_thread!
             ::ActiveRecord::Base.connection.begin_transaction(joinable: false)
           end
 
@@ -24,18 +23,18 @@ module TestProf
             end
             ::ActiveRecord::Base.connection.rollback_transaction
           end
-
-          private
-
-          # Make sure ActiveRecord uses locked thread.
-          # It only gets locked in `before` / `setup` hook,
-          # thus using thread in `before_all` (e.g. ActiveJob async adapter)
-          # might lead to leaking connections
-          def lock_thread!
-            return unless ::ActiveRecord::Base.connection.pool.respond_to?(:lock_thread=)
-            ::ActiveRecord::Base.connection.pool.lock_thread = true
-          end
         end
+      end
+    end
+
+    configure do |config|
+      # Make sure ActiveRecord uses locked thread.
+      # It only gets locked in `before` / `setup` hook,
+      # thus using thread in `before_all` (e.g. ActiveJob async adapter)
+      # might lead to leaking connections
+      config.before(:begin) do
+        next unless ::ActiveRecord::Base.connection.pool.respond_to?(:lock_thread=)
+        ::ActiveRecord::Base.connection.pool.lock_thread = true
       end
     end
   end
