@@ -111,6 +111,28 @@ end
 TestProf::BeforeAll.adapter = MyDBAdapter.new
 ```
 
+## Hooks
+
+*@since v0.9.0*
+
+You can register callbacks to run before/after `before_all` opens and rollbacks a transaction:
+
+```ruby
+TestProf::BeforeAll.configure do |config|
+  config.before(:begin) do
+    # do something before transaction opens
+  end
+  # after(:begin) is also available
+
+  config.after(:rollback) do
+    # do something after transaction closes
+  end
+  # before(:rollback) is also available
+end
+```
+
+See the example in [Discourse](https://github.com/discourse/discourse/blob/4a1755b78092d198680c2fe8f402f236f476e132/spec/rails_helper.rb#L81-L141).
+
 ## Caveats
 
 If you modify objects generated within a `before_all` block in your examples, you maybe have to re-initiate them:

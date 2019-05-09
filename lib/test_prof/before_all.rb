@@ -17,8 +17,10 @@ module TestProf
 
       def begin_transaction
         raise AdapterMissing if adapter.nil?
-        adapter.begin_transaction
-        config.run_setup
+
+        config.run_hooks(:begin) do
+          adapter.begin_transaction
+        end
         yield
       end
 
@@ -28,7 +30,10 @@ module TestProf
 
       def rollback_transaction
         raise AdapterMissing if adapter.nil?
-        adapter.rollback_transaction
+
+        config.run_hooks(:rollback) do
+          adapter.rollback_transaction
+        end
       end
 
       def config
@@ -40,32 +45,61 @@ module TestProf
       end
     end
 
-    class Hook
-      def initialize
-        @cbs = []
-      end
+    class HooksChain # :nodoc:
+      attr_reader :type, :after, :before
 
-      def on(&blk)
-        @cbs << blk
+      def initialize(type)
+        @type = type
+        @before = []
+        @after = []
       end
 
       def run
-        @cbs.each(&:call)
+        before.each(&:call)
+        yield
+        after.each(&:call)
       end
     end
 
     class Configuration
+      HOOKS = %i[begin rollback].freeze
+
       def initialize
-        @setup_before_all_hook = Hook.new
+        @hooks = Hash.new { |h, k| h[k] = HooksChain.new(k) }
       end
 
-      def setup_before_all(&blk)
-        @setup_before_all_hook.on(&blk)
+      # Add `before` hook for `begin` or
+      # `rollback` operation:
+      #
+      #   config.before(:rollback) { ... }
+      def before(type)
+        validate_hook_type!(type)
+        hooks[type].before << Proc.new
       end
 
-      def run_setup
-        @setup_before_all_hook.run
+      # Add `after` hook for `begin` or
+      # `rollback` operation:
+      #
+      #   config.after(:begin) { ... }
+      def after(type)
+        validate_hook_type!(type)
+        hooks[type].after << Proc.new
       end
+
+      def run_hooks(type) # :nodoc:
+        validate_hook_type!(type)
+        hooks[type].run { yield }
+      end
+
+      private
+
+      def validate_hook_type!(type)
+        return if HOOKS.include?(type)
+
+        raise ArgumentError, "Unknown hook type: #{type}. Valid types: #{HOOKS.join(", ")}"
+      end
+
+      attr_reader :hooks
     end
   end
 end

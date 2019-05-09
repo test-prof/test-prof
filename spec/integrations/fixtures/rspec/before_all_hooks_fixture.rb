@@ -26,8 +26,23 @@ RSpec.configure do |config|
 end
 
 TestProf::BeforeAll.configure do |config|
-  config.setup_before_all do
+  hook_user = nil
+
+  config.before(:begin) do
     Events.add_event :setup_before_all
+  end
+
+  config.after(:begin) do
+    Events.add_event :before_all_was_set_up
+  end
+
+  config.before(:rollback) do
+    # create user to check the it's created within a transaction
+    hook_user = TestProf::FactoryBot.create(:user)
+  end
+
+  config.after(:rollback) do
+    raise "User must be rollbacked" if User.where(id: hook_user.id).exists?
   end
 end
 
@@ -45,7 +60,7 @@ describe "A test suite" do
     after(:all) { Events.events.clear }
 
     it "should setup before_all" do
-      expect(Events.events).to eq([:setup_before_all, :before_all, :before_each])
+      expect(Events.events).to eq([:setup_before_all, :before_all_was_set_up, :before_all, :before_each])
     end
   end
 
@@ -59,8 +74,10 @@ describe "A test suite" do
       it "should setup before_all twice" do
         expect(Events.events).to eq([
           :setup_before_all,
+          :before_all_was_set_up,
           :before_all_parent,
           :setup_before_all,
+          :before_all_was_set_up,
           :before_all_child,
           :before_each
         ])
