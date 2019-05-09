@@ -2,6 +2,14 @@
 
 ## master
 
+- Add ability to use `let_it_be` aliases with predefined options. ([@danielwaterworth][])
+
+  ```ruby
+  TestProf::LetItBe.configure do |config|
+    config.alias_to :let_it_be_with_refind, refind: true
+  end
+  ```
+
 ## 0.8.0 (2019-04-12) 🚀
 
 - **Ruby 2.4+ is requiered** ([@palkan][])
@@ -38,10 +46,10 @@
 
 - Improve test sampling.([@mkldon][])
 
- ```bash
- SAMPLE=10 rake test # runs 10 random test examples
- SAMPLE_GROUPS=10 rake test # runs 10 random example groups
- ```
+  ```bash
+  $ SAMPLE=10 rake test # runs 10 random test examples
+  $ SAMPLE_GROUPS=10 rake test # runs 10 random example groups
+  ```
 
 - Extend Event Prof formatter to include the absolute run time and the percentage of the event tim [#100](https://github.com/palkan/test-prof/issues/100) ([@dmagro][])
 
@@ -53,32 +61,32 @@
 
 - Add ability to ignore connection configurations in shared connection.([@palkan][])
 
-Example:
+  Example:
 
-```ruby
-# Do not use shared connection for sqlite db
-TestProf::ActiveRecordSharedConnection.ignore { |config| config[:adapter] == "sqlite3" }
-```
+  ```ruby
+  # Do not use shared connection for sqlite db
+  TestProf::ActiveRecordSharedConnection.ignore { |config| config[:adapter] == "sqlite3" }
+  ```
 
 ## 0.7.0 (2018-08-12)
 
 - **Ruby 2.3+ is required**. ([@palkan][])
 
-Ruby 2.2 EOL was on 2018-03-31.
+  Ruby 2.2 EOL was on 2018-03-31.
 
 - Upgrade RubyProf integration to `ruby-prof >= 0.17`. ([@palkan][])
 
-Use `exclude_common_methods!` instead of the deprecated `eliminate_methods!`.
+  Use `exclude_common_methods!` instead of the deprecated `eliminate_methods!`.
 
-Add RSpec specific exclusions.
+  Add RSpec specific exclusions.
 
-Add ability to specify custom exclusions through `config.custom_exclusions`, e.g.:
+  Add ability to specify custom exclusions through `config.custom_exclusions`, e.g.:
 
-```ruby
-TestProf::RubyProf.configure do |config|
-  config.custom_exclusions = {User => %i[save save!]}
-end
-```
+  ```ruby
+  TestProf::RubyProf.configure do |config|
+    config.custom_exclusions = {User => %i[save save!]}
+  end
+  ```
 
 ## 0.6.0 (2018-06-29)
 
@@ -86,25 +94,24 @@ end
 
 - Add `EventProf.monitor` to instrument arbitrary methods. ([@palkan][])
 
-Add custom instrumetation easily:
+  Add custom instrumetation easily:
 
-```ruby
-class Work
-  def do
-    # ...
+  ```ruby
+  class Work
+    def do
+      # ...
+    end
   end
-end
 
-# Instrument Work#do calls with "my.work" event
-TestProf::EventProf.monitor(Work, "my.work", :do)
-```
+  # Instrument Work#do calls with "my.work" event
+  TestProf::EventProf.monitor(Work, "my.work", :do)
+  ```
 
 [📝 Docs](https://test-prof.evilmartians.io/#/event_prof?id=profile-arbitrary-methods)
 
 - Adapterize `before_all`. ([@palkan][])
 
-Now it's possible to write your own adapter for `before_all` to manage
-transactions.
+  Now it's possible to write your own adapter for `before_all` to manage transactions.
 
 [📝 Docs](https://test-prof.evilmartians.io/#/before_all?id=database-adapters)
 
@@ -116,32 +123,32 @@ transactions.
 
 - Show top `let` declarations per example group in RSpecDissect profiler. ([@palkan][])
 
-The output now includes the following information:
+  The output now includes the following information:
 
-```
-Top 5 slowest suites (by `let` time):
+  ```
+  Top 5 slowest suites (by `let` time):
 
-FunnelsController (./spec/controllers/funnels_controller_spec.rb:3) – 00:38.532 of 00:43.649 (133)
- ↳ user – 3
- ↳ funnel – 2
-ApplicantsController (./spec/controllers/applicants_controller_spec.rb:3) – 00:33.252 of 00:41.407 (222)
- ↳ user – 10
- ↳ funnel – 5
- ```
+  FunnelsController (./spec/controllers/funnels_controller_spec.rb:3) – 00:38.532 of 00:43.649 (133)
+  ↳ user – 3
+  ↳ funnel – 2
+  ApplicantsController (./spec/controllers/applicants_controller_spec.rb:3) – 00:33.252 of 00:41.407 (222)
+  ↳ user – 10
+  ↳ funnel – 5
+  ```
 
-Enabled by default. Disable it with:
+  Enabled by default. Disable it with:
 
-```ruby
-TestProf::RSpecDissect.configure do |config|
-  config.let_stats_enabled = false
-end
-```
+  ```ruby
+  TestProf::RSpecDissect.configure do |config|
+    config.let_stats_enabled = false
+  end
+  ```
 
 - [Fix [#80](https://github.com/palkan/test-prof/issues/80)] Added ability to preserve traits. ([@Vasfed][])
 
-Disabled by default for compatibility. Enable globally by `FactoryDefault.preserve_traits = true` or for single `create_default`: `create_default(:user, preserve_traits: true)`
+  Disabled by default for compatibility. Enable globally by `FactoryDefault.preserve_traits = true` or for single `create_default`: `create_default(:user, preserve_traits: true)`
 
-When enabled - default object will be used only when there's no [traits](https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md#traits) in association.
+  When enabled - default object will be used only when there's no [traits](https://github.com/thoughtbot/factory_bot/blob/master/GETTING_STARTED.md#traits) in association.
 
 - Add ability to run only `let` or `before` profiler with RSpecDissect. ([@palkan][])
 
@@ -151,8 +158,8 @@ When enabled - default object will be used only when there's no [traits](https:/
 
 - [Fix [#75](https://github.com/palkan/test-prof/issues/75)] Fix `RSpec/Aggregate` failures with non-regular examples. ([@palkan][])
 
-Do not take into account `xit`, `pending`, `its`, etc. examples,
-only consider regular `it`, `specify`, `scenario`, `example`.
+  Do not take into account `xit`, `pending`, `its`, etc. examples,
+  only consider regular `it`, `specify`, `scenario`, `example`.
 
 ## 0.5.0 (2018-04-25)
 
@@ -160,78 +167,78 @@ only consider regular `it`, `specify`, `scenario`, `example`.
 
 - Add events support to TagProf. ([@palkan][])
 
-Example usage:
+  Example usage:
 
-```sh
-TAG_PROF=type TAG_PROF_EVENT=sql.active_record rspec
-```
+  ```sh
+  TAG_PROF=type TAG_PROF_EVENT=sql.active_record rspec
+  ```
 
-[📝 Docs](https://test-prof.evilmartians.io/#/tag_prof?id=profiling-events)
+  [📝 Docs](https://test-prof.evilmartians.io/#/tag_prof?id=profiling-events)
 
 - Add logging helpers for Rails. ([@palkan][])
 
-Enalbe verbose logging globally:
+  Enable verbose logging globally:
 
-```sh
-LOG=all rspec
-```
+  ```sh
+  LOG=all rspec
+  ```
 
-Or per example (group):
+  Or per example (group):
 
-```ruby
-it "does smth weird", :log do
-  # ...
-end
-```
+  ```ruby
+  it "does smth weird", :log do
+    # ...
+  end
+  ```
 
-[📝 Docs](https://test-prof.evilmartians.io/#/logging)
+  [📝 Docs](https://test-prof.evilmartians.io/#/logging)
 
 - Add HTML report for `TagProf`. ([@palkan][])
 
-Generate HTML report by setting `TAG_PROF_FORMAT` to `html`.
+  Generate HTML report by setting `TAG_PROF_FORMAT` to `html`.
 
 - Add ability to track multiple events at the same time with `EventProf`. ([@palkan][])
 
 - Add `AnyFixture` DSL. ([@palkan][])
 
-Example:
+  Example:
 
-```ruby
-# Enable DSL
-using TestProf::AnyFixture::DSL
+  ```ruby
+  # Enable DSL
+  using TestProf::AnyFixture::DSL
 
-# and then you can use `fixture` method (which is just an alias for `TestProf::AnyFixture.register`)
-before(:all) { fixture(:account) }
+  # and then you can use `fixture` method (which is just an alias for `TestProf::AnyFixture.register`)
+  before(:all) { fixture(:account) }
 
-# You can also use it to fetch the record (instead of storing it in instance variable)
-let(:account) { fixture(:account) }
-```
+  # You can also use it to fetch the record (instead of storing it in instance variable)
+  let(:account) { fixture(:account) }
+  ```
 
-[📝 Docs](https://test-prof.evilmartians.io/#/any_fixture?id=dsl)
+  [📝 Docs](https://test-prof.evilmartians.io/#/any_fixture?id=dsl)
 
 - Add `AnyFixture` usage report. ([@palkan][])
 
-Enable `AnyFixture` usage reporting with `ANYFIXTURE_REPORTING=1` or with:
+  Enable `AnyFixture` usage reporting with `ANYFIXTURE_REPORTING=1` or with:
 
-```ruby
-TestProf::AnyFixture.reporting_enabled = true
-```
+  ```ruby
+  TestProf::AnyFixture.reporting_enabled = true
+  ```
 
-[📝 Docs](https://test-prof.evilmartians.io/#/any_fixture?id=usage-report)
+  [📝 Docs](https://test-prof.evilmartians.io/#/any_fixture?id=usage-report)
 
 - Add `ActiveRecordSharedConnection` recipe. ([@palkan][])
 
-Force ActiveRecord to use the same connection between threads (to avoid database cleaning in browser tests).
+  Force ActiveRecord to use the same connection between threads (to avoid database cleaning in browser tests).
 
-[📝 Docs](https://test-prof.evilmartians.io/#/active_record_shared_connection)
+  [📝 Docs](https://test-prof.evilmartians.io/#/active_record_shared_connection)
 
 - [#70](https://github.com/palkan/test-prof/pull/70) Add `FactoryAllStub` recipe. ([@palkan][])
 
-[📝 Docs](https://test-prof.evilmartians.io/#/factory_all_stub)
+  [📝 Docs](https://test-prof.evilmartians.io/#/factory_all_stub)
 
 - Add `ActiveRecordRefind` refinement. ([@palkan][])
 
-[📝 Docs](https://test-prof.evilmartians.io/#/any_fixture?id=activerecordrefind)
+  [📝 Docs](https://test-prof.evilmartians.io/#/any_fixture?id=activerecordrefind)
 
 ### Fixes & Improvements
 
@@ -295,15 +302,15 @@ Force ActiveRecord to use the same connection between threads (to avoid database
 
 - [#44](https://github.com/palkan/test-prof/pull/44) Support older versions of RSpec. ([@palkan][])
 
-Support RSpec 3.1.0+ in general.
+  Support RSpec 3.1.0+ in general.
 
-`let_it_be` supports only RSpec 3.3.0+.
+  `let_it_be` supports only RSpec 3.3.0+.
 
-RSpecDissect `let` tracking supports only RSpec 3.3.0+.
+  RSpecDissect `let` tracking supports only RSpec 3.3.0+.
 
 - [#38](https://github.com/palkan/test-prof/pull/38) Factory Doctor Minitest integration. ([@IDolgirev][])
 
-It is possible now to use Factory Doctor with Minitest
+  It is possible now to use Factory Doctor with Minitest
 
 ## 0.4.0 (2017-10-03)
 
@@ -311,7 +318,7 @@ It is possible now to use Factory Doctor with Minitest
 
 - [#29](https://github.com/palkan/test-prof/pull/29) EventProf Minitest integration. ([@IDolgirev][])
 
-It is possible now to use Event Prof with Minitest
+  It is possible now to use Event Prof with Minitest
 
 - [#30](https://github.com/palkan/test-prof/pull/30) Fabrication support for FactoryProf. ([@Shkrt][])
 
@@ -323,26 +330,25 @@ FactoryProf now also accounts objects created by Fabrication gem (in addition to
 
 - Combine RSpecStamp with FactoryDoctor. ([@palkan][])
 
-Automatically mark _bad_ examples with custom tags.
+  Automatically mark _bad_ examples with custom tags.
 
 - [#17](https://github.com/palkan/test-prof/pull/17) Combine RSpecStamp with EventProf and RSpecDissect. ([@palkan][])
 
-It is possible now to automatically mark _slow_ examples and groups with custom tags. For example:
+  It is possible now to automatically mark _slow_ examples and groups with custom tags. For example:
 
-```sh
-EVENT_PROF="sql.active_record" EVENT_PROF_STAMP="slow:sql" rspec ...
-```
+  ```sh
+  $ EVENT_PROF="sql.active_record" EVENT_PROF_STAMP="slow:sql" rspec ...
+  ```
 
-After running the command above the top 5 slowest example groups would be marked with `slow: :sql` tag.
+  After running the command above the top 5 slowest example groups would be marked with `slow: :sql` tag.
 
 - [#14](https://github.com/palkan/test-prof/pull/14) RSpecDissect profiler. ([@palkan][])
 
-RSpecDissect tracks how much time do you spend in `before` hooks
-and memoization helpers (i.e. `let`) in your tests.
+  RSpecDissect tracks how much time do you spend in `before` hooks and memoization helpers (i.e. `let`) in your tests.
 
 - [#13](https://github.com/palkan/test-prof/pull/13) RSpec `let_it_be` method. ([@palkan][])
 
-Just like `let`, but persist the result for the whole group (i.e. `let` + `before_all`).
+  Just like `let`, but persist the result for the whole group (i.e. `let` + `before_all`).
 
 ### Improvements:
 
@@ -362,7 +368,7 @@ Just like `let`, but persist the result for the whole group (i.e. `let` + `befor
 
 - EventProf: Fix regression bug with examples profiling. ([@palkan][])
 
-There was a bug when an event occurs before the example has started (e.g. in `before(:context)` hook).
+  There was a bug when an event occurs before the example has started (e.g. in `before(:context)` hook).
 
 ## 0.2.3 (2017-08-28)
 
@@ -372,8 +378,7 @@ There was a bug when an event occurs before the example has started (e.g. in `be
 
 - Fix time calculation when Time class is monkey-patched. ([@palkan][])
 
-Add `TestProf.now` method which is just a copy of original `Time.now` and
-use it everywhere.
+  Add `TestProf.now` method which is just a copy of original `Time.now` and use it everywhere.
 
 Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 
@@ -381,17 +386,17 @@ Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 
 - Detect `RSpec` by checking the presence of `RSpec::Core`. ([@palkan][])
 
-Fixes [#8](https://github.com/palkan/test-prof/issues/8).
+  Fixes [#8](https://github.com/palkan/test-prof/issues/8).
 
 ## 0.2.0 (2017-08-18)
 
 - Ensure output directory exists. ([@danielwestendorf][])
 
-**Change default output dir** to "tmp/test_prof".
+  **Change default output dir** to "tmp/test_prof".
 
-Rename `#artefact_path` to `#artifact_path` to be more US-like
+  Rename `#artefact_path` to `#artifact_path` to be more US-like
 
-Ensure output dir exists in `#artifact_path` method.
+  Ensure output dir exists in `#artifact_path` method.
 
 - FactoryDoctor: print success message when no bad examples found. ([@palkan][])
 
@@ -414,3 +419,4 @@ Ensure output dir exists in `#artifact_path` method.
 [@szemek]: https://github.com/szemek
 [@mkldon]: https://github.com/mkldon
 [@dmagro]: https://github.com/dmagro
+[@danielwaterworth]: https://github.com/danielwaterworth

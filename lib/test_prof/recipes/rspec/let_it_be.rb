@@ -8,6 +8,11 @@ module TestProf
   # NOTE: Experimental and magical, for more control use `before_all`.
   module LetItBe
     class Configuration
+      # Define an alias for `let_it_be` with the predefined options:
+      #
+      #   TestProf::LetItBe.configure do |config|
+      #     config.alias_to :let_it_be_reloaded, reload: true
+      #   end
       def alias_to(name, **default_args)
         LetItBe.define_let_it_be_alias(name, **default_args)
       end

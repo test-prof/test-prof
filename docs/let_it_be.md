@@ -93,3 +93,27 @@ let_it_be(:user, refind: true) { create(:user) }
 before_all { @user = create(:user) }
 let(:user) { User.find(@user.id) }
 ```
+
+## Aliases
+
+*@since v0.8.1*
+
+Naming is hard. Handling edge cases (the ones described above) is also tricky.
+
+To solve this we provide a way to define `let_it_be` aliases with the predefined options:
+
+```ruby
+# rails_helper.rb
+TestProf::LetItBe.configure do |config|
+  # define an alias with `refind: true` by default
+  config.alias_to :let_it_be_with_refind, refind: true
+end
+
+# then use it in your tests
+describe "smth" do
+  let_it_be_with_refind(:foo) { Foo.create }
+
+  # refind can still be overridden
+  let_it_be_with_refind(:bar, refind: false) { Bar.create }
+end
+```
