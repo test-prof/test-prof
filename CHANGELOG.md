@@ -2,6 +2,20 @@
 
 ## master
 
+- Add `guard` and `top_level` options to `EventProf::Monitor`. ([@palkan][])
+
+  For example:
+
+  ```ruby
+  TestProf::EventProf.monitor(
+    Sidekiq::Client,
+    "sidekiq.inline",
+    :raw_push,
+    top_level: true,
+    guard: ->(*) { Sidekiq::Testing.inline? }
+  )
+  ```
+
 - Add global `before_all` hooks. ([@danielwaterworth][], [@palkan][])
 
   Now you can run additional code before and after every `before_all` transaction

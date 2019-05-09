@@ -4,17 +4,54 @@ module TestProf
   module EventProf
     # Wrap methods with instrumentation
     module Monitor
+      class BaseTracker
+        attr_reader :event
+
+        def initialize(event)
+          @event = event
+        end
+
+        def track
+          TestProf::EventProf.instrumenter.instrument(event) { yield }
+        end
+      end
+
+      class TopLevelTracker < BaseTracker
+        attr_reader :id
+
+        def initialize(event)
+          super
+          @id = :"event_prof_monitor_#{event}"
+          Thread.current[id] = 0
+        end
+
+        def track
+          Thread.current[id] += 1
+          res = nil
+          begin
+            res =
+              if Thread.current[id] == 1
+                super { yield }
+              else
+                yield
+              end
+          ensure
+            Thread.current[id] -= 1
+          end
+          res
+        end
+      end
+
       class << self
-        def call(mod, event, *mids)
+        def call(mod, event, *mids, guard: nil, top_level: false)
+          tracker = top_level ? TopLevelTracker.new(event) : BaseTracker.new(event)
+
           patch = Module.new do
             mids.each do |mid|
-              module_eval <<~SRC, __FILE__, __LINE__ + 1
-                def #{mid}(*)
-                  TestProf::EventProf.instrumenter.instrument(
-                    '#{event}'
-                  ) { super }
-                end
-              SRC
+              define_method(mid) do |*args, &block|
+                next super(*args, &block) unless guard.nil? || instance_exec(*args, &guard)
+                tracker.track { super(*args, &block) }
+              end
             end
           end
 

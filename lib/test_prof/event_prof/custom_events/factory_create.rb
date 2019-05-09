@@ -1,56 +1,38 @@
 # frozen_string_literal: true
 
 require "test_prof/factory_bot"
+require "test_prof/ext/factory_bot_strategy"
 
-module TestProf::EventProf::CustomEvents
-  module FactoryCreate # :nodoc: all
-    module RunnerPatch
-      def run(strategy = @strategy)
-        return super unless strategy == :create
-        FactoryCreate.track(@name) do
-          super
-        end
-      end
-    end
-
-    class << self
-      def setup!
-        @depth = 0
-        TestProf::FactoryBot::FactoryRunner.prepend RunnerPatch
-      end
-
-      def track(factory)
-        @depth += 1
-        res = nil
-        begin
-          res =
-            if @depth == 1
-              ActiveSupport::Notifications.instrument(
-                "factory.create",
-                name: factory
-              ) { yield }
-            else
-              yield
-            end
-        ensure
-          @depth -= 1
-        end
-        res
-      end
-    end
-  end
-end
+using TestProf::FactoryBotStrategy
 
 TestProf::EventProf::CustomEvents.register("factory.create") do
-  if defined? TestProf::FactoryBot
-    TestProf::EventProf::CustomEvents::FactoryCreate.setup!
-  else
-    TestProf.log(:error,
-                 <<~MSG
-                   Failed to load factory_bot / factory_girl.
+  if defined?(TestProf::FactoryBot) || defined?(Fabricate)
+    if defined?(TestProf::FactoryBot)
+      TestProf::EventProf.monitor(
+        TestProf::FactoryBot::FactoryRunner,
+        "factory.create",
+        :run,
+        top_level: true,
+        guard: ->(strategy = @strategy) { strategy.create? }
+      )
+    end
 
-                   Make sure that any of them is in your Gemfile.
-                 MSG
-                )
+    if defined?(Fabricate)
+      TestProf::EventProf.monitor(
+        Fabricate.singleton_class,
+        "factory.create",
+        :create,
+        top_level: true
+      )
+    end
+  else
+    TestProf.log(
+      :error,
+      <<~MSG
+        Failed to load factory_bot / factory_girl / fabrication.
+
+        Make sure that any of them is in your Gemfile.
+      MSG
+    )
   end
 end

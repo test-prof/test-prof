@@ -162,6 +162,10 @@ EventProf comes with a little patch for FactoryGirl which provides instrumentati
 EVENT_PROF=factory.create bundle exec rspec
 ```
 
+*@since v0.9.0*
+
+Also supports Fabrication (tracks implicit and explicit `Fabricate.create` calls).
+
 ### `"sidekiq.jobs"`
 
 Collects statistics about Sidekiq jobs that have been run inline:
@@ -190,7 +194,7 @@ For example, having a class doing some heavy work:
 
 ```ruby
 class Work
-  def do(*args)
+  def do_smth(*args)
     # do something
   end
 end
@@ -200,11 +204,30 @@ You can profile it by adding a _monitor_:
 
 ```ruby
 # provide a class, event name and methods to monitor
-TestProf::EventProf.monitor(Work, 'my.work', :do)
+TestProf::EventProf.monitor(Work, 'my.work', :do_smth)
 ```
 
 And then run EventProf as usual:
 
 ```sh
 EVENT_PROF=my.work bundle exec rake test
+```
+
+*@since v0.9.0*
+
+You can also provide additional options:
+- `top_level: true | false` (defaults to `false`) – defines whether you want to take into account only
+top-level invocations and ignore nested triggers of this event (that's how "factory.create" is [implemented](https://github.com/palkan/test-prof/blob/master/lib/test_prof/event_prof/custom_events/factory_create.rb))
+- `guard: Proc` (defaults to `nil`) – provide a Proc which could prevent from triggering an event: the method is instrumented only if `guard` returns `true`; `guard` is executed using `instance_exec` and the method arguments are passed to it.
+
+For example:
+
+```ruby
+TestProf::EventProf.monitor(
+  Sidekiq::Client,
+  "sidekiq.inline",
+  :raw_push,
+  top_level: true,
+  guard: ->(*) { Sidekiq::Testing.inline? }
+)
 ```
