@@ -1,41 +1,5 @@
 # frozen_string_literal: true
 
-module TestProf::EventProf::CustomEvents
-  module SidekiqInline # :nodoc: all
-    module ClientPatch
-      def raw_push(*)
-        return super unless Sidekiq::Testing.inline?
-        SidekiqInline.track { super }
-      end
-    end
-
-    class << self
-      def setup!
-        @depth = 0
-        Sidekiq::Client.prepend ClientPatch
-      end
-
-      def track
-        @depth += 1
-        res = nil
-        begin
-          res =
-            if @depth == 1
-              ActiveSupport::Notifications.instrument(
-                "sidekiq.inline"
-              ) { yield }
-            else
-              yield
-            end
-        ensure
-          @depth -= 1
-        end
-        res
-      end
-    end
-  end
-end
-
 TestProf::EventProf::CustomEvents.register("sidekiq.inline") do
   if TestProf.require(
     "sidekiq/testing",
@@ -45,6 +9,12 @@ TestProf::EventProf::CustomEvents.register("sidekiq.inline") do
       Make sure that "sidekiq" gem is in your Gemfile.
     MSG
   )
-    TestProf::EventProf::CustomEvents::SidekiqInline.setup!
+    TestProf::EventProf.monitor(
+      Sidekiq::Client,
+      "sidekiq.inline",
+      :raw_push,
+      top_level: true,
+      guard: ->(*) { Sidekiq::Testing.inline? }
+    )
   end
 end

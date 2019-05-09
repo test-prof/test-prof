@@ -14,7 +14,11 @@ describe "Post" do
 end
 
 describe "User" do
-  let(:user) { TestProf::FactoryBot.create(:user) }
+  let(:user) do
+    Fabricate(:user) do
+      Fabricate.times(2, :post)
+    end
+  end
 
   it "validates name" do
     user.name = ""
