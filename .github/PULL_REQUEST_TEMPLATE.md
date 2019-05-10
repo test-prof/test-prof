@@ -20,12 +20,10 @@
 
 ### Is there anything you'd like reviewers to focus on?
 
--->
+### Checklist
 
-<!--
-    Please ensure your PR is ready:
+- [ ] I've added tests for this change
+- [ ] I've added a Changelog entry
+- [ ] I've updated a documentation
 
-    - Include tests for this change
-    - Add Changelog entry
-    - Update documentation for this change (if appropriate)
 -->
