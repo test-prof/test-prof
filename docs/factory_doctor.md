@@ -3,8 +3,16 @@
 One common bad pattern that slows our tests down is unnecessary database manipulation. Consider a _bad_ example:
 
 ```ruby
+# with FactoryBot/FactoryGirl
 it 'validates name presence' do
   user = create(:user)
+  user.name = ''
+  expect(user).not_to be_valid
+end
+
+# with Fabrication
+it 'validates name presence' do
+  user = Fabricate(:user)
   user.name = ''
   expect(user).not_to be_valid
 end
@@ -13,8 +21,16 @@ end
 Here we create a new user record, run all callbacks and validations and save it to the database. We don't need all these! Here is a _good_ example:
 
 ```ruby
+# with FactoryBot/FactoryGirl
 it 'validates name presence' do
   user = build_stubbed(:user)
+  user.name = ''
+  expect(user).not_to be_valid
+end
+
+# with Fabrication
+it 'validates name presence' do
+  user = Fabricate.build(:user)
   user.name = ''
   expect(user).not_to be_valid
 end
@@ -55,7 +71,9 @@ end
 
 ## Instructions
 
-Currently, FactoryDoctor works only with FactoryGirl/FactoryBot.
+FactoryDoctor supports:
+- FactoryGirl/FactoryBot
+- Fabrication (*@since v0.9.0*).
 
 ## RSpec
 
@@ -111,7 +129,9 @@ in your test helper file:
 require 'minitest/reporters'
 Minitest::Reporters.use! [YOUR_FAVORITE_REPORTERS]
 ```
+
 #### NOTICE
+
 When you have `minitest-reporters` installed as a gem but not declared in your `Gemfile`
 make sure to always prepend your test run command with `bundle exec` (but we sure that you always do it).
 Otherwise, you'll get an error caused by Minitest plugin system, which scans all the entries in the

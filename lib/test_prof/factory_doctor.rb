@@ -3,6 +3,7 @@
 require "test_prof"
 require "test_prof/factory_bot"
 require "test_prof/factory_doctor/factory_bot_patch"
+require "test_prof/factory_doctor/fabrication_patch"
 
 module TestProf
   # FactoryDoctor is a tool that helps you identify
@@ -54,6 +55,10 @@ module TestProf
         # Monkey-patch FactoryBot / FactoryGirl
         TestProf::FactoryBot::FactoryRunner.prepend(FactoryBotPatch) if
           defined?(TestProf::FactoryBot)
+
+        # Monkey-patch Fabrication
+        ::Fabricate.singleton_class.prepend(FabricationPatch) if
+          defined?(::Fabricate)
 
         subscribe!
 

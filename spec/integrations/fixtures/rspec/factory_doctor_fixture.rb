@@ -30,4 +30,18 @@ describe "User" do
     user.name = ""
     expect(user).not_to be_valid
   end
+
+  context "fabrication" do
+    let(:user) { Fabricate(:user) }
+
+    it "creates and reloads user" do
+      user = Fabricate(:user)
+      expect(User.find(user.id).name).to eq "John 1"
+    end
+
+    it "validates name" do
+      user.name = ""
+      expect(user).not_to be_valid
+    end
+  end
 end

@@ -2,6 +2,8 @@
 
 ## master
 
+- Add Fabrication support to FactoryDoctor. ([@palkan][])
+
 - Add `guard` and `top_level` options to `EventProf::Monitor`. ([@palkan][])
 
   For example:

@@ -37,9 +37,9 @@ describe "User" do
   end
 end
 
-class PlainMinitest < Minitest::Test
+class PlainMinitestFabricationTest < Minitest::Test
   def setup
-    @user = TestProf::FactoryBot.create(:user)
+    @user = Fabricate(:user)
   end
 
   def test_factory_doctor
