@@ -16,6 +16,14 @@ describe TestProf::FactoryProf, :transactional do
   # Ensure meta-queries have been performed
   before(:all) { User.first }
 
+  def without_time(xs)
+    xs.map do |x|
+      expect(x.delete(:total_time)).to be_a(Float)
+      expect(x.delete(:top_level_time)).to be_a(Float)
+      x
+    end
+  end
+
   describe "#result" do
     subject(:result) { described_class.result }
 
@@ -29,7 +37,7 @@ describe TestProf::FactoryProf, :transactional do
       it "contains simple stack" do
         TestProf::FactoryBot.create(:user)
         expect(result.stacks.size).to eq 1
-        expect(result.total).to eq 1
+        expect(result.total_count).to eq 1
         expect(result.stacks.first).to eq([:user])
       end
 
@@ -39,10 +47,10 @@ describe TestProf::FactoryProf, :transactional do
         expect(result.stacks).to contain_exactly(
           %i[post user]
         )
-        expect(result.stats).to eq(
+        expect(without_time(result.stats)).to eq(
           [
-            {name: :post, total: 1, top_level: 1},
-            {name: :user, total: 1, top_level: 0}
+            {name: :post, total_count: 1, top_level_count: 1},
+            {name: :user, total_count: 1, top_level_count: 0}
           ]
         )
       end
@@ -53,17 +61,17 @@ describe TestProf::FactoryProf, :transactional do
         TestProf::FactoryBot.create(:user, :with_posts)
 
         expect(result.stacks.size).to eq 4
-        expect(result.total).to eq 9
+        expect(result.total_count).to eq 9
         expect(result.stacks).to contain_exactly(
           [:user],
           [:user],
           %i[post user],
           %i[user post user post user]
         )
-        expect(result.stats).to eq(
+        expect(without_time(result.stats)).to eq(
           [
-            {name: :user, total: 6, top_level: 3},
-            {name: :post, total: 3, top_level: 1}
+            {name: :user, total_count: 6, top_level_count: 3},
+            {name: :post, total_count: 3, top_level_count: 1}
           ]
         )
       end
@@ -79,7 +87,7 @@ describe TestProf::FactoryProf, :transactional do
       it "contains simple stack" do
         Fabricate.create(:user)
         expect(result.stacks.size).to eq 1
-        expect(result.total).to eq 1
+        expect(result.total_count).to eq 1
         expect(result.stacks.first).to eq([:user])
       end
 
@@ -89,17 +97,17 @@ describe TestProf::FactoryProf, :transactional do
         Fabricate.create(:user) { Fabricate.times(2, :post) }
 
         expect(result.stacks.size).to eq 4
-        expect(result.total).to eq 9
+        expect(result.total_count).to eq 9
         expect(result.stacks).to contain_exactly(
           [:user],
           [:user],
           %i[post user],
           %i[user post user post user]
         )
-        expect(result.stats).to eq(
+        expect(without_time(result.stats)).to eq(
           [
-            {name: :user, total: 6, top_level: 3},
-            {name: :post, total: 3, top_level: 1}
+            {name: :user, total_count: 6, top_level_count: 3},
+            {name: :post, total_count: 3, top_level_count: 1}
           ]
         )
       end

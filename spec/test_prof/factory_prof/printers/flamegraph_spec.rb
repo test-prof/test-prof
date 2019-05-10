@@ -21,10 +21,10 @@ describe TestProf::FactoryProf::Printers::Flamegraph do
         TestProf::FactoryProf::Result.new(
           stacks,
           {
-            user: {total: 5},
-            account: {total: 6},
-            comment: {total: 2},
-            post: {total: 2}
+            user: {total_count: 5},
+            account: {total_count: 6},
+            comment: {total_count: 2},
+            post: {total_count: 2}
           }
         )
       )

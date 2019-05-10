@@ -15,7 +15,7 @@ module TestProf::FactoryProf
           return log(:info, "No factories detected") if result.raw_stats == {}
           report_data = {
             total_stacks: result.stacks.size,
-            total: result.total
+            total: result.total_count
           }
 
           report_data[:roots] = convert_stacks(result)
@@ -45,7 +45,11 @@ module TestProf::FactoryProf
                 node = paths[path]
                 node[:value] += 1
               else
-                node = {name: sample, value: 1, total: result.raw_stats.fetch(sample)[:total]}
+                node = {
+                  name: sample,
+                  value: 1,
+                  total: result.raw_stats.fetch(sample)[:total_count]
+                }
                 paths[path] = node
 
                 if parent.nil?
