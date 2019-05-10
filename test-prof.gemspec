@@ -20,6 +20,13 @@ Gem::Specification.new do |spec|
   }
   spec.homepage      = "http://github.com/palkan/test-prof"
   spec.license       = "MIT"
+  spec.metadata = {
+    "bug_tracker_uri" => "http://github.com/palkan/test-prof/issues",
+    "changelog_uri" => "https://github.com/palkan/test-prof/blob/master/CHANGELOG.md",
+    "documentation_uri" => "https://test-prof.evilmartians.io/",
+    "homepage_uri" => "https://test-prof.evilmartians.io/",
+    "source_code_uri" => "http://github.com/palkan/test-prof"
+  }
 
   spec.files         = `git ls-files`.split($/).select { |p| p.match(%r{^(lib/|guides/|assets/[^\/]+)}) } +
     %w[README.md CHANGELOG.md LICENSE.txt]
