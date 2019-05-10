@@ -36,15 +36,16 @@ module TestProf
 
       # Returns sorted stats
       def stats
-        return @stats if instance_variable_defined?(:@stats)
-
-        @stats = @raw_stats.values
-          .sort_by { |el| -el[:total] }
+        @stats ||= @raw_stats.values
+          .sort_by { |el| -el[:total_count] }
       end
 
-      def total
-        return @total if instance_variable_defined?(:@total)
-        @total = @raw_stats.values.sum { |v| v[:total] }
+      def total_count
+        @total_count ||= @raw_stats.values.sum { |v| v[:total_count] }
+      end
+
+      def total_time
+        @total_time ||= @raw_stats.values.sum { |v| v[:total_time] }
       end
 
       private
@@ -103,13 +104,18 @@ module TestProf
 
       def track(factory)
         return yield unless running?
+        @depth += 1
+        @current_stack << factory if config.flamegraph?
+        @stats[factory][:total_count] += 1
+        @stats[factory][:top_level_count] += 1 if @depth == 1
+        t1 = Time.now
         begin
-          @depth += 1
-          @current_stack << factory if config.flamegraph?
-          @stats[factory][:total] += 1
-          @stats[factory][:top_level] += 1 if @depth == 1
           yield
         ensure
+          t2 = Time.now
+          elapsed = t2 - t1
+          @stats[factory][:total_time] += elapsed
+          @stats[factory][:top_level_time] += elapsed if @depth == 1
           @depth -= 1
           flush_stack if @depth.zero?
         end
@@ -120,7 +126,15 @@ module TestProf
       def reset!
         @stacks = [] if config.flamegraph?
         @depth = 0
-        @stats = Hash.new { |h, k| h[k] = {name: k, total: 0, top_level: 0} }
+        @stats = Hash.new do |h, k|
+          h[k] = {
+            name: k,
+            total_count: 0,
+            top_level_count: 0,
+            total_time: 0.0,
+            top_level_time: 0.0
+          }
+        end
         flush_stack
       end
 
