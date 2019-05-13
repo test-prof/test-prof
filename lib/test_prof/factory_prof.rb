@@ -108,11 +108,11 @@ module TestProf
         @current_stack << factory if config.flamegraph?
         @stats[factory][:total_count] += 1
         @stats[factory][:top_level_count] += 1 if @depth == 1
-        t1 = Time.now
+        t1 = TestProf.now
         begin
           yield
         ensure
-          t2 = Time.now
+          t2 = TestProf.now
           elapsed = t2 - t1
           @stats[factory][:total_time] += elapsed
           @stats[factory][:top_level_time] += elapsed if @depth == 1
