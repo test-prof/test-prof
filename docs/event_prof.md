@@ -225,9 +225,20 @@ For example:
 ```ruby
 TestProf::EventProf.monitor(
   Sidekiq::Client,
-  "sidekiq.inline",
+  'sidekiq.inline',
   :raw_push,
   top_level: true,
   guard: ->(*) { Sidekiq::Testing.inline? }
 )
 ```
+
+You can add monitors _on demand_ (i.e. only when you want to track the specified event) by wrapping
+the code in `TestProf::EventProf::CustomEvents.register` method:
+
+```ruby
+TestProf::EventProf::CustomEvents.register('my.work') do
+  TestProf::EventProf.monitor(Work, 'my.work', :do_smth)
+end
+```
+
+The block is evalutated only if the specified event is enabled with EventProf.
