@@ -239,6 +239,9 @@ the code in `TestProf::EventProf::CustomEvents.register` method:
 TestProf::EventProf::CustomEvents.register('my.work') do
   TestProf::EventProf.monitor(Work, 'my.work', :do_smth)
 end
+
+# Then call `activate_all` with the provided event
+TestProf::EventProf::CustomEvents.activate_all(TestProf::EventProf.config.event)
 ```
 
-The block is evalutated only if the specified event is enabled with EventProf.
+The block is evaluated only if the specified event is enabled with EventProf.
