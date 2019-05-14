@@ -1,8 +1,14 @@
 # Change log
 
-## master
+## master (unreleased)
+
+## 0.9.0 (2019-05-14)
 
 - Add threshold and custom event support to FactoryDoctor. ([@palkan][])
+
+  ```sh
+  $ FDOC=1 FDOC_EVENT="sql.rom" FDOC_THRESHOLD=0.1 rspec
+  ```
 
 - Add Fabrication support to FactoryDoctor. ([@palkan][])
 
