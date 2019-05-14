@@ -19,7 +19,7 @@ module TestProf
       end
 
       def bad?
-        count > 0 && queries_count.zero?
+        count > 0 && queries_count.zero? && time >= FactoryDoctor.config.threshold
       end
     end
 
@@ -39,18 +39,35 @@ module TestProf
       \ASAVEPOINT
     )}xi.freeze
 
+    class Configuration
+      attr_accessor :event, :threshold
+
+      def initialize
+        # event to track for DB interactions
+        @event = ENV.fetch("FDOC_EVENT", "sql.active_record")
+        # consider result good if time wasted less then threshold
+        @threshold = ENV.fetch("FDOC_THRESHOLD", "0.01").to_f
+      end
+    end
+
     class << self
       include TestProf::Logging
 
-      attr_reader :event
       attr_reader :count, :time, :queries_count
 
+      def config
+        @config ||= Configuration.new
+      end
+
+      def configure
+        yield config
+      end
+
       # Patch factory lib, init counters
-      def init(event = "sql.active_record")
-        @event = event
+      def init
         reset!
 
-        log :info, "FactoryDoctor enabled"
+        log :info, "FactoryDoctor enabled (event: \"#{config.event}\", threshold: #{config.threshold})"
 
         # Monkey-patch FactoryBot / FactoryGirl
         TestProf::FactoryBot::FactoryRunner.prepend(FactoryBotPatch) if
@@ -127,7 +144,7 @@ module TestProf
       end
 
       def subscribe!
-        ::ActiveSupport::Notifications.subscribe(event) do |_name, _start, _finish, _id, query|
+        ::ActiveSupport::Notifications.subscribe(config.event) do |_name, _start, _finish, _id, query|
           next if ignore? || !running? || within_factory?
           next if query[:sql] =~ IGNORED_QUERIES_PATTERN
           @queries_count += 1

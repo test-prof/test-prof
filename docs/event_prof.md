@@ -162,7 +162,7 @@ EventProf comes with a little patch for FactoryGirl which provides instrumentati
 EVENT_PROF=factory.create bundle exec rspec
 ```
 
-*@since v0.9.0*
+**@since v0.9.0**
 
 Also supports Fabrication (tracks implicit and explicit `Fabricate.create` calls).
 
@@ -213,7 +213,7 @@ And then run EventProf as usual:
 EVENT_PROF=my.work bundle exec rake test
 ```
 
-*@since v0.9.0*
+**@since v0.9.0**
 
 You can also provide additional options:
 - `top_level: true | false` (defaults to `false`) – defines whether you want to take into account only

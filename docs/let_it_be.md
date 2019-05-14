@@ -96,7 +96,7 @@ let(:user) { User.find(@user.id) }
 
 ## Aliases
 
-*@since v0.9.0*
+**@since v0.9.0**
 
 Naming is hard. Handling edge cases (the ones described above) is also tricky.
 

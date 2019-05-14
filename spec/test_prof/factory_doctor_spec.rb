@@ -12,6 +12,13 @@ describe TestProf::FactoryDoctor, :transactional do
   # Ensure meta-queries have been performed
   before(:all) { User.first }
 
+  around do |ex|
+    was_threshold = described_class.config.threshold
+    described_class.config.threshold = 0
+    ex.run
+    described_class.config.threshold = was_threshold
+  end
+
   describe "#result" do
     subject(:result) { described_class.result }
 

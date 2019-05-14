@@ -58,9 +58,15 @@ module TestProf
           MSG
 
         @example_groups.each do |group, examples|
-          msgs << "#{group.description} (#{group.metadata[:location]})\n"
+          group_time = examples.sum { |ex| ex.metadata[:time] }
+          group_count = examples.sum { |ex| ex.metadata[:factories] }
+
+          msgs << "#{group.description} (#{group.metadata[:location]}) " \
+                  "(#{pluralize_records(group_count)} created, " \
+                  "#{group_time.duration})\n"
+
           examples.each do |ex|
-            msgs << "  #{ex.description} (#{ex.metadata[:location]}) "\
+            msgs << "  #{ex.description} (#{ex.metadata[:location]}) " \
                     "– #{pluralize_records(ex.metadata[:factories])} created, "\
                     "#{ex.metadata[:time].duration}\n"
           end

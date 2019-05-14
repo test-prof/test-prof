@@ -48,7 +48,7 @@ Example output:
 Total (potentially) bad examples: 2
 Total wasted time: 00:13.165
 
-User (./spec/models/user_spec.rb:3)
+User (./spec/models/user_spec.rb:3) (3 records created, 00:00.628)
   validates name (./spec/user_spec.rb:8) – 1 record created, 00:00.114
   validates email (./spec/user_spec.rb:8) – 2 records created, 00:00.514
 ```
@@ -73,9 +73,9 @@ end
 
 FactoryDoctor supports:
 - FactoryGirl/FactoryBot
-- Fabrication (*@since v0.9.0*).
+- Fabrication (**@since v0.9.0**).
 
-## RSpec
+### RSpec
 
 To activate FactoryDoctor use `FDOC` environment variable:
 
@@ -83,7 +83,7 @@ To activate FactoryDoctor use `FDOC` environment variable:
 FDOC=1 rspec ...
 ```
 
-## Using with RSpecStamp
+### Using with RSpecStamp
 
 FactoryDoctor can be used with [RSpec Stamp](./rspec_stamp.md) to automatically mark _bad_ examples with custom tags. For example:
 
@@ -93,7 +93,7 @@ FDOC=1 FDOC_STAMP="fdoc:consider" rspec ...
 
 After running the command above all _potentially_ bad examples would be marked with the `fdoc: :consider` tag.
 
-## Minitest
+### Minitest
 
 To activate FactoryDoctor use `FDOC` environment variable:
 
@@ -120,7 +120,7 @@ it 'is ignored' do
 end
 ```
 
-## Using with Minitest::Reporters
+### Using with Minitest::Reporters
 
 If you're using `Minitest::Reporters` in your project you have to explicitly declare it
 in your test helper file:
@@ -130,10 +130,25 @@ require 'minitest/reporters'
 Minitest::Reporters.use! [YOUR_FAVORITE_REPORTERS]
 ```
 
-#### NOTICE
-
-When you have `minitest-reporters` installed as a gem but not declared in your `Gemfile`
+**NOTE**: When you have `minitest-reporters` installed as a gem but not declared in your `Gemfile`
 make sure to always prepend your test run command with `bundle exec` (but we sure that you always do it).
 Otherwise, you'll get an error caused by Minitest plugin system, which scans all the entries in the
 `$LOAD_PATH` for any `minitest/*_plugin.rb`, thus initialization of `minitest-reporters` plugin which is
 available in that case doesn't happens correctly.
+
+## Configuration
+
+**@since v0.9.0**
+
+The following configuration parameters are available (showing defaults):
+
+```ruby
+TestProf::FactoryDoctor.configure do |config|
+  # Which event to track within test example to consider them "DB-dirty"
+  config.event = "sql.active_record"
+  # Consider result "good" if the time in DB is less then the threshold
+  config.threshold = 0.01
+end
+```
+
+You can use the corresponding env variables as well: `FDOC_EVENT` and `FDOC_THRESHOLD`.
