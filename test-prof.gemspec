@@ -40,7 +40,6 @@ Gem::Specification.new do |spec|
   spec.add_development_dependency "rspec", "~> 3.4"
   spec.add_development_dependency "isolator", "~> 0.6"
   spec.add_development_dependency "minitest", "~> 5.9"
-  spec.add_development_dependency "rubocop", "~> 0.65.0"
   spec.add_development_dependency "rubocop-md", "~> 0.2"
-  spec.add_development_dependency "standard", "~> 0.0.36"
+  spec.add_development_dependency "standard", "~> 0.0.39"
 end
