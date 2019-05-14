@@ -7,17 +7,22 @@ Example output:
 ```sh
 [TEST PROF INFO] Factories usage
 
- total      top-level             name
+Total: 15285
+Total top-level: 10286
+Total time: 299.5937s
+Total uniq factories: 119
 
-     8              4             user
-     5              3             post
+ total   top-level   total time   top-level time            name
+  6091        2715    115.7671s         50.2517s            user
+  2142        2098     93.3152s         92.1915s            post
+  ...
 ```
-
 
 It shows both the total number of the factory runs and the number of _top-level_ runs, i.e. not during another factory invocation (e.g. when using associations.)
 
-**NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryGirl/FactoryBot these are the factories
-provided by using `create` strategy. In case of Fabrication - objects that created using `create` method.
+(**@since v0.9.0**) It also shows the time spent generating records with factories.
+
+**NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryGirl/FactoryBot these are the factories provided by using `create` strategy. In case of Fabrication - objects that created using `create` method.
 
 ## Instructions
 
