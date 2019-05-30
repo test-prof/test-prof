@@ -1,6 +1,6 @@
 # Active Record Shared Connection
 
-**NOTE:** a similar functionality has been added to Rails since version 5.1 (see [PR](https://github.com/rails/rails/pull/28083)).
+**NOTE:** a similar functionality has been added to Rails since version 5.1 (see [PR](https://github.com/rails/rails/pull/28083)). You shouldn't use `ActiveRecordSharedConnection` with modern Rails, it could lead to unexpected behaviour (e.g., mutexes deadlocks).
 
 Active Record creates a connection per thread by default.
 

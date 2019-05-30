@@ -2,6 +2,9 @@
 
 ## master (unreleased)
 
+- Print warning when `ActiveRecordSharedConnection` is used in the version of Rails
+supporting `lock_threads` (5.1+). ([@palkan][])
+
 ## 0.9.0 (2019-05-14)
 
 - Add threshold and custom event support to FactoryDoctor. ([@palkan][])
