@@ -104,6 +104,45 @@ body.close .sidebar {
   margin-left: 10px;
 }
 
+/* search plugin related */
+
+.sidebar {
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar > h1 {
+  order: 1;
+  margin-top: 1.5rem;
+}
+
+.sidebar .search {
+  order: 2;
+  margin: 1.5rem 0 0 0;
+  border: none;
+  border-top: 1px solid #ccccccbb;
+  border-bottom: 1px solid #ccccccbb;
+  margin-top: 20px;
+  margin-bottom: 20px;
+  padding: 6px;
+}
+
+.sidebar .sidebar-nav {
+  order: 3;
+}
+
+.sidebar .search .input-wrap {
+  border: none;
+  position: relative;
+}
+
+.sidebar .search .clear-button.show {
+  display: block;
+  position: absolute;
+  right: 4px;
+  top: 8px;
+}
+
 body .sidebar-toggle {
   background: none;
   bottom: 1rem;
