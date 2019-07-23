@@ -10,7 +10,7 @@ We provide a recipe to turn verbose logging for a specific example/group.
 
 ## Instructions
 
-Drop this line to your `spec_helper.rb` / `test_helper.rb` / whatever:
+Drop this line to your `rails_helper.rb` / `spec_helper.rb` / `test_helper.rb` / whatever:
 
 ```ruby
 require 'test_prof/recipes/logging'
