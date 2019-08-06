@@ -107,6 +107,11 @@ If you're using DatabaseCleaner, make sure it rolls back the database between te
 
 ## Modifiers
 
+If you modify objects generated within a `let_it_be` block in your examples, you maybe have to re-initiate them to avoid state leakage between the examples.
+Keep in mind that even though the database is rolled back to its pristine state, models themselves are not.
+
+We have a built-in _modifiers_ support for getting models to their pristine state:
+
 ```ruby
 # Use reload: true option to reload user object (assuming it's an instance of ActiveRecord)
 # for every example
@@ -136,7 +141,7 @@ before_all { @posts = create_list(:post, 3) }
 let(:posts) { @posts.map(&:reload) }
 ```
 
-### Custom modifiers
+### Custom Modifiers
 
 > @since v0.10.0
 
@@ -159,6 +164,27 @@ TestProf::LetItBe.configure do |config|
   end
 end
 ```
+
+### Auto-magic State Leakage Detection
+
+> @since v0.12.0
+
+To detect modification to the models, and potentially harmful side effects of
+such a leakage on the other examples, objects that are passed to `let_it_be`
+are frozen (with `freeze`), and `FrozenError` is wrapped to provide a more
+user-friendly error message.
+
+```ruby
+# it is almost equal to
+before_all { @user = create(:user).freeze }
+let(:user) { @user }
+```
+
+To fix the `FrozenError` one of the following methods should be applied:
+
+- add `reload: true`/`refind`: true, typically it's significantly faster to reload the model than to re-create it from scratch before each example (two or even three orders of magnitude in some cases)
+- add `freeze: false` to those models that are being modified in a way that is highly unlikely to affect other examples. USE WITH CAUTION - it's a time bomb, you don't know for sure when "highly unlikely" flips to "possibly"
+- rewrite problematic test code
 
 ## Aliases
 
