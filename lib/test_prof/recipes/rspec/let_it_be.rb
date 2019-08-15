@@ -16,6 +16,12 @@ module TestProf
       def alias_to(name, **default_args)
         LetItBe.define_let_it_be_alias(name, **default_args)
       end
+
+      def register_modifier(key, &block)
+        raise ArgumentError, "Modifier #{key} is already defined for let_it_be" if LetItBe.modifiers.key?(key)
+
+        LetItBe.modifiers[key] = block
+      end
     end
 
     class << self
@@ -25,6 +31,24 @@ module TestProf
 
       def configure
         yield config
+      end
+
+      def modifiers
+        @modifiers ||= {}
+      end
+
+      def wrap_with_modifiers(mods, &block)
+        validate_modifiers! mods
+
+        return block if mods.empty?
+
+        -> {
+          instance_eval(&block).then do |record|
+            mods.inject(record) do |rec, (k, v)|
+              LetItBe.modifiers.fetch(k).call(rec, v)
+            end
+          end
+        }
       end
 
       def module_for(group)
@@ -37,6 +61,14 @@ module TestProf
 
       def modules
         @modules ||= {}
+      end
+
+      def validate_modifiers!(mods)
+        unknown = mods.keys - modifiers.keys
+        return if unknown.empty?
+
+        raise ArgumentError, "Unknown let_it_be modifiers were used: #{unknown.join(", ")}. " \
+                             "Available modifiers are: #{modifiers.keys.join(", ")}"
       end
     end
     # Use uniq prefix for instance variables to avoid collisions
@@ -64,24 +96,9 @@ module TestProf
       define_let_it_be_methods(identifier, **options)
     end
 
-    def define_let_it_be_methods(identifier, reload: false, refind: false)
-      let_accessor = -> { instance_variable_get(:"#{PREFIX}#{identifier}") }
-
-      if reload
-        let_accessor = lambda do
-          record = instance_variable_get(:"#{PREFIX}#{identifier}")
-          next unless record.is_a?(::ActiveRecord::Base)
-          record.reload
-        end
-      end
-
-      if refind
-        let_accessor = lambda do
-          record = instance_variable_get(:"#{PREFIX}#{identifier}")
-          next unless record.is_a?(::ActiveRecord::Base)
-
-          record.class.find(record.send(record.class.primary_key))
-        end
+    def define_let_it_be_methods(identifier, **modifiers)
+      let_accessor = LetItBe.wrap_with_modifiers(modifiers) do
+        instance_variable_get(:"#{PREFIX}#{identifier}")
       end
 
       LetItBe.module_for(self).module_eval do
@@ -98,6 +115,23 @@ module TestProf
 
       let(identifier, &let_accessor)
     end
+  end
+end
+
+require "test_prof/ext/active_record_refind"
+using TestProf::Ext::ActiveRecordRefind
+
+TestProf::LetItBe.configure do |config|
+  config.register_modifier :reload do |record, val|
+    next record unless val
+    next record unless record.is_a?(::ActiveRecord::Base)
+    record.reload
+  end
+
+  config.register_modifier :refind do |record, val|
+    next record unless val
+    next record unless record.is_a?(::ActiveRecord::Base)
+    record.refind
   end
 end
 

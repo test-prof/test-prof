@@ -2,6 +2,18 @@
 
 ## master (unreleased)
 
+- Refactor `let_it_be` modifiers and allow adding custom modifiers. ([@palkan][])
+
+  ```ruby
+  TestProf::LetItBe.config.register_modifier :reload do |record, val|
+    # ignore when `reload: false`
+    next record unless val
+    # ignore non-ActiveRecord objects
+    next record unless record.is_a?(::ActiveRecord::Base)
+    record.reload
+  end
+  ```
+
 - Print warning when `ActiveRecordSharedConnection` is used in the version of Rails
 supporting `lock_threads` (5.1+). ([@palkan][])
 

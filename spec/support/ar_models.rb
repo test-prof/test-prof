@@ -20,6 +20,7 @@ ActiveRecord::Schema.define do
     t.text :text
     t.integer :user_id
     t.foreign_key :users if ActiveRecord::VERSION::MAJOR >= 4
+    t.timestamps
   end
 end
 
@@ -38,6 +39,8 @@ end
 
 class Post < ActiveRecord::Base
   belongs_to :user
+
+  attr_accessor :dirty
 end
 
 TestProf::FactoryBot.define do
