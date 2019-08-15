@@ -21,26 +21,33 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 - ActiveSupport-backed profilers
 
+- RSpec and minitest [helpers](https://test-prof.evilmartians.io/#/?id=recipes) to write faster tests
+
 - RuboCop cops
 
 - etc.
 
-Of course, we have some [solutions](https://test-prof.evilmartians.io/#/?id=recipes) for common performance issues too, bundled into the gem.
-
-[![](./docs/assets/images/coggle.png)](http://bit.ly/test-prof-map)
-
 📑 [Documentation](https://test-prof.evilmartians.io)
 
-Supported Ruby versions:
+<a align="center" href="http://bit.ly/test-prof-map">
+  <img src="./docs/assets/images/coggle.png" alt="TestProf map" width="738">
+</p>
 
-- Ruby (MRI) >= 2.4.0 (**NOTE:** for Ruby 2.2 use TestProf < 0.7.0 or Ruby 2.3 use TestProf ~> 0.7.0)
+<p align="center">
+  <a href="https://evilmartians.com/?utm_source=test-prof">
+    <img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg"
+         alt="Sponsored by Evil Martians" width="236" height="54">
+  </a>
+</p>
 
-- JRuby >= 9.1.0.0 (**NOTE:** refinements-dependent features might require 9.2.7+)
+## Who uses TestProf
 
-Supported RSpec version (for RSpec features only): >= 3.5.0 (for older RSpec versions use TestProf < 0.8.0).
-
-<a href="https://evilmartians.com/">
-<img src="https://evilmartians.com/badges/sponsored-by-evil-martians.svg" alt="Sponsored by Evil Martians" width="236" height="54"></a>
+- [Discourse](https://github.com/discourse/discourse) reduced [~27% of their test suite time](https://twitter.com/samsaffron/status/1125602558024699904)
+- [Gitlab](https://gitlab.com/gitlab-org/gitlab-ce) reduced [39% of their API tests time](https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/14370)
+- [CodeTriage](https://github.com/codetriage/codetriage)
+- [Dev.to](https://github.com/thepracticaldev/dev.to)
+- [Open Project](https://github.com/opf/openproject)
+- [...and others](https://github.com/palkan/test-prof/issues/73)
 
 ## Resources
 
@@ -69,6 +76,14 @@ end
 ```
 
 And that's it)
+
+Supported Ruby versions:
+
+- Ruby (MRI) >= 2.4.0 (**NOTE:** for Ruby 2.2 use TestProf < 0.7.0 or Ruby 2.3 use TestProf ~> 0.7.0)
+
+- JRuby >= 9.1.0.0 (**NOTE:** refinements-dependent features might require 9.2.7+)
+
+Supported RSpec version (for RSpec features only): >= 3.5.0 (for older RSpec versions use TestProf < 0.8.0).
 
 ## Usage
 
