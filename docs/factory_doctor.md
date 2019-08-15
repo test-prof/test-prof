@@ -138,7 +138,7 @@ available in that case doesn't happens correctly.
 
 ## Configuration
 
-**@since v0.9.0**
+> @since v0.9.0
 
 The following configuration parameters are available (showing defaults):
 

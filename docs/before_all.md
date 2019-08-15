@@ -113,7 +113,7 @@ TestProf::BeforeAll.adapter = MyDBAdapter.new
 
 ## Hooks
 
-**@since v0.9.0**
+> @since v0.9.0
 
 You can register callbacks to run before/after `before_all` opens and rollbacks a transaction:
 
