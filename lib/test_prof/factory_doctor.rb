@@ -146,7 +146,7 @@ module TestProf
       def subscribe!
         ::ActiveSupport::Notifications.subscribe(config.event) do |_name, _start, _finish, _id, query|
           next if ignore? || !running? || within_factory?
-          next if query[:sql] =~ IGNORED_QUERIES_PATTERN
+          next if IGNORED_QUERIES_PATTERN.match?(query[:sql])
           @queries_count += 1
         end
       end

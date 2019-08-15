@@ -114,7 +114,7 @@ describe TestProf::EventProf::Profiler do
             {id: "C1", run_time: 500, time: 440, count: 2},
             {id: "B1", run_time: 500, time: 380, count: 2},
             {id: "A1", run_time: 500, time: 100, count: 1},
-            {id: "B2", run_time: 500, time: 40,  count: 1}
+            {id: "B2", run_time: 500, time: 40, count: 1}
           ]
         )
       end

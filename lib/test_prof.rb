@@ -130,9 +130,9 @@ module TestProf
 
   # TestProf configuration
   class Configuration
-    attr_accessor :output,       # IO to write output messages.
-                  :color,        # Whether to colorize output or not
-                  :output_dir,   # Directory to store artifacts
+    attr_accessor :output, # IO to write output messages.
+                  :color, # Whether to colorize output or not
+                  :output_dir, # Directory to store artifacts
                   :timestamps, # Whethere to use timestamped names for artifacts,
                   :report_suffix # Custom suffix for reports/artifacts
 
