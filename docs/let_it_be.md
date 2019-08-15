@@ -93,6 +93,16 @@ before_all { @user = create(:user) }
 let(:user) { User.find(@user.id) }
 ```
 
+(**@since v0.10.0**) You can also use modifiers with array values, e.g. `create_list`:
+
+```ruby
+let_it_be(:posts, reload: true) { create_list(:post, 3) }
+
+# it's the same as
+before_all { @posts = create_list(:post, 3) }
+let(:posts) { @posts.map(&:reload) }
+```
+
 ### Custom modifiers
 
 > @since v0.10.0
