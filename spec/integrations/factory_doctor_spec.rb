@@ -71,7 +71,7 @@ describe "FactoryDoctor" do
           env: {"FDOC" => "1", "FDOC_STAMP" => "fd_ignore", "FDOC_THRESHOLD" => "0"}
         )
 
-        expect(output).to include("7 examples, 0 failures")
+        expect(output).to include("0 failures")
 
         expect(output).to include("FactoryDoctor report")
         expect(output).to include("Total (potentially) bad examples: 4")
@@ -87,7 +87,7 @@ describe "FactoryDoctor" do
           env: {"FDOC" => "1", "FDOC_THRESHOLD" => "0"}
         )
 
-        expect(output2).to include("7 examples, 0 failures")
+        expect(output2).to include("0 failures")
         expect(output2).to include('FactoryDoctor says: "Looks good to me!"')
       end
     end
