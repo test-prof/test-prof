@@ -71,11 +71,10 @@ describe MySuperDryService do
 end
 ```
 
-## Caveats
+## Caveats & Modifers
 
 If you modify objects generated within a `let_it_be` block in your examples, you maybe have to re-initiate them.
-We have a built-in support for that:
-
+We have a built-in _modifiers_ support for that:
 
 ```ruby
 # Use reload: true option to reload user object (assuming it's an instance of ActiveRecord)
@@ -94,9 +93,33 @@ before_all { @user = create(:user) }
 let(:user) { User.find(@user.id) }
 ```
 
+### Custom modifiers
+
+> @since v0.10.0
+
+If `reload` and `refind` is not enough, you can add your custom modifier:
+
+```ruby
+# rails_helper.rb
+TestProf::LetItBe.configure do |config|
+  # Define a block which will be called when you access a record first within an example.
+  # The first argument is the pre-initialized record,
+  # the second is the value of the modifier.
+  #
+  # This is how `reload` modifier is defined
+  config.register_modifier :reload do |record, val|
+    # ignore when `reload: false`
+    next record unless val
+    # ignore non-ActiveRecord objects
+    next record unless record.is_a?(::ActiveRecord::Base)
+    record.reload
+  end
+end
+```
+
 ## Aliases
 
-**@since v0.9.0**
+> @since v0.9.0
 
 Naming is hard. Handling edge cases (the ones described above) is also tricky.
 

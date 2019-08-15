@@ -19,6 +19,15 @@ RSpec.configure do |config|
 end
 
 TestProf::LetItBe.configure do |config|
+  config.register_modifier :touch_with_shift do |target, shift = 0|
+    next target unless target.respond_to?(:created_at)
+
+    shift = 0 if shift == true
+
+    target.created_at = Time.current + shift.hours
+    target
+  end
+
   config.alias_to :let_with_refind, refind: true
 end
 
@@ -95,6 +104,16 @@ describe "User", :transactional do
 
       it "is valid" do
         expect(user).to be_valid
+      end
+    end
+
+    context "with custom modifier" do
+      let_it_be(:post, touch_with_shift: true) { create(:post, created_at: 1.day.ago) }
+      let_it_be(:post2, touch_with_shift: 2) { create(:post, created_at: 1.day.ago) }
+
+      it "applies custom modifier" do
+        expect(post.created_at).to be >= 1.hour.ago
+        expect(post2.created_at).to be >= (Time.current + 1.hour)
       end
     end
 
