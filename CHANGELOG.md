@@ -2,6 +2,13 @@
 
 ## master (unreleased)
 
+- Support arrays in `let_it_be` with modifiers. ([@palkan][])
+
+  ```ruby
+  # Now you can use modifiers with arrays
+  let_it_be(:posts, reload: true) { create_pair(:post) }
+  ```
+
 - Refactor `let_it_be` modifiers and allow adding custom modifiers. ([@palkan][])
 
   ```ruby

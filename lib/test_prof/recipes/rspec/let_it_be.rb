@@ -4,6 +4,15 @@ require "test_prof"
 require_relative "./before_all"
 
 module TestProf
+  # Add `#map` to Object as an alias for `then` to use in modifiers
+  using(Module.new do
+    refine Object do
+      def map
+        yield self
+      end
+    end
+  end)
+
   # Just like `let`, but persist the result for the whole group.
   # NOTE: Experimental and magical, for more control use `before_all`.
   module LetItBe
@@ -43,7 +52,7 @@ module TestProf
         return block if mods.empty?
 
         -> {
-          instance_eval(&block).then do |record|
+          instance_eval(&block).map do |record|
             mods.inject(record) do |rec, (k, v)|
               LetItBe.modifiers.fetch(k).call(rec, v)
             end

@@ -107,6 +107,19 @@ describe "User", :transactional do
       end
     end
 
+    context "with arrays" do
+      let_it_be(:posts, refind: true) { create_pair(:post) }
+
+      it "returns array" do
+        posts.first.dirty = true
+        expect(posts.size).to eq 2
+      end
+
+      it "refinds items" do
+        expect(posts.any?(&:dirty)).to eq false
+      end
+    end
+
     context "with custom modifier" do
       let_it_be(:post, touch_with_shift: true) { create(:post, created_at: 1.day.ago) }
       let_it_be(:post2, touch_with_shift: 2) { create(:post, created_at: 1.day.ago) }
