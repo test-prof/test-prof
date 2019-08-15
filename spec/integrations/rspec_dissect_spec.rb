@@ -6,7 +6,7 @@ describe "RSpecDissect" do
   specify "it works", :aggregate_failures do
     output = run_rspec("rspec_dissect", env: {"RD_PROF" => "1"})
 
-    expect(output).to include("5 examples, 0 failures")
+    expect(output).to include("0 failures")
 
     expect(output).to include("RSpecDissect report")
     expect(output).to match(/Total time:\s+\d{2}:\d{2}\.\d{3}/)
@@ -37,7 +37,7 @@ describe "RSpecDissect" do
   specify "it works with specified top count", :aggregate_failures do
     output = run_rspec("rspec_dissect", env: {"RD_PROF" => "1", "RD_PROF_TOP" => "1"})
 
-    expect(output).to include("5 examples, 0 failures")
+    expect(output).to include("0 failures")
 
     expect(output).to include_lines(
       "Top 1 slowest suites (by `before(:each)` time):",
@@ -56,7 +56,7 @@ describe "RSpecDissect" do
     specify "it works when mode is before", :aggregate_failures do
       output = run_rspec("rspec_dissect", env: {"RD_PROF" => "before", "RD_PROF_TOP" => "1"})
 
-      expect(output).to include("5 examples, 0 failures")
+      expect(output).to include("0 failures")
 
       expect(output).to include_lines(
         "Top 1 slowest suites (by `before(:each)` time):",
@@ -71,7 +71,7 @@ describe "RSpecDissect" do
     specify "it works when mode is let", :aggregate_failures do
       output = run_rspec("rspec_dissect", env: {"RD_PROF" => "let", "RD_PROF_TOP" => "1"})
 
-      expect(output).to include("5 examples, 0 failures")
+      expect(output).to include("0 failures")
 
       expect(output).not_to include(
         "Top 1 slowest suites (by `before(:each)` time):"

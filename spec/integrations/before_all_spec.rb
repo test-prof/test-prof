@@ -7,19 +7,19 @@ describe "BeforeAll" do
     it "works" do
       output = run_rspec("before_all")
 
-      expect(output).to include("11 examples, 0 failures")
+      expect(output).to include("0 failures")
     end
 
     specify "global hooks" do
       output = run_rspec("before_all_hooks")
 
-      expect(output).to include("3 examples, 0 failures")
+      expect(output).to include("0 failures")
     end
 
     specify "custom adapter" do
       output = run_rspec("before_all_custom_adapter")
 
-      expect(output).to include("3 examples, 0 failures")
+      expect(output).to include("0 failures")
     end
 
     it "works with isolator" do
@@ -35,7 +35,7 @@ describe "BeforeAll" do
     specify do
       output = run_minitest("before_all")
 
-      expect(output).to include("3 runs, 3 assertions, 0 failures, 0 errors, 0 skips")
+      expect(output).to include("0 failures, 0 errors, 0 skips")
     end
   end
 end
