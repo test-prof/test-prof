@@ -19,7 +19,7 @@ module TestProf
         return unless notification.example.metadata[:sprof_report] == false
 
         TestProf::StackProf.dump(
-          notification.example.full_description.parameterize
+          ::RSpec::Core::Metadata.id_from(notification.example.metadata).parameterize
         )
       end
 

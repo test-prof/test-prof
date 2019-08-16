@@ -18,7 +18,7 @@ module TestProf
       def example_finished(notification)
         return unless profile?(notification.example)
         notification.example.metadata[:rprof_report]&.dump(
-          notification.example.full_description.parameterize
+          ::RSpec::Core::Metadata.id_from(notification.example.metadata).parameterize
         )
       end
 
