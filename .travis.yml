@@ -9,13 +9,15 @@ before_install:
 matrix:
   fast_finish: true
   include:
-    - rvm: 2.6.2
+    - rvm: 2.6.3
       gemfile: gemfiles/railsmaster.gemfile
     - rvm: jruby-9.2.7.0
       gemfile: gemfiles/jruby.gemfile
-    - rvm: 2.6.2
+    - rvm: 2.6.3
       gemfile: gemfiles/activerecord6.gemfile
-    - rvm: 2.5.2
+    - rvm: 2.6.3
+      gemfile: Gemfile
+    - rvm: 2.5.3
       gemfile: Gemfile
     - rvm: 2.4.2
       gemfile: gemfiles/default_factory_girl.gemfile
