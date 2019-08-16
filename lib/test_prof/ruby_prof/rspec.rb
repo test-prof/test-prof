@@ -1,14 +1,17 @@
 # frozen_string_literal: true
 
-unless "".respond_to?(:parameterize)
-  require "test_prof/ext/string_parameterize"
-  using TestProf::StringParameterize
-end
+require "test_prof/utils/rspec"
 
 module TestProf
   module RubyProf
     # Reporter for RSpec to profile specific examples with RubyProf
     class Listener # :nodoc:
+      class << self
+        attr_accessor :report_name_generator
+      end
+
+      self.report_name_generator = Utils::RSpec.method(:example_to_filename)
+
       NOTIFICATIONS = %i[
         example_started
         example_finished
@@ -23,7 +26,7 @@ module TestProf
       def example_finished(notification)
         return unless profile?(notification.example)
         notification.example.metadata[:rprof_report]&.dump(
-          ::RSpec::Core::Metadata.id_from(notification.example.metadata).parameterize
+          self.class.report_name_generator.call(notification.example)
         )
       end
 

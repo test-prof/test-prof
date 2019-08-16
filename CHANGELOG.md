@@ -2,6 +2,17 @@
 
 ## master (unreleased)
 
+- Use RSpec example ID instead of full description for RubyProf/Stackprof report names. ([@palkan][])
+
+  For more complex scenarios feel free to use your own report name generator:
+
+  ```ruby
+  # for RubyProf
+  TestProf::RubyProf::Listener.report_name_generator = ->(example) { "..." }
+  # for Stackprof
+  TestProf::StackProf::Listener.report_name_generator = ->(example) { "..." }
+  ```
+
 - Support arrays in `let_it_be` with modifiers. ([@palkan][])
 
   ```ruby
