@@ -1,5 +1,10 @@
 # frozen_string_literal: true
 
+unless "".respond_to?(:parameterize)
+  require "test_prof/ext/string_parameterize"
+  using TestProf::StringParameterize
+end
+
 module TestProf
   module StackProf
     # Reporter for RSpec to profile specific examples with StackProf
