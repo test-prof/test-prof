@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gemspec
 
 gem "sqlite3", "~> 1.3.6"
-gem "activerecord", "~> 5.0"
+gem "activerecord", "~> 6.0"
 
 gem "factory_bot", "~> 5.0"
 gem "fabrication"
