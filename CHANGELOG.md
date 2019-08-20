@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 0.10.0 (2019-08-19)
+
 - Use RSpec example ID instead of full description for RubyProf/Stackprof report names. ([@palkan][])
 
   For more complex scenarios feel free to use your own report name generator:
