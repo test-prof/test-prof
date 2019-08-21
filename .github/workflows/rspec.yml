@@ -1,0 +1,29 @@
+name: Run RSpec tests
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+
+jobs:
+  rspec:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby: ["2.5.x", "2.6.x"]
+    steps:
+    - uses: actions/checkout@v1
+    - name: Set up Ruby ${{ matrix.ruby }}
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+    - name: Install system deps
+      run: sudo apt-get install libsqlite3-dev
+    - name: Install Ruby deps
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+    - name: Run RSpec
+      run: bundle exec rspec
