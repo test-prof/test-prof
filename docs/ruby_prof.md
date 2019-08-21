@@ -9,7 +9,7 @@ Install `ruby-prof` gem (>= 0.17):
 ```ruby
 # Gemfile
 group :development, :test do
-  gem 'ruby-prof', '>= 0.17.0', require: false
+  gem "ruby-prof", ">= 0.17.0", require: false
 end
 ```
 
@@ -33,7 +33,7 @@ TestProf::RubyProf.run
 TestProf provides a built-in shared context for RSpec to profile examples individually:
 
 ```ruby
-it 'is doing heavy stuff', :rprof do
+it "is doing heavy stuff", :rprof do
   # ...
 end
 ```
@@ -79,6 +79,6 @@ You can specify custom exclusions through `config.custom_exclusions`, e.g.:
 
 ```ruby
 TestProf::RubyProf.configure do |config|
-  config.custom_exclusions = { User => %i[save save!] }
+  config.custom_exclusions = {User => %i[save save!]}
 end
 ```

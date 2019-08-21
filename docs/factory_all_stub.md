@@ -33,17 +33,17 @@ TestProf::FactoryAllStub.enable!
 In your `spec_helper.rb` (or `rails_helper.rb` if any):
 
 ```ruby
-require 'test_prof/recipes/rspec/factory_all_stub'
+require "test_prof/recipes/rspec/factory_all_stub"
 ```
 
 That would automatically initialize `FactoryAllStub` (no need to call `.init`) and provide
 `"factory:stub"` shared context with enables it for the marked examples or example groups:
 
 ```ruby
-describe 'User' do
+describe "User" do
   let(:user) { create(:user) }
 
-  it 'is valid', factory: :stub do
+  it "is valid", factory: :stub do
     # use `build_stubbed` instead of `create`
     expect(user).to be_valid
   end

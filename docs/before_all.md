@@ -11,10 +11,10 @@ Of course, we can do something like this:
 ```ruby
 describe BeatleWeightedSearchQuery do
   before(:each) do
-    @paul = create(:beatle, name: 'Paul')
-    @ringo = create(:beatle, name: 'Ringo')
-    @george = create(:beatle, name: 'George')
-    @john = create(:beatle, name: 'John')
+    @paul = create(:beatle, name: "Paul")
+    @ringo = create(:beatle, name: "Ringo")
+    @george = create(:beatle, name: "George")
+    @john = create(:beatle, name: "John")
   end
 
   # and about 15 examples here
@@ -26,7 +26,7 @@ Or you can try `before(:all)`:
 ```ruby
 describe BeatleWeightedSearchQuery do
   before(:all) do
-    @paul = create(:beatle, name: 'Paul')
+    @paul = create(:beatle, name: "Paul")
     # ...
   end
 
@@ -42,7 +42,7 @@ And that's how `before_all` works:
 ```ruby
 describe BeatleWeightedSearchQuery do
   before_all do
-    @paul = create(:beatle, name: 'Paul')
+    @paul = create(:beatle, name: "Paul")
     # ...
   end
 
@@ -61,7 +61,7 @@ That's all!
 In your `rails_helper.rb` (or `spec_helper.rb` after *ActiveRecord* has been loaded):
 
 ```ruby
-require 'test_prof/recipes/rspec/before_all'
+require "test_prof/recipes/rspec/before_all"
 ```
 
 ### Minitest (Experimental)
@@ -71,16 +71,16 @@ require 'test_prof/recipes/rspec/before_all'
 It is possible to use `before_all` with Minitest too:
 
 ```ruby
-require 'test_prof/recipes/minitest/before_all'
+require "test_prof/recipes/minitest/before_all"
 
 class MyBeatlesTest < Minitest::Test
   include TestProf::BeforeAll::Minitest
 
   before_all do
-    @paul = create(:beatle, name: 'Paul')
-    @ringo = create(:beatle, name: 'Ringo')
-    @george = create(:beatle, name: 'George')
-    @john = create(:beatle, name: 'John')
+    @paul = create(:beatle, name: "Paul")
+    @ringo = create(:beatle, name: "Ringo")
+    @george = create(:beatle, name: "George")
+    @john = create(:beatle, name: "John")
   end
 
   # define tests which could access the object defined within `before_all`
@@ -145,13 +145,13 @@ end
 
 let(:user) { @user }
 
-it 'when user is admin' do
+it "when user is admin" do
   # we modified our object in-place!
   user.update!(role: 1)
   expect(user).to be_admin
 end
 
-it 'when user is regular' do
+it "when user is regular" do
   # now @user's state depends on the order of specs!
   expect(user).not_to be_admin
 end

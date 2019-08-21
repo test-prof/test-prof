@@ -9,7 +9,7 @@ Install `stackprof` gem (>= 0.2.9):
 ```ruby
 # Gemfile
 group :development, :test do
-  gem 'stackprof', '>= 0.2.9', require: false
+  gem "stackprof", ">= 0.2.9", require: false
 end
 ```
 
@@ -33,7 +33,7 @@ TestProf::StackProf.run
 TestProf provides a built-in shared context for RSpec to profile examples individually:
 
 ```ruby
-it 'is doing heavy stuff', :sprof do
+it "is doing heavy stuff", :sprof do
   # ...
 end
 ```
@@ -54,7 +54,7 @@ That's why Test Prof has support for generating JSON reports from _raw_ dumps. F
 
 ```ruby
 TestProf::StackProf.configure do |config|
-  config.format = 'json'
+  config.format = "json"
 end
 ```
 

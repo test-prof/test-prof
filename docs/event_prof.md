@@ -132,7 +132,7 @@ To use EventProf with your instrumentation engine just complete the two followin
 module MyEventsWrapper
   # Should contain the only one method
   def self.subscribe(event)
-    raise ArgumentError, 'Block is required!' unless block_given?
+    raise ArgumentError, "Block is required!" unless block_given?
 
     ::MyEvents.subscribe(event) do |start, finish, *|
       yield (finish - start)
@@ -204,7 +204,7 @@ You can profile it by adding a _monitor_:
 
 ```ruby
 # provide a class, event name and methods to monitor
-TestProf::EventProf.monitor(Work, 'my.work', :do_smth)
+TestProf::EventProf.monitor(Work, "my.work", :do_smth)
 ```
 
 And then run EventProf as usual:
@@ -225,7 +225,7 @@ For example:
 ```ruby
 TestProf::EventProf.monitor(
   Sidekiq::Client,
-  'sidekiq.inline',
+  "sidekiq.inline",
   :raw_push,
   top_level: true,
   guard: ->(*) { Sidekiq::Testing.inline? }
@@ -236,8 +236,8 @@ You can add monitors _on demand_ (i.e. only when you want to track the specified
 the code in `TestProf::EventProf::CustomEvents.register` method:
 
 ```ruby
-TestProf::EventProf::CustomEvents.register('my.work') do
-  TestProf::EventProf.monitor(Work, 'my.work', :do_smth)
+TestProf::EventProf::CustomEvents.register("my.work") do
+  TestProf::EventProf.monitor(Work, "my.work", :do_smth)
 end
 
 # Then call `activate_all` with the provided event
