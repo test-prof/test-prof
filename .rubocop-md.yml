@@ -8,9 +8,6 @@ AllCops:
   Include:
     - '**/*.md'
 
-Lint/DuplicateMethods:
-  Enabled: false
-
 Lint/Void:
   Exclude:
     - '**/*.md'

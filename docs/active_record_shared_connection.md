@@ -15,7 +15,7 @@ Sharing the connection between threads would allows us to use transactional test
 In your `spec_helper.rb` (or `rails_helper.rb` if any):
 
 ```ruby
-require 'test_prof/recipes/active_record_shared_connection'
+require "test_prof/recipes/active_record_shared_connection"
 ```
 
 That automatically enables _shared connection_ mode.

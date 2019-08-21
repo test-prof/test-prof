@@ -13,7 +13,7 @@ We provide a recipe to turn verbose logging for a specific example/group.
 Drop this line to your `rails_helper.rb` / `spec_helper.rb` / `test_helper.rb` / whatever:
 
 ```ruby
-require 'test_prof/recipes/logging'
+require "test_prof/recipes/logging"
 ```
 
 ### Log everything
@@ -39,12 +39,12 @@ Activate logging by adding special tag – `:log`:
 
 ```ruby
 # Add the tag and you will see a lot of interesting stuff in your console
-it 'does smthng weird', :log do
+it "does smthng weird", :log do
   # ...
 end
 
 # or for the group
-describe 'GET #index', :log do
+describe "GET #index", :log do
   # ...
 end
 ```
@@ -52,7 +52,7 @@ end
 To enable only Active Record log use `log: :ar` tag:
 
 ```ruby
-describe 'GET #index', log: :ar do
+describe "GET #index", log: :ar do
   # ...
 end
 ```
@@ -63,7 +63,7 @@ For more granular control you can use `with_logging` (log everything) and
 `with_ar_logging` (log Active Record) helpers:
 
 ```ruby
-it 'does somthing' do
+it "does somthing" do
   do_smth
   # show logs only for the code within the block
   with_logging do

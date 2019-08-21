@@ -6,12 +6,12 @@ Suppose you have the following setup:
 
 ```ruby
 describe BeatleWeightedSearchQuery do
-  let!(:paul) { create(:beatle, name: 'Paul') }
-  let!(:ringo) { create(:beatle, name: 'Ringo') }
-  let!(:george) { create(:beatle, name: 'George') }
-  let!(:john) { create(:beatle, name: 'John') }
+  let!(:paul) { create(:beatle, name: "Paul") }
+  let!(:ringo) { create(:beatle, name: "Ringo") }
+  let!(:george) { create(:beatle, name: "George") }
+  let!(:john) { create(:beatle, name: "John") }
 
-  specify { expect(subject.call('john')).to contain_exactly(john) }
+  specify { expect(subject.call("john")).to contain_exactly(john) }
 
   # and more examples here
 end
@@ -24,11 +24,11 @@ We already have [`before_all`](./before_all.md) to solve the problem of _repeata
 ```ruby
 describe BeatleWeightedSearchQuery do
   before_all do
-    @paul = create(:beatle, name: 'Paul')
+    @paul = create(:beatle, name: "Paul")
     # ...
   end
 
-  specify { expect(subject.call('joh')).to contain_exactly(@john) }
+  specify { expect(subject.call("joh")).to contain_exactly(@john) }
 
   # ...
 end
@@ -40,12 +40,12 @@ With `let_it_be` you can do the following:
 
 ```ruby
 describe BeatleWeightedSearchQuery do
-  let_it_be(:paul) { create(:beatle, name: 'Paul') }
-  let_it_be(:ringo) { create(:beatle, name: 'Ringo') }
-  let_it_be(:george) { create(:beatle, name: 'George') }
-  let_it_be(:john) { create(:beatle, name: 'John') }
+  let_it_be(:paul) { create(:beatle, name: "Paul") }
+  let_it_be(:ringo) { create(:beatle, name: "Ringo") }
+  let_it_be(:george) { create(:beatle, name: "George") }
+  let_it_be(:john) { create(:beatle, name: "John") }
 
-  specify { expect(subject.call('john')).to contain_exactly(john) }
+  specify { expect(subject.call("john")).to contain_exactly(john) }
 
   # and more examples here
 end
@@ -58,7 +58,7 @@ That's it! Just replace `let!` with `let_it_be`. That's equal to the `before_all
 In your `spec_helper.rb`:
 
 ```ruby
-require 'test_prof/recipes/rspec/let_it_be'
+require "test_prof/recipes/rspec/let_it_be"
 ```
 
 In your tests:

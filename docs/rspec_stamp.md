@@ -17,7 +17,7 @@ Step 0. Make sure that all your tests pass.
 Step 1. Create a shared context to conditionally turn on `inline!` mode:
 
 ```ruby
-shared_context 'sidekiq:inline', sidekiq: :inline do
+shared_context "sidekiq:inline", sidekiq: :inline do
   around(:each) { |ex| Sidekiq::Testing.inline!(&ex) }
 end
 ```
