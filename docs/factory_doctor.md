@@ -72,6 +72,7 @@ end
 ## Instructions
 
 FactoryDoctor supports:
+
 - FactoryGirl/FactoryBot
 - Fabrication (**@since v0.9.0**).
 
