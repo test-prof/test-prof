@@ -16,8 +16,10 @@ gem "pry-byebug"
 gem "ruby-prof", ">= 0.16.0"
 gem "stackprof", ">= 0.2.9"
 
+eval_gemfile "gemfiles/rubocop.gemfile"
+
 local_gemfile = "Gemfile.local"
 
 if File.exist?(local_gemfile)
-  eval(File.read(local_gemfile)) # rubocop:disable Security/Eval
+  eval_gemfile(File.read(local_gemfile)) # rubocop:disable Security/Eval
 end

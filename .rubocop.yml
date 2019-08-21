@@ -1,6 +1,5 @@
 require:
   - standard/cop/semantic_blocks
-  - rubocop-md
 
 inherit_gem:
   standard: config/base.yml
@@ -9,7 +8,6 @@ AllCops:
   Exclude:
     - 'bin/*'
     - 'tmp/**/*'
-    - 'docs/**/*'
     - 'Gemfile'
     - 'vendor/**/*'
     - 'gemfiles/**/*'
@@ -31,25 +29,13 @@ Style/TrailingCommaInHashLiteral:
 Layout/AlignParameters:
   EnforcedStyle: with_first_parameter
 
-Lint/Void:
-  Exclude:
-    - '**/*.md'
-
 # See https://github.com/rubocop-hq/rubocop/issues/4222
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*'
     - '**/*.md'
 
-Lint/DuplicateMethods:
-  Exclude:
-    - '**/*.md'
-
 Naming/FileName:
   Exclude:
     - 'lib/test-prof.rb'
     - '**/*.md'
-
-Layout/InitialIndentation:
-  Exclude:
-    - 'CHANGELOG.md'
