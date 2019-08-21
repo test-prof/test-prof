@@ -137,7 +137,6 @@ See the example in [Discourse](https://github.com/discourse/discourse/blob/4a175
 
 If you modify objects generated within a `before_all` block in your examples, you maybe have to re-initiate them:
 
-
 ```ruby
 before_all do
   @user = create(:user)
@@ -159,7 +158,6 @@ end
 
 The easiest way to solve this is to reload record for every example (it's still much faster than creating a new one):
 
-
 ```ruby
 before_all do
   @user = create(:user)
@@ -174,7 +172,6 @@ def setup
   @user = User.find(@user.id)
 end
 ```
-
 
 ## Usage with Isolator
 

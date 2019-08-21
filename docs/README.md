@@ -127,7 +127,7 @@ We also want to share some small code tricks which can help you to improve your 
 
 - [Rails Logging](./logging.md)
 
-## What's next?
+## What's next
 
 Have an idea? [Propose](https://github.com/palkan/test-prof/issues/new) a feature request!
 

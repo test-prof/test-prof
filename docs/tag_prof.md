@@ -16,7 +16,6 @@ Example output:
       model     00:01.127      40   32.26   12.82     00:00.028
 ```
 
-
 It shows both the total number of examples in each group and the total time spent (as long as percentages and average values).
 
 You can also generate an interactive HTML report:
@@ -27,7 +26,7 @@ TAG_PROF=type TAG_PROF_FORMAT=html bundle exec rspec
 
 That's how a report looks like:
 
-![](assets/tag-prof.gif)
+![TagProf UI](assets/tag-prof.gif)
 
 ## Instructions
 

@@ -57,6 +57,7 @@ Use `EVENT_PROF` environment variable set to event name:
 # Collect SQL queries stats for every suite and example
 EVENT_PROF='sql.active_record' rake test
 ```
+
 or use CLI options as well:
 
 ```sh
@@ -76,7 +77,9 @@ in your test helper file:
 require 'minitest/reporters'
 Minitest::Reporters.use! [YOUR_FAVORITE_REPORTERS]
 ```
+
 #### NOTICE
+
 When you have `minitest-reporters` installed as a gem but not declared in your `Gemfile`
 make sure to always prepend your test run command with `bundle exec` (but we sure that you always do it).
 Otherwise, you'll get an error caused by Minitest plugin system, which scans all the entries in the
@@ -126,7 +129,6 @@ To use EventProf with your instrumentation engine just complete the two followin
 
 - Add a wrapper for your instrumentation:
 
-
 ```ruby
 # Wrapper over your instrumentation
 module MyEventsWrapper
@@ -142,7 +144,6 @@ end
 ```
 
 - Set instrumenter in the config:
-
 
 ```ruby
 TestProf::EventProf.configure do |config|
@@ -216,9 +217,9 @@ EVENT_PROF=my.work bundle exec rake test
 > @since v0.9.0
 
 You can also provide additional options:
-- `top_level: true | false` (defaults to `false`) – defines whether you want to take into account only
-top-level invocations and ignore nested triggers of this event (that's how "factory.create" is [implemented](https://github.com/palkan/test-prof/blob/master/lib/test_prof/event_prof/custom_events/factory_create.rb))
-- `guard: Proc` (defaults to `nil`) – provide a Proc which could prevent from triggering an event: the method is instrumented only if `guard` returns `true`; `guard` is executed using `instance_exec` and the method arguments are passed to it.
+
+- `top_level: true | false` (defaults to `false`): defines whether you want to take into account only top-level invocations and ignore nested triggers of this event (that's how "factory.create" is [implemented](https://github.com/palkan/test-prof/blob/master/lib/test_prof/event_prof/custom_events/factory_create.rb))
+- `guard: Proc` (defaults to `nil`): provide a Proc which could prevent from triggering an event: the method is instrumented only if `guard` returns `true`; `guard` is executed using `instance_exec` and the method arguments are passed to it.
 
 For example:
 

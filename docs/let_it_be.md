@@ -1,4 +1,4 @@
-# Let It Be!
+# Let It Be
 
 Let's bring a little bit of magic and introduce a new way to setup a _shared_ test data.
 

@@ -2,7 +2,6 @@
 
 Sometimes it's useful to run profilers against randomly chosen tests. Unfortunetaly, test frameworks don't support such functionality. That's why we've included small patches for RSpec and Minitest in TestProf.
 
-
 ## Instructions
 
 Require the corresponding patch:

@@ -135,8 +135,7 @@ Thus, this context is a little bit _heavy_. Try to avoid such situations and wri
 
 `AnyFixture` collects the usage information during the test run and could reports it at the end:
 
-
-```
+```sh
 [TEST PROF INFO] AnyFixture usage stats:
 
        key    build time  hit count    saved time
