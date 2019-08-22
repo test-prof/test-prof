@@ -36,3 +36,18 @@ jobs:
         gem install bundler
         bundle install --gemfile gemfiles/rubocop.gemfile --jobs 4 --retry 3
         bundle exec --gemfile gemfiles/rubocop.gemfile rubocop -c .rubocop-md.yml
+  forspell:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install Hunspell
+      run: |
+        sudo apt-get install hunspell
+    - name: Set up Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: 2.6.x
+    - name: Run Forspell
+      run: |
+        gem install forspell
+        forspell docs/

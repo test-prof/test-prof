@@ -7,7 +7,7 @@ require "test_prof/utils"
 
 # Ruby applications tests profiling tools.
 #
-# Contains tools to anylyze factories usage, integrate with Ruby profilers,
+# Contains tools to analyze factories usage, integrate with Ruby profilers,
 # profile your examples using ActiveSupport notifications (if any) and
 # statically analyze your code with custom RuboCop cops.
 #
@@ -133,7 +133,7 @@ module TestProf
     attr_accessor :output, # IO to write output messages.
                   :color, # Whether to colorize output or not
                   :output_dir, # Directory to store artifacts
-                  :timestamps, # Whethere to use timestamped names for artifacts,
+                  :timestamps, # Whether to use timestamped names for artifacts,
                   :report_suffix # Custom suffix for reports/artifacts
 
     def initialize
