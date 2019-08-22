@@ -1,4 +1,4 @@
-name: Lint Ruby code with RuboCop
+name: Lint Ruby
 
 on:
   push:
@@ -7,7 +7,7 @@ on:
   pull_request:
 
 jobs:
-  lint:
+  rubocop:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1

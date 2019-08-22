@@ -1,4 +1,4 @@
-name: Lint documentation
+name: Lint Docs
 
 on:
   push:
@@ -11,7 +11,7 @@ on:
     - "**/*.md"
 
 jobs:
-  md_lint:
+  markdownlint:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
@@ -23,7 +23,7 @@ jobs:
       run: |
         gem install mdl
         mdl docs
-  rubocop_md:
+  rubocop:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
