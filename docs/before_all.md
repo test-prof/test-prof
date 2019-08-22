@@ -2,7 +2,7 @@
 
 Rails has a great feature – `transactional_tests`, i.e. running each example within a transaction which is roll-backed in the end.
 
-Thus no example polutes global database state.
+Thus no example pollutes global database state.
 
 But what if have a lot of examples with a common setup?
 
@@ -175,7 +175,7 @@ end
 
 ## Usage with Isolator
 
-[Isolator](https://github.com/palkan/isolator) is a runtime detector of potential atomicity breaches within DB transactions (e.g. making HTTP calls or enqueueing background jobs).
+[Isolator](https://github.com/palkan/isolator) is a runtime detector of potential atomicity breaches within DB transactions (e.g. making HTTP calls or enqueuing background jobs).
 
 TestProf recognizes Isolator out-of-the-box and make it ignore `before_all` transactions.
 

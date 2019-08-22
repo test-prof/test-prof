@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module TestProf
-  # `before_all` helper configiration
+  # `before_all` helper configuration
   module BeforeAll
     class AdapterMissing < StandardError # :nodoc:
       MSG = "Please, provide an adapter for `before_all` " \

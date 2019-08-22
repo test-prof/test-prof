@@ -2,8 +2,8 @@
 
 module TestProf
   # Ruby 2.3 #bsearch_index method (for usage with older Rubies)
-  # Straighforward and non-optimal implementation,
-  # just for compatiblity
+  # Straightforward and non-optimal implementation,
+  # just for compatibility
   module ArrayBSearchIndex
     refine Array do
       def bsearch_index(&block)
