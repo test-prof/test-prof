@@ -1,5 +1,7 @@
 [![Cult Of Martians](http://cultofmartians.com/assets/badges/badge.svg)](http://cultofmartians.com)
-[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Code Triagers Badge](https://www.codetriage.com/palkan/test-prof/badges/users.svg)](https://www.codetriage.com/palkan/test-prof)
+[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build](https://github.com/palkan/test-prof/workflows/Build/badge.svg)](https://github.com/palkan/test-prof/actions)
+[![JRuby Build](https://github.com/palkan/test-prof/workflows/JRuby%20Build/badge.svg)](https://github.com/palkan/test-prof/actions)
+[![Code Triagers Badge](https://www.codetriage.com/palkan/test-prof/badges/users.svg)](https://www.codetriage.com/palkan/test-prof)
 [![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](https://test-prof.evilmartians.io)
 
 # Ruby Tests Profiling Toolbox
