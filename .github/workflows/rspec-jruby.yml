@@ -1,0 +1,26 @@
+name: JRuby Build
+
+on:
+  push:
+    branches:
+    - master
+  pull_request:
+
+jobs:
+  rspec-jruby:
+    runs-on: ubuntu-latest
+    container:
+      image: jruby:9.2.8
+      env:
+        BUNDLE_GEMFILE: gemfiles/jruby.gemfile
+    steps:
+    - uses: actions/checkout@v1
+    - name: Install git
+      run: |
+        apt-get update
+        apt-get install -y --no-install-recommends git
+    - name: Install deps and run RSpec
+      run: |
+        gem install bundler
+        bundle install --jobs 4 --retry 3
+        bundle exec rspec
