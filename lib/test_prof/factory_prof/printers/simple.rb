@@ -24,11 +24,13 @@ module TestProf::FactoryProf
                Total time: #{format("%.4f", total_time)}s
                Total uniq factories: #{total_uniq_factories}
 
-                 total   top-level   total time   top-level time                           name
+                 total   top-level     total time      time per call      top-level time               name
             MSG
 
           result.stats.each do |stat|
-            msgs << format("%8d %11d %11.4fs %15.4fs %30s", stat[:total_count], stat[:top_level_count], stat[:total_time], stat[:top_level_time], stat[:name])
+            time_per_call = stat[:total_time] / stat[:total_count]
+
+            msgs << format("%8d %11d %13.4fs %17.4fs %18.4fs %18s", stat[:total_count], stat[:top_level_count], stat[:total_time], time_per_call, stat[:top_level_time], stat[:name])
           end
 
           log :info, msgs.join("\n")
