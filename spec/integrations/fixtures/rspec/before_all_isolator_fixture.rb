@@ -54,6 +54,11 @@ describe "before_all + Isolator", :transactional do
     expect(@user2.commited).to be_nil
   end
 
+  it "doesn't raise without transaction" do
+    User.first
+    SampleJob.perform_async(true)
+  end
+
   it "fails when within transaction" do
     User.transaction do
       User.first

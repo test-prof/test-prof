@@ -5,11 +5,13 @@ module TestProf
     # Disable Isolator within before_all blocks
     module Isolator
       def begin_transaction(*)
-        ::Isolator.disable { super }
+        ::Isolator.transactions_threshold += 1
+        super
       end
 
-      def within_transaction(*)
-        ::Isolator.disable { super }
+      def rollback_transaction(*)
+        super
+        ::Isolator.transactions_threshold -= 1
       end
     end
   end

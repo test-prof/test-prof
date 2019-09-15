@@ -25,7 +25,7 @@ describe "BeforeAll" do
     it "works with isolator" do
       output = run_rspec("before_all_isolator", success: false)
 
-      expect(output).to include("2 examples, 1 failure")
+      expect(output).to include("3 examples, 1 failure")
       expect(output).not_to include("SampleJob")
       expect(output).to include("FailingJob")
     end
