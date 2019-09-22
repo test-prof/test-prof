@@ -35,7 +35,7 @@ module TestProf
       }.freeze
 
       attr_accessor :instrumenter, :top_count, :per_example,
-                    :rank_by, :event
+        :rank_by, :event
 
       def initialize
         @event = ENV["EVENT_PROF"]

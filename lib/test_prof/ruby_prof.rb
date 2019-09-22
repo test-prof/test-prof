@@ -48,9 +48,9 @@ module TestProf
       LOGFILE_PREFIX = "ruby-prof-report"
 
       attr_accessor :printer, :mode, :min_percent,
-                    :include_threads, :exclude_common_methods,
-                    :test_prof_exclusions_enabled,
-                    :custom_exclusions
+        :include_threads, :exclude_common_methods,
+        :test_prof_exclusions_enabled,
+        :custom_exclusions
 
       def initialize
         @printer = ENV["TEST_RUBY_PROF"].to_sym if PRINTERS.key?(ENV["TEST_RUBY_PROF"])

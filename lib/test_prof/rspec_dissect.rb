@@ -37,7 +37,7 @@ module TestProf
       MODES = %w[all let before].freeze
 
       attr_accessor :top_count, :let_stats_enabled,
-                    :let_top_count
+        :let_top_count
 
       alias let_stats_enabled? let_stats_enabled
 
