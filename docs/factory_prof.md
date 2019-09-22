@@ -12,15 +12,16 @@ Total top-level: 10286
 Total time: 299.5937s
 Total uniq factories: 119
 
- total   top-level   total time   top-level time            name
-  6091        2715    115.7671s         50.2517s            user
-  2142        2098     93.3152s         92.1915s            post
+ total   top-level   total time    time per call      top-level time            name
+  6091        2715    115.7671s          0.0426s            50.2517s            user
+  2142        2098     93.3152s          0.0444s            92.1915s            post
   ...
 ```
 
 It shows both the total number of the factory runs and the number of _top-level_ runs, i.e. not during another factory invocation (e.g. when using associations.)
 
 (**@since v0.9.0**) It also shows the time spent generating records with factories.
+(**@since v0.11.0**) It also shows the amount of time taken per factory call.
 
 **NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryGirl/FactoryBot these are the factories provided by using `create` strategy. In case of Fabrication - objects that created using `create` method.
 

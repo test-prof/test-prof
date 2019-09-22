@@ -4,6 +4,8 @@
 
 - Fix compatibility of `before_all` with [`isolator`](https://github.com/palkan/isolator) gem to handle correct usages of non-atomic interactions outside DB transactions. ([@Envek][])
 
+- Updates FactoryProf to show the amount of time taken per factory call. ([@tyleriguchi][])
+
 ## 0.10.0 (2019-08-19)
 
 - Use RSpec example ID instead of full description for RubyProf/Stackprof report names. ([@palkan][])
@@ -501,3 +503,4 @@ Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 [@dmagro]: https://github.com/dmagro
 [@danielwaterworth]: https://github.com/danielwaterworth
 [@Envek]: https://github.com/Envek
+[@tyleriguchi]: https://github.com/tyleriguchi
