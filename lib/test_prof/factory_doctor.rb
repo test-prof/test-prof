@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "test_prof"
 require "test_prof/factory_bot"
 require "test_prof/factory_doctor/factory_bot_patch"
 require "test_prof/factory_doctor/fabrication_patch"
@@ -66,6 +65,8 @@ module TestProf
       # Patch factory lib, init counters
       def init
         reset!
+
+        @running = false
 
         log :info, "FactoryDoctor enabled (event: \"#{config.event}\", threshold: #{config.threshold})"
 

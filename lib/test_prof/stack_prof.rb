@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "test_prof"
-
 module TestProf
   # StackProf wrapper.
   #
@@ -133,6 +131,7 @@ module TestProf
 
       def init_stack_prof
         return @initialized if instance_variable_defined?(:@initialized)
+        @locked = false
         @initialized = TestProf.require(
           "stackprof",
           <<~MSG

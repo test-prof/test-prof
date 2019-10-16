@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "test_prof"
 require "test_prof/rspec_stamp"
 require "test_prof/event_prof/profiler"
 require "test_prof/event_prof/instrumentations/active_support"

@@ -8,6 +8,7 @@ module IntegrationHelpers
       chdir: chdir || File.expand_path("../../integrations/fixtures/rspec", __FILE__)
     )
     expect(status).to be_success, "Test #{path} failed with: #{output}" if success
+    warn output if output.match?(/warning:/i)
     output
   end
 
@@ -18,6 +19,7 @@ module IntegrationHelpers
       chdir: chdir || File.expand_path("../../integrations/fixtures/minitest", __FILE__)
     )
     expect(status).to be_success, "Test #{path} failed with: #{output}" if success
+    warn output if output.match?(/warning:/i)
     output
   end
 end
