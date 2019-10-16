@@ -55,7 +55,7 @@ That's it! Just replace `let!` with `let_it_be`. That's equal to the `before_all
 
 ## Instructions
 
-In your `spec_helper.rb`:
+In your `rails_helper.rb` or `spec_helper.rb`:
 
 ```ruby
 require "test_prof/recipes/rspec/let_it_be"
@@ -92,6 +92,8 @@ let_it_be(:user, refind: true) { create(:user) }
 before_all { @user = create(:user) }
 let(:user) { User.find(@user.id) }
 ```
+
+**NOTE:** make sure that you require `let_it_be` after `active_record` is loaded (e.g., in `rails_helper.rb` **after** requiring the Rails app); otherwise the `refind` and `reload` modifiers are not activated.
 
 (**@since v0.10.0**) You can also use modifiers with array values, e.g. `create_list`:
 

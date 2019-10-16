@@ -10,13 +10,13 @@ local_gemfile = "Gemfile.local"
 if File.exist?(local_gemfile)
   eval_gemfile(local_gemfile) # rubocop:disable Security/Eval
 else
-  gem "sqlite3", "~> 1.3.6"
-  gem "activerecord", "~> 5.0"
+  gem "sqlite3", "~> 1.4"
+  gem "activerecord", "~> 6.0"
 
   gem "factory_bot", "~> 5.0"
   gem "fabrication"
 
-  gem "sidekiq", "~> 5.2"
+  gem "sidekiq", "~> 6.0"
   gem "timecop", "~> 0.9.1"
 
   gem "pry-byebug"
