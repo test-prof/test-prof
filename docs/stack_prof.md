@@ -48,9 +48,9 @@ By default, Test Prof shows you a command\* to generate an HTML report for analy
 
 \* only if you're collecting _raw_ samples data, which is the default Test Prof behaviour.
 
-Sometimes it's useful to have a JSON report (e.g. to use it with [speedscope](https://www.speedscope.app)), but `stackprof` only supports this in [`master`](https://github.com/tmm1/stackprof/pull/103).
+Sometimes it's useful to have a JSON report (e.g. to use it with [speedscope](https://www.speedscope.app)), but `stackprof` only supports this only since version [0.2.13](https://github.com/tmm1/stackprof/blob/master/CHANGELOG.md#0213).
 
-That's why Test Prof has support for generating JSON reports from _raw_ dumps. For that, use `TEST_STACK_PROF_FORMAT=json` or configure the default format in your code:
+If you're using an older version of Stackprof, Test Prof can help in generating JSON reports from _raw_ dumps. For that, use `TEST_STACK_PROF_FORMAT=json` or configure the default format in your code:
 
 ```ruby
 TestProf::StackProf.configure do |config|
