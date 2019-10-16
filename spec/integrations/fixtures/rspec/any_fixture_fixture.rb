@@ -5,17 +5,8 @@ require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/any_fixture"
 
-# Ruby <2.4 cannot refine modules
-begin
-  require "test_prof/any_fixture/dsl"
-  using TestProf::AnyFixture::DSL
-rescue TypeError
-  include(Module.new do
-    def fixture(id, &block)
-      TestProf::AnyFixture.register(id, &block)
-    end
-  end)
-end
+require "test_prof/any_fixture/dsl"
+using TestProf::AnyFixture::DSL
 
 shared_context "user", user: true do
   before(:all) do
