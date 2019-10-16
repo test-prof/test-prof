@@ -127,20 +127,22 @@ module TestProf
   end
 end
 
-require "test_prof/ext/active_record_refind"
-using TestProf::Ext::ActiveRecordRefind
+if defined?(::ActiveRecord)
+  require "test_prof/ext/active_record_refind"
+  using TestProf::Ext::ActiveRecordRefind
 
-TestProf::LetItBe.configure do |config|
-  config.register_modifier :reload do |record, val|
-    next record unless val
-    next record unless record.is_a?(::ActiveRecord::Base)
-    record.reload
-  end
+  TestProf::LetItBe.configure do |config|
+    config.register_modifier :reload do |record, val|
+      next record unless val
+      next record unless record.is_a?(::ActiveRecord::Base)
+      record.reload
+    end
 
-  config.register_modifier :refind do |record, val|
-    next record unless val
-    next record unless record.is_a?(::ActiveRecord::Base)
-    record.refind
+    config.register_modifier :refind do |record, val|
+      next record unless val
+      next record unless record.is_a?(::ActiveRecord::Base)
+      record.refind
+    end
   end
 end
 
