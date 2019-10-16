@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 0.10.1 (2019-10-17)
+
 - Fix AnyFixture DSL when using with Rails 6.1+. ([@palkan][])
 
 - Fix loading `let_it_be` without ActiveRecord present. ([@palkan][])
