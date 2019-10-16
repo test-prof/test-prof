@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Fix AnyFixture DSL when using with Rails 6.1+. ([@palkan][])
+
 - Fix loading `let_it_be` without ActiveRecord present. ([@palkan][])
 
 - Fix compatibility of `before_all` with [`isolator`](https://github.com/palkan/isolator) gem to handle correct usages of non-atomic interactions outside DB transactions. ([@Envek][])
