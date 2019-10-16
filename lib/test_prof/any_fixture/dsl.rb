@@ -4,14 +4,10 @@ module TestProf
   module AnyFixture
     # Adds "global" `fixture` method (through refinement)
     module DSL
-      module Ext # :nodoc:
+      refine Kernel do
         def fixture(id, &block)
           ::TestProf::AnyFixture.register(:"#{id}", &block)
         end
-      end
-
-      refine Kernel do
-        include Ext
       end
     end
   end

@@ -92,8 +92,6 @@ before(:all) { fixture(:account) }
 let(:account) { fixture(:account) }
 ```
 
-**NOTE:** Only work for Ruby 2.4+.
-
 ## `ActiveRecord#refind`
 
 TestProf also provides an extension to _hard-reload_ ActiveRecord objects:
