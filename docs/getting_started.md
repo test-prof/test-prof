@@ -36,11 +36,11 @@ For example, let's compare tests load time with and without `bootsnap` using [`s
 
 ```sh
 # Generate first report using `-with-bootsnap` suffix
-$ TEST_STACK_PROF=boot TEST_PROF_NAME=with-bootsnap bundle exec rake
+$ TEST_STACK_PROF=boot TEST_PROF_REPORT=with-bootsnap bundle exec rake
 $ #=> StackProf report generated: tmp/test_prof/stack-prof-report-wall-raw-boot-with-bootsnap.dump
 
 # Assume that you disabled bootsnap and want to generate a new report
-$ TEST_STACK_PROF=boot TEST_PROF_NAME=no-bootsnap bundle exec rake
+$ TEST_STACK_PROF=boot TEST_PROF_REPORT=no-bootsnap bundle exec rake
 $ #=> StackProf report generated: tmp/test_prof/stack-prof-report-wall-raw-boot-no-bootsnap.dump
 ```
 
