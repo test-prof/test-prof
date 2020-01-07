@@ -9,18 +9,19 @@ on:
 jobs:
   rspec-jruby:
     runs-on: ubuntu-latest
-    container:
-      image: jruby:9.2.8
-      env:
-        BUNDLE_GEMFILE: gemfiles/jruby.gemfile
+    env:
+      BUNDLE_GEMFILE: gemfiles/jruby.gemfile
+
     steps:
     - uses: actions/checkout@v1
-    - name: Install git
-      run: |
-        apt-get update
-        apt-get install -y --no-install-recommends git
-    - name: Install deps and run RSpec
+    - name: Set up Ruby
+      uses: eregon/use-ruby-action@master
+      with:
+        ruby-version: jruby
+    - name: Install Ruby deps
       run: |
         gem install bundler
         bundle install --jobs 4 --retry 3
+    - name: Run RSpec
+      run: |
         bundle exec rspec
