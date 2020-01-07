@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+## 0.10.2 (2020-01-07) 🎄
+
+- Fix Ruby 2.7 deprecations. ([@lostie][])
+
 ## 0.10.1 (2019-10-17)
 
 - Fix AnyFixture DSL when using with Rails 6.1+. ([@palkan][])
@@ -510,3 +514,4 @@ Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 [@danielwaterworth]: https://github.com/danielwaterworth
 [@Envek]: https://github.com/Envek
 [@tyleriguchi]: https://github.com/tyleriguchi
+[@lostie]: https://github.com/lostie
