@@ -12,7 +12,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: ["2.5.x", "2.6.x", "2.4.x"]
+        ruby: [2.4, 2.5, 2.6, 2.7]
         gemfile: [
           "gemfiles/railsmaster.gemfile",
           "gemfiles/activerecord6.gemfile",
@@ -21,28 +21,34 @@ jobs:
           "gemfiles/rspec35.gemfile"
         ]
         exclude:
-        - ruby: "2.6.x"
+        - ruby: 2.7
           gemfile: "gemfiles/activerecord42.gemfile"
-        - ruby: "2.6.x"
+        - ruby: 2.7
           gemfile: "gemfiles/rspec35.gemfile"
-        - ruby: "2.6.x"
+        - ruby: 2.7
           gemfile: "gemfiles/default_factory_girl.gemfile"
-        - ruby: "2.5.x"
-          gemfile: "gemfiles/railsmaster.gemfile"
-        - ruby: "2.5.x"
+        - ruby: 2.6
           gemfile: "gemfiles/activerecord42.gemfile"
-        - ruby: "2.5.x"
+        - ruby: 2.6
           gemfile: "gemfiles/rspec35.gemfile"
-        - ruby: "2.5.x"
+        - ruby: 2.6
           gemfile: "gemfiles/default_factory_girl.gemfile"
-        - ruby: "2.4.x"
+        - ruby: 2.5
           gemfile: "gemfiles/railsmaster.gemfile"
-        - ruby: "2.4.x"
+        - ruby: 2.5
+          gemfile: "gemfiles/activerecord42.gemfile"
+        - ruby: 2.5
+          gemfile: "gemfiles/rspec35.gemfile"
+        - ruby: 2.5
+          gemfile: "gemfiles/default_factory_girl.gemfile"
+        - ruby: 2.4
+          gemfile: "gemfiles/railsmaster.gemfile"
+        - ruby: 2.4
           gemfile: "gemfiles/activerecord6.gemfile"
     steps:
     - uses: actions/checkout@v1
     - name: Set up Ruby
-      uses: actions/setup-ruby@v1
+      uses: eregon/use-ruby-action@master
       with:
         ruby-version: ${{ matrix.ruby }}
     - name: Install system deps

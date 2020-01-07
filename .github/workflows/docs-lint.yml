@@ -15,10 +15,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Ruby 2.6
-      uses: actions/setup-ruby@v1
+    - name: Set up Ruby
+      uses: eregon/use-ruby-action@master
       with:
-        ruby-version: 2.6.x
+        ruby-version: 2.7
     - name: Run Markdown linter
       run: |
         gem install mdl
@@ -27,10 +27,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v1
-    - name: Set up Ruby 2.6
-      uses: actions/setup-ruby@v1
+    - name: Set up Ruby
+      uses: eregon/use-ruby-action@master
       with:
-        ruby-version: 2.6.x
+        ruby-version: 2.7
     - name: Lint Markdown files with RuboCop
       run: |
         gem install bundler
@@ -43,10 +43,10 @@ jobs:
     - name: Install Hunspell
       run: |
         sudo apt-get install hunspell
-    - name: Set up Ruby 2.6
-      uses: actions/setup-ruby@v1
+    - name: Set up Ruby
+      uses: eregon/use-ruby-action@master
       with:
-        ruby-version: 2.6.x
+        ruby-version: 2.7
     - name: Run Forspell
       run: |
         gem install forspell
