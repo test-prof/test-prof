@@ -5,9 +5,9 @@ module TestProf
     # Registers and activates custom events (which require patches).
     module CustomEvents
       class << self
-        def register(event)
+        def register(event, &block)
           raise ArgumentError, "Block is required!" unless block_given?
-          registrations[event] = Proc.new
+          registrations[event] = block
         end
 
         def activate_all(events)

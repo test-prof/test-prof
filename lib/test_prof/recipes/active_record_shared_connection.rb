@@ -14,12 +14,12 @@ module TestProf
         self.connection = nil
       end
 
-      def ignore
+      def ignore(&block)
         raise ArgumentError, "Block is required" unless block_given?
 
         @ignores ||= []
 
-        ignores << Proc.new
+        ignores << block
       end
 
       def ignored?(config)
