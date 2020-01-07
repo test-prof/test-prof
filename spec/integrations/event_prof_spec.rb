@@ -7,17 +7,17 @@ describe "EventProf RSpec" do
     output = run_rspec("event_prof", env: {"EVENT_PROF" => "test.event"})
 
     expect(output).to include("EventProf results for test.event")
-    expect(output).to match(/Total time: 00:00\.359 of 00:01\.\d{3} \(\d{2}\.\d+%\)/)
+    expect(output).to match(/Total time: 00:00\.359 of 00:0\d\.\d{3} \(\d{2}\.\d+%\)/)
     expect(output).to include("Total events: 8")
 
     expect(output).to include("Top 5 slowest suites (by time):")
     expect(output).to include("Top 5 slowest tests (by time):")
 
     expect(output).to match(/Something \(\.\/event_prof_fixture\.rb:22\) – 00:00\.214 \(7 \/ 3\) of 00:0\d\.\d{3} \(\d{2}\.\d+%\)/)
-    expect(output).to match(/Another something \(\.\/event_prof_fixture\.rb:45\) – 00:00\.145 \(1 \/ 2\) of 00:00\.2\d{2} \(\d{2}.\d+%\)/)
+    expect(output).to match(/Another something \(\.\/event_prof_fixture\.rb:45\) – 00:00\.145 \(1 \/ 2\) of 00:00\.\d{3} \(\d{2}.\d+%\)/)
 
-    expect(output).to match(/do very long \(\.\/event_prof_fixture\.rb:50\) – 00:00\.145 \(1\) of 00:00\.2\d{2} \(\d{2}\.\d+%\)/)
-    expect(output).to match(/invokes many times \(\.\/event_prof_fixture\.rb:35\) – 00:00\.136 \(4\) of 00:00\.5\d{2} \(\d{2}.\d+%\)/)
+    expect(output).to match(/do very long \(\.\/event_prof_fixture\.rb:50\) – 00:00\.145 \(1\) of 00:00\.\d{3} \(\d{2}\.\d+%\)/)
+    expect(output).to match(/invokes many times \(\.\/event_prof_fixture\.rb:35\) – 00:00\.136 \(4\) of 00:00\.\d{3} \(\d{2}.\d+%\)/)
     expect(output).to match(/invokes once \(\.\/event_prof_fixture\.rb:23\) – 00:00\.040 \(1\) of 00:00\.\d{3} \(\d{2}\.\d+%\)/)
     expect(output).to match(/invokes twice \(\.\/event_prof_fixture\.rb:28\) – 00:00\.038 \(2\) of 00:00\.\d{3} \(\d{1,2}.\d+%\)/)
   end
@@ -36,10 +36,10 @@ describe "EventProf RSpec" do
     expect(output).to include("Top 5 slowest tests (by count):")
 
     expect(output).to match(/Something \(\.\/event_prof_fixture\.rb:22\) – 00:00\.214 \(7 \/ 3\) of 00:0\d\.\d{3} \(\d{2}\.\d+%\)/)
-    expect(output).to match(/Another something \(\.\/event_prof_fixture\.rb:45\) – 00:00\.145 \(1 \/ 2\) of 00:00\.2\d{2} \(\d{2}.\d+%\)/)
+    expect(output).to match(/Another something \(\.\/event_prof_fixture\.rb:45\) – 00:00\.145 \(1 \/ 2\) of 00:00\.\d{3} \(\d{2}.\d+%\)/)
 
-    expect(output).to match(/do very long \(\.\/event_prof_fixture\.rb:50\) – 00:00\.145 \(1\) of 00:00\.2\d{2} \(\d{2}\.\d+%\)/)
-    expect(output).to match(/invokes many times \(\.\/event_prof_fixture\.rb:35\) – 00:00\.136 \(4\) of 00:00\.5\d{2} \(\d{2}.\d+%\)/)
+    expect(output).to match(/do very long \(\.\/event_prof_fixture\.rb:50\) – 00:00\.145 \(1\) of 00:00\.\d{3} \(\d{2}\.\d+%\)/)
+    expect(output).to match(/invokes many times \(\.\/event_prof_fixture\.rb:35\) – 00:00\.136 \(4\) of 00:00\.\d{3} \(\d{2}.\d+%\)/)
     expect(output).to match(/invokes once \(\.\/event_prof_fixture\.rb:23\) – 00:00\.040 \(1\) of 00:00\.\d{3} \(\d{2}\.\d+%\)/)
     expect(output).to match(/invokes twice \(\.\/event_prof_fixture\.rb:28\) – 00:00\.038 \(2\) of 00:00\.\d{3} \(\d{1,2}.\d+%\)/)
   end
