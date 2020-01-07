@@ -95,8 +95,8 @@ module TestProf
       # Use it to profile arbitrary methods:
       #
       #   TestProf::EventProf.monitor(MyModule, "my_module.call", :call)
-      def monitor(mod, event, *mids)
-        Monitor.call(mod, event, *mids)
+      def monitor(mod, event, *mids, **kwargs)
+        Monitor.call(mod, event, *mids, **kwargs)
       end
     end
   end

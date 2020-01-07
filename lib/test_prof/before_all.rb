@@ -72,18 +72,18 @@ module TestProf
       # `rollback` operation:
       #
       #   config.before(:rollback) { ... }
-      def before(type)
+      def before(type, &block)
         validate_hook_type!(type)
-        hooks[type].before << Proc.new
+        hooks[type].before << block if block_given?
       end
 
       # Add `after` hook for `begin` or
       # `rollback` operation:
       #
       #   config.after(:begin) { ... }
-      def after(type)
+      def after(type, &block)
         validate_hook_type!(type)
-        hooks[type].after << Proc.new
+        hooks[type].after << block if block_given?
       end
 
       def run_hooks(type) # :nodoc:

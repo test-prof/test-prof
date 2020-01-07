@@ -129,9 +129,9 @@ module TestProf
         end
       end
 
-      def each
+      def each(&block)
         if block_given?
-          @profilers.each(&Proc.new)
+          @profilers.each(&block)
         else
           @profilers.each
         end

@@ -11,11 +11,11 @@ module TestProf
 
       include Enumerable
 
-      def initialize(max_size, sort_by: nil)
+      def initialize(max_size, sort_by: nil, &block)
         @max_size = max_size
         @comparator =
           if block_given?
-            Proc.new
+            block
           elsif !sort_by.nil?
             ->(x, y) { x[sort_by] >= y[sort_by] }
           else
@@ -41,9 +41,9 @@ module TestProf
         data.size
       end
 
-      def each
+      def each(&block)
         if block_given?
-          data.each(&Proc.new)
+          data.each(&block)
         else
           data.each
         end

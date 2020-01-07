@@ -96,9 +96,9 @@ module TestProf
 
         if block_given?
           options[:out] = build_path(name)
-          ::StackProf.run(options) { yield }
+          ::StackProf.run(**options) { yield }
         else
-          ::StackProf.start(options)
+          ::StackProf.start(**options)
         end
         true
       end

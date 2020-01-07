@@ -87,7 +87,7 @@ module TestProf
 
     def self.define_let_it_be_alias(name, **default_args)
       define_method(name) do |identifier, **options, &blk|
-        let_it_be(identifier, default_args.merge(options), &blk)
+        let_it_be(identifier, **default_args.merge(options), &blk)
       end
     end
 
