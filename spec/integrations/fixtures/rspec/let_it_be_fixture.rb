@@ -186,7 +186,7 @@ describe "User", :transactional do
   end
 end
 
-describe "User", :transactional, :with_user do
+describe "User", :transactional do
   context "with shared context" do
     it "works", :with_user do
       expect(User.where(name: "Lolo").count).to eq 1
