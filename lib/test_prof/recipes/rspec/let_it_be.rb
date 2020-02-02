@@ -47,9 +47,9 @@ module TestProf
       end
 
       def wrap_with_modifiers(mods, &block)
-        validate_modifiers! mods
-
         return block if mods.empty?
+
+        validate_modifiers! mods
 
         -> {
           instance_eval(&block).map do |record|
