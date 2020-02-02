@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe TestProf::EventProf::Profiler do
   let(:rank_by) { :time }
   let(:top_count) { 5 }

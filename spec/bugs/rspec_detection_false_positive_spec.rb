@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 # https://github.com/palkan/test-prof/issues/8
 describe "RSpec false positive detection", type: :integration do
   specify do

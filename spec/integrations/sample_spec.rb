@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe "Tests Sampling" do
   context "RSpec integration" do
     specify "SAMPLE=2" do

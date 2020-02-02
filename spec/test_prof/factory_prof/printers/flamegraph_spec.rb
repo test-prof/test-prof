@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe TestProf::FactoryProf::Printers::Flamegraph do
   subject { described_class }
 

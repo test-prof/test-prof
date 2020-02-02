@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe TestProf::StackProf do
   # Use fresh config all for every example
   after { described_class.remove_instance_variable(:@config) }

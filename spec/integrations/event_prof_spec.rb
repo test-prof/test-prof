@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe "EventProf RSpec" do
   specify "with default options", :aggregate_failures do
     output = run_rspec("event_prof", env: {"EVENT_PROF" => "test.event"})

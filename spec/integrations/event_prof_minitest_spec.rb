@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe "EventProf" do
   specify "Minitest integration with default rank by time", :aggregate_failures do
     output = run_minitest("event_prof", env: {"EVENT_PROF" => "test.event"})

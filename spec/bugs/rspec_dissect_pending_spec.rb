@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 # https://github.com/palkan/test-prof/issues/60
 describe "RSpecDissect with pending examples", type: :integration do
   specify do

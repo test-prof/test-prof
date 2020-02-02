@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 PROFILERS_AVAILABLE =
   begin
     require "stackprof"

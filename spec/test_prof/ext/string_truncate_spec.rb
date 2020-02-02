@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
 require "test_prof/ext/string_truncate"
 
 using TestProf::StringTruncate

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe "FactoryProf" do
   context "RSpec integration" do
     specify "simple printer", :aggregate_failures do

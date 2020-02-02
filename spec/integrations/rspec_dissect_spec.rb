@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe "RSpecDissect" do
   specify "it works", :aggregate_failures do
     output = run_rspec("rspec_dissect", env: {"RD_PROF" => "1"})

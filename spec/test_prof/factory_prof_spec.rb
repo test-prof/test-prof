@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 # Init FactoryProf and patch TestProf::FactoryBot, Fabrication
 TestProf::FactoryProf.init
 TestProf::FactoryProf.configure do |config|
