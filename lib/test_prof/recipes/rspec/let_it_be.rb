@@ -134,14 +134,26 @@ if defined?(::ActiveRecord)
   TestProf::LetItBe.configure do |config|
     config.register_modifier :reload do |record, val|
       next record unless val
-      next record unless record.is_a?(::ActiveRecord::Base)
-      record.reload
+      next record.reload if record.is_a?(::ActiveRecord::Base)
+
+      if record.respond_to?(:map)
+        next record.map do |rec|
+          rec.is_a?(::ActiveRecord::Base) ? rec.reload : rec
+        end
+      end
+      record
     end
 
     config.register_modifier :refind do |record, val|
       next record unless val
-      next record unless record.is_a?(::ActiveRecord::Base)
-      record.refind
+      next record.refind if record.is_a?(::ActiveRecord::Base)
+
+      if record.respond_to?(:map)
+        next record.map do |rec|
+          rec.is_a?(::ActiveRecord::Base) ? rec.refind : rec
+        end
+      end
+      record
     end
   end
 end

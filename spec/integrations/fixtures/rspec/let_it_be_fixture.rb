@@ -107,7 +107,7 @@ describe "User", :transactional do
       end
     end
 
-    context "with arrays" do
+    context "with arrays", order: :defined do
       let_it_be(:posts, refind: true) { create_pair(:post) }
 
       it "returns array" do
