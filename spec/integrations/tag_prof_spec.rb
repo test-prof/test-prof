@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe "TagProf" do
   specify "it works", :aggregate_failures do
     output = run_rspec("tag_prof", env: {"TAG_PROF" => "type"})

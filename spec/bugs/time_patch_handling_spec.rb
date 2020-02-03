@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 # https://github.com/palkan/test-prof/issues/10
 describe "Time.now patching handling (e.g. Timecop)", type: :integration do
   specify "works with ad-hoc patch" do

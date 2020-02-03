@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
 require "test_prof/ext/float_duration"
 
 using TestProf::FloatDuration

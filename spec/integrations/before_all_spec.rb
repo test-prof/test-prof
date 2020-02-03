@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe "BeforeAll" do
   context "RSpec" do
     it "works" do

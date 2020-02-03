@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe "FactoryDoctor" do
   context "Minitest Integration" do
     it "works when there are bad examples", :aggregate_failures do

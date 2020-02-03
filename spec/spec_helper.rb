@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
-require "test-prof"
 begin
   require "pry-byebug"
 rescue LoadError # rubocop:disable Lint/HandleExceptions

@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
 require "test_prof"
 
 describe TestProf::Utils do

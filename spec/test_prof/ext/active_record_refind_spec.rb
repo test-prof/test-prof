@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
 require "test_prof/ext/active_record_refind"
 
 using TestProf::Ext::ActiveRecordRefind

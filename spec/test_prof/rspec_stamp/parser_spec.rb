@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
 require "test_prof/rspec_stamp/parser"
 
 describe TestProf::RSpecStamp::Parser do

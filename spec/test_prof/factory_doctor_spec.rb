@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 # Init FactoryDoctor and patch TestProf::FactoryBot
 TestProf::FactoryDoctor.init
 

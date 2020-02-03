@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require "spec_helper"
-
 describe "RSpecStamp" do
   before do
     FileUtils.cp(
