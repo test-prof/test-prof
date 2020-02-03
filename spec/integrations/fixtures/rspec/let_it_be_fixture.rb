@@ -39,10 +39,7 @@ describe "User", :transactional do
   context "with let_it_be" do
     let_it_be(:user) { create(:user) }
 
-    it "has name" do
-      @cache[:user_name] = user.name
-      expect(user).to respond_to(:name)
-    end
+    before(:all) { @cache[:user_name] = user.name }
 
     it "is cached" do
       expect(user.name).to eq @cache[:user_name]
@@ -107,7 +104,7 @@ describe "User", :transactional do
       end
     end
 
-    context "with arrays" do
+    context "with arrays", order: :defined do
       let_it_be(:posts, refind: true) { create_pair(:post) }
 
       it "returns array" do
@@ -186,7 +183,7 @@ describe "User", :transactional do
   end
 end
 
-describe "User", :transactional, :with_user do
+describe "User", :transactional do
   context "with shared context" do
     it "works", :with_user do
       expect(User.where(name: "Lolo").count).to eq 1

@@ -4,15 +4,6 @@ require "test_prof"
 require_relative "./before_all"
 
 module TestProf
-  # Add `#map` to Object as an alias for `then` to use in modifiers
-  using(Module.new do
-    refine Object do
-      def map
-        yield self
-      end
-    end
-  end)
-
   # Just like `let`, but persist the result for the whole group.
   # NOTE: Experimental and magical, for more control use `before_all`.
   module LetItBe
@@ -47,15 +38,14 @@ module TestProf
       end
 
       def wrap_with_modifiers(mods, &block)
-        validate_modifiers! mods
-
         return block if mods.empty?
 
+        validate_modifiers! mods
+
         -> {
-          instance_eval(&block).map do |record|
-            mods.inject(record) do |rec, (k, v)|
-              LetItBe.modifiers.fetch(k).call(rec, v)
-            end
+          record = instance_eval(&block)
+          mods.inject(record) do |rec, (k, v)|
+            LetItBe.modifiers.fetch(k).call(rec, v)
           end
         }
       end
@@ -134,14 +124,26 @@ if defined?(::ActiveRecord)
   TestProf::LetItBe.configure do |config|
     config.register_modifier :reload do |record, val|
       next record unless val
-      next record unless record.is_a?(::ActiveRecord::Base)
-      record.reload
+      next record.reload if record.is_a?(::ActiveRecord::Base)
+
+      if record.respond_to?(:map)
+        next record.map do |rec|
+          rec.is_a?(::ActiveRecord::Base) ? rec.reload : rec
+        end
+      end
+      record
     end
 
     config.register_modifier :refind do |record, val|
       next record unless val
-      next record unless record.is_a?(::ActiveRecord::Base)
-      record.refind
+      next record.refind if record.is_a?(::ActiveRecord::Base)
+
+      if record.respond_to?(:map)
+        next record.map do |rec|
+          rec.is_a?(::ActiveRecord::Base) ? rec.refind : rec
+        end
+      end
+      record
     end
   end
 end

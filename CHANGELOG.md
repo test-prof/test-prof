@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Fix `let_it_be` issue when initialized with an array/enumerable or an AR relation. ([@pirj][])
+
 ## 0.10.2 (2020-01-07) 🎄
 
 - Fix Ruby 2.7 deprecations. ([@lostie][])
@@ -515,3 +517,4 @@ Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 [@Envek]: https://github.com/Envek
 [@tyleriguchi]: https://github.com/tyleriguchi
 [@lostie]: https://github.com/lostie
+[@pirj]: https://github.com/pirj
