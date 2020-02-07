@@ -20,7 +20,7 @@ describe "FactoryProf" do
 
       expect(output).to include("FactoryFlame report generated: ")
 
-      expect(File.exist?("tmp/factory-flame.html")).to eq true
+      expect(File.exist?("tmp/test_prof/factory-flame.html")).to eq true
     end
 
     context "when no fabrication installed" do

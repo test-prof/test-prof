@@ -4,7 +4,7 @@ $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require "test-prof"
 
 TestProf.configure do |config|
-  config.output_dir = "../../../../tmp"
+  config.output_dir = "../../../../tmp/test_prof"
 end
 
 module Instrumenter

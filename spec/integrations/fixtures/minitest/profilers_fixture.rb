@@ -5,7 +5,7 @@ require "minitest/autorun"
 require "test_prof"
 
 TestProf.configure do |config|
-  config.output_dir = "../../../../tmp"
+  config.output_dir = "../../../../tmp/test_prof"
 end
 
 class SomethingTest < Minitest::Test

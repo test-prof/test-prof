@@ -6,10 +6,10 @@ describe TestProf do
       described_class.config.output_dir = "tmp/test"
     end
 
+    after { FileUtils.rmdir(described_class.config.output_dir) if File.directory?(described_class.config.output_dir) }
+
     context "ensures creation of output_dir" do
       subject { described_class.artifact_path("c.html") }
-
-      before { FileUtils.rmdir(described_class.config.output_dir) if File.directory?(described_class.config.output_dir) }
 
       it { expect { subject }.to(change { File.exist?(described_class.config.output_dir) }) }
     end

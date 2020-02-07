@@ -16,7 +16,7 @@ describe "TagProf" do
 
     expect(output).to include("TagProf report generated:")
 
-    expect(File.exist?("tmp/tag-prof.html")).to eq true
+    expect(File.exist?("tmp/test_prof/tag-prof.html")).to eq true
   end
 
   context "with events" do

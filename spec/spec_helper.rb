@@ -27,7 +27,7 @@ RSpec.configure do |config|
   config.include IntegrationHelpers, type: :integration
 
   config.before(:suite) do
-    FileUtils.mkdir_p("tmp")
+    FileUtils.mkdir_p(TestProf.config.output_dir)
   end
 
   config.before(:each) do
@@ -39,6 +39,6 @@ RSpec.configure do |config|
   end
 
   config.after(:suite) do
-    FileUtils.rm_rf("tmp")
+    FileUtils.rm_rf(TestProf.config.output_dir)
   end
 end

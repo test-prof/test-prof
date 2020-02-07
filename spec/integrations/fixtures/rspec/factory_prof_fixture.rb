@@ -5,7 +5,7 @@ require_relative "../../../support/ar_models"
 require "test-prof"
 
 TestProf.configure do |config|
-  config.output_dir = "../../../../tmp"
+  config.output_dir = "../../../../tmp/test_prof"
 end
 
 describe "User" do
