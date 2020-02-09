@@ -2,7 +2,10 @@
 
 ## master (unreleased)
 
+## 0.11.0 (2020-02-09)
+
 - Fix `let_it_be` issue when initialized with an array/enumerable or an AR relation. ([@pirj][])
+
 - Improve `RSpec/AggregateExamples` (formerly `RSpec/AggregateFailures`) cop. ([@pirj][])
 
 ## 0.10.2 (2020-01-07) 🎄
