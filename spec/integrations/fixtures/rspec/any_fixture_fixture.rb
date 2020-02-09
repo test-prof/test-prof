@@ -49,3 +49,9 @@ describe "Post", :user, :transactional do
     end
   end
 end
+
+describe "Without AnyFixture" do
+  it "works" do
+    expect(true).to eq true
+  end
+end

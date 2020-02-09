@@ -15,4 +15,11 @@ describe "AnyFixture" do
     expect(output).to match(/post\s+\d{2}\:\d{2}\.\d{3}\s+1\s+\d{2}\:\d{2}\.\d{3}/)
     expect(output).to include("0 failures")
   end
+
+  specify "when no fixtures were activated" do
+    output = run_rspec("any_fixture", env: {"ANYFIXTURE_REPORT" => "1"}, options: "-e without")
+
+    expect(output).to include("AnyFixture has not been used")
+    expect(output).to include("0 failures")
+  end
 end

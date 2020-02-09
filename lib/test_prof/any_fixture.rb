@@ -80,6 +80,11 @@ module TestProf
       end
 
       def report_stats
+        if cache.stats.empty?
+          log :info, "AnyFixture has not been used"
+          return
+        end
+
         msgs = []
 
         msgs <<
