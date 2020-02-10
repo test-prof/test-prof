@@ -2,6 +2,12 @@
 
 ## master (unreleased)
 
+## 0.11.1 (2020-02-10)
+
+- Add `config/` to the gem contents. ([@palkan][])
+
+  Fixes RuboCop integration regression from 0.11.0.
+
 ## 0.11.0 (2020-02-09)
 
 - Fix `let_it_be` issue when initialized with an array/enumerable or an AR relation. ([@pirj][])
