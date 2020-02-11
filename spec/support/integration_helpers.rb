@@ -29,7 +29,7 @@ module IntegrationHelpers
 
     output, _status = Open3.capture2(
       {"RUBYOPT" => "-I#{test_prof_lib}"},
-      "rubocop -r test_prof/rubocop.rb --only #{cop} #{fullpath} 2>&1"
+      "rubocop -r test_prof/rubocop.rb --force-default-config --only #{cop} #{fullpath} 2>&1"
     )
     warn output if output.match?(/warning:/i)
     output
