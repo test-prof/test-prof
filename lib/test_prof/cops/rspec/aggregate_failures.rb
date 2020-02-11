@@ -4,8 +4,8 @@ module RuboCop
   module Cop
     module RSpec
       class AggregateExamples
-        def self.inherited(subclass)
-          superclass.registry.enlist(subclass)
+        def self.registry
+          RuboCop::Cop::Cop.registry
         end
       end
 
