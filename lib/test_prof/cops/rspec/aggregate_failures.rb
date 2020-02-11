@@ -10,8 +10,6 @@ module RuboCop
       end
 
       class AggregateFailures < AggregateExamples
-        raise "Remove me" if TestProf::VERSION >= "1.0"
-
         def initialize(*)
           super
           self.class.just_once { warn "`AggregateFailures` cop has been renamed to `AggregateExamples`." }

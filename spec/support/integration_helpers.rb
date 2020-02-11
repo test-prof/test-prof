@@ -22,4 +22,16 @@ module IntegrationHelpers
     warn output if output.match?(/warning:/i)
     output
   end
+
+  def run_rubocop(path, cop:)
+    fullpath = File.join(__dir__, "../integrations/fixtures/rubocop", "#{path}_fixture.rb")
+    test_prof_lib = File.join(__dir__, "../../lib")
+
+    output, _status = Open3.capture2(
+      {"RUBYOPT" => "-I#{test_prof_lib}"},
+      "rubocop -r test_prof/rubocop.rb --only #{cop} #{fullpath} 2>&1"
+    )
+    warn output if output.match?(/warning:/i)
+    output
+  end
 end
