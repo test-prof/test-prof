@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+## 0.11.3 (2020-02-11)
+
+- Disable `RSpec/AggregateFailures` by default. ([@pirj][])
+
 ## 0.11.2 (2020-02-11)
 
 - Fix RuboCop integration regressions. ([@palkan][])

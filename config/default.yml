@@ -6,7 +6,7 @@ AllCops:
     - "(?:^|/)spec/"
 
 RSpec/AggregateExamples:
-  Description: Checks if example groups contain two or more aggregatable examples.
+  Description: Checks if example group contains two or more aggregatable examples.
   Enabled: true
   StyleGuide: https://rspec.rubystyle.guide/#expectation-per-example
   AddAggregateFailuresMetadata: true
@@ -21,7 +21,7 @@ RSpec/AggregateExamples:
 
 # TODO: remove this one we hit 1.0
 RSpec/AggregateFailures:
-  Description: Checks if example groups contain two or more aggregatable examples.
+  Description: Checks if example group contains two or more aggregatable examples.
   Enabled: false
   StyleGuide: https://rspec.rubystyle.guide/#expectation-per-example
   AddAggregateFailuresMetadata: true
