@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+## 0.11.2 (2020-02-11)
+
+- Fix RuboCop integration regressions. ([@palkan][])
+
 ## 0.11.1 (2020-02-10)
 
 - Add `config/` to the gem contents. ([@palkan][])
