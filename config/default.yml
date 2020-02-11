@@ -22,7 +22,7 @@ RSpec/AggregateExamples:
 # TODO: remove this one we hit 1.0
 RSpec/AggregateFailures:
   Description: Checks if example groups contain two or more aggregatable examples.
-  Enabled: true
+  Enabled: false
   StyleGuide: https://rspec.rubystyle.guide/#expectation-per-example
   AddAggregateFailuresMetadata: true
   MatchersWithSideEffects:
