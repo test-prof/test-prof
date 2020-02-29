@@ -169,10 +169,14 @@ end
 
 > @since v0.12.0
 
-To detect modification to the models, and potentially harmful side effects of
-such a leakage on the other examples, objects that are passed to `let_it_be`
-are frozen (with `freeze`), and `FrozenError` is wrapped to provide a more
-user-friendly error message.
+The code might modify models shared between examples.
+Unwillingly - if the underlying code under test modifies models, e.g. modifies `updated_at` attribute.
+Deliberately - if models are updated in `before` hooks or examples themselves instead of creating models in a proper state initially.
+
+This state leakage comes with potentially harmful side effects on the other examples, such as implicit dependencies and execution order dependency.
+With many shared models between many examples, it's hard to track down the example and exact place in the code that modifies the model.
+
+To detect modification objects that are passed to `let_it_be` are frozen (with `freeze`), and `FrozenError` (with a user-friendly error message) is raised.
 
 ```ruby
 # it is almost equal to
@@ -180,11 +184,15 @@ before_all { @user = create(:user).freeze }
 let(:user) { @user }
 ```
 
-To fix the `FrozenError` one of the following methods should be applied:
+To fix the `FrozenError`:
 
-- add `reload: true`/`refind`: true, typically it's significantly faster to reload the model than to re-create it from scratch before each example (two or even three orders of magnitude in some cases)
-- add `freeze: false` to those models that are being modified in a way that is highly unlikely to affect other examples. USE WITH CAUTION - it's a time bomb, you don't know for sure when "highly unlikely" flips to "possibly"
+- add `reload: true`/`refind: true`, it pacifies leakage detection and prevents leakage itself. Typically it's significantly faster to reload the model than to re-create it from scratch before each example (two or even three orders of magnitude faster in some cases)
 - rewrite problematic test code
+
+In the case when modification is deliberate, it's possible to disable leakage detection individually with `freeze: false` `let_it_be` option, or for the whole example group with `let_it_be_defrost: true` RSpec metadata.
+
+NOTE: If the code under test or the test code calls `reload` on models, the example will fail.
+To avoid this, set `reload: true` on corresponding `let_it_be` definitions.
 
 ## Aliases
 
