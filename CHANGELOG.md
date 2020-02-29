@@ -14,7 +14,7 @@
 
   Now you can use `$ TEST_STACK_PROF=1 TEST_STACK_PROF_INTERVAL=10000 rspec` to define a custom interval (in microseconds).
 
-- Add naïve state leakage detection for `let_it_be`. ([@pirj][], [@jaimerson][])
+- Add state leakage detection for `let_it_be`. ([@pirj][], [@jaimerson][], [@alexvko][])
 
 ## 0.11.3 (2020-02-11)
 
@@ -553,3 +553,4 @@ Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 [@LynxEyes]: https://github.com/LynxEyes
 [@stefkin]: https://github.com/stefkin
 [@jaimerson]: https://github.com/jaimerson
+[@alexvko]: https://github.com/alexvko
