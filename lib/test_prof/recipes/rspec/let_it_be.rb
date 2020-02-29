@@ -75,86 +75,23 @@ module TestProf
     # And we love cats!)
     PREFIX = RUBY_ENGINE == "jruby" ? "@__jruby_is_not_cat_friendly__" : "@😸"
 
+    FROZEN_ERROR_HINT = "\nIf you are using `let_it_be`, you may want to pass `reload: true` option to it."
+
     def self.define_let_it_be_alias(name, **default_args)
       define_method(name) do |identifier, **options, &blk|
         let_it_be(identifier, **default_args.merge(options), &blk)
       end
     end
 
-    # Some of the examples might (unwillingly, or deliberately) update
-    # model attributes.
-    # Unwillingly - if the underlying code under test modifies models, e.g.
-    # modifies `updated_at` attribute.
-    # Deliberately - if models are updated in `before` hooks or examples
-    # themselves instead of creating models in a proper state initially.
-    #
-    # It doesn't really matter if the database is modified or not since
-    # it's rolled back to a pristine state.
-    # However, since models created with `let_it_be` are shared between
-    # the examples, non-reloaded changes to models remain and leak between
-    # examples.
-    #
-    # This leads to unpredictable failures, and in worst case scenario
-    # examples that implicitly depend on other examples.
-    #
-    # Root cause is hard to track down, especially with random example
-    # execution order. A spec might fail with --seed 1001, but pass with
-    # 1002 & 1003.
-    #
-    # With many shared models between many examples, it's also hard to
-    # track down the example and exact place in the code that modifies
-    # the model. Even though the fix is trivial - to add set `refind` or
-    # `reload` options, it's rarely obvious where it should be set
-    # exactly.
     def let_it_be(identifier, **options, &block)
       freeze = options.fetch(:freeze, !(options[:reload] || options[:refind]))
-      initializer = build_initializer(identifier, freeze, &block)
 
-      if within_before_all?
-        within_before_all(&initializer)
-      else
-        before_all(&initializer)
-      end
+      initializer = build_let_it_be_initializer(identifier, freeze, &block)
+      before_all(&initializer)
+
+      define_freezing_hooks if freeze && !metadata[:let_it_be_defrost]
 
       define_let_it_be_methods(identifier, **options.except(:freeze))
-      handle_frozen_hash_error
-    end
-
-    FROZEN_HASH_REGEX = /can't modify frozen Hash/
-    FROZEN_HASH_HINT = "\nIf you are using `let_it_be`, you may want to pass `reload: true` option to it."
-
-    # Exception needs to be handled both here and in `handle_frozen_hash_error`
-    # because if it is raised in before_all it isn't caught in `after` block and
-    # if it's inside the example it isn't raised so it has to be handled in `after`.
-    def build_initializer(identifier, freeze, &block)
-      proc do
-        begin
-          record = instance_exec(&block)
-          if freeze
-            record.freeze
-            record.each(&:freeze) if record.respond_to?(:each)
-          end
-
-          instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
-        rescue => e
-          raise e unless e.message.match?(FROZEN_HASH_REGEX)
-          e.message << FROZEN_HASH_HINT
-          raise e
-        end
-      end
-    end
-
-    def handle_frozen_hash_error
-      # Prevent `after` block from being defined several times
-      return if metadata[:"#{PREFIX}frozen_hash_handled"]
-
-      prepend_after do |example|
-        if example.exception&.message&.match?(FROZEN_HASH_REGEX)
-          example.exception.message << FROZEN_HASH_HINT
-        end
-      end
-
-      metadata[:"#{PREFIX}frozen_hash_handled"] = true
     end
 
     def define_let_it_be_methods(identifier, **modifiers)
@@ -175,6 +112,77 @@ module TestProf
       end
 
       let(identifier, &let_accessor)
+    end
+
+    def define_freezing_hooks
+      # Prevent hooks from being defined several times
+      return if instance_variable_get(:"#{PREFIX}hooks_defined")
+
+      before(:all) do
+        let_it_be_objects = instance_variable_get(:"#{PREFIX}let_it_be_objects")
+        let_it_be_stoplist = instance_variable_get(:"#{PREFIX}let_it_be_stoplist")
+
+        let_it_be_objects.each { |object| Freezer.deep_freeze(object, let_it_be_stoplist) }
+      end
+
+      instance_variable_set(:"#{PREFIX}hooks_defined", true)
+    end
+
+    # Exception needs to be handled both here and in `handle_frozen_hash_error`
+    # because if it is raised in before_all it isn't caught in `after` block and
+    # if it's inside the example it isn't raised so it has to be handled in `after`.
+    def build_let_it_be_initializer(identifier, freeze, &block)
+      proc do
+        begin
+          record = instance_exec(&block)
+
+          let_it_be_objects = instance_variable_get(:"#{PREFIX}let_it_be_objects")
+          let_it_be_objects ||= instance_variable_set(:"#{PREFIX}let_it_be_objects", [])
+          let_it_be_stoplist = instance_variable_get(:"#{PREFIX}let_it_be_stoplist")
+          let_it_be_stoplist ||= instance_variable_set(:"#{PREFIX}let_it_be_stoplist", [])
+          if freeze
+            let_it_be_objects << record
+          else
+            let_it_be_stoplist << record
+          end
+
+          instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
+        rescue => e
+          e.message << FROZEN_ERROR_HINT if e.message.match?(/can't modify frozen/)
+          raise e
+        end
+      end
+    end
+
+    module Freezer
+      # Rerucsively freezes the object to detect modifications.
+      def self.deep_freeze(record, stoplist)
+        return if record.frozen?
+        return if stoplist.include?(record)
+
+        record.freeze
+
+        return record.each { |rec| deep_freeze(rec, stoplist) } if record.respond_to?(:each)
+
+        # Freeze associations as well.
+        #
+        # NOTE: `reload` statements in test or production code will cause
+        # a `FrozenError`. In case the use of `reload` cannot be avoided, use
+        # `reload: true` in `let_it_be` declaration.
+        return unless defined?(::ActiveRecord)
+        return unless record.is_a?(::ActiveRecord::Base)
+
+        record.class.reflections.keys.each do |reflection|
+          # But only if they are already loaded. If not yet loaded, they weren't
+          # created by factories, and it's ok to mutate them.
+          next unless record.association(reflection.to_sym).loaded?
+
+          target = record.association(reflection.to_sym).target
+          if target.is_a?(::ActiveRecord::Base) || target.is_a?(Array)
+            deep_freeze(target, stoplist)
+          end
+        end
+      end
     end
   end
 end
@@ -211,3 +219,10 @@ if defined?(::ActiveRecord)
 end
 
 RSpec::Core::ExampleGroup.extend TestProf::LetItBe
+RSpec.configure do |config|
+  config.after(:example) do |example|
+    if example.exception&.message&.match?(/can't modify frozen/)
+      example.exception.message << TestProf::LetItBe::FROZEN_ERROR_HINT
+    end
+  end
+end
