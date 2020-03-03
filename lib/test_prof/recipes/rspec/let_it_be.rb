@@ -124,12 +124,6 @@ module TestProf
         let_it_be_objects.each { |object| Freezer.deep_freeze(object) }
       end
 
-      prepend_after do |example|
-        if example.exception&.message&.match?(/can't modify frozen Hash/)
-          example.exception.message << FROZEN_HASH_HINT
-        end
-      end
-
       instance_variable_set(:"#{PREFIX}hooks_defined", true)
     end
 
@@ -231,3 +225,10 @@ if defined?(::ActiveRecord)
 end
 
 RSpec::Core::ExampleGroup.extend TestProf::LetItBe
+RSpec.configure do |config|
+  config.after(:example) do |example|
+    if example.exception&.message&.match?(/can't modify frozen Hash/)
+      example.exception.message << TestProf::LetItBe::FROZEN_HASH_HINT
+    end
+  end
+end
