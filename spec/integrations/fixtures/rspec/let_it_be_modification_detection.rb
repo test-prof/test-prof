@@ -49,27 +49,40 @@ RSpec.describe "Modification detection" do
   describe "infers `freeze: false`" do
     context "from `reload: true`" do
       let_it_be(:user, reload: true) { create(:user) }
+      let_it_be(:users) { [user] }
 
       it "skips leakage detection" do
-        expect { user.update(name: "Other Name") }
+        expect { user.update!(name: "Other Name") }
           .not_to raise_error
       end
     end
 
     context "from `refind: true`" do
       let_it_be(:user, refind: true) { create(:user) }
+      let_it_be(:users) { [user] }
 
       it "skips leakage detection" do
-        expect { user.update(name: "Other Name") }
+        expect { user.update!(name: "Other Name") }
+          .not_to raise_error
+      end
+    end
+
+    context "from `freeze: false`" do
+      let_it_be(:user, freeze: false) { create(:user) }
+      let_it_be(:users) { [user] }
+
+      it "skips leakage detection" do
+        expect { user.update!(name: "Other Name") }
           .not_to raise_error
       end
     end
 
     context "from metadata", let_it_be_defrost: true do
       let_it_be(:user) { create(:user) }
+      let_it_be(:users) { [user] }
 
       it "skips leakage detection" do
-        expect { user.update(name: "Other Name") }
+        expect { user.update!(name: "Other Name") }
           .not_to raise_error
       end
     end

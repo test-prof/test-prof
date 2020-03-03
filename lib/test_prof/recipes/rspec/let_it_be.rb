@@ -119,9 +119,10 @@ module TestProf
       return if instance_variable_get(:"#{PREFIX}hooks_defined")
 
       before(:all) do
-        let_it_be_objects = instance_variable_get(:"#{TestProf::LetItBe::PREFIX}let_it_be_objects")
+        let_it_be_objects = instance_variable_get(:"#{PREFIX}let_it_be_objects")
+        let_it_be_stoplist = instance_variable_get(:"#{PREFIX}let_it_be_stoplist")
 
-        let_it_be_objects.each { |object| Freezer.deep_freeze(object) }
+        let_it_be_objects.each { |object| Freezer.deep_freeze(object, let_it_be_stoplist) }
       end
 
       instance_variable_set(:"#{PREFIX}hooks_defined", true)
@@ -134,14 +135,15 @@ module TestProf
       proc do
         begin
           record = instance_exec(&block)
+
+          let_it_be_objects = instance_variable_get(:"#{PREFIX}let_it_be_objects")
+          let_it_be_objects ||= instance_variable_set(:"#{PREFIX}let_it_be_objects", [])
+          let_it_be_stoplist = instance_variable_get(:"#{PREFIX}let_it_be_stoplist")
+          let_it_be_stoplist ||= instance_variable_set(:"#{PREFIX}let_it_be_stoplist", [])
           if freeze
-            # FIXME: When models and their associations are defined with different
-            # options, e.g. `reload: true` and without it, the ones that are not
-            # supposed to be frozen will still be frozen here. Add those with
-            # `reload: true`/`refind: true`/`freeze: false` to ignore list.
-            let_it_be_objects = instance_variable_get(:"#{TestProf::LetItBe::PREFIX}let_it_be_objects")
-            let_it_be_objects ||= instance_variable_set(:"#{TestProf::LetItBe::PREFIX}let_it_be_objects", [])
             let_it_be_objects << record
+          else
+            let_it_be_stoplist << record
           end
 
           instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
@@ -154,12 +156,13 @@ module TestProf
 
     module Freezer
       # Rerucsively freezes the object to detect modifications.
-      def self.deep_freeze(record)
+      def self.deep_freeze(record, stoplist)
         return if record.frozen?
+        return if stoplist.include?(record)
 
         record.freeze
 
-        return record.each { |rec| deep_freeze(rec) } if record.respond_to?(:each)
+        return record.each { |rec| deep_freeze(rec, stoplist) } if record.respond_to?(:each)
 
         # Freeze associations as well.
         #
@@ -175,7 +178,7 @@ module TestProf
 
           target = record.association(reflection.to_sym).target
           if target.is_a?(::ActiveRecord::Base) || target.is_a?(Array)
-            deep_freeze(target)
+            deep_freeze(target, stoplist)
           end
         end
       end
