@@ -169,6 +169,7 @@ module TestProf
         # NOTE: `reload` statements in test or production code will cause
         # a `FrozenError`. In case the use of `reload` cannot be avoided, use
         # `reload: true` in `let_it_be` declaration.
+        return unless defined?(::ActiveRecord)
         return unless record.is_a?(::ActiveRecord::Base)
 
         record.class.reflections.keys.each do |reflection|
