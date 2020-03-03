@@ -87,4 +87,10 @@ RSpec.describe "Modification detection" do
       end
     end
   end
+
+  describe "combination of cross-referenced reloaded and frozen objects" do
+    # TODO: make sure stoplist works - smoke test, no specific expectation, just that there's no FrozenError
+    # TODO: make sure stoplist is reset
+    # TODO: make sure stoplist is not reset on each example/group, just the outermost one
+  end
 end

@@ -2,6 +2,7 @@
 
 require "test_prof"
 require_relative "./before_all"
+require "set"
 
 module TestProf
   # Just like `let`, but persist the result for the whole group.
@@ -38,7 +39,8 @@ module TestProf
       end
 
       def wrap_with_modifiers(mods, &block)
-        return block if mods.empty?
+        # return block if mods.empty?
+        mods = {freeze: true}.merge(mods)
 
         validate_modifiers! mods
 
@@ -84,12 +86,11 @@ module TestProf
     end
 
     def let_it_be(identifier, **options, &block)
-      freeze = options.fetch(:freeze, !(options[:reload] || options[:refind]))
+      freeze = options.fetch(:freeze, !(options[:reload] || options[:refind])) &&
+        !metadata[:let_it_be_defrost]
 
       initializer = build_let_it_be_initializer(identifier, freeze, &block)
       before_all(&initializer)
-
-      define_freezing_hooks if freeze && !metadata[:let_it_be_defrost]
 
       define_let_it_be_methods(identifier, **options.except(:freeze))
     end
@@ -114,20 +115,6 @@ module TestProf
       let(identifier, &let_accessor)
     end
 
-    def define_freezing_hooks
-      # Prevent hooks from being defined several times
-      return if instance_variable_get(:"#{PREFIX}hooks_defined")
-
-      before(:all) do
-        let_it_be_objects = instance_variable_get(:"#{PREFIX}let_it_be_objects")
-        let_it_be_stoplist = instance_variable_get(:"#{PREFIX}let_it_be_stoplist")
-
-        let_it_be_objects.each { |object| Freezer.deep_freeze(object, let_it_be_stoplist) }
-      end
-
-      instance_variable_set(:"#{PREFIX}hooks_defined", true)
-    end
-
     # Exception needs to be handled both here and in `handle_frozen_hash_error`
     # because if it is raised in before_all it isn't caught in `after` block and
     # if it's inside the example it isn't raised so it has to be handled in `after`.
@@ -136,15 +123,12 @@ module TestProf
         begin
           record = instance_exec(&block)
 
-          let_it_be_objects = instance_variable_get(:"#{PREFIX}let_it_be_objects")
-          let_it_be_objects ||= instance_variable_set(:"#{PREFIX}let_it_be_objects", [])
-          let_it_be_stoplist = instance_variable_get(:"#{PREFIX}let_it_be_stoplist")
-          let_it_be_stoplist ||= instance_variable_set(:"#{PREFIX}let_it_be_stoplist", [])
-          if freeze
-            let_it_be_objects << record
-          else
-            let_it_be_stoplist << record
-          end
+          # Prevent records that are marked as `freeze: false`, `reload: true`, and
+          # `refind: true` from being frozen by walking the association tree.
+          # OPTIMIZE: is it the best place? can it be less tangled?
+          # TODO: check if it's not too late, that we freeze *after* this
+          # proc is getting called.
+          Freezer.stoplist << record unless freeze
 
           instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
         rescue => e
@@ -155,21 +139,29 @@ module TestProf
     end
 
     module Freezer
+      module_function
+
+      def freeze(object)
+        object.freeze
+        # OPTIMIZE: is this really needed? What if there is a circular reference?
+        # return object.each { |obj| freeze(obj) } if object.respond_to?(:each)
+      end
+
       # Rerucsively freezes the object to detect modifications.
-      def self.deep_freeze(record, stoplist)
+      def deep_freeze(record)
         return if record.frozen?
         return if stoplist.include?(record)
 
         record.freeze
 
-        return record.each { |rec| deep_freeze(rec, stoplist) } if record.respond_to?(:each)
+        # This is required to support `let_it_be` with `create_list`
+        return record.each { |rec| deep_freeze(rec) } if record.respond_to?(:each)
 
         # Freeze associations as well.
-        #
         # NOTE: `reload` statements in test or production code will cause
         # a `FrozenError`. In case the use of `reload` cannot be avoided, use
         # `reload: true` in `let_it_be` declaration.
-        return unless defined?(::ActiveRecord)
+        return unless defined?(::ActiveRecord::Base)
         return unless record.is_a?(::ActiveRecord::Base)
 
         record.class.reflections.keys.each do |reflection|
@@ -178,16 +170,26 @@ module TestProf
           next unless record.association(reflection.to_sym).loaded?
 
           target = record.association(reflection.to_sym).target
-          if target.is_a?(::ActiveRecord::Base) || target.is_a?(Array)
-            deep_freeze(target, stoplist)
-          end
+          deep_freeze(target) if target.is_a?(::ActiveRecord::Base) || target.respond_to?(:each)
         end
+      end
+
+      # Stoplist is needed to prevent freezing objects that are
+      # defined with `let_it_be`'s `reload: true`/`refind: true`
+      # options.
+      # NOTE: it's intentionally implemented as a thread-local var.
+      def stoplist
+        Thread.current[:"#{TestProf::LetItBe::PREFIX}stoplist"] ||= Set.new
+      end
+
+      def reset_stoplist
+        stoplist.clear
       end
     end
   end
 end
 
-if defined?(::ActiveRecord)
+if defined?(::ActiveRecord::Base)
   require "test_prof/ext/active_record_refind"
   using TestProf::Ext::ActiveRecordRefind
 
@@ -215,6 +217,20 @@ if defined?(::ActiveRecord)
       end
       record
     end
+
+    config.register_modifier :freeze do |record, val|
+      next record if val == false
+
+      TestProf::LetItBe::Freezer.deep_freeze(record)
+      record
+    end
+  end
+else
+  config.register_modifier :freeze do |record, val|
+    next record if val == false
+
+    TestProf::LetItBe::Freezer.freeze(record)
+    record
   end
 end
 
@@ -224,5 +240,15 @@ RSpec.configure do |config|
     if example.exception&.message&.match?(/can't modify frozen/)
       example.exception.message << TestProf::LetItBe::FROZEN_ERROR_HINT
     end
+  end
+end
+
+# Reset stoplist, a list of objects defined with `let_it_be`'s `reload: true`/
+# `refind: true` to reduce its lifecycle from suite-wide to spec-wide.
+TestProf::BeforeAll.configure do |config|
+  config.after(:rollback) do
+    # TODO: make sure BeforeAll does not call it on *each* rollback,
+    # just the outermost one.
+    TestProf::LetItBe::Freezer.reset_stoplist
   end
 end
