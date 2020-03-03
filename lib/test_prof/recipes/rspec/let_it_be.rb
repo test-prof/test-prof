@@ -175,22 +175,12 @@ module TestProf
         record.class.reflections.keys.each do |reflection|
           # But only if they are already loaded. If not yet loaded, they weren't
           # created by factories, and it's ok to mutate them.
-          next unless association_cached?(record, reflection.to_sym)
+          next unless record.association(reflection.to_sym).loaded?
 
           target = record.association(reflection.to_sym).target
           if target.is_a?(::ActiveRecord::Base) || target.is_a?(Array)
             deep_freeze(target, stoplist)
           end
-        end
-      end
-
-      if ActiveRecord::VERSION::MAJOR >= 5
-        def self.association_cached?(record, reflection)
-          record.association_cached?(reflection)
-        end
-      else
-        def self.association_cached?(record, reflection)
-          record.association_cache[reflection]
         end
       end
     end
