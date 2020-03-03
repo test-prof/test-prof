@@ -75,7 +75,7 @@ module TestProf
     # And we love cats!)
     PREFIX = RUBY_ENGINE == "jruby" ? "@__jruby_is_not_cat_friendly__" : "@😸"
 
-    FROZEN_HASH_HINT = "\nIf you are using `let_it_be`, you may want to pass `reload: true` option to it."
+    FROZEN_ERROR_HINT = "\nIf you are using `let_it_be`, you may want to pass `reload: true` option to it."
 
     def self.define_let_it_be_alias(name, **default_args)
       define_method(name) do |identifier, **options, &blk|
@@ -146,7 +146,7 @@ module TestProf
 
           instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
         rescue => e
-          e.message << FROZEN_HASH_HINT if e.message.match?(/can't modify frozen Hash/)
+          e.message << FROZEN_ERROR_HINT if e.message.match?(/can't modify frozen/)
           raise e
         end
       end
@@ -227,8 +227,8 @@ end
 RSpec::Core::ExampleGroup.extend TestProf::LetItBe
 RSpec.configure do |config|
   config.after(:example) do |example|
-    if example.exception&.message&.match?(/can't modify frozen Hash/)
-      example.exception.message << TestProf::LetItBe::FROZEN_HASH_HINT
+    if example.exception&.message&.match?(/can't modify frozen/)
+      example.exception.message << TestProf::LetItBe::FROZEN_ERROR_HINT
     end
   end
 end
