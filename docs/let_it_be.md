@@ -1,6 +1,6 @@
 # Let It Be
 
-Let's bring a little bit of magic and introduce a new way to setup a _shared_ test data.
+Let's bring a little bit of magic and introduce a new way to set up a _shared_ test data.
 
 Suppose you have the following setup:
 
