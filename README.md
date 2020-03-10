@@ -47,7 +47,7 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 ## Who uses TestProf
 
 - [Discourse](https://github.com/discourse/discourse) reduced [~27% of their test suite time](https://twitter.com/samsaffron/status/1125602558024699904)
-- [Gitlab](https://gitlab.com/gitlab-org/gitlab-ce) reduced [39% of their API tests time](https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/14370)
+- [Gitlab](https://gitlab.com/gitlab-org/gitlab-ce) reduced [39% of their API tests time](https://gitlab.com/gitlab-org/gitlab-ce/merge_requests/14370) and [improved factories usage](https://gitlab.com/gitlab-org/gitlab/-/merge_requests/26810)
 - [CodeTriage](https://github.com/codetriage/codetriage)
 - [Dev.to](https://github.com/thepracticaldev/dev.to)
 - [Open Project](https://github.com/opf/openproject)
