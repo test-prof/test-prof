@@ -2,6 +2,12 @@
 
 ## master (unreleased)
 
+- Make sure EventProf is not affected by time freezing. ([@palkan][])
+
+  EventProf results now is not affected by `Timecop.freeze` or similar.
+
+  See more in [#181](https://github.com/palkan/test-prof/issues/181).
+
 ## 0.11.3 (2020-02-11)
 
 - Disable `RSpec/AggregateFailures` by default. ([@pirj][])
