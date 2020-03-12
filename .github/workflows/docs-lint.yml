@@ -14,9 +14,8 @@ jobs:
   markdownlint:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Ruby
-      uses: eregon/use-ruby-action@master
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
     - name: Run Markdown linter
@@ -26,9 +25,8 @@ jobs:
   rubocop:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Ruby
-      uses: eregon/use-ruby-action@master
+    - uses: actions/checkout@v2
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
     - name: Lint Markdown files with RuboCop
@@ -39,22 +37,26 @@ jobs:
   forspell:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Install Hunspell
       run: |
         sudo apt-get install hunspell
-    - name: Set up Ruby
-      uses: eregon/use-ruby-action@master
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: 2.7
+    - name: Cache installed gems
+      uses: actions/cache@v1
+      with:
+        path: /home/runner/.rubies/ruby-2.7.0/lib/ruby/gems/2.7.0
+        key: gems-cache-${{ runner.os }}
+    - name: Install Forspell
+      run: gem install forspell
     - name: Run Forspell
-      run: |
-        gem install forspell
-        forspell docs/
+      run: forspell docs/
   liche:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v1
+    - uses: actions/checkout@v2
     - name: Set up Go
       uses: actions/setup-go@v1
       with:
