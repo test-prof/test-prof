@@ -53,6 +53,7 @@ jobs:
         ruby-version: ${{ matrix.ruby }}
     - name: Install system deps
       run: |
+        sudo apt-get update
         sudo apt-get install libsqlite3-dev
     - name: Install Bundler
       run: |
