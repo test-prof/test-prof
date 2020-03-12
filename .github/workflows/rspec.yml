@@ -9,6 +9,9 @@ on:
 jobs:
   rspec:
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
     strategy:
       fail-fast: false
       matrix:
@@ -46,24 +49,26 @@ jobs:
         - ruby: 2.4
           gemfile: "gemfiles/activerecord6.gemfile"
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Ruby
-      uses: eregon/use-ruby-action@master
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v1
+      with:
+        path: /home/runner/bundle
+        key: bundle-${{ matrix.ruby }}-${{ matrix.gemfile }}-${{ hashFiles(matrix.gemfile) }}-${{ hashFiles('**/*.gemspec') }}
+        restore-keys: |
+          bundle-${{ matrix.ruby }}-${{ matrix.gemfile }}-
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: ${{ matrix.ruby }}
     - name: Install system deps
       run: |
         sudo apt-get update
         sudo apt-get install libsqlite3-dev
-    - name: Install Bundler
+    - name: Bundle install
       run: |
-        gem install bundler
-    - name: Configure Gemfile
-      run: |
+        bundle config path /home/runner/bundle
         bundle config --global gemfile ${{ matrix.gemfile }}
-    - name: Install Ruby deps
-      run: |
-        bundle install --jobs 4 --retry 3
+        bundle install
+        bundle update
     - name: Run RSpec
       run: |
         bundle exec rspec

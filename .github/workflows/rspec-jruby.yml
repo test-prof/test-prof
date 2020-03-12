@@ -10,18 +10,25 @@ jobs:
   rspec-jruby:
     runs-on: ubuntu-latest
     env:
-      BUNDLE_GEMFILE: gemfiles/jruby.gemfile
-
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
     steps:
-    - uses: actions/checkout@v1
-    - name: Set up Ruby
-      uses: eregon/use-ruby-action@master
+    - uses: actions/checkout@v2
+    - uses: actions/cache@v1
+      with:
+        path:  /home/runner/bundle
+        key: bundle-${{ hashFiles('**/gemfiles/jruby.gemfile') }}-${{ hashFiles('**/*.gemspec') }}
+        restore-keys: |
+          bundle-
+    - uses: ruby/setup-ruby@v1
       with:
         ruby-version: jruby
-    - name: Install Ruby deps
+    - name: Bundle install
       run: |
-        gem install bundler
-        bundle install --jobs 4 --retry 3
+        bundle config path /home/runner/bundle
+        bundle config --global gemfile gemfiles/jruby.gemfile
+        bundle install
+        bundle update
     - name: Run RSpec
       run: |
         bundle exec rspec
