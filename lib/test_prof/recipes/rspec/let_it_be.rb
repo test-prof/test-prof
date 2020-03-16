@@ -105,11 +105,7 @@ module TestProf
       end
       before_all(&initializer)
 
-      define_let_it_be_methods(identifier, **options.except(:freeze))
-    end
-
-    def define_let_it_be_methods(identifier, **modifiers)
-      let_accessor = LetItBe.wrap_with_modifiers(modifiers) do
+      let_accessor = LetItBe.wrap_with_modifiers(options.except(:freeze)) do
         instance_variable_get(:"#{PREFIX}#{identifier}")
       end
 
