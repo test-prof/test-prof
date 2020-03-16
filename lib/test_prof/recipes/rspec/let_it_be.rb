@@ -2,7 +2,6 @@
 
 require "test_prof"
 require_relative "./before_all"
-require "set"
 
 module TestProf
   # Just like `let`, but persist the result for the whole group.
@@ -119,51 +118,61 @@ module TestProf
     end
 
     module Freezer
-      module_function
+      class << self
+        # Rerucsively freezes the object to detect modifications
+        def deep_freeze(record)
+          return if record.frozen?
+          return if Stoplist.include?(record)
 
-      def freeze(object)
-        object.freeze
-        # Support `let_it_be` with a list of objects
-        object.each { |obj| freeze(obj) } if object.respond_to?(:each)
+          record.freeze
+
+          # Support `let_it_be` with `create_list`
+          return record.each { |rec| deep_freeze(rec) } if record.respond_to?(:each)
+
+          # Freeze associations as well.
+          # NOTE: `reload` statements in test or production code will cause
+          # a `FrozenError`. In case the use of `reload` cannot be avoided, use
+          # `reload: true` in `let_it_be` declaration.
+          return unless defined?(::ActiveRecord::Base)
+          return unless record.is_a?(::ActiveRecord::Base)
+
+          record.class.reflections.keys.each do |reflection|
+            # But only if they are already loaded. If not yet loaded, they weren't
+            # created by factories, and it's ok to mutate them.
+            next unless record.association(reflection.to_sym).loaded?
+
+            target = record.association(reflection.to_sym).target
+            deep_freeze(target) if target.is_a?(::ActiveRecord::Base) || target.respond_to?(:each)
+          end
+        end
       end
+    end
 
-      # Rerucsively freezes the object to detect modifications
-      def deep_freeze(record)
-        return if record.frozen?
-        return if stoplist.include?(record)
+    # Stoplist to prevent freezing objects that are defined with `let_it_be`'s
+    # `reload: true`/`refind: true`/`freeze: false` options during deep freezing.
+    # To only keep track of objects that are available in current example group,
+    # `begin` adds a new layer, and `rollback` removes a layer of unrelated objects
+    # along with rolling back the transaction where they were created.
+    module Stoplist
+      class << self
+        def include?(record)
+          @stoplist.any? { |layer| layer.include?(record) }
+        end
 
-        record.freeze
+        def push(record)
+          @stoplist.last.push(record)
+        end
 
-        # Support `let_it_be` with `create_list`
-        return record.each { |rec| deep_freeze(rec) } if record.respond_to?(:each)
+        def begin
+          @stoplist.push([])
+        end
 
-        # Freeze associations as well.
-        # NOTE: `reload` statements in test or production code will cause
-        # a `FrozenError`. In case the use of `reload` cannot be avoided, use
-        # `reload: true` in `let_it_be` declaration.
-        return unless defined?(::ActiveRecord::Base)
-        return unless record.is_a?(::ActiveRecord::Base)
-
-        record.class.reflections.keys.each do |reflection|
-          # But only if they are already loaded. If not yet loaded, they weren't
-          # created by factories, and it's ok to mutate them.
-          next unless record.association(reflection.to_sym).loaded?
-
-          target = record.association(reflection.to_sym).target
-          deep_freeze(target) if target.is_a?(::ActiveRecord::Base) || target.respond_to?(:each)
+        def rollback
+          @stoplist.pop
         end
       end
 
-      # Stoplist to prevent freezing objects that are defined with `let_it_be`'s
-      # `reload: true`/`refind: true`/`freeze: false` options during deep freezing.
-      # NOTE: it's intentionally implemented as a thread-local var.
-      def stoplist
-        Thread.current[:"#{TestProf::LetItBe::PREFIX}stoplist"] ||= Set.new
-      end
-
-      def reset_stoplist
-        stoplist.clear
-      end
+      @stoplist = [] # Stack of example group-related variable definitions
     end
   end
 end
@@ -177,7 +186,7 @@ if defined?(::ActiveRecord::Base)
       next record unless val
       next record.reload if record.is_a?(::ActiveRecord::Base)
 
-      TestProf::LetItBe::Freezer.stoplist << record
+      TestProf::LetItBe::Stoplist.push(record)
 
       if record.respond_to?(:map)
         next record.map do |rec|
@@ -191,7 +200,7 @@ if defined?(::ActiveRecord::Base)
       next record unless val
       next record.refind if record.is_a?(::ActiveRecord::Base)
 
-      TestProf::LetItBe::Freezer.stoplist << record
+      TestProf::LetItBe::Stoplist.push(record)
 
       if record.respond_to?(:map)
         next record.map do |rec|
@@ -203,19 +212,14 @@ if defined?(::ActiveRecord::Base)
 
     config.register_modifier :freeze do |record, val|
       # TODO: change this to `if val == false` when TestProf hits 1.0
-      next record unless val == true
+      unless val == true
+        TestProf::LetItBe::Stoplist.push(record)
+        next record
+      end
 
       TestProf::LetItBe::Freezer.deep_freeze(record)
       record
     end
-  end
-else
-  config.register_modifier :freeze do |record, val|
-    # TODO: change this to `if val == false` when TestProf hits 1.0
-    next record unless val == true
-
-    TestProf::LetItBe::Freezer.freeze(record)
-    record
   end
 end
 
@@ -228,12 +232,12 @@ RSpec.configure do |config|
   end
 end
 
-# Reset stoplist, a list of objects defined with `let_it_be`'s `reload: true`/
-# `refind: true` to reduce its lifecycle from suite-wide to spec-wide.
 TestProf::BeforeAll.configure do |config|
+  config.before(:begin) do
+    TestProf::LetItBe::Stoplist.begin
+  end
+
   config.after(:rollback) do
-    # TODO: make sure BeforeAll does not call it on *each* rollback,
-    # just the outermost one.
-    TestProf::LetItBe::Freezer.reset_stoplist
+    TestProf::LetItBe::Stoplist.rollback
   end
 end

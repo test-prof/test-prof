@@ -88,9 +88,25 @@ RSpec.describe "Modification detection", let_it_be_frost: true do
     end
   end
 
-  describe "combination of cross-referenced reloadable and freezable objects" do
-    # TODO: make sure stoplist works - smoke test, no specific expectation, just that there's no FrozenError
-    # TODO: make sure stoplist is reset
-    # TODO: make sure stoplist is not reset on each example/group, just the outermost one
+  describe "combination of cross-referenced freezable and non-freezable objects" do
+    describe "level one" do
+      let_it_be(:one, freeze: false) { ["one"] }
+
+      describe "level two" do
+        let_it_be(:two) { [one, ["two"]] }
+
+        describe "level three" do
+          let_it_be(:three, freeze: false) { [one, two, "three"] }
+
+          it "only freezes what's necessary" do
+            expect { one.push(1) }.not_to raise_error
+            expect { two.push(2) }.to raise_error(/can't modify frozen/)
+            expect { two.first.push(2) }.not_to raise_error
+            expect { two.last.push(2) }.to raise_error(/can't modify frozen/)
+            expect { three.push(3) }.not_to raise_error
+          end
+        end
+      end
+    end
   end
 end
