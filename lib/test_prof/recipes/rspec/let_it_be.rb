@@ -125,9 +125,6 @@ module TestProf
 
           # Prevent records that are marked as `freeze: false`, `reload: true`, and
           # `refind: true` from being frozen by walking the association tree.
-          # OPTIMIZE: is it the best place? can it be less tangled?
-          # TODO: check if it's not too late, that we freeze *after* this
-          # proc is getting called.
           Freezer.stoplist << record unless freeze
 
           instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
@@ -143,8 +140,8 @@ module TestProf
 
       def freeze(object)
         object.freeze
-        # OPTIMIZE: is this really needed? What if there is a circular reference?
-        # return object.each { |obj| freeze(obj) } if object.respond_to?(:each)
+        # Support `let_it_be` with a list of objects
+        object.each { |obj| freeze(obj) } if object.respond_to?(:each)
       end
 
       # Rerucsively freezes the object to detect modifications.
@@ -154,7 +151,7 @@ module TestProf
 
         record.freeze
 
-        # This is required to support `let_it_be` with `create_list`
+        # Support `let_it_be` with `create_list`
         return record.each { |rec| deep_freeze(rec) } if record.respond_to?(:each)
 
         # Freeze associations as well.
@@ -174,9 +171,8 @@ module TestProf
         end
       end
 
-      # Stoplist is needed to prevent freezing objects that are
-      # defined with `let_it_be`'s `reload: true`/`refind: true`
-      # options.
+      # Stoplist to prevent freezing objects that are defined with `let_it_be`'s
+      # `reload: true`/`refind: true`/`freeze: false` options during deep freezing.
       # NOTE: it's intentionally implemented as a thread-local var.
       def stoplist
         Thread.current[:"#{TestProf::LetItBe::PREFIX}stoplist"] ||= Set.new
