@@ -86,8 +86,8 @@ module TestProf
     end
 
     def let_it_be(identifier, **options, &block)
-      freeze = options.fetch(:freeze, !(options[:reload] || options[:refind])) &&
-        !metadata[:let_it_be_defrost]
+      freeze = metadata[:let_it_be_frost] &&
+        options.fetch(:freeze, !(options[:reload] || options[:refind]))
 
       initializer = build_let_it_be_initializer(identifier, freeze, &block)
       before_all(&initializer)
@@ -144,7 +144,7 @@ module TestProf
         object.each { |obj| freeze(obj) } if object.respond_to?(:each)
       end
 
-      # Rerucsively freezes the object to detect modifications.
+      # Rerucsively freezes the object to detect modifications
       def deep_freeze(record)
         return if record.frozen?
         return if stoplist.include?(record)
@@ -215,7 +215,8 @@ if defined?(::ActiveRecord::Base)
     end
 
     config.register_modifier :freeze do |record, val|
-      next record if val == false
+      # TODO: change this to `if val == false` when TestProf hits 1.0
+      next record unless val == true
 
       TestProf::LetItBe::Freezer.deep_freeze(record)
       record
@@ -223,7 +224,8 @@ if defined?(::ActiveRecord::Base)
   end
 else
   config.register_modifier :freeze do |record, val|
-    next record if val == false
+    # TODO: change this to `if val == false` when TestProf hits 1.0
+    next record unless val == true
 
     TestProf::LetItBe::Freezer.freeze(record)
     record
