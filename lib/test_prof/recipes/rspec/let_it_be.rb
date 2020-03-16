@@ -89,7 +89,20 @@ module TestProf
       freeze = metadata[:let_it_be_frost] &&
         options.fetch(:freeze, !(options[:reload] || options[:refind]))
 
-      initializer = build_let_it_be_initializer(identifier, freeze, &block)
+      initializer = proc do
+        begin
+          record = instance_exec(&block)
+
+          # Prevent records that are marked as `freeze: false`, `reload: true`, and
+          # `refind: true` from being frozen by walking the association tree.
+          Freezer.stoplist << record unless freeze
+
+          instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
+        rescue => e
+          e.message << FROZEN_ERROR_HINT if e.message.match?(/can't modify frozen/)
+          raise e
+        end
+      end
       before_all(&initializer)
 
       define_let_it_be_methods(identifier, **options.except(:freeze))
@@ -113,26 +126,6 @@ module TestProf
       end
 
       let(identifier, &let_accessor)
-    end
-
-    # Exception needs to be handled both here and in `handle_frozen_hash_error`
-    # because if it is raised in before_all it isn't caught in `after` block and
-    # if it's inside the example it isn't raised so it has to be handled in `after`.
-    def build_let_it_be_initializer(identifier, freeze, &block)
-      proc do
-        begin
-          record = instance_exec(&block)
-
-          # Prevent records that are marked as `freeze: false`, `reload: true`, and
-          # `refind: true` from being frozen by walking the association tree.
-          Freezer.stoplist << record unless freeze
-
-          instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
-        rescue => e
-          e.message << FROZEN_ERROR_HINT if e.message.match?(/can't modify frozen/)
-          raise e
-        end
-      end
     end
 
     module Freezer
