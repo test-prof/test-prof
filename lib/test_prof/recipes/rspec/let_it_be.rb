@@ -86,17 +86,11 @@ module TestProf
     end
 
     def let_it_be(identifier, **options, &block)
-      freeze = metadata[:let_it_be_frost] &&
-        options.fetch(:freeze, !(options[:reload] || options[:refind]))
+      options[:freeze] = metadata[:let_it_be_frost] if options[:freeze].nil?
 
       initializer = proc do
         begin
           record = instance_exec(&block)
-
-          # Prevent records that are marked as `freeze: false`, `reload: true`, and
-          # `refind: true` from being frozen by walking the association tree.
-          Freezer.stoplist << record unless freeze
-
           instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
         rescue => e
           e.message << FROZEN_ERROR_HINT if e.message.match?(/can't modify frozen/)
@@ -105,7 +99,7 @@ module TestProf
       end
       before_all(&initializer)
 
-      let_accessor = LetItBe.wrap_with_modifiers(options.except(:freeze)) do
+      let_accessor = LetItBe.wrap_with_modifiers(options) do
         instance_variable_get(:"#{PREFIX}#{identifier}")
       end
 
@@ -183,6 +177,8 @@ if defined?(::ActiveRecord::Base)
       next record unless val
       next record.reload if record.is_a?(::ActiveRecord::Base)
 
+      TestProf::LetItBe::Freezer.stoplist << record
+
       if record.respond_to?(:map)
         next record.map do |rec|
           rec.is_a?(::ActiveRecord::Base) ? rec.reload : rec
@@ -194,6 +190,8 @@ if defined?(::ActiveRecord::Base)
     config.register_modifier :refind do |record, val|
       next record unless val
       next record.refind if record.is_a?(::ActiveRecord::Base)
+
+      TestProf::LetItBe::Freezer.stoplist << record
 
       if record.respond_to?(:map)
         next record.map do |rec|
