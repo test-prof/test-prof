@@ -24,10 +24,6 @@ module TestProf
         yield
       end
 
-      def within_transaction
-        yield
-      end
-
       def rollback_transaction
         raise AdapterMissing if adapter.nil?
 
