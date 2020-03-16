@@ -165,9 +165,22 @@ TestProf::LetItBe.configure do |config|
 end
 ```
 
-### Auto-magic State Leakage Detection
+### Auto-magic State Leakage Detection [experimental]
 
 > @since v0.12.0
+
+This feature is opt-in, since it may find a significant number of leakages in specs that may be a significant burden to fix all at once.
+It's possible to gradually turn it on for parts of specs by using:
+
+```ruby
+# spec/spec_helper.rb
+RSpec.configure do |config|
+  # ...
+  config.define_derived_metadata(file_path: %r{/spec/models/}) do |metadata|
+    metadata[:let_it_be_frost] = true
+  end
+end
+```
 
 The code might modify models shared between examples.
 Unwillingly - if the underlying code under test modifies models, e.g. modifies `updated_at` attribute.
@@ -189,7 +202,7 @@ To fix the `FrozenError`:
 - add `reload: true`/`refind: true`, it pacifies leakage detection and prevents leakage itself. Typically it's significantly faster to reload the model than to re-create it from scratch before each example (two or even three orders of magnitude faster in some cases)
 - rewrite problematic test code
 
-In the case when modification is deliberate, it's possible to disable leakage detection individually with `freeze: false` `let_it_be` option, or for the whole example group with `let_it_be_defrost: true` RSpec metadata.
+In the case when modification is deliberate, it's possible to disable leakage detection individually with `freeze: false` `let_it_be` option, or for the whole example group with `let_it_be_frost: false` RSpec metadata.
 
 NOTE: If the code under test or the test code calls `reload` on models, the example will fail.
 To avoid this, set `reload: true` on corresponding `let_it_be` definitions.

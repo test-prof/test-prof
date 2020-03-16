@@ -2,7 +2,7 @@
 
 require "test_prof/recipes/rspec/let_it_be"
 
-RSpec.describe "Modification detection" do
+RSpec.describe "Modification detection", let_it_be_frost: true do
   include TestProf::FactoryBot::Syntax::Methods
 
   # `order: defined` is to make sure the example that modifies the state
@@ -77,7 +77,7 @@ RSpec.describe "Modification detection" do
       end
     end
 
-    context "from metadata", let_it_be_defrost: true do
+    context "from metadata", let_it_be_frost: false do
       let_it_be(:user) { create(:user) }
       let_it_be(:users) { [user] }
 
