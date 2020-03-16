@@ -36,6 +36,9 @@ module TestProf
           else
             "html"
           end
+
+        sample_interval = ENV["TEST_STACK_PROF_INTERVAL"].to_i
+        @interval = sample_interval > 0 ? sample_interval : nil
       end
 
       def raw?
