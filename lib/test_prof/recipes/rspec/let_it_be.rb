@@ -38,8 +38,7 @@ module TestProf
       end
 
       def wrap_with_modifiers(mods, &block)
-        # return block if mods.empty?
-        mods = {freeze: true}.merge(mods)
+        return block if mods.empty?
 
         validate_modifiers! mods
 
@@ -184,9 +183,10 @@ if defined?(::ActiveRecord::Base)
   TestProf::LetItBe.configure do |config|
     config.register_modifier :reload do |record, val|
       next record unless val
-      next record.reload if record.is_a?(::ActiveRecord::Base)
 
       TestProf::LetItBe::Stoplist.push(record)
+
+      next record.reload if record.is_a?(::ActiveRecord::Base)
 
       if record.respond_to?(:map)
         next record.map do |rec|
@@ -198,9 +198,10 @@ if defined?(::ActiveRecord::Base)
 
     config.register_modifier :refind do |record, val|
       next record unless val
-      next record.refind if record.is_a?(::ActiveRecord::Base)
 
       TestProf::LetItBe::Stoplist.push(record)
+
+      next record.refind if record.is_a?(::ActiveRecord::Base)
 
       if record.respond_to?(:map)
         next record.map do |rec|
