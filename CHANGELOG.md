@@ -8,6 +8,10 @@
 
   See more in [#181](https://github.com/palkan/test-prof/issues/181).
 
+- Adds the ability to define stackprof's interval sampling by using `TEST_STACK_PROF_INTERVAL` env variable ([@LynxEyes][])
+
+  Now you can use `$ TEST_STACK_PROF=1 TEST_STACK_PROF_INTERVAL=10000 rspec` to define a custom interval (in microseconds).
+
 ## 0.11.3 (2020-02-11)
 
 - Disable `RSpec/AggregateFailures` by default. ([@pirj][])
@@ -542,3 +546,4 @@ Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 [@tyleriguchi]: https://github.com/tyleriguchi
 [@lostie]: https://github.com/lostie
 [@pirj]: https://github.com/pirj
+[@LynxEyes]: https://github.com/LynxEyes
