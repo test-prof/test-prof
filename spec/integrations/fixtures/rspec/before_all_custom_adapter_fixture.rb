@@ -5,13 +5,31 @@ require_relative "../../../support/ar_models"
 require "test_prof/recipes/rspec/before_all"
 
 module MyAdapter
+  @nested_transaction_count = 0
+
   class << self
     def begin_transaction
-      ActiveRecord::Base.connection.execute "BEGIN"
+      if @nested_transaction_count == 0
+        execute "BEGIN"
+      else
+        execute "SAVEPOINT test_prof_#{@nested_transaction_count}"
+      end
+      @nested_transaction_count += 1
     end
 
     def rollback_transaction
-      ActiveRecord::Base.connection.execute "ROLLBACK"
+      @nested_transaction_count -= 1
+      if @nested_transaction_count == 0
+        execute "ROLLBACK"
+      else
+        execute "ROLLBACK TO SAVEPOINT test_prof_#{@nested_transaction_count}"
+      end
+    end
+
+    private
+
+    def execute(sql)
+      ActiveRecord::Base.connection.execute sql
     end
   end
 end

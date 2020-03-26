@@ -16,24 +16,26 @@ module TestProf
       attr_accessor :adapter
 
       def begin_transaction
+        raise "begin_transaction does not support a block" if block_given?
         raise AdapterMissing if adapter.nil?
 
         config.run_hooks(:begin) do
           adapter.begin_transaction
         end
-        yield
-      end
-
-      def within_transaction
-        yield
       end
 
       def rollback_transaction
-        raise AdapterMissing if adapter.nil?
-
         config.run_hooks(:rollback) do
           adapter.rollback_transaction
         end
+      end
+
+      def begin_example_transaction
+        adapter.begin_transaction
+      end
+
+      def rollback_example_transaction
+        adapter.rollback_transaction
       end
 
       def config

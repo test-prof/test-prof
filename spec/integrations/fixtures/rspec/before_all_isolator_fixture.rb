@@ -38,20 +38,22 @@ class User < ActiveRecord::Base
 end
 
 describe "before_all + Isolator", :transactional do
-  before_all do
-    @user = User.create
-    SampleJob.perform_async(true)
-    @user.commited = true
-  end
+  context "with an implicit transaction" do
+    before_all do
+      @user = User.create
+      SampleJob.perform_async(true)
+      @user.commited = true
+    end
 
-  before_all do
-    @user2 = User.create
-    SampleJob.perform_async(true)
-  end
+    before_all do
+      @user2 = User.create
+      SampleJob.perform_async(true)
+    end
 
-  it "doesn't raise in after_commit callback" do
-    expect(@user.commited).to eq true
-    expect(@user2.commited).to be_nil
+    it "doesn't raise in after_commit callback" do
+      expect(@user.commited).to eq true
+      expect(@user2.commited).to be_nil
+    end
   end
 
   it "doesn't raise without transaction" do

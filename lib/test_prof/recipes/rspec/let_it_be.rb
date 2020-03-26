@@ -86,11 +86,7 @@ module TestProf
         instance_variable_set(:"#{PREFIX}#{identifier}", instance_exec(&block))
       end
 
-      if within_before_all?
-        within_before_all(&initializer)
-      else
-        before_all(&initializer)
-      end
+      before_all(&initializer)
 
       define_let_it_be_methods(identifier, **options)
     end

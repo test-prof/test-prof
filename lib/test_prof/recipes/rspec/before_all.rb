@@ -9,26 +9,25 @@ module TestProf
       def before_all(&block)
         raise ArgumentError, "Block is required!" unless block_given?
 
-        return within_before_all(&block) if within_before_all?
+        return before(:all, &block) if within_before_all?
 
         @__before_all_activated__ = true
 
         before(:all) do
-          BeforeAll.begin_transaction do
-            instance_eval(&block)
-          end
+          BeforeAll.begin_transaction
+          instance_eval(&block)
         end
 
         after(:all) do
           BeforeAll.rollback_transaction
         end
-      end
 
-      def within_before_all(&block)
-        before(:all) do
-          BeforeAll.within_transaction do
-            instance_eval(&block)
-          end
+        before(:example) do
+          BeforeAll.begin_example_transaction
+        end
+
+        after(:example) do
+          BeforeAll.rollback_example_transaction
         end
       end
 

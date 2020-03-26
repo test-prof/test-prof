@@ -190,3 +190,17 @@ describe "User", :transactional do
     end
   end
 end
+
+describe "does not leak", order: :defined do
+  include TestProf::FactoryBot::Syntax::Methods
+
+  let_it_be(:user, refind: true) { create(:user, name: "Original Name") }
+
+  it "leaks" do
+    user.update!(name: "John Doe")
+  end
+
+  it "is not affected by the leak" do
+    expect(user.name).to eq("Original Name")
+  end
+end

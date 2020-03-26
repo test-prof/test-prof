@@ -12,6 +12,8 @@
 
   Now you can use `$ TEST_STACK_PROF=1 TEST_STACK_PROF_INTERVAL=10000 rspec` to define a custom interval (in microseconds).
 
+- Fix `let_it_be` and `before_all` not rolling back between sibling examples. ([@pirj][])
+
 ## 0.11.3 (2020-02-11)
 
 - Disable `RSpec/AggregateFailures` by default. ([@pirj][])
