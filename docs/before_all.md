@@ -54,6 +54,9 @@ That's all!
 
 **NOTE**: requires RSpec >= 3.3.0.
 
+**NOTE**: Great superpower that `before_all` provides comes with a great responsibility.
+Make sure to check the [Caveats section](#caveats) of this document for details.
+
 ## Instructions
 
 ### RSpec
@@ -63,6 +66,12 @@ In your `rails_helper.rb` (or `spec_helper.rb` after *ActiveRecord* has been loa
 ```ruby
 require "test_prof/recipes/rspec/before_all"
 ```
+
+**NOTE**: `before_all` (and `let_it_be` that depends on it), does not wrap individual
+tests in a database transaction of its own. Use Rails' native `use_transactional_tests`
+(`use_transactional_fixtures` in Rails < 5.1), RSpec Rails' `use_transactional_fixtures`,
+DatabaseCleaner, or custom code that begins a transaction before each test and rolls it
+back after.
 
 ### Minitest (Experimental)
 
@@ -135,6 +144,8 @@ See the example in [Discourse](https://github.com/discourse/discourse/blob/4a175
 
 ## Caveats
 
+### Database is rolled back to a pristine state, but the objects are not
+
 If you modify objects generated within a `before_all` block in your examples, you maybe have to re-initiate them:
 
 ```ruby
@@ -172,6 +183,24 @@ def setup
   @user = User.find(@user.id)
 end
 ```
+
+### Database is not rolled back between tests
+
+Database is not rolled back between RSpec examples, only between example groups.
+We don't want to reinvent the wheel and encourage you to use other tools that
+provide this out of the box.
+
+If you're using RSpec Rails, turn on `RSpec.configuration.use_transactional_fixtures` in your `spec/rails_helper.rb`:
+
+```ruby
+RSpec.configure do |config|
+  config.use_transactional_fixtures = true # RSpec takes care to use `use_transactional_tests` or `use_transactional_fixtures` depending on the Rails version used
+end
+```
+
+Make sure to set `use_transactional_tests` (`use_transactional_fixtures` in Rails < 5.1) to `true` if you're using Minitest.
+
+If you're using DatabaseCleaner, make sure it rolls back the database between tests.
 
 ## Usage with Isolator
 

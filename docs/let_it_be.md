@@ -53,6 +53,9 @@ end
 
 That's it! Just replace `let!` with `let_it_be`. That's equal to the `before_all` approach but requires less refactoring.
 
+**NOTE**: Great superpower that `before_all` provides comes with a great responsibility.
+Make sure to check the [Caveats section](#caveats) of this document for details.
+
 ## Instructions
 
 In your `rails_helper.rb` or `spec_helper.rb`:
@@ -71,10 +74,38 @@ describe MySuperDryService do
 end
 ```
 
-## Caveats & Modifers
+`let_it_be` won't automatically bring the database to its previous state between
+the examples, it only does that between example groups.
+Use Rails' native `use_transactional_tests` (`use_transactional_fixtures` in Rails < 5.1),
+RSpec Rails' `use_transactional_fixtures`, DatabaseCleaner, or custom code that
+begins a transaction before each test and rolls it back after.
+
+## Caveats
+
+### Database is rolled back to a pristine state, but the objects are not
 
 If you modify objects generated within a `let_it_be` block in your examples, you maybe have to re-initiate them.
-We have a built-in _modifiers_ support for that:
+We have a built-in _modifiers_ support for that.
+
+### Database is not rolled back between tests
+
+Database is not rolled back between RSpec examples, only between example groups.
+We don't want to reinvent the wheel and encourage you to use other tools that
+provide this out of the box.
+
+If you're using RSpec Rails, turn on `RSpec.configuration.use_transactional_fixtures` in your `spec/rails_helper.rb`:
+
+```ruby
+RSpec.configure do |config|
+  config.use_transactional_fixtures = true # RSpec takes care to use `use_transactional_tests` or `use_transactional_fixtures` depending on the Rails version used
+end
+```
+
+Make sure to set `use_transactional_tests` (`use_transactional_fixtures` in Rails < 5.1) to `true` if you're using Minitest.
+
+If you're using DatabaseCleaner, make sure it rolls back the database between tests.
+
+## Modifiers
 
 ```ruby
 # Use reload: true option to reload user object (assuming it's an instance of ActiveRecord)
