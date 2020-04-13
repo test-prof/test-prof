@@ -121,9 +121,9 @@ module TestProf
         # Rerucsively freezes the object to detect modifications
         def deep_freeze(record)
           return if record.frozen?
-          return if Stoplist.include?(record)
+          return if Stoplist.stop?(record)
 
-          record.freeze
+          record.freeze unless Stoplist.skip?(record)
 
           # Support `let_it_be` with `create_list`
           return record.each { |rec| deep_freeze(rec) } if record.respond_to?(:each)
@@ -138,6 +138,7 @@ module TestProf
           record.class.reflections.keys.each do |reflection|
             # But only if they are already loaded. If not yet loaded, they weren't
             # created by factories, and it's ok to mutate them.
+
             next unless record.association(reflection.to_sym).loaded?
 
             target = record.association(reflection.to_sym).target
@@ -147,30 +148,48 @@ module TestProf
       end
     end
 
-    # Stoplist to prevent freezing objects that are defined with `let_it_be`'s
-    # `reload: true`/`refind: true`/`freeze: false` options during deep freezing.
+    # Stoplist to prevent freezing objects and theirs associations that are defined
+    # with `let_it_be`'s `freeze: false` options during deep freezing.
+    #
     # To only keep track of objects that are available in current example group,
     # `begin` adds a new layer, and `rollback` removes a layer of unrelated objects
     # along with rolling back the transaction where they were created.
+    #
+    # Stoplist holds two types of records, one is "stop", and another is "skip".
+    # "skip" is to skip freezing objects that are defined with `let_it_be`'s
+    # `reload: true`/`refind: true`, but to proceed with deep freezing their
+    # associations. "stop" is for stop deep freezing for those records declared
+    # with `freeze: false`.
     module Stoplist
       class << self
-        def include?(record)
+        def skip?(record)
+          @skiplist.any? { |layer| layer.include?(record) }
+        end
+
+        def stop?(record)
           @stoplist.any? { |layer| layer.include?(record) }
         end
 
-        def push(record)
+        def skip!(record)
+          @skiplist.last.push(record)
+        end
+
+        def stop!(record)
           @stoplist.last.push(record)
         end
 
         def begin
+          @skiplist.push([])
           @stoplist.push([])
         end
 
         def rollback
+          @skiplist.pop
           @stoplist.pop
         end
       end
 
+      @skiplist = [] # Stack of example group-related variable definitions
       @stoplist = [] # Stack of example group-related variable definitions
     end
   end
@@ -184,7 +203,7 @@ if defined?(::ActiveRecord::Base)
     config.register_modifier :reload do |record, val|
       next record unless val
 
-      TestProf::LetItBe::Stoplist.push(record)
+      TestProf::LetItBe::Stoplist.skip!(record)
 
       next record.reload if record.is_a?(::ActiveRecord::Base)
 
@@ -199,7 +218,7 @@ if defined?(::ActiveRecord::Base)
     config.register_modifier :refind do |record, val|
       next record unless val
 
-      TestProf::LetItBe::Stoplist.push(record)
+      TestProf::LetItBe::Stoplist.skip!(record)
 
       next record.refind if record.is_a?(::ActiveRecord::Base)
 
@@ -214,7 +233,7 @@ if defined?(::ActiveRecord::Base)
     config.register_modifier :freeze do |record, val|
       # TODO: change this to `if val == false` when TestProf hits 1.0
       unless val == true
-        TestProf::LetItBe::Stoplist.push(record)
+        TestProf::LetItBe::Stoplist.stop!(record)
         next record
       end
 
