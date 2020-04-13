@@ -18,7 +18,7 @@ RSpec.describe "Modification detection", let_it_be_frost: true do
 
     it "detects the leak" do
       expect { user.update!(name: "John Doe") }
-        .to raise_error(FrozenError, /can't modify frozen/)
+        .to raise_error(/can't modify frozen/)
     end
 
     it { expect(user.name).to eq("Original Name") }
@@ -29,7 +29,7 @@ RSpec.describe "Modification detection", let_it_be_frost: true do
 
     it "detects the leak" do
       expect { post.user.update!(name: "John Doe") }
-        .to raise_error(FrozenError, /can't modify frozen/)
+        .to raise_error(/can't modify frozen/)
     end
 
     it { expect(post.user.name).to eq("Original Name") }
@@ -60,12 +60,12 @@ RSpec.describe "Modification detection", let_it_be_frost: true do
 
     it "detects the leak in an array item" do
       expect { users.first.update!(name: "John Doe") }
-        .to raise_error(FrozenError, /can't modify frozen/)
+        .to raise_error(/can't modify frozen/)
     end
 
     it "detects the leak in the array itself" do
       expect { users << "yet another user" }
-        .to raise_error(FrozenError, /can't modify frozen/)
+        .to raise_error(/can't modify frozen/)
     end
   end
 

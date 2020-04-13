@@ -129,9 +129,9 @@ module TestProf
           return record.each { |rec| deep_freeze(rec) } if record.respond_to?(:each)
 
           # Freeze associations as well.
-          # NOTE: `reload` statements in test or production code will cause
-          # a `FrozenError`. In case the use of `reload` cannot be avoided, use
-          # `reload: true` in `let_it_be` declaration.
+          # NOTE: `reload` statements in test or production code will cause a `FrozenError`
+          # (or a `TypeError` on earlier Rubies). In case the use of `reload` cannot be
+          # avoided, use `reload: true` in `let_it_be` declaration.
           return unless defined?(::ActiveRecord::Base)
           return unless record.is_a?(::ActiveRecord::Base)
 
