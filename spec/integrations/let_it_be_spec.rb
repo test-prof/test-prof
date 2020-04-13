@@ -6,4 +6,10 @@ describe "LetItBe" do
 
     expect(output).to include("0 failures")
   end
+
+  specify "it detects state leakages" do
+    output = run_rspec("let_it_be_modification_detection")
+
+    expect(output).to include("0 failures")
+  end
 end
