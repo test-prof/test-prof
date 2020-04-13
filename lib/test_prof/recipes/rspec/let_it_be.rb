@@ -91,7 +91,7 @@ module TestProf
           record = instance_exec(&block)
           instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
         rescue => e
-          e.message << FROZEN_ERROR_HINT if e.message.match?(/can't modify frozen/)
+          e.message << FROZEN_ERROR_HINT if e.message.match?(/[Cc]an't modify frozen/)
           raise e
         end
       end
@@ -246,7 +246,7 @@ end
 RSpec::Core::ExampleGroup.extend TestProf::LetItBe
 RSpec.configure do |config|
   config.after(:example) do |example|
-    if example.exception&.message&.match?(/can't modify frozen/)
+    if example.exception&.message&.match?(/[Cc]an't modify frozen/)
       example.exception.message << TestProf::LetItBe::FROZEN_ERROR_HINT
     end
   end
