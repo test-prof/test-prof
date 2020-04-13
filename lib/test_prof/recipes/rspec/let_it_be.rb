@@ -139,8 +139,7 @@ module TestProf
             # But only if they are already loaded. If not yet loaded, they weren't
             # created by factories, and it's ok to mutate them.
 
-            # next unless record.association(reflection.to_sym).loaded?
-            next unless record.association_cached?(reflection.to_sym)
+            next unless record.association(reflection.to_sym).loaded?
 
             target = record.association(reflection.to_sym).target
             deep_freeze(target) if target.is_a?(::ActiveRecord::Base) || target.respond_to?(:each)
