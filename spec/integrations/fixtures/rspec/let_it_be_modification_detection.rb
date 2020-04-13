@@ -32,6 +32,26 @@ RSpec.describe "Modification detection", let_it_be_frost: true do
     it { expect(post.user.name).to eq("Original Name") }
   end
 
+  describe "no state leakage with transactional tests with `refind: true`", :transactional, order: :defined do
+    let_it_be(:post, refind: true) { create(:post, user: create(:user, name: "Original Name")) }
+
+    it "leaks" do
+      post.user.update!(name: "John Doe")
+    end
+
+    it { expect(post.user.name).to eq("Original Name") }
+  end
+
+  describe "no state leakage with transactional tests with `reload: true`", :transactional, order: :defined do
+    let_it_be(:post, reload: true) { create(:post, user: create(:user, name: "Original Name")) }
+
+    it "leaks" do
+      post.user.update!(name: "John Doe")
+    end
+
+    it { expect(post.user.name).to eq("Original Name") }
+  end
+
   context "with an array of values" do
     let_it_be(:users) { create_list(:user, 2) }
 
