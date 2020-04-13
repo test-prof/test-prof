@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+require_relative "../../../support/ar_models"
+require_relative "../../../support/transactional_context"
+
 require "test_prof/recipes/rspec/let_it_be"
 
 RSpec.describe "Modification detection", let_it_be_frost: true do
