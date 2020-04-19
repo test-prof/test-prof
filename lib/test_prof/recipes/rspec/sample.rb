@@ -15,7 +15,8 @@ if ENV["SAMPLE"]
   RSpec.configure do |config|
     config.before(:suite) do
       filtered_examples = RSpec.world.filtered_examples.values.flatten
-      sample = filtered_examples.sample(ENV["SAMPLE"].to_i)
+      random = Random.new(RSpec.configuration.seed)
+      sample = filtered_examples.sample(ENV["SAMPLE"].to_i, random: random)
       RSpec.world.filtered_examples = Hash.new do |hash, group|
         hash[group] = group.examples & sample
       end
@@ -31,7 +32,8 @@ if ENV["SAMPLE_GROUPS"]
       filtered_groups = RSpec.world.filtered_examples.reject do |_group, examples|
         examples.empty?
       end.keys
-      sample = filtered_groups.sample(ENV["SAMPLE_GROUPS"].to_i)
+      random = Random.new(RSpec.configuration.seed)
+      sample = filtered_groups.sample(ENV["SAMPLE_GROUPS"].to_i, random: random)
       RSpec.world.filtered_examples = Hash.new do |hash, group|
         hash[group] = sample.include?(group) ? group.examples : []
       end

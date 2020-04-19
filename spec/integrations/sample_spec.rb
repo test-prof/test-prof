@@ -28,6 +28,14 @@ describe "Tests Sampling" do
       expect(output).to include("1 example, 0 failures")
     end
 
+    specify "SAMPLE=2 with seed" do
+      outputs = Array
+        .new(10) { run_rspec("sample", env: {"SAMPLE" => "2"}, options: "--format=documentation --seed 42") }
+        .map { |output| output.gsub(/Finished in.*/, '') }
+
+      expect(outputs.uniq.size).to eq 1
+    end
+
     specify "SAMPLE_GROUPS=1" do
       output = run_rspec("sample", env: {"SAMPLE_GROUPS" => "1"})
 
@@ -38,6 +46,14 @@ describe "Tests Sampling" do
       output = run_rspec("sample", env: {"SAMPLE_GROUPS" => "2"})
 
       expect(output).to include("2 examples, 0 failures")
+    end
+
+    specify "SAMPLE_GROUPS=2 with seed" do
+      outputs = Array
+        .new(10) { run_rspec("sample", env: {"SAMPLE_GROUPS" => "2"}, options: "--format=documentation --seed 42") }
+        .map { |output| output.gsub(/Finished in.*/, '') }
+
+      expect(outputs.uniq.size).to eq 1
     end
   end
 
