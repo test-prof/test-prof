@@ -157,9 +157,9 @@ module TestProf
     #
     # Stoplist holds two types of records, one is "stop", and another is "skip".
     # "skip" is to skip freezing objects that are defined with `let_it_be`'s
-    # `reload: true`/`refind: true`, but to proceed with deep freezing their
-    # associations. "stop" is for stop deep freezing for those records declared
-    # with `freeze: false`.
+    # `reload: true`, but to proceed with deep freezing their associations.
+    # "stop" is for stop deep freezing for those records declared with
+    # `freeze: false` and `refind: true`.
     module Stoplist
       class << self
         def skip?(record)
@@ -189,8 +189,9 @@ module TestProf
         end
       end
 
-      @skiplist = [] # Stack of example group-related variable definitions
-      @stoplist = [] # Stack of example group-related variable definitions
+      # Stack of example group-related variable definitions
+      @skiplist = []
+      @stoplist = []
     end
   end
 end
@@ -218,7 +219,7 @@ if defined?(::ActiveRecord::Base)
     config.register_modifier :refind do |record, val|
       next record unless val
 
-      TestProf::LetItBe::Stoplist.skip!(record)
+      TestProf::LetItBe::Stoplist.stop!(record)
 
       next record.refind if record.is_a?(::ActiveRecord::Base)
 
