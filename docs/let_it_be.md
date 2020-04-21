@@ -170,7 +170,7 @@ end
 > @since v0.12.0
 
 This feature is opt-in, since it may find a significant number of leakages in specs that may be a significant burden to fix all at once.
-It's possible to gradually turn it on for parts of specs by using:
+It's possible to gradually turn it on for parts of specs (e.g. only models) by using:
 
 ```ruby
 # spec/spec_helper.rb
