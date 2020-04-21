@@ -5,7 +5,7 @@ require_relative "../../../support/transactional_context"
 
 require "test_prof/recipes/rspec/let_it_be"
 
-RSpec.describe "Modification detection", let_it_be_frost: true do
+RSpec.describe "Modification detection", :transactional, let_it_be_frost: true do
   include TestProf::FactoryBot::Syntax::Methods
 
   # `order: defined` is to make sure the example that modifies the state
@@ -35,7 +35,7 @@ RSpec.describe "Modification detection", let_it_be_frost: true do
     it { expect(post.user.name).to eq("Original Name") }
   end
 
-  describe "no state leakage with transactional tests with `refind: true`", :transactional, order: :defined do
+  describe "no state leakage with transactional tests with `refind: true`", order: :defined do
     let_it_be(:post, refind: true) { create(:post, user: create(:user, name: "Original Name")) }
 
     it "leaks" do
@@ -45,7 +45,7 @@ RSpec.describe "Modification detection", let_it_be_frost: true do
     it { expect(post.user.name).to eq("Original Name") }
   end
 
-  describe "no state leakage with transactional tests with `reload: true`", :transactional, order: :defined do
+  describe "no state leakage with transactional tests with `reload: true`", order: :defined do
     let_it_be(:post, reload: true) { create(:post, user: create(:user, name: "Original Name")) }
 
     it "leaks" do
