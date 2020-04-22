@@ -12,6 +12,7 @@ module Minitest # :nodoc:
         opts[:top_count] = ENV["EVENT_PROF_TOP"].to_i if ENV["EVENT_PROF_TOP"]
         opts[:per_example] = true if ENV["EVENT_PROF_EXAMPLES"]
         opts[:fdoc] = true if ENV["FDOC"]
+        opts[:sample] = true if ENV["SAMPLE"] || ENV["SAMPLE_GROUPS"]
       end
     end
   end
@@ -39,5 +40,7 @@ module Minitest # :nodoc:
 
     reporter << TestProf::EventProfReporter.new(options[:io], options) if options[:event]
     reporter << TestProf::FactoryDoctorReporter.new(options[:io], options) if options[:fdoc]
+
+    ::TestProf::MinitestSample.call if options[:sample]
   end
 end
