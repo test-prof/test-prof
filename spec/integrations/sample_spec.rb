@@ -31,7 +31,7 @@ describe "Tests Sampling" do
     specify "SAMPLE=2 with seed" do
       outputs = Array
         .new(10) { run_rspec("sample", env: {"SAMPLE" => "2"}, options: "--format=documentation --seed 42") }
-        .map { |output| output.gsub(/Finished in.*/, '') }
+        .map { |output| output.gsub(/Finished in.*/, "") }
 
       expect(outputs.uniq.size).to eq 1
     end
@@ -51,7 +51,7 @@ describe "Tests Sampling" do
     specify "SAMPLE_GROUPS=2 with seed" do
       outputs = Array
         .new(10) { run_rspec("sample", env: {"SAMPLE_GROUPS" => "2"}, options: "--format=documentation --seed 42") }
-        .map { |output| output.gsub(/Finished in.*/, '') }
+        .map { |output| output.gsub(/Finished in.*/, "") }
 
       expect(outputs.uniq.size).to eq 1
     end
