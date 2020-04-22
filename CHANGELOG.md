@@ -549,3 +549,4 @@ Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 [@lostie]: https://github.com/lostie
 [@pirj]: https://github.com/pirj
 [@LynxEyes]: https://github.com/LynxEyes
+[@stefkin]: https://github.com/stefkin
