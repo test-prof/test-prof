@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- SAMPLE and SAMPLE_GROUP work consistently with seed in RSpec. ([@stefkin][])
+
 - Make sure EventProf is not affected by time freezing. ([@palkan][])
 
   EventProf results now is not affected by `Timecop.freeze` or similar.
@@ -547,3 +549,4 @@ Fixes [#10](https://github.com/palkan/test-prof/issues/10).
 [@lostie]: https://github.com/lostie
 [@pirj]: https://github.com/pirj
 [@LynxEyes]: https://github.com/LynxEyes
+[@stefkin]: https://github.com/stefkin
