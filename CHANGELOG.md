@@ -2,7 +2,7 @@
 
 ## master (unreleased)
 
-- SAMPLE and SAMPLE_GROUP work consistently with seed in RSpec. ([@stefkin][])
+- SAMPLE and SAMPLE_GROUP work consistently with seed in RSpec and Minitest. ([@stefkin][])
 
 - Make sure EventProf is not affected by time freezing. ([@palkan][])
 

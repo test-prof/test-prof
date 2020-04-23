@@ -70,6 +70,14 @@ describe "Tests Sampling" do
       expect(output).to include("1 runs, 1 assertions, 0 failures, 0 errors, 0 skips")
     end
 
+    specify "SAMPLE=2 with seed" do
+      outputs = Array
+        .new(10) { run_minitest("sample", env: {"SAMPLE" => "2", "TESTOPTS" => "-v --seed 42"}) }
+        .map { |output| output.gsub(/Finished in.*/, "") }
+
+      expect(outputs.uniq.size).to eq 1
+    end
+
     specify "SAMPLE_GROUPS=1" do
       output = run_minitest("sample", env: {"SAMPLE_GROUPS" => "1"})
 
@@ -80,6 +88,14 @@ describe "Tests Sampling" do
       output = run_minitest("sample", env: {"SAMPLE_GROUPS" => "2"})
 
       expect(output).to include("4 runs, 4 assertions, 0 failures, 0 errors, 0 skips")
+    end
+
+    specify "SAMPLE_GROUPS=2 with seed" do
+      outputs = Array
+        .new(10) { run_minitest("sample", env: {"SAMPLE_GROUPS" => "2", "TESTOPTS" => "-v --seed 42"}) }
+        .map { |output| output.gsub(/Finished in.*/, "") }
+
+      expect(outputs.uniq.size).to eq 1
     end
   end
 end

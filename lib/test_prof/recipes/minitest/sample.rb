@@ -35,18 +35,14 @@ module TestProf
           end
         end
       end
-    end
 
-    # Overrides Minitest.run
-    def run(*)
-      if ENV["SAMPLE"]
-        MinitestSample.sample_examples(ENV["SAMPLE"].to_i)
-      elsif ENV["SAMPLE_GROUPS"]
-        MinitestSample.sample_groups(ENV["SAMPLE_GROUPS"].to_i)
+      def call
+        if ENV["SAMPLE"]
+          ::TestProf::MinitestSample.sample_examples(ENV["SAMPLE"].to_i)
+        elsif ENV["SAMPLE_GROUPS"]
+          ::TestProf::MinitestSample.sample_groups(ENV["SAMPLE_GROUPS"].to_i)
+        end
       end
-      super
     end
   end
 end
-
-Minitest.singleton_class.prepend(TestProf::MinitestSample)
