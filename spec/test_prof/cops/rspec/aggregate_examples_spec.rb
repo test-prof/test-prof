@@ -6,6 +6,10 @@ require "test_prof/cops/rspec/aggregate_examples"
 RSpec.describe RuboCop::Cop::RSpec::AggregateExamples, :config do
   subject(:cop) { described_class.new(config) }
 
+  let(:cop_config) do
+    {"AddAggregateFailuresMetadata" => false}
+  end
+
   shared_examples "flags in example group" do |group|
     it "flags examples in '#{group}'" do
       expect_offense(<<~RUBY)
