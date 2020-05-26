@@ -12,7 +12,7 @@ module RuboCop
     module RSpec
       # Checks if example groups contain two or more aggregatable examples.
       #
-      # @see https://github.com/rubocop-hq/rspec-style-guide#expectations-per-example
+      # @see https://github.com/rubocop-hq/rspec-style-guide#expectation-per-example
       #
       # This cop is primarily for reducing the cost of repeated expensive
       # context initialization.
