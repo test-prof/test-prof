@@ -8,7 +8,7 @@ describe TestProf::FactoryDoctor, :transactional do
   after { described_class.stop }
 
   # Ensure meta-queries have been performed
-  before(:all) { User.first }
+  before(:all) { TestProf::FactoryBot.build_stubbed(:user) }
 
   around do |ex|
     was_threshold = described_class.config.threshold
