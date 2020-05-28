@@ -1,8 +1,6 @@
 # frozen_string_literal: true
 
-lib = File.expand_path("../lib", __FILE__)
-$LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require "test_prof/version"
+require_relative "lib/test_prof/version"
 
 Gem::Specification.new do |spec|
   spec.name = "test-prof"
@@ -28,8 +26,7 @@ Gem::Specification.new do |spec|
     "source_code_uri" => "http://github.com/palkan/test-prof"
   }
 
-  spec.files = `git ls-files`.split($/).select { |p| p.match(%r{^(lib/|config/|assets/[^\/]+)}) } +
-    %w[README.md CHANGELOG.md LICENSE.txt]
+  spec.files = Dir.glob("lib/**/*") + Dir.glob("config/**/*") + Dir.glob("assets/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]
 
   spec.require_paths = ["lib"]
 
