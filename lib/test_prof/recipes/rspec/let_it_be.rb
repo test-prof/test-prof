@@ -22,6 +22,10 @@ module TestProf
 
         LetItBe.modifiers[key] = block
       end
+
+      def default_modifiers
+        @default_modifiers ||= {}
+      end
     end
 
     class << self
@@ -75,7 +79,7 @@ module TestProf
     # And we love cats!)
     PREFIX = RUBY_ENGINE == "jruby" ? "@__jruby_is_not_cat_friendly__" : "@😸"
 
-    FROZEN_ERROR_HINT = "\nIf you are using `let_it_be`, you may want to pass `reload: true` option to it."
+    FROZEN_ERROR_HINT = "\nIf you are using `let_it_be`, you may want to pass `reload: true` or `refind: true` modifier to it."
 
     def self.define_let_it_be_alias(name, **default_args)
       define_method(name) do |identifier, **options, &blk|
@@ -84,17 +88,18 @@ module TestProf
     end
 
     def let_it_be(identifier, **options, &block)
-      options[:freeze] = metadata[:let_it_be_frost] if options[:freeze].nil?
-
       initializer = proc do
-        begin
-          record = instance_exec(&block)
-          instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", record)
-        rescue => e
-          e.message << FROZEN_ERROR_HINT if e.message.match?(/[Cc]an't modify frozen/)
-          raise e
-        end
+        instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", instance_exec(&block))
+      rescue FrozenError => e
+        e.message << TestProf::LetItBe::FROZEN_ERROR_HINT
+        raise
       end
+
+      default_options = LetItBe.config.default_modifiers.dup
+      default_options.merge!(metadata[:let_it_be_modifiers]) if metadata[:let_it_be_modifiers]
+
+      options = default_options.merge(options)
+
       before_all(&initializer)
 
       let_accessor = LetItBe.wrap_with_modifiers(options) do
@@ -245,13 +250,6 @@ if defined?(::ActiveRecord::Base)
 end
 
 RSpec::Core::ExampleGroup.extend TestProf::LetItBe
-RSpec.configure do |config|
-  config.after(:example) do |example|
-    if example.exception&.message&.match?(/[Cc]an't modify frozen/)
-      example.exception.message << TestProf::LetItBe::FROZEN_ERROR_HINT
-    end
-  end
-end
 
 TestProf::BeforeAll.configure do |config|
   config.before(:begin) do
@@ -260,5 +258,13 @@ TestProf::BeforeAll.configure do |config|
 
   config.after(:rollback) do
     TestProf::LetItBe::Stoplist.rollback
+  end
+end
+
+RSpec.configure do |config|
+  config.after(:example) do |example|
+    if example.exception&.is_a?(FrozenError)
+      example.exception.message << TestProf::LetItBe::FROZEN_ERROR_HINT
+    end
   end
 end

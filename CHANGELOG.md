@@ -2,6 +2,27 @@
 
 ## master (unreleased)
 
+- Add state leakage detection for `let_it_be`. ([@pirj][], [@jaimerson][], [@alexvko][])
+
+- Add default let_it_be modifiers configuration. ([@palkan][])
+
+  You can configure global modifiers:
+
+  ```ruby
+  TestProf::LetItBe.configure do |config|
+    # Make refind activated by default
+    config.default_modifiers[:refind] = true
+  end
+  ```
+
+  Or for specific contexts via tags:
+
+  ```ruby
+  context "with let_it_be reload", let_it_be_modifiers: {reload: true} do
+    # examples
+  end
+  ```
+
 - **Drop Ruby 2.4 support.** ([@palkan][])
 
 - SAMPLE and SAMPLE_GROUP work consistently with seed in RSpec and Minitest. ([@stefkin][])
@@ -15,8 +36,6 @@
 - Adds the ability to define stackprof's interval sampling by using `TEST_STACK_PROF_INTERVAL` env variable ([@LynxEyes][])
 
   Now you can use `$ TEST_STACK_PROF=1 TEST_STACK_PROF_INTERVAL=10000 rspec` to define a custom interval (in microseconds).
-
-- Add state leakage detection for `let_it_be`. ([@pirj][], [@jaimerson][], [@alexvko][])
 
 ## 0.11.3 (2020-02-11)
 

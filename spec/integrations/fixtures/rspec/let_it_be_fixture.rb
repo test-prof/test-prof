@@ -30,7 +30,7 @@ TestProf::LetItBe.configure do |config|
   config.alias_to :let_with_refind, refind: true
 end
 
-RSpec.describe "User", :transactional, let_it_be_frost: true do
+RSpec.describe "User", :transactional do
   before(:all) do
     @cache = {}
   end

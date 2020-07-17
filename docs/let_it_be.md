@@ -105,6 +105,30 @@ Make sure to set `use_transactional_tests` (`use_transactional_fixtures` in Rail
 
 If you're using DatabaseCleaner, make sure it rolls back the database between tests.
 
+## Aliases
+
+> @since v0.9.0
+
+Naming is hard. Handling edge cases (the ones described above) is also tricky.
+
+To solve this we provide a way to define `let_it_be` aliases with the predefined options:
+
+```ruby
+# rails_helper.rb
+TestProf::LetItBe.configure do |config|
+  # define an alias with `refind: true` by default
+  config.alias_to :let_it_be_with_refind, refind: true
+end
+
+# then use it in your tests
+describe "smth" do
+  let_it_be_with_refind(:foo) { Foo.create }
+
+  # refind can still be overridden
+  let_it_be_with_refind(:bar, refind: false) { Bar.create }
+end
+```
+
 ## Modifiers
 
 If you modify objects generated within a `let_it_be` block in your examples, you maybe have to re-initiate them to avoid state leakage between the examples.
@@ -165,33 +189,65 @@ TestProf::LetItBe.configure do |config|
 end
 ```
 
-### Auto-magic State Leakage Detection [experimental]
+### Default Modifiers
 
 > @since v0.12.0
 
-This feature is opt-in, since it may find a significant number of leakages in specs that may be a significant burden to fix all at once.
-It's possible to gradually turn it on for parts of specs (e.g. only models) by using:
+It's possible to configure the default modifiers used for all `let_it_be` calls:
+
+- Globally:
 
 ```ruby
-# spec/spec_helper.rb
-RSpec.configure do |config|
-  # ...
-  config.define_derived_metadata(file_path: %r{/spec/models/}) do |metadata|
-    metadata[:let_it_be_frost] = true
+TestProf::LetItBe.configure do |config|
+  # Make refind activated by default
+  config.default_modifiers[:refind] = true
+end
+```
+
+- For specific contexts using tags:
+
+```ruby
+context "with let_it_be reload", let_it_be_modifiers: {reload: true} do
+  # examples
+end
+```
+
+**NOTE:** Nested contexts tags are overwritten not merged:
+
+```ruby
+TestProf::LetItBe.configure do |config|
+  config.default_modifiers[:freeze] = false
+end
+
+context "with reload", let_it_be_modifiers: {reload: true} do
+  # uses freeze: false, reload: true here
+
+  context "with freeze", let_it_be_modifiers: {free: true} do
+    # uses only freeze: true (reload: true is overwritten by new metadata)
   end
 end
 ```
 
-The code might modify models shared between examples.
-Unwillingly - if the underlying code under test modifies models, e.g. modifies `updated_at` attribute.
-Deliberately - if models are updated in `before` hooks or examples themselves instead of creating models in a proper state initially.
+## State Leakage Detection
+
+> @since v0.12.0
+
+From [`rspec-rails` docs](https://relishapp.com/rspec/rspec-rails/v/3-9/docs/transactions) on transactions and `before(:context)`:
+
+> Even though database updates in each example will be rolled back, the object won't know about those rollbacks so the object and its backing data can easily get out of sync.
+
+Since `let_it_be` initialize objects in `before(:context)` hooks under the hood, it's affected by this problem: the code might modify models shared between examples (thus causing _shared state leaks_). That could happen unwillingly: when the underlying code under test modifies models, e.g. modifies `updated_at` attribute; or deliberately: when models are updated in `before` hooks or examples themselves instead of creating models in a proper state initially.
 
 This state leakage comes with potentially harmful side effects on the other examples, such as implicit dependencies and execution order dependency.
+
 With many shared models between many examples, it's hard to track down the example and exact place in the code that modifies the model.
 
-To detect modification objects that are passed to `let_it_be` are frozen (with `freeze`), and `FrozenError` (with a user-friendly error message) is raised.
+To detect modifications, objects that are passed to `let_it_be` are frozen (with `#freeze`), and `FrozenError` is raised:
 
 ```ruby
+# use freeze: true modifier to enable this feature
+let_it_be(:user, freeze: true) { create(:user) }
+
 # it is almost equal to
 before_all { @user = create(:user).freeze }
 let(:user) { @user }
@@ -199,34 +255,22 @@ let(:user) { @user }
 
 To fix the `FrozenError`:
 
-- add `reload: true`/`refind: true`, it pacifies leakage detection and prevents leakage itself. Typically it's significantly faster to reload the model than to re-create it from scratch before each example (two or even three orders of magnitude faster in some cases)
-- rewrite problematic test code
+- Add `reload: true`/`refind: true`, it pacifies leakage detection and prevents leakage itself. Typically it's significantly faster to reload the model than to re-create it from scratch before each example (two or even three orders of magnitude faster in some cases).
+- Rewrite the problematic test code.
 
-In the case when modification is deliberate, it's possible to disable leakage detection individually with `freeze: false` `let_it_be` option, or for the whole example group with `let_it_be_frost: false` RSpec metadata.
-
-NOTE: If the code under test or the test code calls `reload` on models, the example will fail.
-To avoid this, set `reload: true` on corresponding `let_it_be` definitions.
-
-## Aliases
-
-> @since v0.9.0
-
-Naming is hard. Handling edge cases (the ones described above) is also tricky.
-
-To solve this we provide a way to define `let_it_be` aliases with the predefined options:
+This feature is opt-in, since it may find a significant number of leakages in specs that may be a significant burden to fix all at once.
+It's possible to gradually turn it on for parts of specs (e.g., only models) by using:
 
 ```ruby
-# rails_helper.rb
-TestProf::LetItBe.configure do |config|
-  # define an alias with `refind: true` by default
-  config.alias_to :let_it_be_with_refind, refind: true
-end
-
-# then use it in your tests
-describe "smth" do
-  let_it_be_with_refind(:foo) { Foo.create }
-
-  # refind can still be overridden
-  let_it_be_with_refind(:bar, refind: false) { Bar.create }
+# spec/spec_helper.rb
+RSpec.configure do |config|
+  # ...
+  config.define_derived_metadata(let_it_be_frost: true) do |metadata|
+    metadata[:let_it_be_modifiers] ||= {freeze: true}
+  end
 end
 ```
+
+And then tag contexts/examples with `:let_it_be_frost` to enable this feature.
+
+Alternatively, you can specify `freeze` modifier explicitly (`let_it_be(freeze: true)`) or configure an alias.
