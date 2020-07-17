@@ -117,8 +117,8 @@ RSpec.describe "User", :transactional do
     end
 
     context "with custom modifier" do
-      let_it_be(:post, freeze: false, touch_with_shift: true) { create(:post, created_at: 1.day.ago) }
-      let_it_be(:post2, freeze: false, touch_with_shift: 2) { create(:post, created_at: 1.day.ago) }
+      let_it_be(:post, touch_with_shift: true) { create(:post, created_at: 1.day.ago) }
+      let_it_be(:post2, touch_with_shift: 2) { create(:post, created_at: 1.day.ago) }
 
       it "applies custom modifier" do
         expect(post.created_at).to be >= 1.hour.ago
