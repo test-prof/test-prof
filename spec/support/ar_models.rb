@@ -63,7 +63,7 @@ TestProf::FactoryBot.define do
   end
 
   factory :post do
-    sequence(:text) { |n| "Post ##{n}}" }
+    sequence(:text) { |n| "Post ##{n}" }
     user
 
     trait :with_bad_user do
