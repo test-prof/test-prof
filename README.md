@@ -83,7 +83,7 @@ And that's it)
 
 Supported Ruby versions:
 
-- Ruby (MRI) >= 2.4.0 (**NOTE:** for Ruby 2.2 use TestProf < 0.7.0 or Ruby 2.3 use TestProf ~> 0.7.0)
+- Ruby (MRI) >= 2.5.0 (**NOTE:** for Ruby 2.2 use TestProf < 0.7.0, Ruby 2.3 use TestProf ~> 0.7.0, Ruby 2.4 use TestProf <0.12.0)
 
 - JRuby >= 9.1.0.0 (**NOTE:** refinements-dependent features might require 9.2.7+)
 
