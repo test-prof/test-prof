@@ -20,3 +20,7 @@ Lint/DuplicateMethods:
 Layout/InitialIndentation:
   Exclude:
     - 'CHANGELOG.md'
+
+Naming/FileName:
+  Exclude:
+    - '**/*.md'
