@@ -31,9 +31,9 @@ describe "Tests Sampling" do
     specify "SAMPLE=2 with seed" do
       outputs = Array
         .new(10) { run_rspec("sample", env: {"SAMPLE" => "2"}, options: "--format=documentation --seed 42") }
-        .map { |output| output.gsub(/Finished in.*/, "") }
+        .map(&method(:filter_output))
 
-      expect(outputs.uniq.size).to eq 1
+      expect(outputs.uniq.size).to eq(1), "Outputs must be equal:\n#{outputs.uniq.join("\n")}"
     end
 
     specify "SAMPLE_GROUPS=1" do
@@ -51,7 +51,7 @@ describe "Tests Sampling" do
     specify "SAMPLE_GROUPS=2 with seed" do
       outputs = Array
         .new(10) { run_rspec("sample", env: {"SAMPLE_GROUPS" => "2"}, options: "--format=documentation --seed 42") }
-        .map { |output| output.gsub(/Finished in.*/, "").gsub(/\s/m, "") }
+        .map(&method(:filter_output))
 
       expect(outputs.uniq.size).to eq(1), "Outputs must be equal:\n#{outputs.uniq.join("\n")}"
     end
@@ -73,9 +73,9 @@ describe "Tests Sampling" do
     specify "SAMPLE=2 with seed" do
       outputs = Array
         .new(10) { run_minitest("sample", env: {"SAMPLE" => "2", "TESTOPTS" => "-v --seed 42"}) }
-        .map { |output| output.gsub(/Finished in.*/, "") }
+        .map(&method(:filter_output))
 
-      expect(outputs.uniq.size).to eq 1
+      expect(outputs.uniq.size).to eq(1), "Outputs must be equal:\n#{outputs.uniq.join("\n")}"
     end
 
     specify "SAMPLE_GROUPS=1" do
@@ -93,9 +93,16 @@ describe "Tests Sampling" do
     specify "SAMPLE_GROUPS=2 with seed" do
       outputs = Array
         .new(10) { run_minitest("sample", env: {"SAMPLE_GROUPS" => "2", "TESTOPTS" => "-v --seed 42"}) }
-        .map { |output| output.gsub(/Finished in.*/, "").gsub(/\s/, "") }
+        .map(&method(:filter_output))
 
       expect(outputs.uniq.size).to eq(1), "Outputs must be equal:\n#{outputs.uniq.join("\n")}"
+    end
+  end
+
+  def filter_output(output)
+    output.gsub(/Finished in.*/, "").tap do |str|
+      str.gsub!(/\s/, "")
+      str.gsub!(%r{#test_pass=\d+.\d+s=}, "") # for JRuby
     end
   end
 end
