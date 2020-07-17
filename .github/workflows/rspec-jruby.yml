@@ -31,4 +31,4 @@ jobs:
         bundle update
     - name: Run RSpec
       run: |
-        bundle exec rspec
+        bundle exec rspec --force-color
