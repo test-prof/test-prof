@@ -122,21 +122,50 @@ module TestProf
     end
 
     module Freezer
+      # Stoplist to prevent freezing objects and theirs associations that are defined
+      # with `let_it_be`'s `freeze: false` options during deep freezing.
+      #
+      # To only keep track of objects that are available in current example group,
+      # `begin` adds a new layer, and `rollback` removes a layer of unrelated objects
+      # along with rolling back the transaction where they were created.
+      #
+      # Stoplist holds records declared with `freeze: false` (so we do not freeze them even if they're used as
+      # associated records for frozen objects)
+      module Stoplist
+        class << self
+          def stop?(record)
+            @stoplist.any? { |layer| layer.include?(record) }
+          end
+
+          def stop!(record)
+            @stoplist.last.push(record)
+          end
+
+          def begin
+            @stoplist.push([])
+          end
+
+          def rollback
+            @stoplist.pop
+          end
+        end
+
+        # Stack of example group-related variable definitions
+        @stoplist = []
+      end
+
       class << self
         # Rerucsively freezes the object to detect modifications
         def deep_freeze(record)
           return if record.frozen?
           return if Stoplist.stop?(record)
 
-          record.freeze unless Stoplist.skip?(record)
+          record.freeze
 
           # Support `let_it_be` with `create_list`
           return record.each { |rec| deep_freeze(rec) } if record.respond_to?(:each)
 
           # Freeze associations as well.
-          # NOTE: `reload` statements in test or production code will cause a `FrozenError`
-          # (or a `TypeError` on earlier Rubies). In case the use of `reload` cannot be
-          # avoided, use `reload: true` in `let_it_be` declaration.
           return unless defined?(::ActiveRecord::Base)
           return unless record.is_a?(::ActiveRecord::Base)
 
@@ -152,52 +181,6 @@ module TestProf
         end
       end
     end
-
-    # Stoplist to prevent freezing objects and theirs associations that are defined
-    # with `let_it_be`'s `freeze: false` options during deep freezing.
-    #
-    # To only keep track of objects that are available in current example group,
-    # `begin` adds a new layer, and `rollback` removes a layer of unrelated objects
-    # along with rolling back the transaction where they were created.
-    #
-    # Stoplist holds two types of records, one is "stop", and another is "skip".
-    # "skip" is to skip freezing objects that are defined with `let_it_be`'s
-    # `reload: true`, but to proceed with deep freezing their associations.
-    # "stop" is for stop deep freezing for those records declared with
-    # `freeze: false` and `refind: true`.
-    module Stoplist
-      class << self
-        def skip?(record)
-          @skiplist.any? { |layer| layer.include?(record) }
-        end
-
-        def stop?(record)
-          @stoplist.any? { |layer| layer.include?(record) }
-        end
-
-        def skip!(record)
-          @skiplist.last.push(record)
-        end
-
-        def stop!(record)
-          @stoplist.last.push(record)
-        end
-
-        def begin
-          @skiplist.push([])
-          @stoplist.push([])
-        end
-
-        def rollback
-          @skiplist.pop
-          @stoplist.pop
-        end
-      end
-
-      # Stack of example group-related variable definitions
-      @skiplist = []
-      @stoplist = []
-    end
   end
 end
 
@@ -208,8 +191,6 @@ if defined?(::ActiveRecord::Base)
   TestProf::LetItBe.configure do |config|
     config.register_modifier :reload do |record, val|
       next record unless val
-
-      TestProf::LetItBe::Stoplist.skip!(record)
 
       next record.reload if record.is_a?(::ActiveRecord::Base)
 
@@ -224,8 +205,6 @@ if defined?(::ActiveRecord::Base)
     config.register_modifier :refind do |record, val|
       next record unless val
 
-      TestProf::LetItBe::Stoplist.stop!(record)
-
       next record.refind if record.is_a?(::ActiveRecord::Base)
 
       if record.respond_to?(:map)
@@ -237,9 +216,8 @@ if defined?(::ActiveRecord::Base)
     end
 
     config.register_modifier :freeze do |record, val|
-      # TODO: change this to `if val == false` when TestProf hits 1.0
-      unless val == true
-        TestProf::LetItBe::Stoplist.stop!(record)
+      if val == false
+        TestProf::LetItBe::Freezer::Stoplist.stop!(record)
         next record
       end
 
@@ -253,11 +231,11 @@ RSpec::Core::ExampleGroup.extend TestProf::LetItBe
 
 TestProf::BeforeAll.configure do |config|
   config.before(:begin) do
-    TestProf::LetItBe::Stoplist.begin
+    TestProf::LetItBe::Freezer::Stoplist.begin
   end
 
   config.after(:rollback) do
-    TestProf::LetItBe::Stoplist.rollback
+    TestProf::LetItBe::Freezer::Stoplist.rollback
   end
 end
 

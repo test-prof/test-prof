@@ -41,8 +41,8 @@ RSpec.describe "Modification detection", :transactional, let_it_be_frost: true d
     it { expect(post.user.name).to eq("Original Name") }
   end
 
-  describe "no state leakage with transactional tests with `refind: true` and `freeze: false`", order: :defined do
-    let_it_be(:post, refind: true, freeze: false) { create(:post, user: create(:user, name: "Original Name")) }
+  describe "no state leakage with transactional tests with `refind: true`", order: :defined do
+    let_it_be(:post, refind: true) { create(:post, user: create(:user, name: "Original Name")) }
 
     it "leaks" do
       post.user.update!(name: "John Doe")
@@ -51,8 +51,8 @@ RSpec.describe "Modification detection", :transactional, let_it_be_frost: true d
     it { expect(post.user.name).to eq("Original Name") }
   end
 
-  describe "no state leakage with transactional tests with `reload: true` and `freeze: false`", order: :defined do
-    let_it_be(:post, reload: true, freeze: false) { create(:post, user: create(:user, name: "Original Name")) }
+  describe "no state leakage with transactional tests with `reload: true`", order: :defined do
+    let_it_be(:post, reload: true) { create(:post, user: create(:user, name: "Original Name")) }
 
     it "leaks" do
       post.user.update!(name: "John Doe")
@@ -105,7 +105,7 @@ RSpec.describe "Modification detection", :transactional, let_it_be_frost: true d
         describe "level three" do
           let_it_be(:three, freeze: false) { [one, two, "three"] }
 
-          it "only freezes what's necessary" do
+          it "only freezes what's necessary", :aggregate_failures do
             expect { one.push(1) }.not_to raise_error
             expect { two.push(2) }.to raise_error(/can't modify frozen/i)
             expect { two.first.push(2) }.not_to raise_error
