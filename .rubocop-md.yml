@@ -16,11 +16,6 @@ Lint/DuplicateMethods:
   Exclude:
     - '**/*.md'
 
-# FIXME
-Layout/InitialIndentation:
-  Exclude:
-    - 'CHANGELOG.md'
-
 Naming/FileName:
   Exclude:
     - '**/*.md'
