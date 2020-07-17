@@ -12,7 +12,7 @@ AllCops:
     - 'vendor/**/*'
     - 'gemfiles/**/*'
   DisplayCopNames: true
-  TargetRubyVersion: 2.4
+  TargetRubyVersion: 2.5
 
 Standard/SemanticBlocks:
   Enabled: false
@@ -33,9 +33,7 @@ Layout/ParameterAlignment:
 Lint/AmbiguousBlockAssociation:
   Exclude:
     - 'spec/**/*'
-    - '**/*.md'
 
 Naming/FileName:
   Exclude:
     - 'lib/test-prof.rb'
-    - '**/*.md'

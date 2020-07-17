@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- **Drop Ruby 2.4 support.** ([@palkan][])
+
 - SAMPLE and SAMPLE_GROUP work consistently with seed in RSpec and Minitest. ([@stefkin][])
 
 - Make sure EventProf is not affected by time freezing. ([@palkan][])
