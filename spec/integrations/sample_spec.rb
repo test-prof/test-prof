@@ -53,7 +53,7 @@ describe "Tests Sampling" do
         .new(10) { run_rspec("sample", env: {"SAMPLE_GROUPS" => "2"}, options: "--format=documentation --seed 42") }
         .map { |output| output.gsub(/Finished in.*/, "").gsub(/\s/m, "") }
 
-      expect(outputs.uniq.size).to eq 1
+      expect(outputs.uniq.size).to eq(1), "Outputs must be equal:\n#{outputs.uniq.join("\n")}"
     end
   end
 
@@ -93,9 +93,9 @@ describe "Tests Sampling" do
     specify "SAMPLE_GROUPS=2 with seed" do
       outputs = Array
         .new(10) { run_minitest("sample", env: {"SAMPLE_GROUPS" => "2", "TESTOPTS" => "-v --seed 42"}) }
-        .map { |output| output.gsub(/Finished in.*/, "") }
+        .map { |output| output.gsub(/Finished in.*/, "").gsub(/\s/, "") }
 
-      expect(outputs.uniq.size).to eq 1
+      expect(outputs.uniq.size).to eq(1), "Outputs must be equal:\n#{outputs.uniq.join("\n")}"
     end
   end
 end
