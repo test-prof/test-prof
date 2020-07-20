@@ -64,7 +64,7 @@ By default, we use `FlatPrinter`.
 
 Also, you can specify RubyProf mode (`wall`, `cpu`, etc) through `TEST_RUBY_PROF_MODE` env variable.
 
-See [ruby_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/ruby_prof.rb) for all available configuration options and their usage.
+See [ruby_prof.rb](https://github.com/test-prof/test-prof/tree/master/lib/test_prof/ruby_prof.rb) for all available configuration options and their usage.
 
 ### Methods Exclusion
 

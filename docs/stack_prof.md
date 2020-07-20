@@ -76,4 +76,4 @@ You can also change StackProf interval through `TEST_STACK_PROF_INTERVAL` env va
 For modes `wall` and `cpu`, `TEST_STACK_PROF_INTERVAL` represents microseconds and will default to 1000 as per `stackprof`.
 For mode `object`, `TEST_STACK_PROF_INTERVAL` represents allocations and will default to 1 as per `stackprof`.
 
-See [stack_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/stack_prof.rb) for all available configuration options and their usage.
+See [stack_prof.rb](https://github.com/test-prof/test-prof/tree/master/lib/test_prof/stack_prof.rb) for all available configuration options and their usage.

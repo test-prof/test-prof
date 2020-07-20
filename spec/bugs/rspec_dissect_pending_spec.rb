@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# https://github.com/palkan/test-prof/issues/60
+# https://github.com/test-prof/test-prof/issues/60
 describe "RSpecDissect with pending examples", type: :integration do
   specify do
     output = run_rspec(

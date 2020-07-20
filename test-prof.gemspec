@@ -16,14 +16,14 @@ Gem::Specification.new do |spec|
     profile your examples using ActiveSupport notifications (if any) and
     statically analyze your code with custom RuboCop cops.
   }
-  spec.homepage = "http://github.com/palkan/test-prof"
+  spec.homepage = "http://github.com/test-prof/test-prof"
   spec.license = "MIT"
   spec.metadata = {
-    "bug_tracker_uri" => "http://github.com/palkan/test-prof/issues",
-    "changelog_uri" => "https://github.com/palkan/test-prof/blob/master/CHANGELOG.md",
+    "bug_tracker_uri" => "http://github.com/test-prof/test-prof/issues",
+    "changelog_uri" => "https://github.com/test-prof/test-prof/blob/master/CHANGELOG.md",
     "documentation_uri" => "https://test-prof.evilmartians.io/",
     "homepage_uri" => "https://test-prof.evilmartians.io/",
-    "source_code_uri" => "http://github.com/palkan/test-prof"
+    "source_code_uri" => "http://github.com/test-prof/test-prof"
   }
 
   spec.files = Dir.glob("lib/**/*") + Dir.glob("config/**/*") + Dir.glob("assets/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]

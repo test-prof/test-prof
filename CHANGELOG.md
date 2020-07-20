@@ -33,7 +33,7 @@ end
 
   EventProf results now is not affected by `Timecop.freeze` or similar.
 
-  See more in [#181](https://github.com/palkan/test-prof/issues/181).
+  See more in [#181](https://github.com/test-prof/test-prof/issues/181).
 
 - Adds the ability to define stackprof's interval sampling by using `TEST_STACK_PROF_INTERVAL` env variable ([@LynxEyes][])
 
@@ -159,7 +159,7 @@ end
 
 - Made FactoryProf measure and report on timing ([@danielwaterworth][])
 
-See [changelog](https://github.com/palkan/test-prof/blob/v0.8.0/CHANGELOG.md) for versions <0.9.0.
+See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md) for versions <0.9.0.
 
 [@palkan]: https://github.com/palkan
 [@marshall-lee]: https://github.com/marshall-lee

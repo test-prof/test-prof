@@ -1,7 +1,7 @@
 [![Cult Of Martians](http://cultofmartians.com/assets/badges/badge.svg)](https://cultofmartians.com)
-[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build](https://github.com/palkan/test-prof/workflows/Build/badge.svg)](https://github.com/palkan/test-prof/actions)
-[![JRuby Build](https://github.com/palkan/test-prof/workflows/JRuby%20Build/badge.svg)](https://github.com/palkan/test-prof/actions)
-[![Code Triagers Badge](https://www.codetriage.com/palkan/test-prof/badges/users.svg)](https://www.codetriage.com/palkan/test-prof)
+[![Gem Version](https://badge.fury.io/rb/test-prof.svg)](https://rubygems.org/gems/test-prof) [![Build](https://github.com/test-prof/test-prof/workflows/Build/badge.svg)](https://github.com/test-prof/test-prof/actions)
+[![JRuby Build](https://github.com/test-prof/test-prof/workflows/JRuby%20Build/badge.svg)](https://github.com/test-prof/test-prof/actions)
+[![Code Triagers Badge](https://www.codetriage.com/test-prof/test-prof/badges/users.svg)](https://www.codetriage.com/test-prof/test-prof)
 [![Documentation](https://img.shields.io/badge/docs-link-brightgreen.svg)](https://test-prof.evilmartians.io)
 
 # Ruby Tests Profiling Toolbox
@@ -51,7 +51,7 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 - [CodeTriage](https://github.com/codetriage/codetriage)
 - [Dev.to](https://github.com/thepracticaldev/dev.to)
 - [Open Project](https://github.com/opf/openproject)
-- [...and others](https://github.com/palkan/test-prof/issues/73)
+- [...and others](https://github.com/test-prof/test-prof/issues/73)
 
 ## Resources
 
@@ -95,9 +95,9 @@ Check out our [docs][].
 
 ## What's next?
 
-Have an idea? [Propose](https://github.com/palkan/test-prof/issues/new) a feature request!
+Have an idea? [Propose](https://github.com/test-prof/test-prof/issues/new) a feature request!
 
-Already using TestProf? [Share your story!](https://github.com/palkan/test-prof/issues/73)
+Already using TestProf? [Share your story!](https://github.com/test-prof/test-prof/issues/73)
 
 ## License
 

@@ -111,7 +111,7 @@ either by the time spent in the event or by the number of occurrences:
 EVENT_PROF_RANK=count EVENT_PROF='instantiation.active_record' be rspec
 ```
 
-See [event_prof.rb](https://github.com/palkan/test-prof/tree/master/lib/test_prof/event_prof.rb) for all available configuration options and their usage.
+See [event_prof.rb](https://github.com/test-prof/test-prof/tree/master/lib/test_prof/event_prof.rb) for all available configuration options and their usage.
 
 ## Using with RSpecStamp
 
@@ -218,7 +218,7 @@ EVENT_PROF=my.work bundle exec rake test
 
 You can also provide additional options:
 
-- `top_level: true | false` (defaults to `false`): defines whether you want to take into account only top-level invocations and ignore nested triggers of this event (that's how "factory.create" is [implemented](https://github.com/palkan/test-prof/blob/master/lib/test_prof/event_prof/custom_events/factory_create.rb))
+- `top_level: true | false` (defaults to `false`): defines whether you want to take into account only top-level invocations and ignore nested triggers of this event (that's how "factory.create" is [implemented](https://github.com/test-prof/test-prof/blob/master/lib/test_prof/event_prof/custom_events/factory_create.rb))
 - `guard: Proc` (defaults to `nil`): provide a Proc which could prevent from triggering an event: the method is instrumented only if `guard` returns `true`; `guard` is executed using `instance_exec` and the method arguments are passed to it.
 
 For example:

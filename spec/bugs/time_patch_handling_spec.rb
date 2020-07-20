@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# https://github.com/palkan/test-prof/issues/10
+# https://github.com/test-prof/test-prof/issues/10
 describe "Time.now patching handling (e.g. Timecop)", type: :integration do
   context "TestProf.now" do
     specify "works with ad-hoc patch" do
@@ -30,7 +30,7 @@ describe "Time.now patching handling (e.g. Timecop)", type: :integration do
     end
   end
 
-  # https://github.com/palkan/test-prof/issues/181
+  # https://github.com/test-prof/test-prof/issues/181
   context "EventProf" do
     specify "works with timecop" do
       output = run_rspec(

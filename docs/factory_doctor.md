@@ -56,7 +56,7 @@ User (./spec/models/user_spec.rb:3) (3 records created, 00:00.628)
 **NOTE**: have you noticed the "potentially" word? Unfortunately, FactoryDoctor is not a
 magician (it's still learning) and sometimes it produces false negatives and false positives too.
 
-Please, submit an [issue](https://github.com/palkan/test-prof/issues) if you found a case which makes FactoryDoctor fail.
+Please, submit an [issue](https://github.com/test-prof/test-prof/issues) if you found a case which makes FactoryDoctor fail.
 
 You can also tell FactoryDoctor to ignore specific examples/groups. Just add the `:fd_ignore` tag to it:
 
