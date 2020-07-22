@@ -2,7 +2,7 @@
 
 Do you know how much time you spend in `before` hooks? Or in memoization helpers such as `let`? Usually, the most of the whole test suite time.
 
-_RSpecDissect_ provides this kind of information and also shows you the worst example groups. The main purpose of RSpecDissect is to identify these slow groups and refactor them using [`before_all`](./before_all.md) or [`let_it_be`](./let_it_be.md) recipes.
+_RSpecDissect_ provides this kind of information and also shows you the worst example groups. The main purpose of RSpecDissect is to identify these slow groups and refactor them using [`before_all`](../recipes/before_all.md) or [`let_it_be`](../recipes/let_it_be.md) recipes.
 
 Example output:
 
@@ -73,7 +73,7 @@ end
 
 ## Using with RSpecStamp
 
-RSpecDissect can be used with [RSpec Stamp](./rspec_stamp.md) to automatically mark _slow_ examples with custom tags. For example:
+RSpecDissect can be used with [RSpec Stamp](../recipes/rspec_stamp.md) to automatically mark _slow_ examples with custom tags. For example:
 
 ```sh
 RD_PROF=1 RD_PROF_STAMP="slow" rspec ...
