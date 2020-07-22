@@ -115,7 +115,7 @@ See [event_prof.rb](https://github.com/test-prof/test-prof/tree/master/lib/test_
 
 ## Using with RSpecStamp
 
-EventProf can be used with [RSpec Stamp](./rspec_stamp.md) to automatically mark _slow_ examples with custom tags. For example:
+EventProf can be used with [RSpec Stamp](../recipes/rspec_stamp.md) to automatically mark _slow_ examples with custom tags. For example:
 
 ```sh
 EVENT_PROF="sql.active_record" EVENT_PROF_STAMP="slow:sql" rspec ...

@@ -86,7 +86,7 @@ FDOC=1 rspec ...
 
 ### Using with RSpecStamp
 
-FactoryDoctor can be used with [RSpec Stamp](./rspec_stamp.md) to automatically mark _bad_ examples with custom tags. For example:
+FactoryDoctor can be used with [RSpec Stamp](../recipes/rspec_stamp.md) to automatically mark _bad_ examples with custom tags. For example:
 
 ```sh
 FDOC=1 FDOC_STAMP="fdoc:consider" rspec ...
