@@ -1,0 +1,18 @@
+pre-commit:
+  commands:
+    mdl:
+      tags: style
+      glob: "**/*.md"
+      run: mdl {staged_files}
+    liche:
+      tags: links
+      glob: "**/*.md"
+      run: liche -c 2 -r docs/* -d docs/
+    forspell:
+      tags: grammar
+      glob: "**/*.md"
+      run: forspell {staged_files}
+    rubocop:
+      tags: style
+      glob: "**/*.md"
+      run: BUNDLE_GEMFILE=gemfiles/rubocop.gemfile bundle exec rubocop {staged_files}
