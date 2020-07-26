@@ -108,7 +108,7 @@ module RuboCop
       #     expect(number).to be_odd
       #   end
       #
-      class AggregateExamples < Cop
+      class AggregateExamples < ::RuboCop::Cop::Cop
         include LineRangeHelpers
         include MetadataHelpers
         include NodeMatchers

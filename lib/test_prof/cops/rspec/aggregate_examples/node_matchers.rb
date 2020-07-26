@@ -5,7 +5,7 @@ require_relative "../language"
 module RuboCop
   module Cop
     module RSpec
-      class AggregateExamples < Cop
+      class AggregateExamples < ::RuboCop::Cop::Cop
         # @internal
         #   Node matchers and searchers.
         module NodeMatchers

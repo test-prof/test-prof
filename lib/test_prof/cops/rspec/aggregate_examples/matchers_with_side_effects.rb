@@ -5,7 +5,7 @@ require_relative "../language"
 module RuboCop
   module Cop
     module RSpec
-      class AggregateExamples < Cop
+      class AggregateExamples < ::RuboCop::Cop::Cop
         # When aggregated, the expectations will fail when not supposed to or
         # have a risk of not failing when expected to. One example is
         # `validate_presence_of :comment` as it leaves an empty comment after
