@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module RSpec
-      class AggregateExamples < Cop
+      class AggregateExamples < ::RuboCop::Cop::Cop
         # @example `its`
         #
         #   # Supports regular `its` call with an attribute/method name,
