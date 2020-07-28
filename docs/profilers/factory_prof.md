@@ -85,7 +85,7 @@ The wider column the more often this stack appears.
 
 The `root` cell shows the total number of `create` calls.
 
-## Acknowledgements
+## Acknowledgments
 
 - Thanks to [Martin Spier](https://github.com/spiermar) for [d3-flame-graph](https://github.com/spiermar/d3-flame-graph)
 
