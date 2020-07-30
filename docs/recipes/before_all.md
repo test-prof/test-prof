@@ -208,7 +208,9 @@ If you're using DatabaseCleaner, make sure it rolls back the database between te
 
 TestProf recognizes Isolator out-of-the-box and make it ignore `before_all` transactions.
 
-You just need to make sure that you require `isolator` after TestProf helpers or require the patch explicitly:
+You just need to make sure that you require `isolator` before loading `before_all` (or `let_it_be`).
+
+Alternatively, you can load the patch explicitly:
 
 ```ruby
 # after loading before_all or/and let_it_be
