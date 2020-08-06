@@ -5,8 +5,8 @@ module TestProf
   module ActiveRecord3Transactions
     refine ::ActiveRecord::ConnectionAdapters::AbstractAdapter do
       def begin_transaction(joinable: true)
-        increment_open_transactions
         if open_transactions > 0
+          increment_open_transactions
           create_savepoint
         else
           begin_db_transaction
