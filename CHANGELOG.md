@@ -2,6 +2,10 @@
 
 ## master (unrealeased)
 
+## 0.12.1 (2020-09-01)
+
+- Minor improvements.
+
 ## 0.12.0 (2020-07-17)
 
 - Add state leakage detection for `let_it_be`. ([@pirj][], [@jaimerson][], [@alexvko][])
