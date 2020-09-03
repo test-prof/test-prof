@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+## 0.12.2 (2020-09-03)
+
 - Execute Minitest `before_all` in the context of the current test object. ([@palkan][])
 
 ## 0.12.1 (2020-09-01)
