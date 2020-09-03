@@ -8,20 +8,21 @@ module TestProf
     # store instance variables
     module Minitest # :nodoc: all
       class Executor
-        attr_reader :active
+        attr_reader :active, :block, :captured_ivars
 
         alias active? active
 
         def initialize(&block)
           @block = block
+          @captured_ivars = []
         end
 
-        def activate!(test_class)
-          return if active?
+        def activate!(test_object)
+          return restore_ivars(test_object) if active?
           @active = true
-          @examples_left = test_class.runnable_methods.size
+          @examples_left = test_object.class.runnable_methods.size
           BeforeAll.begin_transaction do
-            capture!
+            capture!(test_object)
           end
         end
 
@@ -33,16 +34,21 @@ module TestProf
           BeforeAll.rollback_transaction
         end
 
-        def capture!
-          instance_eval(&@block)
+        def capture!(test_object)
+          before_ivars = test_object.instance_variables
+
+          test_object.instance_eval(&block)
+
+          (test_object.instance_variables - before_ivars).each do |ivar|
+            captured_ivars << [ivar, test_object.instance_variable_get(ivar)]
+          end
         end
 
-        def restore_to(test_object)
-          instance_variables.each do |ivar|
-            next if ivar == :@block
+        def restore_ivars(test_object)
+          captured_ivars.each do |(ivar, val)|
             test_object.instance_variable_set(
               ivar,
-              instance_variable_get(ivar)
+              val
             )
           end
         end
@@ -62,8 +68,7 @@ module TestProf
 
           prepend(Module.new do
             def setup
-              self.class.before_all_executor.activate!(self.class)
-              self.class.before_all_executor.restore_to(self)
+              self.class.before_all_executor.activate!(self)
               super
             end
 

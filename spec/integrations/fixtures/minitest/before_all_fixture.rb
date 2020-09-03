@@ -12,7 +12,11 @@ describe "User" do
   prepend TransactionalMinitest
 
   before_all do
-    @user = TestProf::FactoryBot.create(:user)
+    @user = TestProf::FactoryBot.create(:user, name: user_name)
+  end
+
+  def user_name
+    %w[Matroskin Sharik].sample
   end
 
   def setup
