@@ -88,6 +88,16 @@ Supported Ruby versions:
 
 Supported RSpec version (for RSpec features only): >= 3.5.0 (for older RSpec version use TestProf < 0.8.0).
 
+### Linting with RuboCop RSpec
+
+When you lint your RSpec spec files with `rubocop-rspec`, it will fail to properly detect RSpec constructs that TestProf defines, `let_it_be` and `before_all`.
+Make sure to use `rubocop-rspec` 2.0 or newer and add the following to your `.rubocop.yml`:
+
+```yaml
+inherit_gem:
+  test-prof: config/rubocop-rspec.yml
+```
+
 ## Profilers
 
 - [RubyProf Integration](./profilers/ruby_prof.md)
