@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+- Add support for RSpec aliases detection when linting specs using `let_it_be`/`before_all` with `rubocop-rspec` 2.0 ([@pirj][])
+
 ## 0.12.2 (2020-09-03)
 
 - Execute Minitest `before_all` in the context of the current test object. ([@palkan][])
