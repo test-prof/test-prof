@@ -12,19 +12,30 @@ DB_CONFIG =
   if ENV["DB"] == "sqlite-file"
     FileUtils.mkdir_p TestProf.config.output_dir
     {adapter: "sqlite3", database: File.join(TestProf.config.output_dir, "testdb.sqlite")}
+  elsif ENV["DB"] == "postgres"
+    require "active_record/database_configurations"
+    config = ActiveRecord::DatabaseConfigurations::UrlConfig.new(
+      "test",
+      "primary",
+      ENV.fetch("DATABASE_URL"),
+      {"database" => ENV.fetch("DB_NAME", "test_prof_test")}
+    )
+    config.config
   else
     {adapter: "sqlite3", database: ":memory:"}
   end
 
 ActiveRecord::Base.establish_connection(**DB_CONFIG)
 
+ActiveRecord::Base.connection.truncate_tables(*ActiveRecord::Base.connection.tables)
+
 ActiveRecord::Schema.define do
-  create_table :users do |t|
+  create_table :users, if_not_exists: true do |t|
     t.string :name
     t.string :tag
   end
 
-  create_table :posts do |t|
+  create_table :posts, if_not_exists: true do |t|
     t.text :text
     t.integer :user_id
     t.foreign_key :users if ActiveRecord::VERSION::MAJOR >= 4

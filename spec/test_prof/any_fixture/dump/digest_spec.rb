@@ -2,7 +2,7 @@
 
 require "test_prof/any_fixture"
 
-describe TestProf::AnyFixture::Dump::Digest, unit: :any_fixture do
+describe TestProf::AnyFixture::Dump::Digest do
   subject { described_class }
 
   before(:all) do
@@ -40,7 +40,7 @@ describe TestProf::AnyFixture::Dump::Digest, unit: :any_fixture do
   it "accepts file paths" do
     digest = subject.call("tmp/any_fixture_digest/1.txt")
 
-    sleep 0.1
+    sleep 1
 
     File.write("tmp/any_fixture_digest/1.txt", "Boo!2")
 

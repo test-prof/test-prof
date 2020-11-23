@@ -12,6 +12,7 @@ if File.exist?(local_gemfile)
 else
   platform :mri do
     gem "sqlite3", "~> 1.4"
+    gem "pg", "~> 1.0"
   end
 
   platform :jruby do
