@@ -15,6 +15,7 @@ shared_context "transactional", transactional: true do
 
   append_after(:each) do
     Isolator.transactions_threshold -= 1 if defined?(Isolator)
-    ActiveRecord::Base.connection.rollback_transaction
+    ActiveRecord::Base.connection.rollback_transaction unless
+      ActiveRecord::Base.connection.open_transactions.zero?
   end
 end
