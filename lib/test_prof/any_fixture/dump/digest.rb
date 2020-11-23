@@ -4,10 +4,23 @@ module TestProf
   module AnyFixture
     class Dump
       module Digest
-        class << self
-          def call(*paths)
-            paths.size.to_s
+        module_function
+
+        def call(*paths)
+          files = (AnyFixture.config.default_dump_watch_paths + paths).each_with_object([]) do |path_or_glob, acc|
+            if File.file?(path_or_glob)
+              acc << path_or_glob
+            else
+              acc = acc.concat Dir[path_or_glob]
+            end
+            acc
           end
+
+          return if files.empty?
+
+          updated_at = File.mtime(files.max { |file| File.mtime(file) })
+
+          "#{updated_at.to_f.to_s.delete(".")}-#{files.size}"
         end
       end
     end

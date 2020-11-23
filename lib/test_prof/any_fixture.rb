@@ -93,8 +93,10 @@ module TestProf
       # Use `watch` to provide additional paths to watch for
       # dump re-generation
       def register_dump(name, **options)
+        called_from = caller_locations(1, 1).first.path
+
         register("sql/#{name}") do
-          dump = Dump.new(name, called_from: caller_locations(1, 1), **options)
+          dump = Dump.new(name, called_from: called_from, **options)
 
           next dump.load if dump.exists?
 
