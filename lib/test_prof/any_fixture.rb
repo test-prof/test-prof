@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_prof/ext/float_duration"
+require "test_prof/any_fixture/dump"
 
 module TestProf
   # Make DB fixtures from blocks.
@@ -8,6 +9,23 @@ module TestProf
     INSERT_RXP = /^INSERT INTO ([\S]+)/.freeze
 
     using FloatDuration
+
+    # AnyFixture configuration
+    class Configuration
+      attr_accessor :reporting_enabled, :dumps_dir
+      attr_reader :default_dump_watch_paths
+
+      alias reporting_enabled? reporting_enabled
+
+      def initialize
+        @reporting_enabled = ENV["ANYFIXTURE_REPORT"] == "1"
+        @dumps_dir = "any_dumps"
+        @default_dump_watch_paths = %w[
+          db/schema.rb
+          db/structure.sql
+        ]
+      end
+    end
 
     class Cache # :nodoc:
       attr_reader :store, :stats
@@ -40,11 +58,26 @@ module TestProf
     class << self
       include Logging
 
-      attr_accessor :reporting_enabled
-
-      def reporting_enabled?
-        reporting_enabled == true
+      def config
+        @config ||= Configuration.new
       end
+
+      def configure
+        yield config
+      end
+
+      # Backward compatibility
+      def reporting_enabled=(val)
+        warn "AnyFixture.reporting_enabled is deprecated. Use AnyFixture.config.reporting_enabled instead"
+        config.reporting_enabled = val
+      end
+
+      def reporting_enabled
+        warn "AnyFixture.reporting_enabled is deprecated. Use AnyFixture.config.reporting_enabled instead"
+        config.reporting_enabled
+      end
+
+      alias reporting_enabled? reporting_enabled
 
       # Register a block of code as a fixture,
       # returns the result of the block execution
@@ -53,6 +86,27 @@ module TestProf
           ActiveSupport::Notifications.subscribed(method(:subscriber), "sql.active_record") do
             yield
           end
+        end
+      end
+
+      # Create and register new SQL dump.
+      # Use `watch` to provide additional paths to watch for
+      # dump re-generation
+      def register_dump(name, **options)
+        register("sql/#{name}") do
+          dump = Dump.new(name, called_from: caller_locations(1, 1), **options)
+
+          next dump.load if dump.exists?
+
+          subscriber = ActiveSupport::Notifications.subscribe("sql.active_record", dump.subscriber)
+
+          res = yield
+
+          dump.commit!
+
+          res
+        ensure
+          ActiveSupport::Notifications.unsubscribe(subscriber) if subscriber
         end
       end
 
@@ -76,7 +130,13 @@ module TestProf
 
       def subscriber(_event, _start, _finish, _id, data)
         matches = data.fetch(:sql).match(INSERT_RXP)
-        tables_cache[matches[1]] = true if matches
+        return unless matches
+
+        table_name = matches[1]
+
+        return if /sqlite_sequence/.match?(table_name)
+
+        tables_cache[table_name] = true
       end
 
       def report_stats
@@ -148,7 +208,5 @@ module TestProf
         connection.disable_referential_integrity { yield }
       end
     end
-
-    self.reporting_enabled = ENV["ANYFIXTURE_REPORT"] == "1"
   end
 end

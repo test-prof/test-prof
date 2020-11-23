@@ -72,3 +72,8 @@ jobs:
     - name: Run RSpec
       run: |
         bundle exec rspec --force-color
+    - name: Run AnyFixture tests with file-backed SQLite
+      env:
+        DB: sqlite-file
+      run: |
+        bundle exec rspec --force-color --tag unit:any_fixture

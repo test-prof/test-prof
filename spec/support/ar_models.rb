@@ -8,7 +8,15 @@ require "test_prof/factory_bot"
 require "activerecord-jdbc-adapter" if defined? JRUBY_VERSION
 require "activerecord-jdbcsqlite3-adapter" if defined? JRUBY_VERSION
 
-ActiveRecord::Base.establish_connection(adapter: "sqlite3", database: ":memory:")
+DB_CONFIG =
+  if ENV["DB"] == "sqlite-file"
+    FileUtils.mkdir_p TestProf.config.output_dir
+    {adapter: "sqlite3", database: File.join(TestProf.config.output_dir, "testdb.sqlite")}
+  else
+    {adapter: "sqlite3", database: ":memory:"}
+  end
+
+ActiveRecord::Base.establish_connection(**DB_CONFIG)
 
 ActiveRecord::Schema.define do
   create_table :users do |t|

@@ -146,7 +146,7 @@ Total time saved: 00:00.019
 Total time wasted: 00:00.000
 ```
 
-The reporting is off by default, to enable the reporting set `TestProf::AnyFixture.reporting_enabled = true` (or you can invoke it manually through `TestProf::AnyFixture.report_stats`).
+The reporting is off by default, to enable the reporting set `TestProf::AnyFixture.config.reporting_enabled = true` (or you can invoke it manually through `TestProf::AnyFixture.report_stats`).
 
 You can also enable reporting through `ANYFIXTURE_REPORT=1` env variable.
 
