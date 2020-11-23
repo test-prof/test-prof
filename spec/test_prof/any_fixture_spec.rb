@@ -2,7 +2,7 @@
 
 require "test_prof/any_fixture"
 
-describe TestProf::AnyFixture, :transactional, unit: :any_fixture do
+describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
   subject { described_class }
 
   after { described_class.reset }
@@ -94,11 +94,7 @@ describe TestProf::AnyFixture, :transactional, unit: :any_fixture do
       expect(User.count).to eq 0
       expect(Post.count).to eq 0
 
-      ActiveRecord::Base.connection.disconnect! unless DB_CONFIG[:database] == ":memory:"
-
       subject.register_dump("users") { false }
-
-      ActiveRecord::Base.connection.send(:connect) unless DB_CONFIG[:database] == ":memory:"
 
       expect(User.count).to eq 2
       expect(Post.count).to eq 2

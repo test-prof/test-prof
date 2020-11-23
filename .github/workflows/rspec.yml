@@ -48,6 +48,17 @@ jobs:
           gemfile: "gemfiles/railsmaster.gemfile"
         - ruby: 2.4
           gemfile: "gemfiles/activerecord6.gemfile"
+    services:
+      postgres:
+        image: postgres:12
+        ports: ["5432:5432"]
+        env:
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
     - uses: actions/checkout@v2
     - uses: actions/cache@v1
@@ -62,7 +73,7 @@ jobs:
     - name: Install system deps
       run: |
         sudo apt-get update
-        sudo apt-get install libsqlite3-dev
+        sudo apt-get install libsqlite3-dev libpq-dev postgresql-client-12
     - name: Bundle install
       run: |
         bundle config path /home/runner/bundle
@@ -72,8 +83,15 @@ jobs:
     - name: Run RSpec
       run: |
         bundle exec rspec --force-color
-    - name: Run AnyFixture tests with file-backed SQLite
+    - name: Run file-backed SQLite tests
       env:
         DB: sqlite-file
       run: |
-        bundle exec rspec --force-color --tag unit:any_fixture
+        bundle exec rspec --force-color --tag sqlite:file
+    - name: Run PostgreSQL tests
+      env:
+        DB: postgres
+        DATABASE_URL: postgres://postgres:postgres@localhost:5432
+        DB_NAME: postgres
+      run: |
+        bundle exec rspec --force-color --tag postgres

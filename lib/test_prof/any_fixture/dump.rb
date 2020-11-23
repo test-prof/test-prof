@@ -6,7 +6,7 @@ require "set"
 
 module TestProf
   module AnyFixture
-    MODIFY_RXP = /^(INSERT INTO|UPDATE|DELETE FROM) ([\S]+)/.freeze
+    MODIFY_RXP = /^(INSERT INTO|UPDATE|DELETE FROM|ALTER SEQUENCE) ([\S]+)/i.freeze
 
     class Dump
       class Subscriber
@@ -72,7 +72,7 @@ module TestProf
             require "test_prof/any_fixture/dump/sqlite"
             SQLite
           when /postgresql/i
-            require "test_prof/any_fixture/dump/sqlite"
+            require "test_prof/any_fixture/dump/postgresql"
             PostgreSQL
           else
             raise ArgumentError,
