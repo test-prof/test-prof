@@ -66,10 +66,10 @@ end
 
 ActiveSupport.on_load(:active_record) do
   if ::ActiveRecord::Base.connection.pool.respond_to?(:lock_thread=)
-    TestProf.log :warn, "You activated ActiveRecordSharedConnection patch for the Rails version,\n" \
-                        "which has a built-in support for the same functionality.\n" \
-                        "Consider removing it, 'cause this could result in unexpected behaviour.\n\n" \
-                        "Read more in the docs: https://test-prof.evilmartians.io/#/active_record_shared_connection"
+    TestProf.log :warn, "Skip activateing ActiveRecordSharedConnection since your Rails version\n" \
+                        "has a built-in support for the same functionality.\n" \
+                        "Read more in the docs: https://test-prof.evilmartians.io/#/recipes/active_record_shared_connection"
+    next
   end
 
   TestProf::ActiveRecordSharedConnection.enable!
