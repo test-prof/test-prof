@@ -6,7 +6,8 @@ require "set"
 
 module TestProf
   module AnyFixture
-    MODIFY_RXP = /^(INSERT INTO|UPDATE|DELETE FROM|ALTER SEQUENCE) ([\S]+)/i.freeze
+    MODIFY_RXP = /^(INSERT INTO|UPDATE|DELETE FROM) ([\S]+)/i.freeze
+    ANY_FIXTURE_RXP = /\-\- any_fixture:dump/.freeze
 
     class Dump
       class Subscriber
@@ -28,11 +29,17 @@ module TestProf
         end
 
         def finish(_event, _id, payload)
-          matches = payload.fetch(:sql).match(MODIFY_RXP)
-          return unless matches
+          sql = payload.fetch(:sql)
+          matches = sql.match(MODIFY_RXP)
 
-          binds = payload[:binds].dup
-          sql = payload[:sql].gsub(/(\?|\$\d+)/) { ActiveRecord::Base.connection.quote(binds.shift) }
+          if matches
+            binds = payload[:binds].dup
+            sql = sql.gsub(/(\?|\$\d+)/) { ActiveRecord::Base.connection.quote(binds.shift) }
+          elsif sql.match?(ANY_FIXTURE_RXP)
+            sql = +sql
+          else
+            return
+          end
 
           sql.tr!("\n", " ")
 
@@ -54,7 +61,7 @@ module TestProf
 
           return if reset_pk.include?(table_name)
 
-          adapter.reset_sequence!(table_name, 123_654)
+          adapter.reset_sequence!(table_name, AnyFixture.config.dump_sequence_start)
           reset_pk << table_name
         end
       end
@@ -70,10 +77,10 @@ module TestProf
           case ActiveRecord::Base.connection.adapter_name
           when /sqlite/i
             require "test_prof/any_fixture/dump/sqlite"
-            SQLite
+            SQLite.new
           when /postgresql/i
             require "test_prof/any_fixture/dump/postgresql"
-            PostgreSQL
+            PostgreSQL.new
           else
             raise ArgumentError,
               "Your current database adapter (#{ActiveRecord::Base.connection.adapter_name}) " \
@@ -88,11 +95,20 @@ module TestProf
       end
 
       def load
+        return import_via_active_record if AnyFixture.config.import_dump_via_active_record?
+
         adapter.import(path) || import_via_active_record
       end
 
       def commit!
         subscriber.commit
+      end
+
+      def within_prepared_env(setup: nil, teardown: nil)
+        setup_dump_env(setup)
+        yield
+      ensure
+        teardown_dump_env(teardown)
       end
 
       private
@@ -117,6 +133,22 @@ module TestProf
         FileUtils.mkdir_p(dir)
 
         File.join(dir, "#{name}-#{digest}.sql")
+      end
+
+      def setup_dump_env(callback = nil)
+        # First, call config-defined setup callbacks
+        AnyFixture.config.setup_dump_env.each(&:call)
+        # Then, adapter-defined callbacks
+        adapter.setup_env
+        # Finally, user-provided callback
+        callback&.call
+      end
+
+      def teardown_dump_env(callback = nil)
+        # The order is vice versa to setup
+        callback&.call
+        adapter.teardown_env
+        AnyFixture.config.teardown_dump_env.each(&:call)
       end
     end
   end

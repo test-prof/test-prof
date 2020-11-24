@@ -13,9 +13,11 @@ module TestProf
     # AnyFixture configuration
     class Configuration
       attr_accessor :reporting_enabled, :dumps_dir
-      attr_reader :default_dump_watch_paths
+      attr_reader :default_dump_watch_paths, :dump_sequence_start,
+        :import_dump_via_active_record
 
       alias reporting_enabled? reporting_enabled
+      alias import_dump_via_active_record? import_dump_via_active_record
 
       def initialize
         @reporting_enabled = ENV["ANYFIXTURE_REPORT"] == "1"
@@ -24,6 +26,26 @@ module TestProf
           db/schema.rb
           db/structure.sql
         ]
+        @dump_sequence_start = 123_654
+        @import_dump_via_active_record = ENV["ANYFIXTURE_IMPORT_DUMP_ACTIVE_RECORD"] == "1"
+        @setup_dump_env = []
+        @teardown_dump_env = []
+      end
+
+      def setup_dump_env(&block)
+        if block_given?
+          @setup_dump_env << block
+        else
+          @setup_dump_env
+        end
+      end
+
+      def teardown_dump_env(&block)
+        if block_given?
+          @teardown_dump_env << block
+        else
+          @teardown_dump_env
+        end
       end
     end
 
@@ -101,8 +123,7 @@ module TestProf
           next dump.load if dump.exists?
 
           subscriber = ActiveSupport::Notifications.subscribe("sql.active_record", dump.subscriber)
-
-          res = yield
+          res = dump.within_prepared_env(**options) { yield }
 
           dump.commit!
 

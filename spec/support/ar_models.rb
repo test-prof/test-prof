@@ -30,14 +30,22 @@ ActiveRecord::Base.establish_connection(**DB_CONFIG)
 ActiveRecord::Base.connection.truncate_tables(*ActiveRecord::Base.connection.tables)
 
 ActiveRecord::Schema.define do
-  create_table :users, if_not_exists: true do |t|
+  using_pg = ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
+
+  enable_extension "pgcrypto" if using_pg
+
+  create_table :users, id: (using_pg ? :uuid : :bigint), if_not_exists: true do |t|
     t.string :name
     t.string :tag
   end
 
   create_table :posts, if_not_exists: true do |t|
     t.text :text
-    t.integer :user_id
+    if using_pg
+      t.uuid :user_id
+    else
+      t.bigint :user_id
+    end
     t.foreign_key :users if ActiveRecord::VERSION::MAJOR >= 4
     t.timestamps
   end
