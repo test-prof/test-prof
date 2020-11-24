@@ -68,8 +68,8 @@ module TestProf
 
       attr_reader :subscriber, :path
 
-      def initialize(name, called_from: nil, watch: [])
-        digest = Digest.call(called_from, *watch)
+      def initialize(name, watch: [])
+        digest = Digest.call(*watch)
 
         @path = build_path(name, digest)
 

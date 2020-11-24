@@ -116,9 +116,10 @@ module TestProf
       # dump re-generation
       def register_dump(name, **options)
         called_from = caller_locations(1, 1).first.path
+        watch = options.delete(:watch) || [called_from]
 
         register("sql/#{name}") do
-          dump = Dump.new(name, called_from: called_from, **options)
+          dump = Dump.new(name, watch: watch)
 
           next dump.load if dump.exists?
 
