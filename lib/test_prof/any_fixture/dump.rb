@@ -30,16 +30,10 @@ module TestProf
 
         def finish(_event, _id, payload)
           sql = payload.fetch(:sql)
-          matches = sql.match(MODIFY_RXP)
+          return unless trackable_sql?(sql)
 
-          if matches
-            binds = payload[:binds].dup
-            sql = sql.gsub(/(\?|\$\d+)/) { ActiveRecord::Base.connection.quote(binds.shift) }
-          elsif sql.match?(ANY_FIXTURE_RXP)
-            sql = +sql
-          else
-            return
-          end
+          binds = payload[:binds].dup
+          sql = sql.gsub(/(\?|\$\d+)/) { ActiveRecord::Base.connection.quote(binds.shift) }
 
           sql.tr!("\n", " ")
 
@@ -63,6 +57,10 @@ module TestProf
 
           adapter.reset_sequence!(table_name, AnyFixture.config.dump_sequence_start)
           reset_pk << table_name
+        end
+
+        def trackable_sql?(sql)
+          sql.match?(MODIFY_RXP) || sql.match?(ANY_FIXTURE_RXP) || sql.match?(AnyFixture.config.dump_matching_queries)
         end
       end
 

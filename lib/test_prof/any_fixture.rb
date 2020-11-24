@@ -12,9 +12,9 @@ module TestProf
 
     # AnyFixture configuration
     class Configuration
-      attr_accessor :reporting_enabled, :dumps_dir
-      attr_reader :default_dump_watch_paths, :dump_sequence_start,
-        :import_dump_via_active_record
+      attr_accessor :reporting_enabled, :dumps_dir, :dump_sequence_start,
+        :import_dump_via_active_record, :dump_matching_queries
+      attr_reader :default_dump_watch_paths
 
       alias reporting_enabled? reporting_enabled
       alias import_dump_via_active_record? import_dump_via_active_record
@@ -27,6 +27,7 @@ module TestProf
           db/structure.sql
         ]
         @dump_sequence_start = 123_654
+        @dump_matching_queries = /^$/
         @import_dump_via_active_record = ENV["ANYFIXTURE_IMPORT_DUMP_ACTIVE_RECORD"] == "1"
         @setup_dump_env = []
         @teardown_dump_env = []
