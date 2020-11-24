@@ -87,11 +87,11 @@ jobs:
       env:
         DB: sqlite-file
       run: |
-        bundle exec rspec --force-color --tag sqlite:file
-    - name: Run PostgreSQL tests
+        bundle exec rspec --force-color --tag sqlite
+    - name: Run RSpec with PostgreSQL
       env:
         DB: postgres
         DATABASE_URL: postgres://postgres:postgres@localhost:5432
         DB_NAME: postgres
       run: |
-        bundle exec rspec --force-color --tag postgres
+        bundle exec rspec --force-color
