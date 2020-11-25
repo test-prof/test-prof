@@ -29,23 +29,23 @@ module TestProf
         @dump_sequence_start = 123_654
         @dump_matching_queries = /^$/
         @import_dump_via_active_record = ENV["ANYFIXTURE_IMPORT_DUMP_ACTIVE_RECORD"] == "1"
-        @setup_dump_env = []
-        @teardown_dump_env = []
+        @before_dump = []
+        @after_dump = []
       end
 
-      def setup_dump_env(&block)
+      def before_dump(&block)
         if block_given?
-          @setup_dump_env << block
+          @before_dump << block
         else
-          @setup_dump_env
+          @before_dump
         end
       end
 
-      def teardown_dump_env(&block)
+      def after_dump(&block)
         if block_given?
-          @teardown_dump_env << block
+          @after_dump << block
         else
-          @teardown_dump_env
+          @after_dump
         end
       end
     end
@@ -118,14 +118,14 @@ module TestProf
       def register_dump(name, **options)
         called_from = caller_locations(1, 1).first.path
         watch = options.delete(:watch) || [called_from]
-        stale_check = options.delete(:stale_unless)
+        skip = options.delete(:skip_if)
 
         register("sql/#{name}") do
           dump = Dump.new(name, watch: watch)
 
-          next if stale_check&.call(dump)
+          next if skip&.call(dump: dump)
 
-          next dump.load if dump.exists?
+          next dump.within_prepared_env(import: true, **options) { dump.load } if dump.exists?
 
           subscriber = ActiveSupport::Notifications.subscribe("sql.active_record", dump.subscriber)
           res = dump.within_prepared_env(**options) { yield }

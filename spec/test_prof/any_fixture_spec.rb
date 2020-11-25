@@ -134,7 +134,7 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       expect do
         subject.register_dump(
           "stale",
-          teardown: ->(dump) { User.find_by!(name: "Jack").update!(tag: "dump-#{dump.digest}") }
+          after: ->(dump:, import:) { User.find_by!(name: "Jack").update!(tag: "dump-#{dump.digest}") unless import }
         ) do
           TestProf::FactoryBot.create(:user, name: "Jack")
           TestProf::FactoryBot.create(:user, name: "Lucy")
@@ -150,7 +150,7 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
 
       subject.register_dump(
         "stale2",
-        stale_unless: ->(dump) { User.where(name: "Jack", tag: "dump-#{dump.digest}").exists? }
+        skip_if: ->(dump:) { User.where(name: "Jack", tag: "dump-#{dump.digest}").exists? }
       ) do
         TestProf::FactoryBot.create(:user, name: "Moe")
       end

@@ -110,11 +110,11 @@ module TestProf
         subscriber.commit
       end
 
-      def within_prepared_env(setup: nil, teardown: nil)
-        setup_dump_env(setup)
+      def within_prepared_env(before: nil, after: nil, import: false)
+        run_before_callbacks(callback: before, dump: self, import: false)
         yield
       ensure
-        teardown_dump_env(teardown)
+        run_after_callbacks(callback: after, dump: self, import: false)
       end
 
       private
@@ -141,20 +141,20 @@ module TestProf
         File.join(dir, "#{name}-#{digest}.sql")
       end
 
-      def setup_dump_env(callback = nil)
+      def run_before_callbacks(callback:, **options)
         # First, call config-defined setup callbacks
-        AnyFixture.config.setup_dump_env.each { |clbk| clbk.call(self) }
+        AnyFixture.config.before_dump.each { |clbk| clbk.call(**options) }
         # Then, adapter-defined callbacks
-        adapter.setup_env
+        adapter.setup_env unless options[:import]
         # Finally, user-provided callback
-        callback&.call(self)
+        callback&.call(**options)
       end
 
-      def teardown_dump_env(callback = nil)
+      def run_after_callbacks(callback:, **options)
         # The order is vice versa to setup
-        callback&.call(self)
-        adapter.teardown_env
-        AnyFixture.config.teardown_dump_env.each { |clbk| clbk.call(self) }
+        callback&.call(**options)
+        adapter.teardown_env unless options[:import]
+        AnyFixture.config.after_dump.each { |clbk| clbk.call(**options) }
       end
     end
   end
