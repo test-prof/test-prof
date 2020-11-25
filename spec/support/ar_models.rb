@@ -8,6 +8,11 @@ require "test_prof/factory_bot"
 require "activerecord-jdbc-adapter" if defined? JRUBY_VERSION
 require "activerecord-jdbcsqlite3-adapter" if defined? JRUBY_VERSION
 
+begin
+  require "activerecord-import"
+rescue LoadError
+end
+
 DB_CONFIG =
   if ENV["DB"] == "sqlite-file"
     FileUtils.mkdir_p TestProf.config.output_dir

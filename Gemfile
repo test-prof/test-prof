@@ -21,6 +21,7 @@ else
   end
 
   gem "activerecord", "~> 6.0"
+  gem "activerecord-import"
 
   gem "factory_bot", "~> 5.0"
   gem "fabrication"
