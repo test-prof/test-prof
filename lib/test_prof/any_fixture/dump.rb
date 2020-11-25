@@ -71,10 +71,11 @@ module TestProf
         end
       end
 
-      attr_reader :subscriber, :path
+      attr_reader :name, :digest, :path, :subscriber
 
       def initialize(name, watch: [])
-        digest = Digest.call(*watch)
+        @name = name
+        @digest = Digest.call(*watch)
 
         @path = build_path(name, digest)
 
@@ -142,18 +143,18 @@ module TestProf
 
       def setup_dump_env(callback = nil)
         # First, call config-defined setup callbacks
-        AnyFixture.config.setup_dump_env.each(&:call)
+        AnyFixture.config.setup_dump_env.each { |clbk| clbk.call(self) }
         # Then, adapter-defined callbacks
         adapter.setup_env
         # Finally, user-provided callback
-        callback&.call
+        callback&.call(self)
       end
 
       def teardown_dump_env(callback = nil)
         # The order is vice versa to setup
-        callback&.call
+        callback&.call(self)
         adapter.teardown_env
-        AnyFixture.config.teardown_dump_env.each(&:call)
+        AnyFixture.config.teardown_dump_env.each { |clbk| clbk.call(self) }
       end
     end
   end

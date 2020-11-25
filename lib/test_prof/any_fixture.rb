@@ -118,9 +118,12 @@ module TestProf
       def register_dump(name, **options)
         called_from = caller_locations(1, 1).first.path
         watch = options.delete(:watch) || [called_from]
+        stale_check = options.delete(:stale_unless)
 
         register("sql/#{name}") do
           dump = Dump.new(name, watch: watch)
+
+          next if stale_check&.call(dump)
 
           next dump.load if dump.exists?
 
