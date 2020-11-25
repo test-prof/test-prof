@@ -64,7 +64,12 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
   end
 
   describe "#register_dump" do
-    after { subject.reset }
+    after do
+      subject.reset
+      # Reset manually data populated via CLI tools
+      Post.delete_all
+      User.delete_all
+    end
 
     it "saves and restores SQL dump" do
       # initialize sqlite sequence
@@ -123,6 +128,34 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
 
       expect(Post.find_by(text: crypto).user).to eq new_lucy
       expect(Post.find_by(text: how_are_you).user).to eq new_joe
+    end
+
+    it "supports custom stale checks" do
+      expect do
+        subject.register_dump(
+          "stale",
+          teardown: ->(dump) { User.find_by!(name: "Jack").update!(tag: "dump-#{dump.digest}") }
+        ) do
+          TestProf::FactoryBot.create(:user, name: "Jack")
+          TestProf::FactoryBot.create(:user, name: "Lucy")
+        end
+      end.to change(User, :count).by(2)
+
+      digest = TestProf::AnyFixture::Dump::Digest.call(__FILE__)
+      dump_path = Pathname.new(
+        File.join(TestProf.config.output_dir, "any_dumps", "stale-#{digest}.sql")
+      )
+
+      expect(dump_path).to be_exist
+
+      subject.register_dump(
+        "stale2",
+        stale_unless: ->(dump) { User.where(name: "Jack", tag: "dump-#{dump.digest}").exists? }
+      ) do
+        TestProf::FactoryBot.create(:user, name: "Moe")
+      end
+
+      expect(User.count).to eq 2
     end
   end
 end
