@@ -32,8 +32,7 @@ module TestProf
           sql = payload.fetch(:sql)
           return unless trackable_sql?(sql)
 
-          binds = payload[:binds].dup
-          sql = sql.gsub(/(\?|\$\d+)/) { ActiveRecord::Base.connection.quote(binds.shift) }
+          sql = payload[:binds].any? ? adapter.compile_sql(sql, quoted(payload[:binds])) : +sql
 
           sql.tr!("\n", " ")
 
@@ -61,6 +60,14 @@ module TestProf
 
         def trackable_sql?(sql)
           sql.match?(MODIFY_RXP) || sql.match?(ANY_FIXTURE_RXP) || sql.match?(AnyFixture.config.dump_matching_queries)
+        end
+
+        def quoted(val)
+          if val.is_a?(Array)
+            val.map { |v| quoted(v) }
+          else
+            ActiveRecord::Base.connection.quote(val)
+          end
         end
       end
 

@@ -7,6 +7,10 @@ module TestProf
         def reset_sequence!(_table_name, _start)
         end
 
+        def compile_sql(sql, _binds)
+          sql
+        end
+
         def setup_env
         end
 

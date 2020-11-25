@@ -22,6 +22,10 @@ module TestProf
           SQL
         end
 
+        def compile_sql(sql, binds)
+          sql.gsub(/\$\d+/) { binds.shift }
+        end
+
         def import(path)
           # Test if psql is installed
           `psql --version`

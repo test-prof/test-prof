@@ -17,6 +17,10 @@ module TestProf
           SQL
         end
 
+        def compile_sql(sql, binds)
+          sql.gsub(/\?/) { binds.shift }
+        end
+
         def import(path)
           db = conn.pool.spec.config[:database]
           return false if %r{:memory:}.match?(db)
