@@ -48,6 +48,10 @@ module TestProf
           @after_dump
         end
       end
+
+      def dump_sequence_random_start
+        rand(dump_sequence_start..(dump_sequence_start * 2))
+      end
     end
 
     class Cache # :nodoc:
