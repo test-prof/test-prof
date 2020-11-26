@@ -54,7 +54,7 @@ module TestProf
 
           return if reset_pk.include?(table_name)
 
-          adapter.reset_sequence!(table_name, AnyFixture.config.dump_sequence_start)
+          adapter.reset_sequence!(table_name, AnyFixture.config.dump_sequence_random_start)
           reset_pk << table_name
         end
 
