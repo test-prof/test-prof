@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "digest/sha1"
+
 module TestProf
   module AnyFixture
     class Dump
@@ -18,9 +20,8 @@ module TestProf
 
           return if files.empty?
 
-          updated_at = File.mtime(files.max { |file| File.mtime(file) })
-
-          "#{updated_at.to_f.to_s.delete(".")}-#{files.size}"
+          file_ids = files.sort.map { |f| "#{File.basename(f)}/#{::Digest::SHA1.file(f).hexdigest}" }
+          ::Digest::SHA1.hexdigest(file_ids.join("/"))
         end
       end
     end
