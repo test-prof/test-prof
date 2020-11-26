@@ -40,8 +40,6 @@ describe TestProf::AnyFixture::Dump::Digest do
   it "accepts file paths" do
     digest = subject.call("tmp/any_fixture_digest/1.txt")
 
-    sleep 1
-
     File.write("tmp/any_fixture_digest/1.txt", "Boo!2")
 
     expect(subject.call("tmp/any_fixture_digest/1.txt")).not_to eq digest
@@ -53,5 +51,20 @@ describe TestProf::AnyFixture::Dump::Digest do
     File.write("tmp/any_fixture_digest/2.txt", "Moooo!")
 
     expect(subject.call("tmp/any_fixture_digest/*.txt")).not_to eq digest
+  end
+
+  it "does not change if files contents stays the same" do
+    digest = subject.call("tmp/any_fixture_digest/1.txt")
+
+    File.write("tmp/any_fixture_digest/1.txt", "Boo! 2")
+
+    digest2 = subject.call("tmp/any_fixture_digest/1.txt")
+
+    File.write("tmp/any_fixture_digest/1.txt", "Boo!")
+
+    digest3 = subject.call("tmp/any_fixture_digest/1.txt")
+
+    expect(digest).to eq digest3
+    expect(digest2).not_to eq digest
   end
 end
