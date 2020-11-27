@@ -97,6 +97,8 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
 
           jack.update!(name: "Joe")
           TestProf::FactoryBot.create(:user, name: "Deadman").tap(&:destroy!)
+
+          User.connection.execute "UPDATE users SET tag='ignore' WHERE id=#{User.connection.quote(jack.id)}; /*any_fixture:ignore*/"
         end
       end.to change(User, :count).by(2).and change(Post, :count).by(3)
 
@@ -108,6 +110,8 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       expect(dump_path).to be_exist
 
       lucy_id = User.find_by(name: "Lucy").id
+
+      expect(User.find_by(name: "Joe").tag).to eq "ignore"
 
       subject.reset
 
@@ -128,6 +132,9 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
 
       expect(Post.find_by(text: crypto).user).to eq new_lucy
       expect(Post.find_by(text: how_are_you).user).to eq new_joe
+
+      # Tag was ignored by dump
+      expect(new_joe.tag).to be_nil
     end
 
     it "supports custom stale checks" do
