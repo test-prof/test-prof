@@ -7,7 +7,8 @@ require "set"
 module TestProf
   module AnyFixture
     MODIFY_RXP = /^(INSERT INTO|UPDATE|DELETE FROM) ([\S]+)/i.freeze
-    ANY_FIXTURE_RXP = /\-\- any_fixture:dump/.freeze
+    ANY_FIXTURE_RXP = /(\/\*|\-\-).*\bany_fixture:dump/.freeze
+    ANY_FIXTURE_IGNORE_RXP = /(\/\*|\-\-).*\bany_fixture:ignore/.freeze
 
     class Dump
       class Subscriber
@@ -22,7 +23,10 @@ module TestProf
         end
 
         def start(_event, _id, payload)
-          matches = payload.fetch(:sql).match(MODIFY_RXP)
+          sql = payload.fetch(:sql)
+          return if sql.match?(ANY_FIXTURE_IGNORE_RXP)
+
+          matches = sql.match(MODIFY_RXP)
           return unless matches
 
           reset_pk!(matches[2]) if /insert/i.match?(matches[1])
@@ -59,6 +63,8 @@ module TestProf
         end
 
         def trackable_sql?(sql)
+          return false if sql.match?(ANY_FIXTURE_IGNORE_RXP)
+
           sql.match?(MODIFY_RXP) || sql.match?(ANY_FIXTURE_RXP) || sql.match?(AnyFixture.config.dump_matching_queries)
         end
 

@@ -7,6 +7,9 @@ describe TestProf::AnyFixture::Dump::Digest do
 
   before(:all) do
     FileUtils.mkdir_p("tmp/any_fixture_digest")
+  end
+
+  before do
     File.write("tmp/any_fixture_digest/1.txt", "Boo!")
   end
 
