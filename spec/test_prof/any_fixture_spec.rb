@@ -164,5 +164,21 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
 
       expect(User.count).to eq 2
     end
+
+    it "provides success info" do
+      expect do
+        expect do
+          subject.register_dump(
+            "success",
+            after: ->(dump:, import:) { User.find_by!(name: "Jack").update!(tag: "dump-#{dump.digest}") if dump.success? }
+          ) do
+            TestProf::FactoryBot.create(:user, name: "Jack")
+            TestProf::FactoryBot.create(:user, name: nil)
+          end
+        end.to change(User, :count).by(1)
+      end.to raise_error(ActiveRecord::RecordInvalid)
+
+      expect(User.find_by(name: "Jack").tag).to be_nil
+    end
   end
 end

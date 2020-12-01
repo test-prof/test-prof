@@ -77,13 +77,16 @@ module TestProf
         end
       end
 
-      attr_reader :name, :digest, :path, :subscriber
+      attr_reader :name, :digest, :path, :subscriber, :success
+      alias success? success
 
       def initialize(name, watch: [])
         @name = name
         @digest = Digest.call(*watch)
 
         @path = build_path(name, digest)
+
+        @success = true
 
         @adapter =
           case ActiveRecord::Base.connection.adapter_name
@@ -119,6 +122,9 @@ module TestProf
       def within_prepared_env(before: nil, after: nil, import: false)
         run_before_callbacks(callback: before, dump: self, import: false)
         yield
+      rescue
+        @success = false
+        raise
       ensure
         run_after_callbacks(callback: after, dump: self, import: false)
       end
