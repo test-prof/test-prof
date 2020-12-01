@@ -109,6 +109,10 @@ module TestProf
         File.exist?(path)
       end
 
+      def force?
+        AnyFixture.config.force_matching_dumps.match?(name)
+      end
+
       def load
         return import_via_active_record if AnyFixture.config.import_dump_via_active_record?
 

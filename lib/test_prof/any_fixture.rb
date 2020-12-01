@@ -13,7 +13,7 @@ module TestProf
     # AnyFixture configuration
     class Configuration
       attr_accessor :reporting_enabled, :dumps_dir, :dump_sequence_start,
-        :import_dump_via_active_record, :dump_matching_queries
+        :import_dump_via_active_record, :dump_matching_queries, :force_matching_dumps
       attr_reader :default_dump_watch_paths
 
       alias reporting_enabled? reporting_enabled
@@ -31,6 +31,14 @@ module TestProf
         @import_dump_via_active_record = ENV["ANYFIXTURE_IMPORT_DUMP_ACTIVE_RECORD"] == "1"
         @before_dump = []
         @after_dump = []
+        @force_matching_dumps =
+          if ENV["ANYFIXTURE_FORCE_DUMP"] == "1"
+            /.*/
+          elsif ENV["ANYFIXTURE_FORCE_DUMP"]
+            /#{ENV["ANYFIXTURE_FORCE_DUMP"]}/
+          else
+            /^$/
+          end
       end
 
       def before_dump(&block)
@@ -127,9 +135,11 @@ module TestProf
         register("sql/#{name}") do
           dump = Dump.new(name, watch: watch)
 
-          next if skip&.call(dump: dump)
+          unless dump.force?
+            next if skip&.call(dump: dump)
 
-          next dump.within_prepared_env(import: true, **options) { dump.load } if dump.exists?
+            next dump.within_prepared_env(import: true, **options) { dump.load } if dump.exists?
+          end
 
           subscriber = ActiveSupport::Notifications.subscribe("sql.active_record", dump.subscriber)
           res = dump.within_prepared_env(**options) { yield }
