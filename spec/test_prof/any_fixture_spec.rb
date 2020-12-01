@@ -69,6 +69,10 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       # Reset manually data populated via CLI tools
       Post.delete_all
       User.delete_all
+
+      ENV.delete("ANYFIXTURE_FORCE_DUMP") if ENV.key?("ANYFIXTURE_FORCE_DUMP")
+
+      described_class.remove_instance_variable(:@config)
     end
 
     it "saves and restores SQL dump" do
@@ -179,6 +183,44 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       end.to raise_error(ActiveRecord::RecordInvalid)
 
       expect(User.find_by(name: "Jack").tag).to be_nil
+    end
+
+    it "allow force recreation if ANYFIXTURE_DUMP_FORCE env var is provided" do
+      expect do
+        subject.register_dump("force-me") do
+          TestProf::FactoryBot.create(:user, name: "Jack")
+        end
+      end.to change(User, :count).by(1)
+
+      subject.reset
+      described_class.remove_instance_variable(:@config)
+
+      # Force only specific dump (unmatching)
+      ENV["ANYFIXTURE_FORCE_DUMP"] = "stale"
+
+      expect do
+        subject.register_dump("force-me") { raise "Dump was called" }
+      end.to change(User, :count).by(1)
+
+      subject.reset
+      described_class.remove_instance_variable(:@config)
+
+      # Force only specific dump (matching)
+      ENV["ANYFIXTURE_FORCE_DUMP"] = "force-m"
+
+      expect do
+        subject.register_dump("force-me") { raise "Dump was called" }
+      end.to raise_error("Dump was called")
+
+      subject.reset
+      described_class.remove_instance_variable(:@config)
+
+      # Force everything
+      ENV["ANYFIXTURE_FORCE_DUMP"] = "1"
+
+      expect do
+        subject.register_dump("force-me") { raise "Dump was called" }
+      end.to raise_error("Dump was called")
     end
   end
 end
