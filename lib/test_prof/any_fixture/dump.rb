@@ -86,7 +86,7 @@ module TestProf
 
         @path = build_path(name, digest)
 
-        @success = true
+        @success = false
 
         @adapter =
           case ActiveRecord::Base.connection.adapter_name
@@ -125,10 +125,9 @@ module TestProf
 
       def within_prepared_env(before: nil, after: nil, import: false)
         run_before_callbacks(callback: before, dump: self, import: false)
-        yield
-      rescue
-        @success = false
-        raise
+        yield.tap do
+          @success = true
+        end
       ensure
         run_after_callbacks(callback: after, dump: self, import: false)
       end
