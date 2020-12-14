@@ -142,9 +142,9 @@ We also want to share some small code tricks which can help you to improve your 
 
 ## What's next
 
-Have an idea? [Propose](https://github.com/test-prof/test-prof/issues/new) a feature request!
+Have an idea? [Propose](https://github.com/test-prof/test-prof/discussions) a feature request!
 
-Already using TestProf? [Share your story!](https://github.com/test-prof/test-prof/issues/73)
+Already using TestProf? [Share your story!](https://github.com/test-prof/test-prof/discussions/73)
 
 ## License
 
