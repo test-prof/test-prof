@@ -1,12 +1,13 @@
 source 'https://rubygems.org'
 
-gem "activerecord-jdbcsqlite3-adapter", "~> 50.0"
-gem "activerecord", "~> 5.0.0"
+gem "activerecord-jdbcsqlite3-adapter", "~> 52.0"
+gem "jdbc-sqlite3"
+gem "activerecord", "~> 5.2"
 
-gem "factory_bot", "~> 4.8.0"
+gem "factory_bot", "~> 5.0"
 gem "fabrication"
 
-gem "sidekiq", "~> 4.0"
+gem "sidekiq", "~> 5.0"
 gem "timecop", "~> 0.9.1"
 
 gemspec path: '..'
