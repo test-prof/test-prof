@@ -130,10 +130,11 @@ module TestProf
       def register_dump(name, **options)
         called_from = caller_locations(1, 1).first.path
         watch = options.delete(:watch) || [called_from]
+        cache_key = options.delete(:cache_key)
         skip = options.delete(:skip_if)
 
         register("sql/#{name}") do
-          dump = Dump.new(name, watch: watch)
+          dump = Dump.new(name, watch: watch, cache_key: cache_key)
 
           unless dump.force?
             next if skip&.call(dump: dump)

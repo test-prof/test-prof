@@ -10,6 +10,32 @@ module TestProf
     ANY_FIXTURE_RXP = /(\/\*|\-\-).*\bany_fixture:dump/.freeze
     ANY_FIXTURE_IGNORE_RXP = /(\/\*|\-\-).*\bany_fixture:ignore/.freeze
 
+    using(Module.new do
+      refine Object do
+        def to_digest
+          to_s
+        end
+      end
+
+      refine NilClass do
+        def to_digest
+          nil
+        end
+      end
+
+      refine Hash do
+        def to_digest
+          map { |k, v| [k.to_digest, v.to_digest].compact.join("_") }
+        end
+      end
+
+      refine Array do
+        def to_digest
+          map { |v| v.to_digest }.compact.join("-")
+        end
+      end
+    end)
+
     class Dump
       class Subscriber
         attr_reader :path, :tmp_path
@@ -80,9 +106,12 @@ module TestProf
       attr_reader :name, :digest, :path, :subscriber, :success
       alias success? success
 
-      def initialize(name, watch: [])
+      def initialize(name, watch: [], cache_key: nil)
         @name = name
-        @digest = Digest.call(*watch)
+        @digest = [
+          Digest.call(*watch),
+          cache_key.to_digest
+        ].compact.join("-")
 
         @path = build_path(name, digest)
 

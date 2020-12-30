@@ -169,6 +169,39 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       expect(User.count).to eq 2
     end
 
+    it "supports custom cache keys" do
+      expect do
+        subject.register_dump(
+          "cache_keys",
+          cache_key: ["a", {b: :c}]
+        ) do
+          TestProf::FactoryBot.create(:user, name: "Jack")
+          TestProf::FactoryBot.create(:user, name: "Lucy")
+        end
+      end.to change(User, :count).by(2)
+
+      digest = TestProf::AnyFixture::Dump::Digest.call(__FILE__)
+      cache_key = "#{digest}-a-b_c"
+      dump_path = Pathname.new(
+        File.join(TestProf.config.output_dir, "any_dumps", "cache_keys-#{cache_key}.sql")
+      )
+
+      expect(dump_path).to be_exist
+      expect(User.count).to eq 2
+
+      subject.reset
+
+      expect(User.count).to eq 0
+      expect(Post.count).to eq 0
+
+      subject.register_dump(
+        "cache_keys",
+        cache_key: "a-b_c"
+      ) { false }
+
+      expect(User.count).to eq 2
+    end
+
     it "provides success info" do
       expect do
         expect do
