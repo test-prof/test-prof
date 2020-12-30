@@ -103,12 +103,12 @@ module TestProf
 
       # Backward compatibility
       def reporting_enabled=(val)
-        warn "AnyFixture.reporting_enabled is deprecated. Use AnyFixture.config.reporting_enabled instead"
+        warn "AnyFixture.reporting_enabled is deprecated and will be removed in 1.1. Use AnyFixture.config.reporting_enabled instead"
         config.reporting_enabled = val
       end
 
       def reporting_enabled
-        warn "AnyFixture.reporting_enabled is deprecated. Use AnyFixture.config.reporting_enabled instead"
+        warn "AnyFixture.reporting_enabled is deprecated and will be removed in 1.1. Use AnyFixture.config.reporting_enabled instead"
         config.reporting_enabled
       end
 

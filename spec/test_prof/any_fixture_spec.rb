@@ -284,4 +284,14 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       expect(User.count).to eq 1
     end
   end
+
+  describe "#reporting_enabled" do
+    it "returns the config value" do
+      raise "Remove deprecated #reporting_enabled" if TestProf::VERSION >= "1.1"
+
+      allow(described_class.config).to receive(:reporting_enabled) { :truth }
+
+      expect(described_class.reporting_enabled).to eq :truth
+    end
+  end
 end
