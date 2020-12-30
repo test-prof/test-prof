@@ -16,7 +16,9 @@ end
 DB_CONFIG =
   if ENV["DB"] == "sqlite-file"
     FileUtils.mkdir_p TestProf.config.output_dir
-    {adapter: "sqlite3", database: File.join(TestProf.config.output_dir, "testdb.sqlite")}
+    db_path = File.join(TestProf.config.output_dir, "testdb.sqlite")
+    FileUtils.rm(db_path) if File.file?(db_path)
+    {adapter: "sqlite3", database: db_path}
   elsif ENV["DB"] == "postgres"
     require "active_record/database_configurations"
     config = ActiveRecord::DatabaseConfigurations::UrlConfig.new(
