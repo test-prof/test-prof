@@ -90,4 +90,4 @@ jobs:
         DATABASE_URL: postgres://postgres:postgres@localhost:5432
         DB_NAME: postgres
       run: |
-        bundle exec rspec --force-color
+        bundle exec rspec --force-color --tag postgres

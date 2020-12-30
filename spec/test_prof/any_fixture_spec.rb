@@ -64,6 +64,11 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
   end
 
   describe "#register_dump" do
+    before(:all) do
+      Post.delete_all
+      User.delete_all
+    end
+
     after do
       subject.reset
       # Reset manually data populated via CLI tools
