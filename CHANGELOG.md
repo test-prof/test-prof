@@ -2,13 +2,13 @@
 
 ## master (unrealeased)
 
+- Remove `ActiveRecordSharedConnection`. ([@palkan][])
+
 - Add `AnyFixture#register_dump` to _cache_ fixtures using SQL dumps. ([@palkan][])
 
-- Add support for RSpec aliases detection when linting specs using `let_it_be`/`before_all` with `rubocop-rspec` 2.0 ([@pirj][])
-
-- `ActiveRecordSharedConnection` is no longer enabled by default when loaded in Rails >= 5.1. ([@palkan][])
-
 - Replaced `TestProf::AnyFixture.reporting_enabled = true` with `TestProf::AnyFixture.config.reporting_enabled = true`. ([@palkan][])
+
+- Add support for RSpec aliases detection when linting specs using `let_it_be`/`before_all` with `rubocop-rspec` 2.0 ([@pirj][])
 
 ## 0.12.2 (2020-09-03)
 
