@@ -1,10 +1,11 @@
-source 'https://rubygems.org'
+source "https://rubygems.org"
 
-gem 'activerecord', '~> 6.0.0'
+gem "activerecord", "~> 6.0.0"
 gem "factory_bot", "~> 5.0"
 gem "fabrication"
 gem "sqlite3", "~> 1.4"
 gem "sidekiq", "~> 6.0"
 gem "timecop", "~> 0.9.1"
+gem "pg"
 
-gemspec path: '..'
+gemspec path: ".."
