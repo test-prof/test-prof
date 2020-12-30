@@ -19,27 +19,20 @@ jobs:
         gemfile: [
           "gemfiles/railsmaster.gemfile",
           "gemfiles/activerecord6.gemfile",
-          "gemfiles/activerecord42.gemfile",
           "gemfiles/default_factory_girl.gemfile",
           "gemfiles/rspec35.gemfile"
         ]
         exclude:
         - ruby: 2.7
-          gemfile: "gemfiles/activerecord42.gemfile"
-        - ruby: 2.7
           gemfile: "gemfiles/rspec35.gemfile"
         - ruby: 2.7
           gemfile: "gemfiles/default_factory_girl.gemfile"
-        - ruby: 2.6
-          gemfile: "gemfiles/activerecord42.gemfile"
         - ruby: 2.6
           gemfile: "gemfiles/rspec35.gemfile"
         - ruby: 2.6
           gemfile: "gemfiles/default_factory_girl.gemfile"
         - ruby: 2.5
           gemfile: "gemfiles/railsmaster.gemfile"
-        - ruby: 2.5
-          gemfile: "gemfiles/activerecord42.gemfile"
         - ruby: 2.5
           gemfile: "gemfiles/rspec35.gemfile"
         - ruby: 2.5

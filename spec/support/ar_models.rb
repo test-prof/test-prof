@@ -25,7 +25,7 @@ DB_CONFIG =
       ENV.fetch("DATABASE_URL"),
       {"database" => ENV.fetch("DB_NAME", "test_prof_test")}
     )
-    config.config
+    config.respond_to?(:configuration_hash) ? config.configuration_hash : config.config
   else
     {adapter: "sqlite3", database: ":memory:"}
   end
