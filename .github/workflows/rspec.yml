@@ -48,6 +48,9 @@ jobs:
           gemfile: "gemfiles/railsmaster.gemfile"
         - ruby: 2.4
           gemfile: "gemfiles/activerecord6.gemfile"
+        include:
+        - ruby: 2.7
+          gemfile: "gemfiles/activerecord60.gemfile"
     services:
       postgres:
         image: postgres:12
