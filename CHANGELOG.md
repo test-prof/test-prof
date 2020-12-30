@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+## 1.0.0.rc1 (2020-12-30)
+
 - Remove deprecated `AggregateFailures` cop. ([@palkan][])
 
 - Remove `ActiveRecordSharedConnection`. ([@palkan][])
