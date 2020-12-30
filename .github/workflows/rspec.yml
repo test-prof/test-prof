@@ -15,35 +15,25 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [2.5, 2.6, 2.7]
-        gemfile: [
-          "gemfiles/railsmaster.gemfile",
-          "gemfiles/activerecord6.gemfile",
-          "gemfiles/default_factory_girl.gemfile",
-          "gemfiles/rspec35.gemfile"
-        ]
-        exclude:
-        - ruby: 2.7
-          gemfile: "gemfiles/rspec35.gemfile"
-        - ruby: 2.7
-          gemfile: "gemfiles/default_factory_girl.gemfile"
-        - ruby: 2.6
-          gemfile: "gemfiles/rspec35.gemfile"
-        - ruby: 2.6
-          gemfile: "gemfiles/default_factory_girl.gemfile"
-        - ruby: 2.5
-          gemfile: "gemfiles/railsmaster.gemfile"
-        - ruby: 2.5
-          gemfile: "gemfiles/rspec35.gemfile"
-        - ruby: 2.5
-          gemfile: "gemfiles/default_factory_girl.gemfile"
-        - ruby: 2.4
-          gemfile: "gemfiles/railsmaster.gemfile"
-        - ruby: 2.4
-          gemfile: "gemfiles/activerecord6.gemfile"
+        ruby: [2.7]
+        gemfile: ["gemfiles/activerecord6.gemfile"]
+        db: ["postgres"]
         include:
+        - ruby: 3.0
+          gemfile: "gemfiles/activerecord6.gemfile"
+          db: "sqlite"
+        - ruby: 2.7
+          gemfile: "gemfiles/railsmaster.gemfile"
+          db: "sqlite"
         - ruby: 2.7
           gemfile: "gemfiles/activerecord60.gemfile"
+          db: "postgres"
+        - ruby: 2.6
+          gemfile: "gemfiles/activerecord5.gemfile"
+          db: "sqlite-file"
+        - ruby: 2.5
+          gemfile: "gemfiles/activerecord5.gemfile"
+          db: "sqlite"
     services:
       postgres:
         image: postgres:12
@@ -77,17 +67,10 @@ jobs:
         bundle install
         bundle update
     - name: Run RSpec
+      env:
+          DB: ${{ matrix.db }}
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          DB_NAME: postgres
       run: |
         bundle exec rspec --force-color
-    - name: Run file-backed SQLite tests
-      env:
-        DB: sqlite-file
-      run: |
-        bundle exec rspec --force-color --tag sqlite
-    - name: Run RSpec with PostgreSQL
-      env:
-        DB: postgres
-        DATABASE_URL: postgres://postgres:postgres@localhost:5432
-        DB_NAME: postgres
-      run: |
-        bundle exec rspec --force-color --tag postgres
+
