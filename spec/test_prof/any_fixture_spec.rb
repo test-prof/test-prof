@@ -255,5 +255,28 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
         subject.register_dump("force-me") { raise "Dump was called" }
       end.to raise_error("Dump was called")
     end
+
+    it "support non-cleanable dumps" do
+      expect do
+        subject.register_dump(
+          "noclean",
+          clean: false
+        ) do
+          TestProf::FactoryBot.create(:user, name: "Jack")
+        end
+      end.to change(User, :count).by(1)
+
+      digest = TestProf::AnyFixture::Dump::Digest.call(__FILE__)
+      dump_path = Pathname.new(
+        File.join(TestProf.config.output_dir, "any_dumps", "noclean-#{digest}.sql")
+      )
+
+      expect(dump_path).to be_exist
+      expect(User.count).to eq 1
+
+      subject.reset
+
+      expect(User.count).to eq 1
+    end
   end
 end
