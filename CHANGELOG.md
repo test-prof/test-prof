@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+- Remove deprecated `AggregateFailures` cop. ([@palkan][])
+
 - Remove `ActiveRecordSharedConnection`. ([@palkan][])
 
 - Add `AnyFixture#register_dump` to _cache_ fixtures using SQL dumps. ([@palkan][])

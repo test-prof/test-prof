@@ -11,4 +11,3 @@ require "rubocop"
 
 require_relative "cops/inject"
 require "test_prof/cops/rspec/aggregate_examples"
-require "test_prof/cops/rspec/aggregate_failures"

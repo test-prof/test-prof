@@ -1,5 +1,5 @@
 # frozen_string_literal: true
 
 module TestProf
-  VERSION = "0.12.2"
+  VERSION = "1.0.0-dev"
 end
