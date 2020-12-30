@@ -13,11 +13,11 @@ module TestProf
     # AnyFixture configuration
     class Configuration
       attr_accessor :reporting_enabled, :dumps_dir, :dump_sequence_start,
-        :import_dump_via_active_record, :dump_matching_queries, :force_matching_dumps
+        :import_dump_via_cli, :dump_matching_queries, :force_matching_dumps
       attr_reader :default_dump_watch_paths
 
       alias reporting_enabled? reporting_enabled
-      alias import_dump_via_active_record? import_dump_via_active_record
+      alias import_dump_via_cli? import_dump_via_cli
 
       def initialize
         @reporting_enabled = ENV["ANYFIXTURE_REPORT"] == "1"
@@ -28,7 +28,7 @@ module TestProf
         ]
         @dump_sequence_start = 123_654
         @dump_matching_queries = /^$/
-        @import_dump_via_active_record = ENV["ANYFIXTURE_IMPORT_DUMP_ACTIVE_RECORD"] == "1"
+        @import_dump_via_cli = ENV["ANYFIXTURE_IMPORT_DUMP_CLI"] == "1"
         @before_dump = []
         @after_dump = []
         @force_matching_dumps =
@@ -117,23 +117,31 @@ module TestProf
       # Register a block of code as a fixture,
       # returns the result of the block execution
       def register(id)
-        cache.fetch(id) do
+        cached(id) do
           ActiveSupport::Notifications.subscribed(method(:subscriber), "sql.active_record") do
             yield
           end
         end
       end
 
+      def cached(id)
+        cache.fetch(id) { yield }
+      end
+
       # Create and register new SQL dump.
       # Use `watch` to provide additional paths to watch for
       # dump re-generation
-      def register_dump(name, **options)
+      def register_dump(name, clean: true, **options)
         called_from = caller_locations(1, 1).first.path
         watch = options.delete(:watch) || [called_from]
         cache_key = options.delete(:cache_key)
         skip = options.delete(:skip_if)
 
-        register("sql/#{name}") do
+        id = "sql/#{name}"
+
+        register_method = clean ? :register : :cached
+
+        public_send(register_method, id) do
           dump = Dump.new(name, watch: watch, cache_key: cache_key)
 
           unless dump.force?

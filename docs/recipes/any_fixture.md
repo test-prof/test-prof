@@ -1,10 +1,10 @@
 # Any Fixture
 
-Fixtures are the great way to increase your test suite performance, but for the large project, they are very hard to maintain.
+Fixtures are a great way to increase your test suite performance, but for a large project, they are very hard to maintain.
 
 We propose a more general approach to lazy-generate the _global_ state for your test suite – AnyFixture.
 
-With AnyFixture you can use any block of code for data generation, and it will take care of cleaning it out at the end of the run.
+With AnyFixture, you can use any block of code for data generation, and it will take care of cleaning it out at the end of the run.
 
 Consider an example:
 
@@ -65,7 +65,7 @@ Now you can use `TestProf::AnyFixture` in your tests.
 
 ### Minitest
 
-When using AnyFixture with Minitest you should take care of cleaning the database after each test run by yourself. For example:
+When using AnyFixture with Minitest, you should take care of cleaning the database after each test run by yourself. For example:
 
 ```ruby
 # test_helper.rb
@@ -77,7 +77,7 @@ at_exit { TestProf::AnyFixture.clean }
 
 ## DSL
 
-We provide an optional _syntactic sugar_ (through Refinement) to make easier to define fixtures:
+We provide an optional _syntactic sugar_ (through Refinement) to make it easier to define fixtures:
 
 ```ruby
 require "test_prof/any_fixture/dsl"
@@ -110,7 +110,7 @@ let(:account) { fixture(:account).refind }
 
 ## Temporary disable fixtures
 
-Some of your tests might rely on _clean database_. Thus running them along with AnyFixture-dependent tests could produce failures.
+Some of your tests might rely on _clean database_. Thus running them along with AnyFixture-dependent tests, could produce failures.
 
 You can disable (or delete) all created fixture while running a specified example or group using the `:with_clean_fixture` shared context:
 
@@ -127,11 +127,11 @@ end
 
 How does it work? It wraps the example group into a transaction (using [`before_all`](./before_all.md)) and calls `TestProf::AnyFixture.clean` before running the examples.
 
-Thus, this context is a little bit _heavy_. Try to avoid such situations and write specs independent on global state.
+Thus, this context is a little bit _heavy_. Try to avoid such situations and write specs independent of the global state.
 
 ## Usage report
 
-`AnyFixture` collects the usage information during the test run and could reports it at the end:
+`AnyFixture` collects the usage information during the test run and could report it at the end:
 
 ```sh
 [TEST PROF INFO] AnyFixture usage stats:
@@ -148,61 +148,208 @@ Total time wasted: 00:00.000
 
 The reporting is off by default, to enable the reporting set `TestProf::AnyFixture.config.reporting_enabled = true` (or you can invoke it manually through `TestProf::AnyFixture.report_stats`).
 
-You can also enable reporting through `ANYFIXTURE_REPORT=1` env variable.
+You can also enable reporting through the `ANYFIXTURE_REPORT=1` env variable.
 
-## Caveats
+## Using auto-generated SQL dumps
 
-**UPD:** Since v0.5.0 AnyFixture disable referential integrity (if possible) to prevent the following problem.
+> @since v1.0, experimental
 
-`AnyFixture` cleans tables in the reverse order as compared to the order they were populated. That
-means when you register a fixture which references a not-yet-registered table, a
-foreign-key violation error *might* occur (if any). An example is worth more than 1000
-words:
+AnyFixture is designed to generate data once per a test suite run (and cleanup in the end). It still could be time-consuming (e.g., for system or performance tests); thus, we want to optimize further.
 
-```ruby
-class Author < ApplicationRecord
-  has_many :articles
-end
+We provide another way of speeding up test data called `#register_dump`. It works similarly to `#register` for the first run: it accepts a block of code and tracks SQL queries made within it. Then, it generates a plain SQL dump representing the data creating or modified during the call and uses this dump to restore the database state for the subsequent test runs.
 
-class Article < ApplicationRecord
-  belongs_to :author
-end
-```
-
-And the shared contexts:
+Let's consider an example:
 
 ```ruby
-RSpec.shared_context "author" do
+RSpec.shared_context "account", account: true do
+  # You should call AnyFixture outside of transaction to re-use the same
+  # data between examples
   before(:all) do
-    @author = TestProf::AnyFixture.register(:author) do
-      FactoryGirl.create(:account)
+    # The block is called once per test run (similary to #register)
+    TestProf::AnyFixture.register_dump("account") do
+      # Do anything here, AnyFixture keeps track of affected DB tables
+      # For example, you can use factories here
+      account = FactoryGirl.create(:account, name: "test")
+
+      # or with Fabrication
+      account = Fabricate(:account, name: "test")
+
+      # or with plain old AR
+      account = Account.create!(name: "test")
+
+      # updates are also tracked
+      account.update!(tag: "sql-dump")
     end
   end
 
-  let(:author) { @author }
-end
-
-RSpec.shared_context "article" do
-  before(:all) do
-    # outside of AnyFixture, we don't know about its dependent tables
-    author = FactoryGirl.create(:author)
-
-    @article = TestProf::AnyFixture.register(:article) do
-      FactoryGirl.create(:article, author: author)
-    end
-  end
-
-  let(:article) { @article }
+ # Here, we MUST use a custom way to retrieve a record: since we restore the data
+ # from a plain SQL dump, we have no knowledge of Ruby objects
+  let(:account) { Account.find_by!(name: "test") }
 end
 ```
 
-Then in some example:
+And that's what happened when we run tests:
+
+```sh
+# first run
+$ bundle exec rspec
+
+# AnyFixture.register_dump is called:
+# - is SQL dump present? No
+# - run block and write all modifying queries to a new SQL dump
+# AnyFixture.clean is called:
+# - clean all the affected tables
+
+# second run
+$ bundle exec rspec
+
+# AnyFixture.register_dump is called:
+# - is SQL dump present? Yes
+# - restore dump (do not run block)
+# AnyFixture.clean is called:
+# - clean all the affected tables
+```
+
+### Requirements
+
+Currently, only PostgreSQL 12+ and SQLite3 are supported.
+
+### Dump invalidation
+
+The generated dump could become out of date for many reasons: database schema changed, fixture block has been updated, etc.
+To deal with invalidation, we use file content digests as _cache keys_ (dump file name suffixes).
+
+By default, AnyFixture _watches_ `db/schema.rb`, `db/structure.sql` and the file that calls `#register_dump`.
+
+The list of default watch files could be updated by modifying the `default_dump_watch_paths` configuration parameter:
 
 ```ruby
-# This one adds only the 'articles' table to the list of affected tables
-include_context "article"
-# And this one adds the 'authors' table
-include_context "author"
+TestProf::AnyFixture.configure do |config|
+  # you can use exact file paths or globs
+  config.default_dump_watch_paths << Rails.root.join("spec/factories/**/*")
+end
 ```
 
-Now we have the following affected tables list: `['articles', 'authors']`. At the end of the suite, the 'authors' table is cleaned first which leads to a foreign-key violation error.
+Also, you add watch files to a specific `#register_dump` call via the `watch` option:
+
+```ruby
+TestProf::AnyFixture.register_dump("account", watch: ["app/models/account.rb", "app/models/account/**/*,rb"]) do
+  # ...
+end
+```
+
+**NOTE:** When you use the `watch` option, the current file is not added to the watch list. You should use `__FILE__` explicitly for that.
+
+Finally, if you want to forcefully re-generate a dump, you can use the `ANYFIXTURE_FORCE_DUMP` environment variable:
+
+- `ANYFIXTURE_FORCE_DUMP=1` will force all dumps regeneration.
+- `ANYFIXTURE_FORCE_DUMP=account` will force regeneration only of the matching dumps (i.e., matching `/account/`).
+
+#### Cache keys
+
+It's possible to provide custom cache keys to be used as a part of a digest:
+
+```ruby
+# cache_key could be pretty much anything that responds to #to_s
+TestProf::AnyFixture.register_dump("account", cache_key: ["str", 1, {key: :val}]) do
+  # ...
+end
+```
+
+### Hooks
+
+#### `before` / `after`
+
+Before hooks are called either before calling a fixture block or before restoring a dump.
+One particular use case is to re-create a tenant in a multi-tenant app:
+
+```ruby
+TestProf::AnyFixture.register_dump(
+  "account",
+  before: proc do
+    begin
+      Apartment::Tenant.create("test")
+    rescue
+      nil
+    end
+    Apartment::Tenant.create("test")
+  end
+) do
+  # ...
+end
+```
+
+Similarly, after hooks are called either after calling a fixture block or after restoring a dump.
+
+You can also specify global before and after hooks:
+
+```ruby
+TestProf::AnyFixture.configure do |config|
+  config.before_dump do |dump:, import:|
+    # dump is an object containing information about the dump (e.g., dump.digest)
+    # import is true if we're restoring a dump and false otherwise
+    # do something
+  end
+
+  config.after_dump do |dump:, import:|
+    # ...
+  end
+end
+```
+
+**NOTE**: after callbacks are always executed, even if dump creation failed. You can use the `dump.success?` method to determine whether data generation succeeds or not.
+
+#### `skip_if`
+
+This callback is available only as of the `#register_dump` option and could be used to ignore the fixture completely. This is useful when you want to preserve the database state between test runs (i.e., do not clean the DB).
+
+Here is a complete example:
+
+```ruby
+TestProf::AnyFixture.register_dump(
+  "account",
+  # do not track tables for AnyFixture.clean (though other fixtures could affect this)
+  clean: false,
+  skip_if: proc do |dump:|
+    Apartment::Tenant.switch!("test")
+    # if the current account has matching meta — the database is in actual state
+    Account.find_by!(name: "test").meta["dump-version"] == dump.digest
+  end,
+  before: proc do
+    begin
+      Apartment::Tenant.create("test")
+    rescue
+      nil
+    end
+    Apartment::Tenant.create("test")
+  end,
+  after: proc do |dump:, import:|
+    # do not persist dump version if dump failed or we're restoring data
+    next if import || !dump.success?
+
+    Account.find_by!(name: "test").then do |account|
+      account.meta["dump-version"] = dump.digest
+      account.save!
+    end
+  end
+) do
+  # ...
+end
+```
+
+### Configuration
+
+There a few more configuration options available:
+
+```ruby
+TestProf::AnyFixture.configure do |config|
+  # Where to store dumps (by default, TestProf.artifact_path + '/any_dumps')
+  config.dumps_dir = "any_dumps"
+  # Include mathing queries into a dump (in addition to INSERT/UPDATE/DELETE queries)
+  config.dump_matching_queries = /^$/
+  # Whether to try using CLI tools such as psql or sqlite3 to restore dumps or not (and use ActiveRecord instead)
+  config.import_dump_via_cli = false
+end
+```
+
+**NOTE:** When using CLI tools to restore dumps, it's not possible to track affected tables and thus clean them via `AnyFixture.clean`.

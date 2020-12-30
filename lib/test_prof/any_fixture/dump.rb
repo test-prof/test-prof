@@ -143,7 +143,7 @@ module TestProf
       end
 
       def load
-        return import_via_active_record if AnyFixture.config.import_dump_via_active_record?
+        return import_via_active_record unless AnyFixture.config.import_dump_via_cli?
 
         adapter.import(path) || import_via_active_record
       end
