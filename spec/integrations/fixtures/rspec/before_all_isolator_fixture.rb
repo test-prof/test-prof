@@ -12,9 +12,6 @@ Isolator.config.raise_exceptions = true
 
 require "test_prof/recipes/rspec/before_all"
 
-# for threading tests
-require "test_prof/recipes/active_record_one_love" if ::ActiveRecord::VERSION::MAJOR < 5 || defined?(JRUBY_VERSION)
-
 class SampleJob
   include Sidekiq::Worker
 

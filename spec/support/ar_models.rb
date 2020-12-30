@@ -52,7 +52,7 @@ ActiveRecord::Schema.define do
     else
       t.bigint :user_id
     end
-    t.foreign_key :users if ActiveRecord::VERSION::MAJOR >= 4
+    t.foreign_key :users
     t.timestamps
   end
 end
