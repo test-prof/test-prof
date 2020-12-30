@@ -3,6 +3,7 @@ source 'https://rubygems.org'
 gem "activerecord-jdbcsqlite3-adapter", "~> 52.0"
 gem "jdbc-sqlite3"
 gem "activerecord", "~> 5.2"
+gem "activerecord-import"
 
 gem "factory_bot", "~> 5.0"
 gem "fabrication"
