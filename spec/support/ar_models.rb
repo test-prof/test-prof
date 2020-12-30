@@ -32,7 +32,8 @@ DB_CONFIG =
 
 ActiveRecord::Base.establish_connection(**DB_CONFIG)
 
-ActiveRecord::Base.connection.truncate_tables(*ActiveRecord::Base.connection.tables)
+# #truncate_tables is not supported in older Rails, let's just ignore the failures
+ActiveRecord::Base.connection.truncate_tables(*ActiveRecord::Base.connection.tables) rescue nil # rubocop:disable Style/RescueModifier
 
 ActiveRecord::Schema.define do
   using_pg = ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
