@@ -26,16 +26,12 @@ module TestProf
 
           return restore_ivars(test_object) if active?
           @active = true
-          @examples_left = test_object.class.runnable_methods.size
           BeforeAll.begin_transaction do
             capture!(test_object)
           end
         end
 
-        def try_deactivate!
-          @examples_left -= 1
-          return unless @examples_left.zero?
-
+        def deactivate!
           @active = false
 
           current_test_object&.instance_eval(&teardown_block) if teardown_block
@@ -83,10 +79,13 @@ module TestProf
               self.class.before_all_executor.activate!(self)
               super
             end
+          end)
 
-            def teardown
+          singleton_class.prepend(Module.new do
+            def run(*)
               super
-              self.class.before_all_executor.try_deactivate!
+            ensure
+              self.before_all_executor&.deactivate!
             end
           end)
         end
