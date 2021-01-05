@@ -75,7 +75,7 @@ module TestProf
           self.before_all_executor = Executor.new(&block)
 
           prepend(Module.new do
-            def setup
+            def before_setup
               self.class.before_all_executor.activate!(self)
               super
             end
