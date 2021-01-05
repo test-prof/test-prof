@@ -15,6 +15,10 @@ describe "User" do
     @user = TestProf::FactoryBot.create(:user, name: user_name)
   end
 
+  after_all do
+    $stdout.puts "WE ALL HUMANS AFTER ALL: #{User.count}"
+  end
+
   def user_name
     %w[Matroskin Sharik].sample
   end

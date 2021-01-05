@@ -73,9 +73,7 @@ tests in a database transaction of its own. Use Rails' native `use_transactional
 DatabaseCleaner, or custom code that begins a transaction before each test and rolls it
 back after.
 
-### Minitest (Experimental)
-
-\*_Experimental_ means that I haven't tried it in _production_.
+### Minitest
 
 It is possible to use `before_all` with Minitest too:
 
@@ -95,6 +93,8 @@ class MyBeatlesTest < Minitest::Test
   # define tests which could access the object defined within `before_all`
 end
 ```
+
+In addition to `before_all`, TestProf also provides a `after_all` callback, which is called right before the transaction open by `before_all` is closed, i.e., after the last example from the test class completes.
 
 ## Database adapters
 

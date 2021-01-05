@@ -35,5 +35,11 @@ describe "BeforeAll" do
 
       expect(output).to include("0 failures, 0 errors, 0 skips")
     end
+
+    specify "after_all" do
+      output = run_minitest("before_all")
+
+      expect(output).to include("WE ALL HUMANS AFTER ALL: 1")
+    end
   end
 end
