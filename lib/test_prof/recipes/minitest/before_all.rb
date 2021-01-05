@@ -8,7 +8,7 @@ module TestProf
     # store instance variables
     module Minitest # :nodoc: all
       class Executor
-        attr_reader :active, :block, :captured_ivars
+        attr_reader :active, :block, :captured_ivars, :teardown_block, :current_test_object
 
         alias active? active
 
@@ -17,7 +17,13 @@ module TestProf
           @captured_ivars = []
         end
 
+        def teardown(&block)
+          @teardown_block = block
+        end
+
         def activate!(test_object)
+          @current_test_object = test_object
+
           return restore_ivars(test_object) if active?
           @active = true
           @examples_left = test_object.class.runnable_methods.size
@@ -31,10 +37,16 @@ module TestProf
           return unless @examples_left.zero?
 
           @active = false
+
+          current_test_object&.instance_eval(&teardown_block) if teardown_block
+
+          @current_test_object = nil
           BeforeAll.rollback_transaction
         end
 
         def capture!(test_object)
+          return unless block
+
           before_ivars = test_object.instance_variables
 
           test_object.instance_eval(&block)
@@ -77,6 +89,11 @@ module TestProf
               self.class.before_all_executor.try_deactivate!
             end
           end)
+        end
+
+        def after_all(&block)
+          self.before_all_executor ||= Executor.new
+          before_all_executor.teardown(&block)
         end
       end
     end

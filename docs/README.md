@@ -74,7 +74,7 @@ Add `test-prof` gem to your application:
 
 ```ruby
 group :test do
-  gem "test-prof"
+  gem "test-prof", "1.0.0.rc1"
 end
 ```
 
@@ -87,6 +87,8 @@ Supported Ruby versions:
 - JRuby >= 9.1.0.0 (**NOTE:** refinements-dependent features might require 9.2.7+)
 
 Supported RSpec version (for RSpec features only): >= 3.5.0 (for older RSpec version use TestProf < 0.8.0).
+
+Supported Rails version (for Rails features only): >= 5.2.0 (for older Rails versions use TestProf < 1.0).
 
 ### Linting with RuboCop RSpec
 

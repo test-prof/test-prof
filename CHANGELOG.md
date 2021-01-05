@@ -2,6 +2,10 @@
 
 ## master (unrealeased)
 
+- Minitest's `before_all` is not longer experimental. ([@palkan][])
+
+- Add `after_all` to Minitest in addition to `before_all`. ([@palkan][])
+
 ## 1.0.0.rc1 (2020-12-30)
 
 - Remove deprecated `AggregateFailures` cop. ([@palkan][])
