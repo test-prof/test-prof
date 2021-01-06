@@ -216,3 +216,24 @@ Alternatively, you can load the patch explicitly:
 # after loading before_all or/and let_it_be
 require "test_prof/before_all/isolator"
 ```
+
+## Using Rails fixtures (_experimental_)
+
+If you want to use fixtures within a `before_all` hook, you must explicitly opt-in via `setup_fixture:` option:
+
+```ruby
+before_all(setup_fixtures: true) do
+  @user = users(:john)
+  @post = create(:post, user: user)
+end
+```
+
+Works for both Minitest and RSpec.
+
+You can also enable fixtures globally (i.e., for all `before_all` hooks):
+
+```ruby
+TestProf::BeforeAll.configure do |config|
+  config.setup_fixtures = true
+end
+```

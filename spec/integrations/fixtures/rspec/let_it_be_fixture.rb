@@ -139,7 +139,8 @@ RSpec.describe "User", :transactional do
 
     let_it_be(:user, reload: true) { @user }
 
-    let_it_be(:post) { create(:post, user: user) }
+    before_all { @post = create(:post, user: user) }
+    let_it_be(:post) { @post }
 
     specify do
       expect(post.user).to eq @user
