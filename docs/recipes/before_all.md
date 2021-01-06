@@ -219,6 +219,8 @@ require "test_prof/before_all/isolator"
 
 ## Using Rails fixtures (_experimental_)
 
+> @since v1.0.0
+
 If you want to use fixtures within a `before_all` hook, you must explicitly opt-in via `setup_fixture:` option:
 
 ```ruby
