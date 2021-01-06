@@ -32,6 +32,12 @@ module TestProf
         end
       end
 
+      def setup_fixtures(test_object)
+        raise ArgumentError, "Current adapter doesn't support #setup_fixtures" unless adapter.respond_to?(:setup_fixtures)
+
+        adapter.setup_fixtures(test_object)
+      end
+
       def config
         @config ||= Configuration.new
       end
@@ -60,8 +66,11 @@ module TestProf
     class Configuration
       HOOKS = %i[begin rollback].freeze
 
+      attr_accessor :setup_fixtures
+
       def initialize
         @hooks = Hash.new { |h, k| h[k] = HooksChain.new(k) }
+        @setup_fixtures = false
       end
 
       # Add `before` hook for `begin` or

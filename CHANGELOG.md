@@ -2,6 +2,10 @@
 
 ## master (unrealeased)
 
+- Make Rails fixtures accesible in `before_all`. ([@palkan][])
+
+You can load and access fixtures when explicitly enabling them via `before_all(setup_fixtures: true, &block)`.
+
 - Minitest's `before_all` is not longer experimental. ([@palkan][])
 
 - Add `after_all` to Minitest in addition to `before_all`. ([@palkan][])

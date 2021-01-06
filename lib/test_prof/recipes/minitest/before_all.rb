@@ -8,11 +8,14 @@ module TestProf
     # store instance variables
     module Minitest # :nodoc: all
       class Executor
-        attr_reader :active, :block, :captured_ivars, :teardown_block, :current_test_object
+        attr_reader :active, :block, :captured_ivars, :teardown_block, :current_test_object,
+          :setup_fixtures
 
         alias active? active
+        alias setup_fixtures? setup_fixtures
 
-        def initialize(&block)
+        def initialize(setup_fixtures: false, &block)
+          @setup_fixtures = setup_fixtures
           @block = block
           @captured_ivars = []
         end
@@ -26,6 +29,7 @@ module TestProf
 
           return restore_ivars(test_object) if active?
           @active = true
+          BeforeAll.setup_fixtures(test_object) if setup_fixtures?
           BeforeAll.begin_transaction do
             capture!(test_object)
           end
@@ -71,8 +75,8 @@ module TestProf
       module ClassMethods
         attr_accessor :before_all_executor
 
-        def before_all(&block)
-          self.before_all_executor = Executor.new(&block)
+        def before_all(setup_fixtures: BeforeAll.config.setup_fixtures, &block)
+          self.before_all_executor = Executor.new(setup_fixtures: setup_fixtures, &block)
 
           prepend(Module.new do
             def before_setup
@@ -85,7 +89,7 @@ module TestProf
             def run(*)
               super
             ensure
-              self.before_all_executor&.deactivate!
+              before_all_executor&.deactivate!
             end
           end)
         end

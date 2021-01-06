@@ -18,6 +18,20 @@ module TestProf
             end
             ::ActiveRecord::Base.connection.rollback_transaction
           end
+
+          def setup_fixtures(test_object)
+            test_object.instance_eval do
+              @@already_loaded_fixtures ||= {}
+              @fixture_cache ||= {}
+
+              if @@already_loaded_fixtures[self.class]
+                @loaded_fixtures = @@already_loaded_fixtures[self.class]
+              else
+                @loaded_fixtures = load_fixtures(config)
+                @@already_loaded_fixtures[self.class] = @loaded_fixtures
+              end
+            end
+          end
         end
       end
     end
