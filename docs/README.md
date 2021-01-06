@@ -74,7 +74,7 @@ Add `test-prof` gem to your application:
 
 ```ruby
 group :test do
-  gem "test-prof", "1.0.0.rc1"
+  gem "test-prof"
 end
 ```
 
