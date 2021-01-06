@@ -1,4 +1,4 @@
-# Any Fixture
+# AnyFixture
 
 Fixtures are a great way to increase your test suite performance, but for a large project, they are very hard to maintain.
 

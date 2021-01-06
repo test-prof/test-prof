@@ -1,6 +1,6 @@
 # FactoryDefault
 
-_Factory Default_ aims to help you cope with _factory cascades_ (see [FactoryProf](../profilers/factory_prof.md)) by reusing associated records.
+_FactoryDefault_ aims to help you cope with _factory cascades_ (see [FactoryProf](../profilers/factory_prof.md)) by reusing associated records.
 
 **NOTE**. Only works with FactoryGirl/FactoryBot.
 
