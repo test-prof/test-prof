@@ -28,6 +28,7 @@ TestProf::LetItBe.configure do |config|
   end
 
   config.alias_to :let_with_refind, refind: true
+  config.alias_to :да_будет_так
 end
 
 RSpec.describe "User", :transactional do
@@ -89,7 +90,7 @@ RSpec.describe "User", :transactional do
     end
 
     context "with refind option" do
-      let_it_be(:post, refind: true) { create(:post) }
+      да_будет_так(:post, refind: true) { create(:post) } # rubocop:disable Naming/AsciiIdentifiers
 
       let(:user) { post.user }
 
