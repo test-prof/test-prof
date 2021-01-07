@@ -222,7 +222,7 @@ end
 context "with reload", let_it_be_modifiers: {reload: true} do
   # uses freeze: false, reload: true here
 
-  context "with freeze", let_it_be_modifiers: {free: true} do
+  context "with freeze", let_it_be_modifiers: {freeze: true} do
     # uses only freeze: true (reload: true is overwritten by new metadata)
   end
 end
