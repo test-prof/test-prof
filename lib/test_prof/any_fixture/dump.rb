@@ -45,7 +45,6 @@ module TestProf
           @adapter = adapter
           @tmp_path = path + ".tmp"
           @reset_pk = Set.new
-          @file = File.open(tmp_path, "w")
         end
 
         def start(_event, _id, payload)
@@ -70,6 +69,8 @@ module TestProf
         end
 
         def commit
+          return unless defined?(:@file)
+
           file.close
 
           FileUtils.mv(tmp_path, path)
@@ -77,7 +78,11 @@ module TestProf
 
         private
 
-        attr_reader :file, :reset_pk, :adapter
+        attr_reader :reset_pk, :adapter
+
+        def file
+          @file ||= File.open(tmp_path, "w")
+        end
 
         def reset_pk!(table_name)
           return if /sqlite_sequence/.match?(table_name)
