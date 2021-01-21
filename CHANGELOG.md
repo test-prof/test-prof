@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+## 1.0.0 (2021-01-21)
+
 ## 1.0.0.rc2 (2021-01-06)
 
 - Make Rails fixtures accesible in `before_all`. ([@palkan][])
