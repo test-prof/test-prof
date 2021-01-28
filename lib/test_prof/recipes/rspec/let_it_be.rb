@@ -91,7 +91,7 @@ module TestProf
       initializer = proc do
         instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", instance_exec(&block))
       rescue FrozenError => e
-        e.message << TestProf::LetItBe::FROZEN_ERROR_HINT
+        e.message << TestProf::LetItBe::FROZEN_ERROR_HINT unless e.message.frozen?
         raise
       end
 
@@ -243,7 +243,7 @@ end
 RSpec.configure do |config|
   config.after(:example) do |example|
     if example.exception&.is_a?(FrozenError)
-      example.exception.message << TestProf::LetItBe::FROZEN_ERROR_HINT
+      example.exception.message << TestProf::LetItBe::FROZEN_ERROR_HINT unless example.exception.message.frozen?
     end
   end
 end
