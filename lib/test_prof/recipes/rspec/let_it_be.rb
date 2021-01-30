@@ -91,8 +91,7 @@ module TestProf
       initializer = proc do
         instance_variable_set(:"#{TestProf::LetItBe::PREFIX}#{identifier}", instance_exec(&block))
       rescue FrozenError => e
-        e.message << TestProf::LetItBe::FROZEN_ERROR_HINT unless e.message.frozen?
-        raise
+        raise e.exception("#{e.message}#{TestProf::LetItBe::FROZEN_ERROR_HINT}")
       end
 
       default_options = LetItBe.config.default_modifiers.dup
