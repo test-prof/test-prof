@@ -22,9 +22,10 @@ jobs:
         - ruby: 3.0
           gemfile: "gemfiles/activerecord6.gemfile"
           db: "sqlite"
-        - ruby: 2.7
-          gemfile: "gemfiles/railsmaster.gemfile"
-          db: "sqlite"
+        # It's too early to test against Rails 7
+        # - ruby: 2.7
+        #   gemfile: "gemfiles/railsmaster.gemfile"
+        #   db: "sqlite"
         - ruby: 2.7
           gemfile: "gemfiles/activerecord60.gemfile"
           db: "postgres"
