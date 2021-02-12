@@ -2,6 +2,10 @@
 
 ## master (unrealeased)
 
+## 1.0.1 (2021-02-12)
+
+- Fixed AnyFixture deprecation warning.
+
 ## 1.0.0 (2021-01-21)
 
 ## 1.0.0.rc2 (2021-01-06)
