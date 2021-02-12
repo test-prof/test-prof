@@ -15,7 +15,7 @@ RSpec.configure do |config|
   config.include_context "any_fixture:clean", with_clean_fixture: true
 
   config.after(:suite) do
-    TestProf::AnyFixture.report_stats if TestProf::AnyFixture.reporting_enabled?
+    TestProf::AnyFixture.report_stats if TestProf::AnyFixture.config.reporting_enabled?
     TestProf::AnyFixture.reset
   end
 end
