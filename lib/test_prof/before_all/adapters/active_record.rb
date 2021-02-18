@@ -23,6 +23,7 @@ module TestProf
             test_object.instance_eval do
               @@already_loaded_fixtures ||= {}
               @fixture_cache ||= {}
+              config = ActiveRecord::Base
 
               if @@already_loaded_fixtures[self.class]
                 @loaded_fixtures = @@already_loaded_fixtures[self.class]
