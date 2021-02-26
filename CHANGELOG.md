@@ -2,6 +2,10 @@
 
 ## master (unrealeased)
 
+## 1.0.2 (2021-02-26)
+
+- Make `before_all(setup_fixtures: true)` compatible with Rails 6.1. ([@palkan][])
+
 ## 1.0.1 (2021-02-12)
 
 - Fixed AnyFixture deprecation warning.
