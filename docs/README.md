@@ -31,7 +31,7 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 📑 [Documentation](https://test-prof.evilmartians.io)
 
 <p align="center">
-  <a href="http://bit.ly/test-prof-map">
+  <a href="http://bit.ly/test-prof-map-v1">
     <img src="./assets/images/coggle.png" alt="TestProf map" width="738">
   </a>
 </p>
