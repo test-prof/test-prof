@@ -6,7 +6,7 @@ require "test_prof/any_fixture/dump"
 module TestProf
   # Make DB fixtures from blocks.
   module AnyFixture
-    INSERT_RXP = /^INSERT INTO ([\S]+)/.freeze
+    INSERT_RXP = /^INSERT INTO (\S+)/.freeze
 
     using FloatDuration
 
@@ -16,8 +16,8 @@ module TestProf
         :import_dump_via_cli, :dump_matching_queries, :force_matching_dumps
       attr_reader :default_dump_watch_paths
 
-      alias reporting_enabled? reporting_enabled
-      alias import_dump_via_cli? import_dump_via_cli
+      alias_method :reporting_enabled?, :reporting_enabled
+      alias_method :import_dump_via_cli?, :import_dump_via_cli
 
       def initialize
         @reporting_enabled = ENV["ANYFIXTURE_REPORT"] == "1"
@@ -42,7 +42,7 @@ module TestProf
       end
 
       def before_dump(&block)
-        if block_given?
+        if block
           @before_dump << block
         else
           @before_dump
@@ -50,7 +50,7 @@ module TestProf
       end
 
       def after_dump(&block)
-        if block_given?
+        if block
           @after_dump << block
         else
           @after_dump
@@ -112,7 +112,7 @@ module TestProf
         config.reporting_enabled
       end
 
-      alias reporting_enabled? reporting_enabled
+      alias_method :reporting_enabled?, :reporting_enabled
 
       # Register a block of code as a fixture,
       # returns the result of the block execution

@@ -7,7 +7,7 @@ module TestProf
     # Helper to wrap the whole example group into a transaction
     module RSpec
       def before_all(setup_fixtures: BeforeAll.config.setup_fixtures, &block)
-        raise ArgumentError, "Block is required!" unless block_given?
+        raise ArgumentError, "Block is required!" unless block
 
         if within_before_all?
           before(:all) do

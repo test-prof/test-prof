@@ -6,7 +6,7 @@ module TestProf
       attr_reader :event, :total_count, :total_time, :rank_by, :top_count, :per_example,
         :time, :count, :example_time, :example_count, :absolute_run_time
 
-      alias per_example? per_example
+      alias_method :per_example?, :per_example
 
       def initialize(event:, instrumenter:, rank_by: :time, top_count: 5, per_example: false)
         @event = event
@@ -88,14 +88,13 @@ module TestProf
       end
 
       def results
-        results = {
+        {
           groups: @groups.to_a
         }.tap do |data|
           next unless per_example?
 
           data[:examples] = @examples.to_a
         end
-        results
       end
 
       def take_time(start_ts)
@@ -130,7 +129,7 @@ module TestProf
       end
 
       def each(&block)
-        if block_given?
+        if block
           @profilers.each(&block)
         else
           @profilers.each

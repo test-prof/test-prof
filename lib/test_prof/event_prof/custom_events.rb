@@ -6,7 +6,7 @@ module TestProf
     module CustomEvents
       class << self
         def register(event, &block)
-          raise ArgumentError, "Block is required!" unless block_given?
+          raise ArgumentError, "Block is required!" unless block
           registrations[event] = block
         end
 

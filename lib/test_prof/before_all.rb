@@ -79,7 +79,7 @@ module TestProf
       #   config.before(:rollback) { ... }
       def before(type, &block)
         validate_hook_type!(type)
-        hooks[type].before << block if block_given?
+        hooks[type].before << block if block
       end
 
       # Add `after` hook for `begin` or
@@ -88,7 +88,7 @@ module TestProf
       #   config.after(:begin) { ... }
       def after(type, &block)
         validate_hook_type!(type)
-        hooks[type].after << block if block_given?
+        hooks[type].after << block if block
       end
 
       def run_hooks(type) # :nodoc:

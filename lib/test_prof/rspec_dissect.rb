@@ -38,7 +38,7 @@ module TestProf
       attr_accessor :top_count, :let_stats_enabled,
         :let_top_count
 
-      alias let_stats_enabled? let_stats_enabled
+      alias_method :let_stats_enabled?, :let_stats_enabled
 
       attr_reader :mode
 

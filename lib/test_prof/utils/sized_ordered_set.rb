@@ -14,7 +14,7 @@ module TestProf
       def initialize(max_size, sort_by: nil, &block)
         @max_size = max_size
         @comparator =
-          if block_given?
+          if block
             block
           elsif !sort_by.nil?
             ->(x, y) { x[sort_by] >= y[sort_by] }
@@ -42,7 +42,7 @@ module TestProf
       end
 
       def each(&block)
-        if block_given?
+        if block
           data.each(&block)
         else
           data.each

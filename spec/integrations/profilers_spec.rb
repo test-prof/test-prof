@@ -13,7 +13,7 @@ describe "general profilers", skip: !PROFILERS_AVAILABLE do
       specify "per example" do
         output = run_rspec("ruby_prof")
 
-        expect(output).to match(/RubyProf report generated.+ruby_prof_fixture\-rb\-1\-1/)
+        expect(output).to match(/RubyProf report generated.+ruby_prof_fixture-rb-1-1/)
         expect(output).to include("0 failures")
       end
 
@@ -30,7 +30,7 @@ describe "general profilers", skip: !PROFILERS_AVAILABLE do
       specify "per example", skip: "StackProf crashes with segfault occasianally" do
         output = run_rspec("stackprof")
 
-        expect(output).to match(/StackProf report generated.+stackprof_fixture\-rb\-1\-1/)
+        expect(output).to match(/StackProf report generated.+stackprof_fixture-rb-1-1/)
         expect(output).to include("0 failures")
       end
 

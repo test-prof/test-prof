@@ -26,7 +26,7 @@ module TestProf::EventProf
 
       class << self
         def subscribe(event, &block)
-          raise ArgumentError, "Block is required!" unless block_given?
+          raise ArgumentError, "Block is required!" unless block
 
           ::ActiveSupport::Notifications.subscribe(event, Subscriber.new(block))
         end

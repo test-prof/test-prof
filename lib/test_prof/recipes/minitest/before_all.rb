@@ -11,8 +11,8 @@ module TestProf
         attr_reader :active, :block, :captured_ivars, :teardown_block, :current_test_object,
           :setup_fixtures
 
-        alias active? active
-        alias setup_fixtures? setup_fixtures
+        alias_method :active?, :active
+        alias_method :setup_fixtures?, :setup_fixtures
 
         def initialize(setup_fixtures: false, &block)
           @setup_fixtures = setup_fixtures

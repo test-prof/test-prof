@@ -28,8 +28,6 @@ class FailingJob
   end
 end
 
-require "isolator"
-
 class User < ActiveRecord::Base
   attr_accessor :commited
 end

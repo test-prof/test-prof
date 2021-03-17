@@ -10,7 +10,7 @@ module TestProf
   # flamegraphs or detect most popular factories
   module FactoryProf
     FACTORY_BUILDERS = [FactoryBuilders::FactoryBot,
-                        FactoryBuilders::Fabrication].freeze
+      FactoryBuilders::Fabrication].freeze
 
     # FactoryProf configuration
     class Configuration

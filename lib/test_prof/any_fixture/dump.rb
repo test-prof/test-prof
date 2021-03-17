@@ -6,9 +6,9 @@ require "set"
 
 module TestProf
   module AnyFixture
-    MODIFY_RXP = /^(INSERT INTO|UPDATE|DELETE FROM) ([\S]+)/i.freeze
-    ANY_FIXTURE_RXP = /(\/\*|\-\-).*\bany_fixture:dump/.freeze
-    ANY_FIXTURE_IGNORE_RXP = /(\/\*|\-\-).*\bany_fixture:ignore/.freeze
+    MODIFY_RXP = /^(INSERT INTO|UPDATE|DELETE FROM) (\S+)/i.freeze
+    ANY_FIXTURE_RXP = /(\/\*|--).*\bany_fixture:dump/.freeze
+    ANY_FIXTURE_IGNORE_RXP = /(\/\*|--).*\bany_fixture:ignore/.freeze
 
     using(Module.new do
       refine Object do
@@ -111,7 +111,7 @@ module TestProf
       end
 
       attr_reader :name, :digest, :path, :subscriber, :success
-      alias success? success
+      alias_method :success?, :success
 
       def initialize(name, watch: [], cache_key: nil)
         @name = name

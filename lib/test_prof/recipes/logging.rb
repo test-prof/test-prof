@@ -12,7 +12,7 @@ module TestProf
         def logger
           return @logger if instance_variable_defined?(:@logger)
 
-          @logger = Logger.new(STDOUT)
+          @logger = Logger.new($stdout)
         end
 
         def ar_loggables
