@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "tsort"
+
 module TestProf
   # RubyProf wrapper.
   #
