@@ -6,7 +6,7 @@ Add `test-prof` gem to your application:
 
 ```ruby
 group :test do
-  gem "test-prof", "~> 1.0"
+  gem "test-prof", "~> 1.0", require: false
 end
 ```
 
