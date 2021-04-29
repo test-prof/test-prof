@@ -55,9 +55,7 @@ module TestProf
       end
 
       def module_for(group)
-        modules[group] ||= begin
-          Module.new.tap { |mod| group.prepend(mod) }
-        end
+        modules[group] ||= Module.new.tap { |mod| group.prepend(mod) }
       end
 
       private
