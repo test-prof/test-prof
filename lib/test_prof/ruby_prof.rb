@@ -239,16 +239,18 @@ module TestProf
       end
 
       def exclude_common_methods(profiler)
-        profiler.exclude_methods!(
-          TSort,
-          :tsort_each
-        )
+        if defined?(TSort)
+          profiler.exclude_methods!(
+            TSort,
+            :tsort_each
+          )
 
-        profiler.exclude_methods!(
-          TSort.singleton_class,
-          :tsort_each, :each_strongly_connected_component,
-          :each_strongly_connected_component_from
-        )
+          profiler.exclude_methods!(
+            TSort.singleton_class,
+            :tsort_each, :each_strongly_connected_component,
+            :each_strongly_connected_component_from
+          )
+        end
 
         profiler.exclude_methods!(
           BasicObject,
