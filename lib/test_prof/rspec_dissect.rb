@@ -139,7 +139,7 @@ end
 
 require "test_prof/rspec_dissect/collectors/let"
 require "test_prof/rspec_dissect/collectors/before"
-require "test_prof/rspec_dissect/rspec" if TestProf.rspec?
+require "test_prof/rspec_dissect/rspec"
 
 TestProf.activate("RD_PROF") do
   TestProf::RSpecDissect.init
