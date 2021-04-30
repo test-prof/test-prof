@@ -2,6 +2,10 @@
 
 ## master (unrealeased)
 
+## 1.0.3 (2021-04-30)
+
+- Minor fixes.
+
 ## 1.0.2 (2021-02-26)
 
 - Make `before_all(setup_fixtures: true)` compatible with Rails 6.1. ([@palkan][])
