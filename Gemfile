@@ -5,7 +5,7 @@ gemspec
 
 eval_gemfile "gemfiles/rubocop.gemfile"
 
-local_gemfile = "Gemfile.local"
+local_gemfile = File.join(__dir__, "Gemfile.local")
 
 if File.exist?(local_gemfile)
   eval_gemfile(local_gemfile) # rubocop:disable Security/Eval
