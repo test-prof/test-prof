@@ -53,11 +53,9 @@ module TestProf
       def fetch_events_data
         return {} unless @events_profiler
 
-        Hash[
-          @events_profiler.profilers.map do |profiler|
-            [profiler.event, profiler.time]
-          end
-        ]
+        @events_profiler.profilers.map do |profiler|
+          [profiler.event, profiler.time]
+        end.to_h
       end
     end
   end

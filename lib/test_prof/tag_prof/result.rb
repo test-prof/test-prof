@@ -12,7 +12,7 @@ module TestProf
 
         @data = Hash.new do |h, k|
           h[k] = {value: k, count: 0, time: 0.0}
-          h[k].merge!(Hash[events.map { |event| [event, 0.0] }]) unless
+          h[k].merge!(events.map { |event| [event, 0.0] }.to_h) unless
             events.empty?
           h[k]
         end

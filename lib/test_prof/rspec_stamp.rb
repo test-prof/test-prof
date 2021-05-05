@@ -39,7 +39,7 @@ module TestProf
           acc << if v.nil?
             k.to_sym
           else
-            Hash[k.to_sym, v.to_sym]
+            {k.to_sym => v.to_sym}
           end
         end
       end
