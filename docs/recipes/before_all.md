@@ -122,8 +122,6 @@ TestProf::BeforeAll.adapter = MyDBAdapter.new
 
 ## Hooks
 
-> @since v0.9.0
-
 You can register callbacks to run before/after `before_all` opens and rollbacks a transaction:
 
 ```ruby
@@ -218,8 +216,6 @@ require "test_prof/before_all/isolator"
 ```
 
 ## Using Rails fixtures (_experimental_)
-
-> @since v1.0.0
 
 If you want to use fixtures within a `before_all` hook, you must explicitly opt-in via `setup_fixture:` option:
 

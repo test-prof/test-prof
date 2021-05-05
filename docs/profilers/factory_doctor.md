@@ -74,7 +74,7 @@ end
 FactoryDoctor supports:
 
 - FactoryGirl/FactoryBot
-- Fabrication (**@since v0.9.0**).
+- Fabrication.
 
 ### RSpec
 
@@ -138,8 +138,6 @@ Otherwise, you'll get an error caused by Minitest plugin system, which scans all
 available in that case doesn't happens correctly.
 
 ## Configuration
-
-> @since v0.9.0
 
 The following configuration parameters are available (showing defaults):
 

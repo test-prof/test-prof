@@ -20,8 +20,7 @@ Total uniq factories: 119
 
 It shows both the total number of the factory runs and the number of _top-level_ runs, i.e. not during another factory invocation (e.g. when using associations.)
 
-(**@since v0.9.0**) It also shows the time spent generating records with factories.
-(**@since v0.11.0**) It also shows the amount of time taken per factory call.
+It also shows the time spent generating records with factories and the amount of time taken per factory call.
 
 **NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryGirl/FactoryBot these are the factories provided by using `create` strategy. In case of Fabrication - objects that created using `create` method.
 

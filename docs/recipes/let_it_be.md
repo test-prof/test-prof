@@ -107,8 +107,6 @@ If you're using DatabaseCleaner, make sure it rolls back the database between te
 
 ## Aliases
 
-> @since v0.9.0
-
 Naming is hard. Handling edge cases (the ones described above) is also tricky.
 
 To solve this we provide a way to define `let_it_be` aliases with the predefined options:
@@ -155,7 +153,7 @@ let(:user) { User.find(@user.id) }
 
 **NOTE:** make sure that you require `let_it_be` after `active_record` is loaded (e.g., in `rails_helper.rb` **after** requiring the Rails app); otherwise the `refind` and `reload` modifiers are not activated.
 
-(**@since v0.10.0**) You can also use modifiers with array values, e.g. `create_list`:
+You can also use modifiers with array values, e.g. `create_list`:
 
 ```ruby
 let_it_be(:posts, reload: true) { create_list(:post, 3) }
@@ -166,8 +164,6 @@ let(:posts) { @posts.map(&:reload) }
 ```
 
 ### Custom Modifiers
-
-> @since v0.10.0
 
 If `reload` and `refind` is not enough, you can add your custom modifier:
 
@@ -190,8 +186,6 @@ end
 ```
 
 ### Default Modifiers
-
-> @since v0.12.0
 
 It's possible to configure the default modifiers used for all `let_it_be` calls:
 
@@ -229,8 +223,6 @@ end
 ```
 
 ## State Leakage Detection
-
-> @since v0.12.0
 
 From [`rspec-rails` docs](https://relishapp.com/rspec/rspec-rails/v/3-9/docs/transactions) on transactions and `before(:context)`:
 
