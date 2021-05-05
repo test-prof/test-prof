@@ -2,6 +2,20 @@
 
 ## master (unrealeased)
 
+- Add `nate_heckler` mode for FactoryProf. ([@palkan][])
+
+Drop this into your `rails_helper.rb` or `test_helper.rb`:
+
+```ruby
+require "test_prof/factory_prof/nate_heckler"
+```
+
+And for every test run see the overall factories usage:
+
+```sh
+[TEST PROF INFO] Time spent in factories: 04:31.222 (54% of total time)
+```
+
 ## 1.0.3 (2021-04-30)
 
 - Minor fixes.

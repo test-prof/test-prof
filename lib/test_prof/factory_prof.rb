@@ -2,6 +2,7 @@
 
 require "test_prof/factory_prof/printers/simple"
 require "test_prof/factory_prof/printers/flamegraph"
+require "test_prof/factory_prof/printers/nate_heckler"
 require "test_prof/factory_prof/factory_builders/factory_bot"
 require "test_prof/factory_prof/factory_builders/fabrication"
 
@@ -14,10 +15,19 @@ module TestProf
 
     # FactoryProf configuration
     class Configuration
-      attr_accessor :mode
+      attr_accessor :mode, :printer
 
       def initialize
         @mode = ENV["FPROF"] == "flamegraph" ? :flamegraph : :simple
+        @printer =
+          case ENV["FPROF"]
+          when "flamegraph"
+            Printers::Flamegraph
+          when "nate_heckler"
+            Printers::NateHeckler
+          else
+            Printers::Simple
+          end
       end
 
       # Whether we want to generate flamegraphs
@@ -74,7 +84,15 @@ module TestProf
 
         log :info, "FactoryProf enabled (#{config.mode} mode)"
 
+        patch!
+      end
+
+      def patch!
+        return if @patched
+
         FACTORY_BUILDERS.each(&:patch)
+
+        @patched = true
       end
 
       # Inits FactoryProf and setups at exit hook,
@@ -82,9 +100,11 @@ module TestProf
       def run
         init
 
-        printer = config.flamegraph? ? Printers::Flamegraph : Printers::Simple
+        printer = config.printer
 
-        at_exit { printer.dump(result) }
+        started_at = TestProf.now
+
+        at_exit { printer.dump(result, start_time: started_at) }
 
         start
       end

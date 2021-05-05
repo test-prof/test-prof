@@ -9,7 +9,7 @@ Example output:
 
 Total: 15285
 Total top-level: 10286
-Total time: 299.5937s
+Total time: 04:31.222 (out of 07.16.124)
 Total uniq factories: 119
 
  total   top-level   total time    time per call      top-level time            name
@@ -36,6 +36,22 @@ FPROF=1 rspec
 
 # or
 FPROF=1 bundle exec rake test
+```
+
+### [_Nate Heckler_](https://twitter.com/nateberkopec/status/1389945187766456333) mode
+
+To encourage you to fix your factories as soon as possible, we also have a special _Nate heckler_ mode.
+
+Drop this into your `rails_helper.rb` or `test_helper.rb`:
+
+```ruby
+require "test_prof/factory_prof/nate_heckler"
+```
+
+And for every test run see the overall factories usage:
+
+```sh
+[TEST PROF INFO] Time spent in factories: 04:31.222 (54% of total time)
 ```
 
 ## Factory Flamegraph
