@@ -102,7 +102,7 @@ module TestProf
         def quoted(val)
           if val.is_a?(Array)
             val.map { |v| quoted(v) }
-          elsif val.is_a?(ActiveRecord::Relation::QueryAttribute)
+          elsif val.is_a?(ActiveModel::Attribute)
             quoted(val.value_for_database)
           else
             ActiveRecord::Base.connection.quote(val)
