@@ -102,7 +102,7 @@ describe "Tests Sampling" do
   def filter_output(output)
     output.gsub(/Finished in.*/, "").tap do |str|
       str.gsub!(/\s/, "")
-      str.gsub!(%r{#test_pass=\d+.\d+s=}, "") # for JRuby
+      str.gsub!(%r{#test_pass\d*=\d+.\d+s=}, "") # for JRuby
     end
   end
 end
