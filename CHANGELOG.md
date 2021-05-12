@@ -2,6 +2,16 @@
 
 ## master (unrealeased)
 
+## 1.0.4 (2021-05-12)
+
+- Add ability to use custom logger. ([@palkan][])
+
+```ruby
+TestProf.configure do |config|
+  config.logger = Logger.new($stdout, level: Logger::WARN)
+end
+```
+
 - Add `nate_heckler` mode for FactoryProf. ([@palkan][])
 
 Drop this into your `rails_helper.rb` or `test_helper.rb`:
