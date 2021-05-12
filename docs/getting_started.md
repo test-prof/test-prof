@@ -26,6 +26,12 @@ TestProf.configure do |config|
 
   # color output
   config.color = true
+
+  # where to write logs (defaults)
+  config.output = $stdout
+
+  # alternatively, you can specify a custom logger instance
+  config.logger = MyLogger.new
 end
 ```
 
