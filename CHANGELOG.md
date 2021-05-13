@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+- Fix logging regression when no newline has been added. ([@palkan][])
+
 ## 1.0.4 (2021-05-12)
 
 - Add ability to use custom logger. ([@palkan][])

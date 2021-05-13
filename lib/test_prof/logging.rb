@@ -11,7 +11,7 @@ module TestProf
 
     class Formatter
       def call(severity, _time, progname, msg)
-        colorize(severity.to_sym, "[#{progname} #{severity}] #{msg}")
+        colorize(severity.to_sym, "[#{progname} #{severity}] #{msg}\n")
       end
 
       private
