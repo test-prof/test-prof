@@ -133,7 +133,6 @@ module TestProf
   # TestProf configuration
   class Configuration
     attr_accessor :output, # IO to write logs
-      :logger, # Logger instance to write to the output io
       :color, # Whether to colorize output or not
       :output_dir, # Directory to store artifacts
       :timestamps, # Whether to use timestamped names for artifacts,
@@ -141,7 +140,6 @@ module TestProf
 
     def initialize
       @output = $stdout
-      @logger = Logger.new(@output, formatter: Logging::Formatter.new)
       @color = true
       @output_dir = "tmp/test_prof"
       @timestamps = false
@@ -149,11 +147,15 @@ module TestProf
     end
 
     def color?
-      color == true
+      color == true && output.is_a?(IO) && output.tty?
     end
 
     def timestamps?
       timestamps == true
+    end
+
+    def logger
+      @logger ||= Logger.new(output, formatter: Logging::Formatter.new)
     end
   end
 end
