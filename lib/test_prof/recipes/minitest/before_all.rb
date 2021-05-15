@@ -2,6 +2,21 @@
 
 require "test_prof/before_all"
 
+Minitest.singleton_class.prepend(Module.new do
+  @previous_klass = nil
+
+  def run_one_method(klass, method_name)
+    return super unless klass.before_all_executor && klass.parallelized
+
+    if @previous_klass && @previous_klass != klass
+      klass.before_all_executor.deactivate!
+    end
+    @previous_klass = klass
+
+    super
+  end
+end)
+
 module TestProf
   module BeforeAll
     # Add before_all hook to Minitest: wrap all examples into a transaction and
@@ -83,6 +98,27 @@ module TestProf
       class << self
         def included(base)
           base.extend ClassMethods
+
+          base.singleton_class.cattr_accessor :parallelized
+          base.singleton_class.prepend(Module.new do
+            def parallelize(workers: :number_of_processors, with: :processes)
+              # super.parallelize returns nil when no parallelization is set up
+              if super(workers: workers, with: with).nil?
+                return
+              end
+
+              case with
+              when :processes
+                self.parallelized = true
+              when :threads
+                warn "!!! before_all is not implemented for parallalization with threads and " \
+                   "could work incorrectly"
+              else
+                warn "!!! tests are using an unknown parallelization strategy and before_all " \
+                   "could work incorrectly"
+              end
+            end
+          end)
         end
       end
 
@@ -118,7 +154,7 @@ module TestProf
             def run(*)
               super
             ensure
-              before_all_executor&.deactivate!
+              before_all_executor&.deactivate! unless self.parallelized
             end
           end)
         end
