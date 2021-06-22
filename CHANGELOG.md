@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+- Make `before_all` in Minitest inheritable. ([@palkan][])
+
 ## 1.0.5 (2021-05-13)
 
 - Fix logging regression when no newline has been added. ([@palkan][])

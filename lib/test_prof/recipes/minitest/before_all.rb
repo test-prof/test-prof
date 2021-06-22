@@ -9,13 +9,15 @@ module TestProf
     module Minitest # :nodoc: all
       class Executor
         attr_reader :active, :block, :captured_ivars, :teardown_block, :current_test_object,
-          :setup_fixtures
+          :setup_fixtures, :parent
 
         alias_method :active?, :active
         alias_method :setup_fixtures?, :setup_fixtures
 
-        def initialize(setup_fixtures: false, &block)
-          @setup_fixtures = setup_fixtures
+        def initialize(setup_fixtures: false, parent: nil, &block)
+          @parent = parent
+          # Fixtures must be instantiated if any of the executors needs them
+          @setup_fixtures = setup_fixtures || parent&.setup_fixtures
           @block = block
           @captured_ivars = []
         end
@@ -28,7 +30,9 @@ module TestProf
           @current_test_object = test_object
 
           return restore_ivars(test_object) if active?
+
           @active = true
+
           BeforeAll.setup_fixtures(test_object) if setup_fixtures?
           BeforeAll.begin_transaction do
             capture!(test_object)
@@ -36,20 +40,20 @@ module TestProf
         end
 
         def deactivate!
+          return unless active
+
           @active = false
 
-          current_test_object&.instance_eval(&teardown_block) if teardown_block
+          perform_teardown(current_test_object)
 
           @current_test_object = nil
           BeforeAll.rollback_transaction
         end
 
         def capture!(test_object)
-          return unless block
-
           before_ivars = test_object.instance_variables
 
-          test_object.instance_eval(&block)
+          perform_setup(test_object)
 
           (test_object.instance_variables - before_ivars).each do |ivar|
             captured_ivars << [ivar, test_object.instance_variable_get(ivar)]
@@ -64,6 +68,16 @@ module TestProf
             )
           end
         end
+
+        def perform_setup(test_object)
+          parent&.perform_setup(test_object)
+          test_object.instance_eval(&block) if block
+        end
+
+        def perform_teardown(test_object)
+          current_test_object&.instance_eval(&teardown_block) if teardown_block
+          parent&.perform_teardown(test_object)
+        end
       end
 
       class << self
@@ -73,10 +87,25 @@ module TestProf
       end
 
       module ClassMethods
-        attr_accessor :before_all_executor
+        attr_writer :before_all_executor
+
+        def before_all_executor
+          return @before_all_executor if instance_variable_defined?(:@before_all_executor)
+
+          @before_all_executor = if superclass.respond_to?(:before_all_executor)
+            superclass.before_all_executor
+          end
+        end
 
         def before_all(setup_fixtures: BeforeAll.config.setup_fixtures, &block)
-          self.before_all_executor = Executor.new(setup_fixtures: setup_fixtures, &block)
+          self.before_all_executor = Executor.new(
+            setup_fixtures: setup_fixtures,
+            parent: before_all_executor,
+            &block
+          )
+
+          # Do not add patches multiple times
+          return if before_all_executor.parent
 
           prepend(Module.new do
             def before_setup
@@ -95,7 +124,7 @@ module TestProf
         end
 
         def after_all(&block)
-          self.before_all_executor ||= Executor.new
+          self.before_all_executor = Executor.new(parent: before_all_executor)
           before_all_executor.teardown(&block)
         end
       end

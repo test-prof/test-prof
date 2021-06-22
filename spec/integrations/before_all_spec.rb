@@ -41,5 +41,11 @@ describe "BeforeAll" do
 
       expect(output).to include("WE ALL HUMANS AFTER ALL: 1")
     end
+
+    specify "inheritance" do
+      output = run_minitest("before_all_inherit")
+
+      expect(output).to include("0 failures, 0 errors, 0 skips")
+    end
   end
 end
