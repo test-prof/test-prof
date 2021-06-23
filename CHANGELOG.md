@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+- Fix Spring detection when `DISABLE_SPRING=1` is used. ([@palkan][])
+
 - Make `before_all` in Minitest inheritable. ([@palkan][])
 
 ## 1.0.5 (2021-05-13)
@@ -180,7 +182,7 @@ end
 ```
 
 - Print warning when `ActiveRecordSharedConnection` is used in the version of Rails
-supporting `lock_threads` (5.1+). ([@palkan][])
+  supporting `lock_threads` (5.1+). ([@palkan][])
 
 ## 0.9.0 (2019-05-14)
 
@@ -238,20 +240,20 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@palkan]: https://github.com/palkan
 [@marshall-lee]: https://github.com/marshall-lee
 [@danielwestendorf]: https://github.com/danielwestendorf
-[@Shkrt]: https://github.com/Shkrt
-[@IDolgirev]: https://github.com/IDolgirev
+[@shkrt]: https://github.com/Shkrt
+[@idolgirev]: https://github.com/IDolgirev
 [@desoleary]: https://github.com/desoleary
 [@rabotyaga]: https://github.com/rabotyaga
-[@Vasfed]: https://github.com/Vasfed
+[@vasfed]: https://github.com/Vasfed
 [@szemek]: https://github.com/szemek
 [@mkldon]: https://github.com/mkldon
 [@dmagro]: https://github.com/dmagro
 [@danielwaterworth]: https://github.com/danielwaterworth
-[@Envek]: https://github.com/Envek
+[@envek]: https://github.com/Envek
 [@tyleriguchi]: https://github.com/tyleriguchi
 [@lostie]: https://github.com/lostie
 [@pirj]: https://github.com/pirj
-[@LynxEyes]: https://github.com/LynxEyes
+[@lynxeyes]: https://github.com/LynxEyes
 [@stefkin]: https://github.com/stefkin
 [@jaimerson]: https://github.com/jaimerson
 [@alexvko]: https://github.com/alexvko

@@ -46,6 +46,13 @@ module TestProf
       defined?(Minitest)
     end
 
+    # Returns true if Spring is used and not disabled
+    def spring?
+      # See https://github.com/rails/spring/blob/577cf01f232bb6dbd0ade7df2df2ac209697e741/lib/spring/binstub.rb
+      disabled = ENV["DISABLE_SPRING"]
+      defined?(::Spring::Application) && (disabled.nil? || disabled.empty? || disabled == "0")
+    end
+
     # Returns the current process time
     def now
       Process.clock_gettime(Process::CLOCK_MONOTONIC)
@@ -65,7 +72,7 @@ module TestProf
     # equal to the provided value (if any).
     # Contains workaround for applications using Spring.
     def activate(env_var, val = nil)
-      if defined?(::Spring::Application)
+      if spring?
         notify_spring_detected
         ::Spring.after_fork do
           activate!(env_var, val) do
