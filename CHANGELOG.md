@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+## 1.0.6 (2021-06-23)
+
 - Fix Spring detection when `DISABLE_SPRING=1` is used. ([@palkan][])
 
 - Make `before_all` in Minitest inheritable. ([@palkan][])
