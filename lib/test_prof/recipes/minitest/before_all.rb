@@ -6,10 +6,10 @@ Minitest.singleton_class.prepend(Module.new do
   @previous_klass = nil
 
   def run_one_method(klass, method_name)
-    return super unless klass.before_all_executor && klass.parallelized
+    return super unless klass.parallelized
 
     if @previous_klass && @previous_klass != klass
-      klass.before_all_executor.deactivate!
+      @previous_klass.before_all_executor&.deactivate!
     end
     @previous_klass = klass
 
