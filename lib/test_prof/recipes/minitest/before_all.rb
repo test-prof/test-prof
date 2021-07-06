@@ -3,10 +3,11 @@
 require "test_prof/before_all"
 
 Minitest.singleton_class.prepend(Module.new do
+  attr_reader :previous_klass
   @previous_klass = nil
 
   def run_one_method(klass, method_name)
-    return super unless klass.parallelized
+    return super unless klass.respond_to?(:parallelized) && klass.parallelized
 
     if @previous_klass && @previous_klass != klass
       @previous_klass.before_all_executor&.deactivate!
@@ -100,6 +101,13 @@ module TestProf
           base.extend ClassMethods
 
           base.singleton_class.cattr_accessor :parallelized
+          base.parallelize_teardown do
+            last_klass = ::Minitest.previous_klass
+            if last_klass&.respond_to?(:parallelized) && last_klass.parallelized
+              last_klass.before_all_executor&.deactivate!
+            end
+          end
+
           base.singleton_class.prepend(Module.new do
             def parallelize(workers: :number_of_processors, with: :processes)
               # super.parallelize returns nil when no parallelization is set up
@@ -154,7 +162,7 @@ module TestProf
             def run(*)
               super
             ensure
-              before_all_executor&.deactivate! unless self.parallelized
+              before_all_executor&.deactivate! unless parallelized
             end
           end)
         end
