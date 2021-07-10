@@ -100,11 +100,13 @@ module TestProf
         def included(base)
           base.extend ClassMethods
 
-          base.singleton_class.cattr_accessor :parallelized
-          base.parallelize_teardown do
-            last_klass = ::Minitest.previous_klass
-            if last_klass&.respond_to?(:parallelized) && last_klass.parallelized
-              last_klass.before_all_executor&.deactivate!
+          base.cattr_accessor :parallelized
+          if base.respond_to?(:parallelize_teardown)
+            base.parallelize_teardown do
+              last_klass = ::Minitest.previous_klass
+              if last_klass&.respond_to?(:parallelized) && last_klass&.parallelized
+                last_klass.before_all_executor&.deactivate!
+              end
             end
           end
 
