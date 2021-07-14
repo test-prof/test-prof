@@ -110,25 +110,27 @@ module TestProf
             end
           end
 
-          base.singleton_class.prepend(Module.new do
-            def parallelize(workers: :number_of_processors, with: :processes)
-              # super.parallelize returns nil when no parallelization is set up
-              if super(workers: workers, with: with).nil?
-                return
-              end
+          if base.respond_to?(:parallelize)
+            base.singleton_class.prepend(Module.new do
+              def parallelize(workers: :number_of_processors, with: :processes)
+                # super.parallelize returns nil when no parallelization is set up
+                if super(workers: workers, with: with).nil?
+                  return
+                end
 
-              case with
-              when :processes
-                self.parallelized = true
-              when :threads
-                warn "!!! before_all is not implemented for parallalization with threads and " \
-                   "could work incorrectly"
-              else
-                warn "!!! tests are using an unknown parallelization strategy and before_all " \
-                   "could work incorrectly"
+                case with
+                when :processes
+                  self.parallelized = true
+                when :threads
+                  warn "!!! before_all is not implemented for parallalization with threads and " \
+                    "could work incorrectly"
+                else
+                  warn "!!! tests are using an unknown parallelization strategy and before_all " \
+                    "could work incorrectly"
+                end
               end
-            end
-          end)
+            end)
+          end
         end
       end
 
