@@ -2,6 +2,22 @@
 
 require "test_prof/before_all"
 
+Minitest.singleton_class.prepend(Module.new do
+  attr_reader :previous_klass
+  @previous_klass = nil
+
+  def run_one_method(klass, method_name)
+    return super unless klass.respond_to?(:parallelized) && klass.parallelized
+
+    if @previous_klass && @previous_klass != klass
+      @previous_klass.before_all_executor&.deactivate!
+    end
+    @previous_klass = klass
+
+    super
+  end
+end)
+
 module TestProf
   module BeforeAll
     # Add before_all hook to Minitest: wrap all examples into a transaction and
@@ -83,6 +99,38 @@ module TestProf
       class << self
         def included(base)
           base.extend ClassMethods
+
+          base.cattr_accessor :parallelized
+          if base.respond_to?(:parallelize_teardown)
+            base.parallelize_teardown do
+              last_klass = ::Minitest.previous_klass
+              if last_klass&.respond_to?(:parallelized) && last_klass&.parallelized
+                last_klass.before_all_executor&.deactivate!
+              end
+            end
+          end
+
+          if base.respond_to?(:parallelize)
+            base.singleton_class.prepend(Module.new do
+              def parallelize(workers: :number_of_processors, with: :processes)
+                # super.parallelize returns nil when no parallelization is set up
+                if super(workers: workers, with: with).nil?
+                  return
+                end
+
+                case with
+                when :processes
+                  self.parallelized = true
+                when :threads
+                  warn "!!! before_all is not implemented for parallalization with threads and " \
+                    "could work incorrectly"
+                else
+                  warn "!!! tests are using an unknown parallelization strategy and before_all " \
+                    "could work incorrectly"
+                end
+              end
+            end)
+          end
         end
       end
 
@@ -118,7 +166,7 @@ module TestProf
             def run(*)
               super
             ensure
-              before_all_executor&.deactivate!
+              before_all_executor&.deactivate! unless parallelized
             end
           end)
         end
