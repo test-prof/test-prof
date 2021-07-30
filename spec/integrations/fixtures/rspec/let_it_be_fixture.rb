@@ -40,6 +40,7 @@ RSpec.describe "User", :transactional do
     let_it_be(:user) { create(:user) }
 
     before(:all) { @cache[:user_name] = user.name }
+    after(:all) { expect(user.name).to eq @cache[:user_name] }
 
     it "is cached" do
       expect(user.name).to eq @cache[:user_name]
