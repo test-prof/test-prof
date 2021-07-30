@@ -107,7 +107,7 @@ module TestProf
         define_method(identifier) do
           # Trying to detect the context
           # Based on https://github.com/rspec/rspec-rails/commit/7cb796db064f58da7790a92e73ab906ef50b1f34
-          if @__inspect_output.include?("before(:context)") || @__inspect_output.include?("before_all")
+          if /(before|after)\(:context\)/.match?(@__inspect_output) || @__inspect_output.include?("before_all")
             instance_variable_get(:"#{PREFIX}#{identifier}")
           else
             # Fallback to let definition
