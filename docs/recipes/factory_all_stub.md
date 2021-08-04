@@ -25,7 +25,7 @@ TestProf::FactoryAllStub.enable!
 To disable _all-stub_ mode and use factories as always:
 
 ```ruby
-TestProf::FactoryAllStub.enable!
+TestProf::FactoryAllStub.disable!
 ```
 
 ## RSpec
