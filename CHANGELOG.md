@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+## 1.0.7 (2021-08-30)
+
 - Fix access to `let_it_be` variables in `after(:all)` hook. ([@cbarton][])
 
 - Add support for using the before_all hook with Rails' parallelize feature (using processes). ([@peret][])
