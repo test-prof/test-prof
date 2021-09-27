@@ -162,7 +162,7 @@ module TestProf
         log :info, <<~MSG
           Run the following command to generate a flame graph report:
 
-          stackprof --flamegraph #{path} > #{html_path} && stackprof --flamegraph-viewer=#{html_path}
+          stackprof --d3-flamegraph #{path} > #{html_path} && stackprof --flamegraph-viewer=#{html_path}
         MSG
       end
 
