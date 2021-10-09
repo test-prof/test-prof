@@ -75,7 +75,7 @@ module TestProf
     # Use uniq prefix for instance variables to avoid collisions
     # We want to use the power of Ruby's unicode support)
     # And we love cats!)
-    PREFIX = RUBY_ENGINE == "jruby" ? "@__jruby_is_not_cat_friendly__" : "@😸"
+    PREFIX = RUBY_ENGINE == "@😸"
 
     FROZEN_ERROR_HINT = "\nIf you are using `let_it_be`, you may want to pass `reload: true` or `refind: true` modifier to it."
 
