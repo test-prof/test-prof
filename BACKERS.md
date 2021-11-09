@@ -2,4 +2,5 @@
 
 ## Personal Sponsors
 
-Be the first one :)
+- [Makar Ermokhin](https://github.com/Earendil95)
+- [Burkhard Vogel-Kreykenbohm](https://github.com/bvogel)
