@@ -116,8 +116,6 @@ module TestProf
 
       private
 
-      # rubocop: disable Metrics/CyclomaticComplexity
-      # rubocop: disable Metrics/PerceivedComplexity
       def stamp_example(example, tags)
         matches = example.match(EXAMPLE_RXP)
         return false unless matches

@@ -28,8 +28,6 @@ module TestProf
       end
 
       class << self
-        # rubocop: disable Metrics/CyclomaticComplexity
-        # rubocop: disable Metrics/PerceivedComplexity
         def parse(code)
           sexp = Ripper.sexp(code)
           return unless sexp

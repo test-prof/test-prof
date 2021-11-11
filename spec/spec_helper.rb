@@ -3,7 +3,7 @@
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 begin
   require "pry-byebug"
-rescue LoadError # rubocop:disable Lint/HandleExceptions
+rescue LoadError
 end
 
 require "open3"

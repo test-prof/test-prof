@@ -3,7 +3,6 @@
 describe TestProf::FactoryProf::Printers::Flamegraph do
   subject { described_class }
 
-  # rubocop:disable Style/BracesAroundHashParameters
   describe ".convert_stacks" do
     it "converts stacks to hierarchy Hash" do
       stacks = []

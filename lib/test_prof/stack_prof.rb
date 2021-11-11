@@ -168,7 +168,7 @@ module TestProf
 
       def dump_json_report(path)
         report = ::StackProf::Report.new(
-          Marshal.load(IO.binread(path)) # rubocop:disable Security/MarshalLoad
+          Marshal.load(IO.binread(path))
         )
         json_path = path.gsub(/\.dump$/, ".json")
         File.write(json_path, JSON.generate(report.data))

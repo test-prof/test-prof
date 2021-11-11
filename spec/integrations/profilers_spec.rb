@@ -4,7 +4,7 @@ PROFILERS_AVAILABLE =
   begin
     require "stackprof"
     require "ruby-prof"
-  rescue LoadError # rubocop:disable Lint/HandleExceptions
+  rescue LoadError
   end
 
 describe "general profilers", skip: !PROFILERS_AVAILABLE do

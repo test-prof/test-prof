@@ -24,8 +24,6 @@ module TestProf
           ]
         end
 
-        # rubocop:disable Metrics/CyclomaticComplexity
-        # rubocop:disable Metrics/PerceivedComplexity
         def all_loggables
           return @all_loggables if instance_variable_defined?(:@all_loggables)
 

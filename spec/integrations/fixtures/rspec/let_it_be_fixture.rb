@@ -91,7 +91,7 @@ RSpec.describe "User", :transactional do
     end
 
     context "with refind option" do
-      да_будет_так(:post, refind: true) { create(:post) } # rubocop:disable Naming/AsciiIdentifiers
+      да_будет_так(:post, refind: true) { create(:post) }
 
       let(:user) { post.user }
 
