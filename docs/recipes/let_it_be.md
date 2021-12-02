@@ -28,7 +28,7 @@ describe BeatleWeightedSearchQuery do
     # ...
   end
 
-  specify { expect(subject.call("joh")).to contain_exactly(@john) }
+  specify { expect(subject.call("john")).to contain_exactly(@john) }
 
   # ...
 end
