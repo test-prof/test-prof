@@ -86,7 +86,7 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       tmp_user.destroy!
 
       crypto = "crypto$5a$31$OsQLJ8tnIkCChMDcd?AiD?S.c/xUwe.Sk"
-      how_are_you = "How are you doing? OK?"
+      how_are_you = "How are you doing?\nOK?"
 
       expect do
         subject.register_dump("users") do
