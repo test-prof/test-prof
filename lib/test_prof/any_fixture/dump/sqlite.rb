@@ -18,7 +18,7 @@ module TestProf
         end
 
         def compile_sql(sql, binds)
-          sql.gsub(/\?/) { binds.shift }
+          sql.gsub(/\?/) { binds.shift.gsub("\n", "' || char(10) || '") }
         end
 
         def import(path)
