@@ -95,7 +95,7 @@ RSpec.shared_examples "some shared example" do
   end
 end
 
-RSpec.describe "test-prof contexts", type: :model do
+RSpec.describe "test-prof contexts", type: :model, let_it_be_modifiers: {freeze: true} do
   it_behaves_like "some shared example" do
     # here the factory will receive a frozen object
     subject(:references_the_model) do
