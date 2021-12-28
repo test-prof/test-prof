@@ -62,7 +62,7 @@ end
 
 RSpec.shared_context "models A" do
   let_it_be(:child) { create(:child) }
-  let_it_be(:parent, reload: true) { child.parent }
+  let_it_be(:parent, reload: true, freeze: false) { child.parent }
 end
 
 RSpec.shared_context "models B" do
