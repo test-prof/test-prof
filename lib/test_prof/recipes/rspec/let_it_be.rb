@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "test_prof"
-require_relative "./before_all"
+require "test_prof/recipes/rspec/before_all"
 
 module TestProf
   # Just like `let`, but persist the result for the whole group.

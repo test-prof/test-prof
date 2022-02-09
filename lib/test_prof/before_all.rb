@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "test_prof"
+
 module TestProf
   # `before_all` helper configuration
   module BeforeAll

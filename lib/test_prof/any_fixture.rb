@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof"
 require "test_prof/ext/float_duration"
 require "test_prof/any_fixture/dump"
 

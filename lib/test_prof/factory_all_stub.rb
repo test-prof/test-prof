@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof"
 require "test_prof/factory_bot"
 require "test_prof/factory_all_stub/factory_bot_patch"
 

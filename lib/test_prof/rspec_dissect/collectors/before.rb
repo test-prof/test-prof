@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require_relative "./base"
+require "test_prof/rspec_dissect/collectors/base"
 
 module TestProf
   module RSpecDissect

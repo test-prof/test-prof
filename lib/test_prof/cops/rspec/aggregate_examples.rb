@@ -1,11 +1,11 @@
 # frozen_string_literal: true
 
-require_relative "aggregate_examples/line_range_helpers"
-require_relative "aggregate_examples/metadata_helpers"
-require_relative "aggregate_examples/node_matchers"
+require "test_prof/cops/rspec/aggregate_examples/line_range_helpers"
+require "test_prof/cops/rspec/aggregate_examples/metadata_helpers"
+require "test_prof/cops/rspec/aggregate_examples/node_matchers"
 
-require_relative "aggregate_examples/its"
-require_relative "aggregate_examples/matchers_with_side_effects"
+require "test_prof/cops/rspec/aggregate_examples/its"
+require "test_prof/cops/rspec/aggregate_examples/matchers_with_side_effects"
 
 module RuboCop
   module Cop

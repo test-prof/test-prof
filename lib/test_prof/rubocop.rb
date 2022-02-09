@@ -9,5 +9,5 @@ end
 
 require "rubocop"
 
-require_relative "cops/inject"
+require "test_prof/cops/inject"
 require "test_prof/cops/rspec/aggregate_examples"
