@@ -22,6 +22,36 @@ describe TestProf::FactoryProf, :transactional do
     end
   end
 
+  describe "#print" do
+    let(:started_at) { Time.now }
+
+    subject(:print) { described_class.print(started_at) }
+
+    it "calls the customer printer" do
+      expect(TestProf::FactoryProf::Printers::Simple).to receive(:dump)
+
+      print
+    end
+
+    context "when the printer is customized" do
+      class CustomPrinter
+        def self.dump(result, start_time: nil)
+        end
+      end
+
+      before do
+        described_class.configure do |config|
+          config.printer = CustomPrinter
+        end
+      end
+
+      it "calls the customer printer" do
+        expect(CustomPrinter).to receive(:dump)
+        print
+      end
+    end
+  end
+
   describe "#result" do
     subject(:result) { described_class.result }
 
