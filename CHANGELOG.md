@@ -2,6 +2,10 @@
 
 ## master (unrealeased)
 
+## 1.0.8 (2022-02-15
+
+- Fixes the configuration of a printer for factory_prof runs
+
 ## 1.0.7 (2021-08-30)
 
 - Fix access to `let_it_be` variables in `after(:all)` hook. ([@cbarton][])
@@ -267,3 +271,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@stefkin]: https://github.com/stefkin
 [@jaimerson]: https://github.com/jaimerson
 [@alexvko]: https://github.com/alexvko
+[@grillermo]: https://github.com/grillermo
