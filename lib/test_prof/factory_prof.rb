@@ -100,13 +100,19 @@ module TestProf
       def run
         init
 
-        printer = config.printer
-
         started_at = TestProf.now
 
-        at_exit { printer.dump(result, start_time: started_at) }
+        at_exit do
+          print(started_at)
+        end
 
         start
+      end
+
+      def print(started_at)
+        printer = config.printer
+
+        printer.dump(result, start_time: started_at)
       end
 
       def start
