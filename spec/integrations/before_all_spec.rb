@@ -27,6 +27,12 @@ describe "BeforeAll" do
       expect(output).not_to include("SampleJob")
       expect(output).to include("FailingJob")
     end
+
+    specify "database connection" do
+      output = run_rspec("before_all_connection")
+
+      expect(output).to include("0 failures")
+    end
   end
 
   context "Minitest" do
@@ -46,6 +52,12 @@ describe "BeforeAll" do
       output = run_minitest("before_all_inherit")
 
       expect(output).to include("0 failures, 0 errors, 0 skips")
+    end
+
+    specify "database connection" do
+      output = run_minitest("before_all_connection")
+
+      expect(output).to include("0 failures, 0 errors, 0 skip")
     end
   end
 end
