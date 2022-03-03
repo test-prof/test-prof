@@ -32,7 +32,6 @@ module TestProf
         TestProf::FactoryBot::Strategy::Build.prepend StrategyExt
         TestProf::FactoryBot::Strategy::Stub.prepend StrategyExt
 
-        @store = {}
         # default is false to retain backward compatibility
         @preserve_traits = false
       end
@@ -58,12 +57,14 @@ module TestProf
       end
 
       def reset
-        @store.clear
+        store.clear
       end
 
       private
 
-      attr_reader :store
+      def store
+        Thread.current[:testprof_factory_store] ||= {}
+      end
     end
   end
 end

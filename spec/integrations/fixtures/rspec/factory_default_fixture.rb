@@ -83,5 +83,18 @@ describe "Post" do
         }.to change(User, :count).by(3)
       end
     end
+
+    context "thread safety" do
+      let(:user) { TestProf::FactoryBot.create(:user) }
+      let(:post) { TestProf::FactoryBot.create(:post) }
+
+      it "storing defaults is done per thread" do
+        user
+
+        Thread.new { TestProf::FactoryBot.set_factory_default(:user, user) }.join
+
+        expect(post.user).not_to eq user
+      end
+    end
   end
 end
