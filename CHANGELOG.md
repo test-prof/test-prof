@@ -2,6 +2,8 @@
 
 ## master (unrealeased)
 
+## 1.0.8 (2022-03-11)
+
 - Restore the lock_thread value after rollback. ([@cou929][])
 
 - Fixes the configuration of a printer for factory_prof runs
