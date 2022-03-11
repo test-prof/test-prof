@@ -1,6 +1,6 @@
 # Change log
 
-## master (unrealeased)
+## master (unreleased)
 
 ## 1.0.8 (2022-03-11)
 
