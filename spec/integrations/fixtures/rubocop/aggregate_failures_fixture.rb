@@ -2,9 +2,7 @@
 
 describe "something" do
   context "many examples" do
-    it do
-      is_expected.to be_ok
-      expect(subject).to_not be_nil
-    end
+    it { is_expected.to be_ok }
+    it { expect(subject).to_not be_nil }
   end
 end
