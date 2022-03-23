@@ -61,6 +61,30 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
 
       expect(User.count).to eq 1
     end
+
+    context "with before_reset callback" do
+      it "runs callback" do
+        subject.register(:user) { TestProf::FactoryBot.create(:user) }
+        subject.before_reset { Post.delete_all }
+        TestProf::FactoryBot.create(:post)
+
+        subject.reset
+        expect(User.count).to eq 0
+        expect(Post.count).to eq 0
+      end
+    end
+
+    context "with after_reset callback" do
+      it "runs callback" do
+        subject.register(:user) { TestProf::FactoryBot.create(:user) }
+        subject.after_reset { Post.delete_all }
+        TestProf::FactoryBot.create(:post)
+
+        subject.reset
+        expect(User.count).to eq 0
+        expect(Post.count).to eq 0
+      end
+    end
   end
 
   describe "#register_dump" do
