@@ -19,9 +19,9 @@ shared_context "user_and_post", user_and_post: true do
   let(:user) { User.find(fixture(:user).id) }
 end
 
-describe "before_reset callback", :user_and_post do
+describe "before_fixtures_reset callback", :user_and_post do
   before(:all) do
-    before_reset do
+    before_fixtures_reset do
       Post.delete_all
     end
   end
@@ -31,9 +31,9 @@ describe "before_reset callback", :user_and_post do
   end
 end
 
-describe "after_reset callback", :user_and_post do
+describe "after_fixtures_reset callback", :user_and_post do
   before(:all) do
-    after_reset do
+    after_fixtures_reset do
       Post.delete_all
     end
   end

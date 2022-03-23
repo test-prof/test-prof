@@ -35,13 +35,13 @@ RSpec.shared_context "account", account: true do
   let(:account) { Account.find(TestProf::AnyFixture.register(:account).id) }
 end
 
-# You can enhance the existing database cleaning. Posts will be deleted before reset
-TestProf::AnyFixture.before_reset do
+# You can enhance the existing database cleaning. Posts will be deleted before fixtures reset
+TestProf::AnyFixture.before_fixtures_reset do
   Post.delete_all
 end
 
 # Or after reset
-TestProf::AnyFixture.after_reset do
+TestProf::AnyFixture.after_fixtures_reset do
   Post.delete_all
 end
 
@@ -101,9 +101,9 @@ before(:all) { fixture(:account) }
 # You can also use it to fetch the record (instead of storing it in instance variable)
 let(:account) { fixture(:account) }
 
-# You can just use `before_reset` or `after_reset` callbacks
-before_reset { Post.delete_all }
-after_reset { Post.delete_all }
+# You can just use `before_fixtures_reset` or `after_fixtures_reset` callbacks
+before_fixtures_reset { Post.delete_all }
+after_fixtures_reset { Post.delete_all }
 ```
 
 ## `ActiveRecord#refind`
