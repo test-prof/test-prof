@@ -2,7 +2,7 @@
 
 ## master (unreleased)
 
-- Add `AnyFixture.before_reset` and `AnyFixture.after_reset` callbacks. ([@ruslanshakirov][])
+- Add `AnyFixture.before_fixtures_reset` and `AnyFixture.after_fixtures_reset` callbacks. ([@ruslanshakirov][])
 
 ## 1.0.8 (2022-03-11)
 

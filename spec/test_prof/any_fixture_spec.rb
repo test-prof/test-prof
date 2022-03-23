@@ -62,10 +62,10 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       expect(User.count).to eq 1
     end
 
-    context "with before_reset callback" do
+    context "with before_fixtures_reset callback" do
       it "runs callback" do
         subject.register(:user) { TestProf::FactoryBot.create(:user) }
-        subject.before_reset { Post.delete_all }
+        subject.before_fixtures_reset { Post.delete_all }
         TestProf::FactoryBot.create(:post)
 
         subject.reset
@@ -74,10 +74,10 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       end
     end
 
-    context "with after_reset callback" do
+    context "with after_fixtures_reset callback" do
       it "runs callback" do
         subject.register(:user) { TestProf::FactoryBot.create(:user) }
-        subject.after_reset { Post.delete_all }
+        subject.after_fixtures_reset { Post.delete_all }
         TestProf::FactoryBot.create(:post)
 
         subject.reset

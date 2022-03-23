@@ -2,7 +2,7 @@
 
 module TestProf
   module AnyFixture
-    # Adds "global" `fixture`, `before_reset` and `after_reset` methods (through refinement)
+    # Adds "global" `fixture`, `before_fixtures_reset` and `after_fixtures_reset` methods (through refinement)
     module DSL
       # Refine object, 'cause refining modules (Kernel) is vulnerable to prepend:
       # - https://bugs.ruby-lang.org/issues/13446
@@ -12,12 +12,12 @@ module TestProf
           ::TestProf::AnyFixture.register(:"#{id}", &block)
         end
 
-        def before_reset(&block)
-          ::TestProf::AnyFixture.before_reset(&block)
+        def before_fixtures_reset(&block)
+          ::TestProf::AnyFixture.before_fixtures_reset(&block)
         end
 
-        def after_reset(&block)
-          ::TestProf::AnyFixture.after_reset(&block)
+        def after_fixtures_reset(&block)
+          ::TestProf::AnyFixture.after_fixtures_reset(&block)
         end
       end
     end

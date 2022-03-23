@@ -175,22 +175,22 @@ module TestProf
 
       # Reset all information and clean tables
       def reset
-        callbacks[:before_reset].each(&:call)
+        callbacks[:before_fixtures_reset].each(&:call)
 
         clean
         tables_cache.clear
         cache.clear
 
-        callbacks[:after_reset].each(&:call)
+        callbacks[:after_fixtures_reset].each(&:call)
         callbacks.clear
       end
 
-      def before_reset(&block)
-        callbacks[:before_reset] << block
+      def before_fixtures_reset(&block)
+        callbacks[:before_fixtures_reset] << block
       end
 
-      def after_reset(&block)
-        callbacks[:after_reset] << block
+      def after_fixtures_reset(&block)
+        callbacks[:after_fixtures_reset] << block
       end
 
       def subscriber(_event, _start, _finish, _id, data)
