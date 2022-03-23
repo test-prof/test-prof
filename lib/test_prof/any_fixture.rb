@@ -175,9 +175,22 @@ module TestProf
 
       # Reset all information and clean tables
       def reset
+        callbacks[:before_reset].each(&:call)
+
         clean
         tables_cache.clear
         cache.clear
+
+        callbacks[:after_reset].each(&:call)
+        callbacks.clear
+      end
+
+      def before_reset(&block)
+        callbacks[:before_reset] << block
+      end
+
+      def after_reset(&block)
+        callbacks[:after_reset] << block
       end
 
       def subscriber(_event, _start, _finish, _id, data)
@@ -252,6 +265,10 @@ module TestProf
 
       def tables_cache
         @tables_cache ||= {}
+      end
+
+      def callbacks
+        @callbacks ||= Hash.new { |h, k| h[k] = [] }
       end
 
       def disable_referential_integrity
