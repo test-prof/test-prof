@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add `AnyFixture.before_reset` and `AnyFixture.after_reset` callbacks. ([@ruslanshakirov][])
+
 ## 1.0.8 (2022-03-11)
 
 - Restore the lock_thread value after rollback. ([@cou929][])
@@ -277,3 +279,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@alexvko]: https://github.com/alexvko
 [@grillermo]: https://github.com/grillermo
 [@cou929]: https://github.com/cou929
+[@ruslanshakirov]: https://github.com/ruslanshakirov
