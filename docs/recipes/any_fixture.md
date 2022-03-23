@@ -35,6 +35,16 @@ RSpec.shared_context "account", account: true do
   let(:account) { Account.find(TestProf::AnyFixture.register(:account).id) }
 end
 
+# You can enhance the existing database cleaning. Posts will be deleted before reset
+TestProf::AnyFixture.before_reset do
+  Post.delete_all
+end
+
+# Or after reset
+TestProf::AnyFixture.after_reset do
+  Post.delete_all
+end
+
 # Then in your tests
 
 # Active this fixture using a tag
@@ -77,7 +87,7 @@ at_exit { TestProf::AnyFixture.clean }
 
 ## DSL
 
-We provide an optional _syntactic sugar_ (through Refinement) to make it easier to define fixtures:
+We provide an optional _syntactic sugar_ (through Refinement) to make it easier to define fixtures and use callbacks:
 
 ```ruby
 require "test_prof/any_fixture/dsl"
@@ -90,6 +100,10 @@ before(:all) { fixture(:account) }
 
 # You can also use it to fetch the record (instead of storing it in instance variable)
 let(:account) { fixture(:account) }
+
+# You can just use `before_reset` or `after_reset` callbacks
+before_reset { Post.delete_all }
+after_reset { Post.delete_all }
 ```
 
 ## `ActiveRecord#refind`
