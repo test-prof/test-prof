@@ -48,14 +48,15 @@ module RuboCop
 
           def transform_its(body, arguments)
             argument = arguments.first
-            replacement = case argument.type
-                          when :array
-                            key = argument.values.first
-                            "expect(subject[#{key.source}])"
-                          else
-                            property = argument.value
-                            "expect(subject.#{property})"
-            end
+            replacement =
+              case argument.type
+              when :array
+                key = argument.values.first
+                "expect(subject[#{key.source}])"
+              else
+                property = argument.value
+                "expect(subject.#{property})"
+              end
             body.source.gsub(/is_expected|are_expected/, replacement)
           end
 
