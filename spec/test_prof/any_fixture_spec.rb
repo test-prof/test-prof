@@ -78,7 +78,7 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       it "runs callback" do
         subject.register(:user) { TestProf::FactoryBot.create(:user) }
         subject.after_fixtures_reset { Post.delete_all }
-        TestProf::FactoryBot.create(:post)
+        TestProf::FactoryBot.create(:post, user: nil)
 
         subject.reset
         expect(User.count).to eq 0
