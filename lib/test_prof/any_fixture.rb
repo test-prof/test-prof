@@ -119,6 +119,8 @@ module TestProf
       # returns the result of the block execution
       def register(id)
         cached(id) do
+          raise "No fixture named #{id} has been registered" unless block_given?
+
           ActiveSupport::Notifications.subscribed(method(:subscriber), "sql.active_record") do
             yield
           end
