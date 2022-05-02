@@ -30,7 +30,7 @@ module TestProf
           # Test if psql is installed
           `psql --version`
 
-          tasks = ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(conn.pool.spec.config.with_indifferent_access)
+          tasks = ActiveRecord::Tasks::PostgreSQLDatabaseTasks.new(config)
 
           while_disconnected do
             tasks.structure_load(path, "--output=/dev/null")
@@ -84,6 +84,15 @@ module TestProf
 
         def execute(query)
           super.values
+        end
+
+        def config
+          conn_pool = conn.pool
+          if conn_pool.respond_to?(:spec) # Support for Rails < 6.1
+            conn_pool.spec.config
+          else
+            conn_pool.db_config
+          end
         end
       end
     end

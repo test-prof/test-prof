@@ -4,6 +4,8 @@
 
 - Add `AnyFixture.before_fixtures_reset` and `AnyFixture.after_fixtures_reset` callbacks. ([@ruslanshakirov][])
 
+- Fixes ActiveRecord 6.1 issue with AnyFixture and Postgres config ([@markedmondson][])
+
 ## 1.0.8 (2022-03-11)
 
 - Restore the lock_thread value after rollback. ([@cou929][])
