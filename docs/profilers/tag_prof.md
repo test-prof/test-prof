@@ -2,7 +2,7 @@
 
 TagProf is a simple profiler which collects examples statistics grouped by a provided tag value.
 
-That's pretty useful in conjunction with `rspec-rails` built-in feature – `infer_spec_types_from_location!` – which automatically adds `type` to examples metadata.
+That's pretty useful in conjunction with `rspec-rails` built-in feature – `infer_spec_type_from_file_location!` – which automatically adds `type` to examples metadata.
 
 Example output:
 
