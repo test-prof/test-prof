@@ -2,6 +2,7 @@
 
 ## Companies
 
+- [GitHub](https://github.com/github)
 - [Pennylane](https://github.com/pennylane-hq)
 
 ## Personal Sponsors
