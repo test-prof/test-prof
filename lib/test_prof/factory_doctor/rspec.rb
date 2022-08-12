@@ -67,7 +67,7 @@ module TestProf
 
           examples.each do |ex|
             msgs << "  #{ex.description} (#{ex.metadata[:location]}) " \
-                    "– #{pluralize_records(ex.metadata[:factories])} created, "\
+                    "– #{pluralize_records(ex.metadata[:factories])} created, " \
                     "#{ex.metadata[:time].duration}\n"
           end
           msgs << "\n"

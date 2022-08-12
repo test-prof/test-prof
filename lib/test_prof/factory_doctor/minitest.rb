@@ -74,8 +74,8 @@ module Minitest
         @example_groups.each do |group, examples|
           msgs << "#{group[:description]} (#{group[:location]})\n"
           examples.each do |ex|
-            msgs << "  #{ex[:description]} (#{ex[:location]}) "\
-                    "– #{pluralize_records(ex[:factories])} created, "\
+            msgs << "  #{ex[:description]} (#{ex[:location]}) " \
+                    "– #{pluralize_records(ex[:factories])} created, " \
                     "#{ex[:time].duration}\n"
           end
           msgs << "\n"

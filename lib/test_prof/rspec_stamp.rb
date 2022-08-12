@@ -153,8 +153,8 @@ module TestProf
           end
         end
 
-        replacement = "\\1#{parsed.fname}#{need_parens ? "(" : " "}"\
-                      "#{[desc, tags_str, htags_str].compact.join(", ")}"\
+        replacement = "\\1#{parsed.fname}#{need_parens ? "(" : " "}" \
+                      "#{[desc, tags_str, htags_str].compact.join(", ")}" \
                       "#{need_parens ? ") " : " "}\\3"
 
         if config.dry_run?
