@@ -2,6 +2,14 @@
 
 ## master (unreleased)
 
+- Allow overriding global logger. ([@palkan][])
+
+```ruby
+require "test_prof/recipes/logging"
+
+TestProf::Rails::LoggingHelpers.logger = CustomLogger.new
+```
+
 ## 1.0.9 (2022-05-05)
 
 - Add `AnyFixture.before_fixtures_reset` and `AnyFixture.after_fixtures_reset` callbacks. ([@ruslanshakirov][])

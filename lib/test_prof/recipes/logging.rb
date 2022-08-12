@@ -7,12 +7,38 @@ module TestProf
     # Add `with_logging` and `with_ar_logging helpers`
     module LoggingHelpers
       class << self
-        attr_writer :logger
+        def logger=(logger)
+          @logger = logger
+
+          # swap global loggers
+          global_loggables.each do |loggable|
+            loggable.logger = logger
+          end
+        end
 
         def logger
           return @logger if instance_variable_defined?(:@logger)
 
-          @logger = Logger.new($stdout)
+          @logger = if defined?(ActiveSupport::TaggedLogging)
+            ActiveSupport::TaggedLogging.new(ActiveSupport::Logger.new($stdout))
+          elsif defined?(ActiveSupport::Logger)
+            ActiveSupport::Logger.new($stdout)
+          else
+            Logger.new($stdout)
+          end
+        end
+
+        def global_loggables
+          return @global_loggables if instance_variable_defined?(:@global_loggables)
+
+          @global_loggables = []
+        end
+
+        def swap_logger!(loggables)
+          loggables.each do |loggable|
+            loggable.logger = logger
+            global_loggables << loggable
+          end
         end
 
         def ar_loggables
@@ -77,7 +103,9 @@ end
 if TestProf.rspec?
   RSpec.shared_context "logging:verbose" do
     around(:each) do |ex|
-      with_logging(&ex)
+      next with_logging(&ex) if ex.metadata[:log] == true || ex.metadata[:log] == :all
+
+      ex.call
     end
   end
 
@@ -96,13 +124,10 @@ end
 
 TestProf.activate("LOG", "all") do
   TestProf.log :info, "Rails verbose logging enabled"
-  ActiveSupport::LogSubscriber.logger =
-    Rails.logger =
-      ActiveRecord::Base.logger = TestProf::Rails::LoggingHelpers.logger
+  TestProf::Rails::LoggingHelpers.swap_logger!(TestProf::Rails::LoggingHelpers.all_loggables)
 end
 
 TestProf.activate("LOG", "ar") do
   TestProf.log :info, "Active Record verbose logging enabled"
-  ActiveSupport::LogSubscriber.logger =
-    ActiveRecord::Base.logger = TestProf::Rails::LoggingHelpers.logger
+  TestProf::Rails::LoggingHelpers.swap_logger!(TestProf::Rails::LoggingHelpers.ar_loggables)
 end

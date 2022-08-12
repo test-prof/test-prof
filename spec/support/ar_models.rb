@@ -59,7 +59,12 @@ ActiveRecord::Schema.define do
   end
 end
 
-ActiveRecord::Base.logger = Logger.new($stdout) if ENV["LOG"]
+ActiveRecord::Base.logger =
+  if ENV["DEBUG"]
+    Logger.new($stdout)
+  else
+    Logger.new(IO::NULL)
+  end
 
 class User < ActiveRecord::Base
   validates :name, presence: true
