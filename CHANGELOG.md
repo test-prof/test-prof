@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.0.10 (2022-08-12)
+
 - Allow overriding global logger. ([@palkan][])
 
 ```ruby
