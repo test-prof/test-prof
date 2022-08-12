@@ -116,10 +116,10 @@ TestProf::FactoryBot.define do
 end
 
 Fabricator(:user) do
-  name Fabricate.sequence(:name) { |n| "John #{n}" }
+  name { sequence(:name) { |n| "John #{n}" } }
 end
 
 Fabricator(:post) do
-  text Fabricate.sequence(:text) { |n| "Post ##{n}}" }
+  text { sequence(:text) { |n| "Post ##{n}}" } }
   user
 end

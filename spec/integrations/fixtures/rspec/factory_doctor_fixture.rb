@@ -35,8 +35,9 @@ describe "User" do
     let(:user) { Fabricate(:user) }
 
     it "creates and reloads user" do
-      user = Fabricate(:user)
-      expect(User.find(user.id).name).to eq "John 1"
+      user
+      user2 = Fabricate(:user)
+      expect(User.find(user2.id).name).to eq "John 1"
     end
 
     it "validates name" do
