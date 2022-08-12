@@ -1,0 +1,11 @@
+source 'https://rubygems.org'
+
+gem "activerecord", "~> 7.0"
+gem "factory_bot"
+gem "fabrication"
+gem "sqlite3"
+gem "sidekiq"
+gem "timecop"
+gem "pg"
+
+gemspec path: '..'
