@@ -8,7 +8,7 @@ require "test_prof/utils/sized_ordered_set"
 
 module TestProf
   # EventProf profiles your tests and suites against custom events,
-  # such as ActiveSupport::Notifacations.
+  # such as ActiveSupport::Notifications.
   #
   # It works very similar to `rspec --profile` but can track arbitrary events.
   #
