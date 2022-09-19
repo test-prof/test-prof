@@ -47,7 +47,7 @@ module TestProf
       # might lead to leaking connections
       config.before(:begin) do
         next unless ::ActiveRecord::Base.connection.pool.respond_to?(:lock_thread=)
-        instance_variable_set("#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread", ::ActiveRecord::Base.connection.pool.instance_variable_get(:@lock_thread))
+        instance_variable_set("#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread", ::ActiveRecord::Base.connection.pool.instance_variable_get(:@lock_thread)) unless instance_variable_defined? "#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread"
         ::ActiveRecord::Base.connection.pool.lock_thread = true
       end
 
