@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Fixed restoring lock_thread value in nested contexts ([@ygelfand][])
+
 ## 1.0.10 (2022-08-12)
 
 - Allow overriding global logger. ([@palkan][])
@@ -294,3 +296,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@grillermo]: https://github.com/grillermo
 [@cou929]: https://github.com/cou929
 [@ruslanshakirov]: https://github.com/ruslanshakirov
+[@ygelfand]: https://github.com/ygelfand
