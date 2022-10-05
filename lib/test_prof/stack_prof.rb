@@ -24,8 +24,7 @@ module TestProf
     class Configuration
       FORMATS = %w[html json].freeze
 
-      attr_accessor :mode, :interval, :raw, :target, :format
-
+      attr_accessor :mode, :raw, :target, :format, :interval, :ignore_gc
       def initialize
         @mode = ENV.fetch("TEST_STACK_PROF_MODE", :wall).to_sym
         @target = ENV["TEST_STACK_PROF"] == "boot" ? :boot : :suite
@@ -39,6 +38,7 @@ module TestProf
 
         sample_interval = ENV["TEST_STACK_PROF_INTERVAL"].to_i
         @interval = sample_interval > 0 ? sample_interval : nil
+        @ignore_gc = ENV.fetch("TEST_STACK_PROF_IGNORE_GC", false)
       end
 
       def raw?
@@ -96,6 +96,7 @@ module TestProf
         }
 
         options[:interval] = config.interval if config.interval
+        options[:ignore_gc] = true if config.ignore_gc
 
         if block_given?
           options[:out] = build_path(name)

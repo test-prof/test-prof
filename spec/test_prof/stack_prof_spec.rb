@@ -42,6 +42,19 @@ describe TestProf::StackProf do
       described_class.profile
     end
 
+    specify "with ignore_gc option" do
+      allow(ENV).to receive(:fetch).and_call_original
+      allow(ENV).to receive(:fetch).with("TEST_STACK_PROF_IGNORE_GC", any_args).and_return("1")
+
+      expect(stack_prof).to receive(:start).with(
+        mode: :wall,
+        raw: true,
+        ignore_gc: true
+      )
+
+      described_class.profile
+    end
+
     specify "when block is given" do
       expect(stack_prof).to receive(:run).with(
         out: File.join(TestProf.config.output_dir, "stack-prof-report-wall-raw-stub.dump").to_s,
