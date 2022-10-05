@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Disable garbage collection frames when `TEST_STACK_PROF_IGNORE_GC` env variable is set ([@cbliard][])
+
 - Fixed restoring lock_thread value in nested contexts ([@ygelfand][])
 
 ## 1.0.10 (2022-08-12)
