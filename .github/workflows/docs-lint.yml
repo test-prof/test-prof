@@ -53,18 +53,14 @@ jobs:
       run: gem install forspell
     - name: Run Forspell
       run: forspell docs/
-  liche:
+  lychee:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-    - name: Set up Go
-      uses: actions/setup-go@v1
-      with:
-        go-version: 1.13.x
-    - name: Run liche
+    - name: Link Checker
+      id: lychee
+      uses: lycheeverse/lychee-action@v1.5.1
       env:
-        GO111MODULE: "on"
-      run: |
-        export PATH=$PATH:$(go env GOPATH)/bin
-        go get -u github.com/raviqqe/liche
-        liche -r docs -d docs || true
+        GITHUB_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      with:
+        args: docs/* -v
