@@ -22,7 +22,7 @@ jobs:
           bundle-
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: jruby-9.3.6.0
+        ruby-version: jruby
     - name: Bundle install
       run: |
         bundle config path /home/runner/bundle
