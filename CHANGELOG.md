@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.0.11 (2022-10-27)
+
 - Fix monitoring methods with keyword args in Ruby 3+. ([@palkan][])
 
 - Disable garbage collection frames when `TEST_STACK_PROF_IGNORE_GC` env variable is set ([@cbliard][])
