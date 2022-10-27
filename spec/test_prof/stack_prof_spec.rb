@@ -43,8 +43,7 @@ describe TestProf::StackProf do
     end
 
     specify "with ignore_gc option" do
-      allow(ENV).to receive(:fetch).and_call_original
-      allow(ENV).to receive(:fetch).with("TEST_STACK_PROF_IGNORE_GC", any_args).and_return("1")
+      described_class.config.ignore_gc = true
 
       expect(stack_prof).to receive(:start).with(
         mode: :wall,
