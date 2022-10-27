@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Fix monitoring methods with keyword args in Ruby 3+. ([@palkan][])
+
 - Disable garbage collection frames when `TEST_STACK_PROF_IGNORE_GC` env variable is set ([@cbliard][])
 
 - Fixed restoring lock_thread value in nested contexts ([@ygelfand][])
@@ -299,3 +301,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@cou929]: https://github.com/cou929
 [@ruslanshakirov]: https://github.com/ruslanshakirov
 [@ygelfand]: https://github.com/ygelfand
+[@cbliard]: https://github.com/cbliard

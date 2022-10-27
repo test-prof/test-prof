@@ -48,9 +48,16 @@ module TestProf
 
           patch = Module.new do
             mids.each do |mid|
-              define_method(mid) do |*args, &block|
-                next super(*args, &block) unless guard.nil? || instance_exec(*args, &guard)
-                tracker.track { super(*args, &block) }
+              if RUBY_VERSION >= "2.7.0"
+                define_method(mid) do |*args, **kwargs, &block|
+                  next super(*args, **kwargs, &block) unless guard.nil? || instance_exec(*args, **kwargs, &guard)
+                  tracker.track { super(*args, **kwargs, &block) }
+                end
+              else
+                define_method(mid) do |*args, &block|
+                  next super(*args, &block) unless guard.nil? || instance_exec(*args, &guard)
+                  tracker.track { super(*args, &block) }
+                end
               end
             end
           end

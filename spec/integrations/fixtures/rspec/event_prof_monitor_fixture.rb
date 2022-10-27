@@ -14,8 +14,8 @@ class Work
     true
   end
 
-  def two
-    false
+  def two(flag: false)
+    flag
   end
 end
 
@@ -28,6 +28,6 @@ describe "Work" do
   end
 
   it "invokes twice" do
-    expect(w.one && w.two).to eq false
+    expect(w.two(flag: true) && w.two).to eq false
   end
 end
