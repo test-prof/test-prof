@@ -33,6 +33,14 @@ describe "BeforeAll" do
 
       expect(output).to include("0 failures")
     end
+
+    context 'when using multiple databases' do
+      it "works" do
+        output = run_rspec("before_all", env: {'TEST_PROF_SPEC_MULTI_DB' => 'true'})
+  
+        expect(output).to include("0 failures")
+      end
+    end
   end
 
   context "Minitest" do

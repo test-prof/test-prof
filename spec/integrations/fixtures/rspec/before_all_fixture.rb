@@ -1,7 +1,12 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
-require_relative "../../../support/ar_models"
+
+if ENV['TEST_PROF_SPEC_MULTI_DB']
+  require_relative "../../../support/ar_models_multi_db"
+else
+  require_relative "../../../support/ar_models"
+end
 require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/before_all"
 
