@@ -33,6 +33,20 @@ end
 
 You can also use `TestProf::FactoryDefault.disable!(&block)`.
 
+- Add support for global `before_all` tags ([@maxshend][])
+```ruby
+TestProf::BeforeAll.configure do |config|
+  config.before(:begin, reset_sequences: proc(&:present?)) do
+    warn <<~MESSAGE
+      Do NOT create objects outside of transaction
+      because all db sequences will be reset to 1
+      in every single example, so that IDs of new objects
+      can get into conflict with the long-living ones.
+    MESSAGE
+  end
+end
+```
+
 ## 1.0.11 (2022-10-27)
 
 - Fix monitoring methods with keyword args in Ruby 3+. ([@palkan][])
@@ -335,3 +349,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@ruslanshakirov]: https://github.com/ruslanshakirov
 [@ygelfand]: https://github.com/ygelfand
 [@cbliard]: https://github.com/cbliard
+[@maxshend]: https://github.com/maxshend

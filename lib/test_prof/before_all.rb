@@ -17,19 +17,19 @@ module TestProf
     class << self
       attr_accessor :adapter
 
-      def begin_transaction(scope = nil)
+      def begin_transaction(scope = nil, metadata = [])
         raise AdapterMissing if adapter.nil?
 
-        config.run_hooks(:begin, scope) do
+        config.run_hooks(:begin, scope, metadata) do
           adapter.begin_transaction
         end
         yield
       end
 
-      def rollback_transaction(scope = nil)
+      def rollback_transaction(scope = nil, metadata = [])
         raise AdapterMissing if adapter.nil?
 
-        config.run_hooks(:rollback, scope) do
+        config.run_hooks(:rollback, scope, metadata) do
           adapter.rollback_transaction
         end
       end
@@ -49,6 +49,33 @@ module TestProf
       end
     end
 
+    class HookEntry # :nodoc:
+      attr_reader :filters, :block
+
+      def initialize(block:, filters: [])
+        @block = block
+        @filters = TestProf.rspec? ? ::RSpec::Core::Metadata.build_hash_from(filters) : filters
+      end
+
+      def run(scope, metadata)
+        return unless filters_apply?(metadata)
+
+        block.call(scope)
+      end
+
+      private
+
+      def filters_apply?(metadata)
+        return true unless filters.present? && TestProf.rspec?
+
+        ::RSpec::Core::MetadataFilter.apply?(
+          :all?,
+          filters,
+          metadata
+        )
+      end
+    end
+
     class HooksChain # :nodoc:
       attr_reader :type, :after, :before
 
@@ -58,10 +85,10 @@ module TestProf
         @after = []
       end
 
-      def run(scope = nil)
-        before.each { |clbk| clbk.call(scope) }
+      def run(scope = nil, metadata = [])
+        before.each { |hook| hook.run(scope, metadata) }
         yield
-        after.each { |clbk| clbk.call(scope) }
+        after.each { |hook| hook.run(scope, metadata) }
       end
     end
 
@@ -76,26 +103,26 @@ module TestProf
       end
 
       # Add `before` hook for `begin` or
-      # `rollback` operation:
+      # `rollback` operation with optional filters:
       #
-      #   config.before(:rollback) { ... }
-      def before(type, &block)
+      #   config.before(:rollback, foo: :bar) { ... }
+      def before(type, *filters, &block)
         validate_hook_type!(type)
-        hooks[type].before << block if block
+        hooks[type].before << HookEntry.new(block: block, filters: filters) if block
       end
 
       # Add `after` hook for `begin` or
-      # `rollback` operation:
+      # `rollback` operation with optional filters:
       #
-      #   config.after(:begin) { ... }
-      def after(type, &block)
+      #   config.after(:begin, foo: :bar) { ... }
+      def after(type, *filters, &block)
         validate_hook_type!(type)
-        hooks[type].after << block if block
+        hooks[type].after << HookEntry.new(block: block, filters: filters) if block
       end
 
-      def run_hooks(type, scope = nil) # :nodoc:
+      def run_hooks(type, scope = nil, metadata = []) # :nodoc:
         validate_hook_type!(type)
-        hooks[type].run(scope) { yield }
+        hooks[type].run(scope, metadata) { yield }
       end
 
       private

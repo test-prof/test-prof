@@ -30,8 +30,16 @@ TestProf::BeforeAll.configure do |config|
     Events.add_event :setup_before_all
   end
 
+  config.before(:begin, :with_meta) do
+    Events.add_event :setup_before_all_with_meta
+  end
+
   config.after(:begin) do
     Events.add_event :before_all_was_set_up
+  end
+
+  config.after(:begin, with_meta: proc(&:present?)) do
+    Events.add_event :before_all_was_set_up_with_meta
   end
 
   config.before(:rollback) do
@@ -77,6 +85,24 @@ describe "A test suite" do
           :setup_before_all,
           :before_all_was_set_up,
           :before_all_child,
+          :before_each
+        ])
+      end
+    end
+  end
+
+  context "with before_all" do
+    context "with matched metadata", with_meta: true do
+      before_all { Events.add_event :before_all }
+      after(:all) { Events.events.clear }
+
+      it "should setup before_all_with_meta" do
+        expect(Events.events).to eq([
+          :setup_before_all,
+          :setup_before_all_with_meta,
+          :before_all_was_set_up,
+          :before_all_was_set_up_with_meta,
+          :before_all,
           :before_each
         ])
       end

@@ -18,17 +18,18 @@ module TestProf
         end
 
         @__before_all_activation__ = context = self
+        current_metadata = metadata
 
         before(:all) do
           @__inspect_output = "before_all hook"
           BeforeAll.setup_fixtures(self) if setup_fixtures
-          BeforeAll.begin_transaction(context) do
+          BeforeAll.begin_transaction(context, current_metadata) do
             instance_eval(&block)
           end
         end
 
         after(:all) do
-          BeforeAll.rollback_transaction(context)
+          BeforeAll.rollback_transaction(context, current_metadata)
         end
       end
 
