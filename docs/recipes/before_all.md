@@ -235,3 +235,20 @@ TestProf::BeforeAll.configure do |config|
   config.setup_fixtures = true
 end
 ```
+
+## Global Tags
+
+You can register callbacks for specific RSpec Example Groups using tags:
+
+```ruby
+TestProf::BeforeAll.configure do |config|
+  config.before(:begin, reset_sequences: proc(&:present?)) do
+    warn <<~MESSAGE
+      Do NOT create objects outside of transaction
+      because all db sequences will be reset to 1
+      in every single example, so that IDs of new objects
+      can get into conflict with the long-living ones.
+    MESSAGE
+  end
+end
+```
