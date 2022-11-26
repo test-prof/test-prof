@@ -108,7 +108,15 @@ before { FactoryBot.set_factory_default(:user, user) }
 
 - `FactoryBot#create_default(factory, *args)` – is a shortcut for `create` + `set_factory_default`.
 
-**NOTE**. Defaults are **cleaned up after each example** by default. That means you cannot create defaults within `before(:all)` / [`before_all`](./before_all.md) / [`let_it_be`](./let_it_be.md) definitions. That could be changed in the future, for now [check this workaround](https://github.com/test-prof/test-prof/issues/125#issuecomment-471706752).
+**IMPORTANT:** Defaults are **cleaned up after each example** by default (i.e., when using `test_prof/recipes/rspec/factory_default`).
+
+### Using with `before_all` / `let_it_be`
+
+Defaults created within `before_all` and `let_it_be` are not reset after each example, but only at the end of the corresponding example group. So, it's possible to call `create_defatul` within `let_it_be` without any additional configuration. **RSpec only**
+
+**IMPORTANT:** You must load FactoryDefault after loading BeforeAll to make this feature work.
+
+**NOTE**. Regulart `before(:all)` callbacks are not supported.
 
 ### Working with traits
 

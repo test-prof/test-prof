@@ -6,4 +6,10 @@ describe "FactoryDefault" do
 
     expect(output).to include("0 failures")
   end
+
+  specify "let_it_be integration", :aggregate_failures do
+    output = run_rspec("factory_default_let_it_be")
+
+    expect(output).to include("0 failures")
+  end
 end
