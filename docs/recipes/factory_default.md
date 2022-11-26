@@ -112,7 +112,7 @@ before { FactoryBot.set_factory_default(:user, user) }
 
 ### Working with traits
 
-When you have traits in your associations like:
+You can use traits in your associations, for example:
 
 ```ruby
 factory :post do
@@ -124,10 +124,19 @@ factory :view do
 end
 ```
 
-and set a default for `user` factory - you will find the same object used in all of the above factories. Sometimes this may break your logic.
+If there is a default value for the `user` factory, it's gonna be used independently of traits. This may break your logic.
 
-To prevent this - set `FactoryDefault.preserve_traits = true` or use per-factory override
-`create_default(:user, preserve_traits: true)`. This reverts back to original FactoryBot behavior for associations that have explicit traits defined.
+To prevent this, configure FactoryDefault to preserve traits:
+
+```ruby
+# Globally
+TestProf::FactoryDefault.configure do |config|
+  config.preserve_traits = true
+end
+
+# or in-place
+create_default(:user, preserve_traits: true)
+```
 
 ### Handling attribute overrides
 
@@ -147,7 +156,9 @@ FactoryDefault ignores such overrides and still returns a default `user` record 
 
 ```ruby
 # Globally
-FactoryDefault.preserve_attributes = true
+TestProf::FactoryDefault.configure do |config|
+  config.preserve_attributes = true
+end
 
 # or in-place
 create_default :user, preserve_attributes: true
