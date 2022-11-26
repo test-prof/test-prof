@@ -47,7 +47,11 @@ describe "Post" do
     let(:traited_user) { TestProf::FactoryBot.create_default(:user, :traited, tag: "foo") }
 
     context "global setting" do
-      before { TestProf::FactoryDefault.preserve_traits = true }
+      before do
+        TestProf::FactoryDefault.configure do |config|
+          config.preserve_traits = true
+        end
+      end
 
       it "can still be set default" do
         expect(traited_user.tag).to eq "foo"
@@ -66,7 +70,12 @@ describe "Post" do
     end
 
     context "local override" do
-      before { TestProf::FactoryDefault.preserve_traits = false }
+      before do
+        TestProf::FactoryDefault.configure do |config|
+          config.preserve_traits = false
+        end
+      end
+
       let(:override_user) { TestProf::FactoryBot.create_default(:user, preserve_traits: true) }
       let(:other_traited_post) { TestProf::FactoryBot.create(:post, :with_traited_user) }
 

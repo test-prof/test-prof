@@ -19,7 +19,7 @@ module TestProf
         set_factory_default(name, obj, **default_options)
       end
 
-      def set_factory_default(name, obj, preserve_traits: FactoryDefault.preserve_traits, preserve_attributes: FactoryDefault.preserve_attributes)
+      def set_factory_default(name, obj, preserve_traits: FactoryDefault.config.preserve_traits, preserve_attributes: FactoryDefault.config.preserve_attributes)
         FactoryDefault.register(
           name, obj,
           preserve_traits: preserve_traits,
@@ -32,9 +32,17 @@ module TestProf
       end
     end
 
-    class << self
+    class Configuration
       attr_accessor :preserve_traits, :preserve_attributes
 
+      def initialize
+        # TODO(v2): Switch to true
+        @preserve_traits = false
+        @preserve_attributes = false
+      end
+    end
+
+    class << self
       def init
         TestProf::FactoryBot::Syntax::Methods.include DefaultSyntax
         TestProf::FactoryBot.extend DefaultSyntax
@@ -43,9 +51,23 @@ module TestProf
         TestProf::FactoryBot::Strategy::Stub.prepend StrategyExt
 
         @enabled = true
-        # default is false to retain backward compatibility
-        @preserve_traits = false
-        @preserve_attributes = false
+      end
+
+      def config
+        @config ||= Configuration.new
+      end
+
+      def configure
+        yield config
+      end
+
+      # TODO(v2): drop
+      def preserve_traits=(val)
+        config.preserve_traits = val
+      end
+
+      def preserve_attributes=(val)
+        config.preserve_attributes = val
       end
 
       def register(name, obj, **options)
