@@ -110,6 +110,10 @@ TestProf::FactoryBot.define do
       user { create(:user) }
     end
 
+    trait :with_tagged_user do
+      association :user, tag: "some tag"
+    end
+
     trait :with_traited_user do
       association :user, factory: %i[user traited]
     end
