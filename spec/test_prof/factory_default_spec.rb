@@ -7,7 +7,15 @@ TestProf::FactoryDefault.init
 TestProf::FactoryDefault.disable!
 
 describe TestProf::FactoryDefault, :transactional do
-  before { described_class.enable! }
+  let(:preserve_traits) { false }
+  let(:preserve_attributes) { false }
+
+  before do
+    described_class.enable!
+    described_class.preserve_traits = preserve_traits
+    described_class.preserve_attributes = preserve_attributes
+  end
+
   after do
     described_class.reset
     described_class.disable!
@@ -39,8 +47,7 @@ describe TestProf::FactoryDefault, :transactional do
   end
 
   context "when preserve_traits = true" do
-    before { described_class.preserve_traits = true }
-    after { described_class.preserve_traits = false }
+    let(:preserve_traits) { true }
 
     it "ignores default when trait is specified" do
       post = TestProf::FactoryBot.create_default(:post)
@@ -51,25 +58,21 @@ describe TestProf::FactoryDefault, :transactional do
     end
   end
 
-  xcontext "when preserve_attributes = true" do
-    before { described_class.preserve_attributes = true }
-    after { described_class.preserve_attributes = false }
+  context "when preserve_attributes = true" do
+    let(:preserve_attributes) { true }
 
     it "ignores default when explicit attributes don't match" do
-      post = TestProf::FactoryBot.create_default(:post)
-      user_2 = TestProf::FactoryBot.create(:user, tag: "another")
-      post_2 = TestProf::FactoryBot.create(:post, user: user_2)
+      post = TestProf::FactoryBot.create(:post, :with_tagged_user)
 
-      expect(post.user).to eq user
-      expect(post_2.user).to eq user_2
-      expect(post_2).not_to eq post
+      expect(post.user).not_to eq user
     end
 
     it "re-uses default when attributes match" do
-      post = TestProf::FactoryBot.create_default(:post, text: "Test")
-      post_2 = TestProf::FactoryBot.create(:post, text: "Test")
+      user.update!(tag: "some tag")
 
-      expect(post_2).to eq post
+      post = TestProf::FactoryBot.create(:post, :with_tagged_user)
+
+      expect(post.user).to eq user
     end
   end
 end
