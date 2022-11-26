@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+- FactoryDefault: Add `skip_factory_default(&block)` to temporary disable default factories. ([@palkan][])
+
+You can also use `TestProf::FactoryDefault.disable!(&block)`.
+
 ## 1.0.11 (2022-10-27)
 
 - Fix monitoring methods with keyword args in Ruby 3+. ([@palkan][])

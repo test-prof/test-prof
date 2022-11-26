@@ -128,3 +128,14 @@ and set a default for `user` factory - you will find the same object used in all
 
 To prevent this - set `FactoryDefault.preserve_traits = true` or use per-factory override
 `create_default(:user, preserve_traits: true)`. This reverts back to original FactoryBot behavior for associations that have explicit traits defined.
+
+### Ignoring default factories
+
+You can temporary disable the defaults usage by wrapping a code with the `skip_factory_default` method:
+
+```ruby
+account = create_default(:account)
+another_account = skip_factory_default { create(:account) }
+
+expect(another_account).not_to eq(account)
+```

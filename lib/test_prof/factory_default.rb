@@ -20,6 +20,10 @@ module TestProf
       def set_factory_default(name, obj, preserve_traits: nil)
         FactoryDefault.register(name, obj, preserve_traits: preserve_traits)
       end
+
+      def skip_factory_default(&block)
+        FactoryDefault.disable!(&block)
+      end
     end
 
     class << self
@@ -32,6 +36,7 @@ module TestProf
         TestProf::FactoryBot::Strategy::Build.prepend StrategyExt
         TestProf::FactoryBot::Strategy::Stub.prepend StrategyExt
 
+        @enabled = true
         # default is false to retain backward compatibility
         @preserve_traits = false
       end
@@ -43,6 +48,8 @@ module TestProf
       end
 
       def get(name, traits = nil)
+        return unless enabled?
+
         record = store[name]
         return unless record
 
@@ -58,6 +65,28 @@ module TestProf
 
       def reset
         store.clear
+      end
+
+      def enabled?
+        @enabled
+      end
+
+      def enable!
+        was_enabled = @enabled
+        @enabled = true
+        return unless block_given?
+        yield
+      ensure
+        @enabled = was_enabled
+      end
+
+      def disable!
+        was_enabled = @enabled
+        @enabled = false
+        return unless block_given?
+        yield
+      ensure
+        @enabled = was_enabled
       end
 
       private
