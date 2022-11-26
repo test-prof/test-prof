@@ -43,6 +43,8 @@ module TestProf
     end
 
     class << self
+      attr_accessor :current_context
+
       def init
         TestProf::FactoryBot::Syntax::Methods.include DefaultSyntax
         TestProf::FactoryBot.extend DefaultSyntax
@@ -71,7 +73,7 @@ module TestProf
       end
 
       def register(name, obj, **options)
-        store[name] = {object: obj, **options}
+        store[name] = {object: obj, context: current_context, **options}
         obj
       end
 
@@ -101,8 +103,12 @@ module TestProf
         store.delete(name)
       end
 
-      def reset
-        store.clear
+      def reset(context: nil)
+        return store.clear unless context
+
+        store.delete_if do |_name, metadata|
+          metadata[:context] == context
+        end
       end
 
       def enabled?

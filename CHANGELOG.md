@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+- Support using FactoryDefault with before_all/let_it_be. ([@palkan][])
+
+Currently, RSpec only. Default factories created within `before_all` or `let_it_be` are not reset 'till the end of the corresponding context. Thus, now it's possible to use `create_default` within `let_it_be` without any additional hacks.
+
 - FactoryDefault: Add `preserve_attributes = false | true` option. ([@palkan][])
 
 Allow skipping defaults if association is defined with overrides, e.g.:

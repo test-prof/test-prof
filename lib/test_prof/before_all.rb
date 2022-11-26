@@ -17,19 +17,19 @@ module TestProf
     class << self
       attr_accessor :adapter
 
-      def begin_transaction
+      def begin_transaction(scope = nil)
         raise AdapterMissing if adapter.nil?
 
-        config.run_hooks(:begin) do
+        config.run_hooks(:begin, scope) do
           adapter.begin_transaction
         end
         yield
       end
 
-      def rollback_transaction
+      def rollback_transaction(scope = nil)
         raise AdapterMissing if adapter.nil?
 
-        config.run_hooks(:rollback) do
+        config.run_hooks(:rollback, scope) do
           adapter.rollback_transaction
         end
       end
@@ -58,10 +58,10 @@ module TestProf
         @after = []
       end
 
-      def run
-        before.each(&:call)
+      def run(scope = nil)
+        before.each { |clbk| clbk.call(scope) }
         yield
-        after.each(&:call)
+        after.each { |clbk| clbk.call(scope) }
       end
     end
 
@@ -93,9 +93,9 @@ module TestProf
         hooks[type].after << block if block
       end
 
-      def run_hooks(type) # :nodoc:
+      def run_hooks(type, scope = nil) # :nodoc:
         validate_hook_type!(type)
-        hooks[type].run { yield }
+        hooks[type].run(scope) { yield }
       end
 
       private
