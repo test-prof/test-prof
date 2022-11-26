@@ -2,6 +2,16 @@
 
 ## master (unreleased)
 
+- FactoryDefault: Add `preserve_attributes = false | true` option. ([@palkan][])
+
+Allow skipping defaults if association is defined with overrides, e.g.:
+
+```ruby
+factory :post do
+  association :user, name: "Post Author"
+end
+```
+
 - FactoryDefault: Add `skip_factory_default(&block)` to temporary disable default factories. ([@palkan][])
 
 You can also use `TestProf::FactoryDefault.disable!(&block)`.

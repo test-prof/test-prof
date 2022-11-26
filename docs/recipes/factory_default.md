@@ -129,6 +129,32 @@ and set a default for `user` factory - you will find the same object used in all
 To prevent this - set `FactoryDefault.preserve_traits = true` or use per-factory override
 `create_default(:user, preserve_traits: true)`. This reverts back to original FactoryBot behavior for associations that have explicit traits defined.
 
+### Handling attribute overrides
+
+It's possible to define attribute overrides for associations:
+
+```ruby
+factory :post do
+  association :user, name: "Poster"
+end
+
+factory :view do
+  association :user, name: "Viewer"
+end
+```
+
+FactoryDefault ignores such overrides and still returns a default `user` record (if created). You can turn the attribute awareness feature on to skip the default record if overrides don't match the default object attributes:
+
+```ruby
+# Globally
+FactoryDefault.preserve_attributes = true
+
+# or in-place
+create_default :user, preserve_attributes: true
+```
+
+**NOTE:** In the future versions of Test Prof, both `preserve_traits` and `preserve_attributes` will default to true. We recommend settings them to true if you just starting using this feature.
+
 ### Ignoring default factories
 
 You can temporary disable the defaults usage by wrapping a code with the `skip_factory_default` method:

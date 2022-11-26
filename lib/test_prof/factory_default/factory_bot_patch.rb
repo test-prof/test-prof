@@ -4,13 +4,7 @@ module TestProf
   module FactoryDefault # :nodoc: all
     module RunnerExt
       refine TestProf::FactoryBot::FactoryRunner do
-        def name
-          @name
-        end
-
-        def traits
-          @traits
-        end
+        attr_reader :name, :traits, :overrides
       end
     end
 
@@ -18,7 +12,7 @@ module TestProf
 
     module StrategyExt
       def association(runner)
-        FactoryDefault.get(runner.name, runner.traits) || super
+        FactoryDefault.get(runner.name, runner.traits, runner.overrides) || super
       end
     end
   end
