@@ -23,4 +23,6 @@ RSpec.configure do |config|
   else
     config.after(:each) { TestProf::FactoryDefault.reset }
   end
+
+  config.after(:suite) { TestProf::FactoryDefault.print_report }
 end

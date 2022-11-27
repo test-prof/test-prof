@@ -2,6 +2,11 @@
 
 ## master (unreleased)
 
+- FactoryDefault: Add stats support. ([@palkan][])
+
+Now you can see how often the default factory values have been used by specifying
+the `FACTORY_DEFAULT_SUMMARY=1` or `FACTORY_DEFAULT_STATS=1` env var.
+
 - Support using FactoryDefault with before_all/let_it_be. ([@palkan][])
 
 Currently, RSpec only. Default factories created within `before_all` or `let_it_be` are not reset 'till the end of the corresponding context. Thus, now it's possible to use `create_default` within `let_it_be` without any additional hacks.

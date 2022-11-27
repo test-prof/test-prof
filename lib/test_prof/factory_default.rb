@@ -3,11 +3,14 @@
 require "test_prof"
 require "test_prof/factory_bot"
 require "test_prof/factory_default/factory_bot_patch"
+require "test_prof/ext/float_duration"
 
 module TestProf
   # FactoryDefault allows use to re-use associated objects
   # in factories implicilty
   module FactoryDefault
+    using FloatDuration
+
     module DefaultSyntax # :nodoc:
       def create_default(name, *args, &block)
         options = args.extract_options!
@@ -16,14 +19,16 @@ module TestProf
         default_options[:preserve_attributes] = options.delete(:preserve_attributes) if options.key?(:preserve_attributes)
 
         obj = TestProf::FactoryBot.create(name, *args, options, &block)
+
         set_factory_default(name, obj, **default_options)
       end
 
-      def set_factory_default(name, obj, preserve_traits: FactoryDefault.config.preserve_traits, preserve_attributes: FactoryDefault.config.preserve_attributes)
+      def set_factory_default(name, obj, preserve_traits: FactoryDefault.config.preserve_traits, preserve_attributes: FactoryDefault.config.preserve_attributes, **other)
         FactoryDefault.register(
           name, obj,
           preserve_traits: preserve_traits,
-          preserve_attributes: preserve_attributes
+          preserve_attributes: preserve_attributes,
+          **other
         )
       end
 
@@ -33,17 +38,23 @@ module TestProf
     end
 
     class Configuration
-      attr_accessor :preserve_traits, :preserve_attributes
+      attr_accessor :preserve_traits, :preserve_attributes,
+        :report_summary, :report_stats
 
       def initialize
         # TODO(v2): Switch to true
         @preserve_traits = false
         @preserve_attributes = false
+        @report_summary = ENV["FACTORY_DEFAULT_SUMMARY"] == "1"
+        @report_stats = ENV["FACTORY_DEFAULT_STATS"] == "1"
       end
     end
 
     class << self
+      include Logging
+
       attr_accessor :current_context
+      attr_reader :stats
 
       def init
         TestProf::FactoryBot::Syntax::Methods.include DefaultSyntax
@@ -52,7 +63,8 @@ module TestProf
         TestProf::FactoryBot::Strategy::Build.prepend StrategyExt
         TestProf::FactoryBot::Strategy::Stub.prepend StrategyExt
 
-        @enabled = true
+        @enabled = ENV["FACTORY_DEFAULT_DISABLED"] != "1"
+        @stats = {}
       end
 
       def config
@@ -74,6 +86,7 @@ module TestProf
 
       def register(name, obj, **options)
         store[name] = {object: obj, context: current_context, **options}
+        stats[name] ||= {hit: 0, miss: 0}
         obj
       end
 
@@ -83,8 +96,10 @@ module TestProf
         record = store[name]
         return unless record
 
-        if traits && !traits.empty?
-          return if record[:preserve_traits]
+        stats[name][:miss] += 1
+
+        if traits && !traits.empty? && record[:preserve_traits]
+          return
         end
 
         object = record[:object]
@@ -95,6 +110,9 @@ module TestProf
             return if object.public_send(name) != value # rubocop:disable Lint/NonLocalExitFromIterator
           end
         end
+
+        stats[name][:miss] -= 1
+        stats[name][:hit] += 1
 
         object
       end
@@ -133,10 +151,61 @@ module TestProf
         @enabled = was_enabled
       end
 
+      def print_report
+        return unless config.report_stats || config.report_summary
+
+        if stats.empty?
+          log :info, "FactoryDefault has not been used"
+          return
+        end
+
+        msgs = []
+
+        if config.report_stats
+          msgs <<
+            <<~MSG
+              FactoryDefault usage stats:
+            MSG
+
+          first_column = stats.keys.map(&:size).max + 2
+
+          msgs << format(
+            "%#{first_column}s  %9s  %9s",
+            "factory", "hit", "miss"
+          )
+
+          msgs << ""
+        end
+
+        total_hit = 0
+        total_miss = 0
+
+        stats.to_a.sort_by { |(_, v)| -v[:hit] }.each do |(key, record_stats)|
+          total_hit += record_stats[:hit]
+          total_miss += record_stats[:miss]
+
+          if config.report_stats
+            msgs << format(
+              "%#{first_column}s  %9d  %9d",
+              key, record_stats[:hit], record_stats[:miss]
+            )
+          end
+        end
+
+        msgs << "" if config.report_stats
+
+        msgs <<
+          <<~MSG
+            FactoryDefault summary: hit=#{total_hit} miss=#{total_miss}
+          MSG
+
+        log :info, msgs.join("\n")
+      end
+
       private
 
       def store
-        Thread.current[:testprof_factory_store] ||= {}
+        Thread.current[:testprof_factory_default_store] ||= {}
       end
     end
   end
