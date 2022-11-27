@@ -184,3 +184,25 @@ another_account = skip_factory_default { create(:account) }
 
 expect(another_account).not_to eq(account)
 ```
+
+### Showing usage stats
+
+You can display the FactoryDefault usage stats by setting the `FACTORY_DEFAULT_SUMMARY=1` or `FACTORY_DEFAULT_STATS=1` env vars or by setting the configuration values:
+
+```ruby
+TestProf::FactoryDefault.configure do |config|
+  config.report_summary = true
+  # Report stats prints the detailed usage information (including summary)
+  config.report_stats = true
+end
+```
+
+For example:
+
+```sh
+$ FACTORY_DEFAULT_SUMMARY=1 bundle exec rspec
+
+FactoryDefault summary: hit=11 miss=3
+```
+
+Where `hit` indicates the number of times the default factory value was used instead of a new one when an association was created; `miss` indicates the number of time the default value was ignored due to traits or attributes mismatch.
