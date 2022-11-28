@@ -20,6 +20,9 @@ module TestProf
 
         obj = TestProf::FactoryBot.create(name, *args, options, &block)
 
+        # Factory with traits
+        name = [name, *args] if args.any?
+
         set_factory_default(name, obj, **default_options)
       end
 
@@ -85,8 +88,13 @@ module TestProf
       end
 
       def register(name, obj, **options)
-        store[name] = {object: obj, context: current_context, **options}
-        stats[name] ||= {hit: 0, miss: 0}
+        # Name with traits
+        if name.is_a?(Array)
+          register_traited_record(*name, obj, **options)
+        else
+          register_default_record(name, obj, **options)
+        end
+
         obj
       end
 
@@ -95,6 +103,12 @@ module TestProf
 
         record = store[name]
         return unless record
+
+        if traits && (trait_key = record[:traits][traits])
+          name = trait_key
+          record = store[name]
+          traits = nil
+        end
 
         stats[name][:miss] += 1
 
@@ -203,6 +217,21 @@ module TestProf
       end
 
       private
+
+      def register_default_record(name, obj, **options)
+        store[name] = {object: obj, traits: {}, context: current_context, **options}
+        stats[name] ||= {hit: 0, miss: 0}
+      end
+
+      def register_traited_record(name, *traits, obj, **options)
+        name_with_traits = "#{name}[#{traits.join(",")}]"
+
+        register_default_record(name_with_traits, obj, **options)
+        register_default_record(name, obj, **options) unless store[name]
+
+        # Add reference to the traited default to the original default record
+        store[name][:traits][traits] = name_with_traits
+      end
 
       def store
         Thread.current[:testprof_factory_default_store] ||= {}
