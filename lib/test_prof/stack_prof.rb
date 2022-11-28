@@ -27,7 +27,7 @@ module TestProf
       attr_accessor :mode, :raw, :target, :format, :interval, :ignore_gc
       def initialize
         @mode = ENV.fetch("TEST_STACK_PROF_MODE", :wall).to_sym
-        @target = ENV["TEST_STACK_PROF"] == "boot" ? :boot : :suite
+        @target = (ENV["TEST_STACK_PROF"] == "boot") ? :boot : :suite
         @raw = ENV["TEST_STACK_PROF_RAW"] != "0"
         @format =
           if FORMATS.include?(ENV["TEST_STACK_PROF_FORMAT"])
@@ -37,7 +37,7 @@ module TestProf
           end
 
         sample_interval = ENV["TEST_STACK_PROF_INTERVAL"].to_i
-        @interval = sample_interval > 0 ? sample_interval : nil
+        @interval = (sample_interval > 0) ? sample_interval : nil
         @ignore_gc = !ENV["TEST_STACK_PROF_IGNORE_GC"].nil?
       end
 

@@ -116,7 +116,7 @@ Defaults created within `before_all` and `let_it_be` are not reset after each ex
 
 **IMPORTANT:** You must load FactoryDefault after loading BeforeAll to make this feature work.
 
-**NOTE**. Regulart `before(:all)` callbacks are not supported.
+**NOTE**. Regular `before(:all)` callbacks are not supported.
 
 ### Working with traits
 
@@ -225,9 +225,9 @@ FactoryDefault summary: hit=11 miss=3
 
 Where `hit` indicates the number of times the default factory value was used instead of a new one when an association was created; `miss` indicates the number of time the default value was ignored due to traits or attributes mismatch.
 
-## Factory Default profiling, or when to use defaults?
+## Factory Default profiling, or when to use defaults
 
-Factory Default ships with the profiler, which can help you to see how associations are beeing used in your test suite, so you can decide on using `create_default` or not.
+Factory Default ships with the profiler, which can help you to see how associations are being used in your test suite, so you can decide on using `create_default` or not.
 
 To enable profiling, run your tests with the `FACTORY_DEFAULT_PROF=1` set:
 

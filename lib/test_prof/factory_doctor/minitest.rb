@@ -87,7 +87,7 @@ module Minitest
       private
 
       def pluralize_records(count)
-        count == 1 ? "1 record" : "#{count} records"
+        (count == 1) ? "1 record" : "#{count} records"
       end
     end
   end

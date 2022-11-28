@@ -13,7 +13,7 @@ module TestProf
       attr_reader :result, :printer
 
       def initialize
-        @printer = ENV["TAG_PROF_FORMAT"] == "html" ? Printers::HTML : Printers::Simple
+        @printer = (ENV["TAG_PROF_FORMAT"] == "html") ? Printers::HTML : Printers::Simple
 
         @result =
           if ENV["TAG_PROF_EVENT"].nil?

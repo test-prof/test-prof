@@ -18,7 +18,7 @@ module TestProf
       attr_accessor :mode, :printer
 
       def initialize
-        @mode = ENV["FPROF"] == "flamegraph" ? :flamegraph : :simple
+        @mode = (ENV["FPROF"] == "flamegraph") ? :flamegraph : :simple
         @printer =
           case ENV["FPROF"]
           when "flamegraph"
