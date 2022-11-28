@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add support for ActiveRecord multiple databases ([@rutgerw][])
+
 ## 1.1.0 (2022-12-06)
 
 - LetItBe: freeze records during initialization with `freeze: true`. ([@palkan][])
