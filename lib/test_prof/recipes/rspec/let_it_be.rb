@@ -192,7 +192,7 @@ if defined?(::ActiveRecord::Base)
 
       next record.reload if record.is_a?(::ActiveRecord::Base)
 
-      if record.respond_to?(:map)
+      if record.respond_to?(:to_ary)
         next record.map do |rec|
           rec.is_a?(::ActiveRecord::Base) ? rec.reload : rec
         end
@@ -205,7 +205,7 @@ if defined?(::ActiveRecord::Base)
 
       next record.refind if record.is_a?(::ActiveRecord::Base)
 
-      if record.respond_to?(:map)
+      if record.respond_to?(:to_ary)
         next record.map do |rec|
           rec.is_a?(::ActiveRecord::Base) ? rec.refind : rec
         end
