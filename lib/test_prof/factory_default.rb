@@ -4,17 +4,23 @@ require "test_prof"
 require "test_prof/factory_bot"
 require "test_prof/factory_default/factory_bot_patch"
 require "test_prof/ext/float_duration"
+require "test_prof/ext/active_record_refind" if defined?(::ActiveRecord::Base)
 
 module TestProf
   # FactoryDefault allows use to re-use associated objects
   # in factories implicilty
   module FactoryDefault
     using FloatDuration
+    using Ext::ActiveRecordRefind if defined?(::ActiveRecord::Base)
 
     using(Module.new do
       refine Object do
         def to_override_key
           "<#{self.class.name}::$id$#{object_id}$di$>"
+        end
+
+        def refind
+          self
         end
       end
 
@@ -260,7 +266,11 @@ module TestProf
         stats[name][:miss] -= 1
         stats[name][:hit] += 1
 
-        object
+        if record[:context] && (record[:context] != :example)
+          object.refind
+        else
+          object
+        end
       end
 
       def remove(name)
