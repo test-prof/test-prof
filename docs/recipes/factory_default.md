@@ -224,3 +224,31 @@ FactoryDefault summary: hit=11 miss=3
 ```
 
 Where `hit` indicates the number of times the default factory value was used instead of a new one when an association was created; `miss` indicates the number of time the default value was ignored due to traits or attributes mismatch.
+
+## Factory Default profiling, or when to use defaults?
+
+Factory Default ships with the profiler, which can help you to see how associations are beeing used in your test suite, so you can decide on using `create_default` or not.
+
+To enable profiling, run your tests with the `FACTORY_DEFAULT_PROF=1` set:
+
+```sh
+$ FACTORY_DEFAULT_PROF=1 bundle exec rspec spec/some/file_spec.rb
+
+.....
+
+[TEST PROF INFO] Factory associations usage:
+
+               factory      count    total time
+
+                  user         17     00:42.010
+         user[traited]         15     00:31.560
+  user{tag:"some tag"}          1     00:00.205
+
+Total associations created: 33
+Total uniq associations created: 3
+Total time spent: 01:13.775
+```
+
+Since default factories are usually registered per an example group (or test class), we recommend running this profiler against a particular file, so you can quickly identify the possibility of adding `create_default` and improve the tests speed.
+
+**NOTE:** You can also use the profiler to measure the effect of adding `create_default`; for that, compare the results of running the profiler with FactoryDefault enabled and disabled (you can do that by passing the `FACTORY_DEFAULT_DISABLED=1` env var).

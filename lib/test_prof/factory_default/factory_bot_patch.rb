@@ -12,7 +12,8 @@ module TestProf
 
     module StrategyExt
       def association(runner)
-        FactoryDefault.get(runner.name, runner.traits, runner.overrides) || super
+        FactoryDefault.get(runner.name, runner.traits, runner.overrides) ||
+          FactoryDefault.profiler.instrument(runner.name, runner.traits, runner.overrides) { super }
       end
     end
   end

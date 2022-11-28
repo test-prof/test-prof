@@ -11,6 +11,133 @@ module TestProf
   module FactoryDefault
     using FloatDuration
 
+    using(Module.new do
+      refine Object do
+        def to_override_key
+          "<#{self.class.name}::$id$#{object_id}$di$>"
+        end
+      end
+
+      if defined?(::ActiveRecord::Base)
+        refine ::ActiveRecord::Base do
+          def to_override_key
+            "<#{self.class.name}\#$id$#{public_send(self.class.primary_key)}$di$>"
+          end
+        end
+      end
+
+      [
+        String,
+        Integer,
+        Float,
+        FalseClass,
+        TrueClass,
+        NilClass,
+        Regexp
+      ].each do |mod|
+        refine(mod) do
+          def to_override_key
+            inspect
+          end
+        end
+      end
+    end)
+
+    class Profiler
+      include Logging
+
+      attr_reader :data
+
+      def initialize
+        @data = Hash.new { |h, k| h[k] = {count: 0, time: 0.0} }
+      end
+
+      def instrument(name, traits, overrides)
+        start = TestProf.now
+        yield.tap do
+          time = TestProf.now - start
+          key = build_association_name(name, traits, overrides)
+          data[key][:count] += 1
+          data[key][:time] += time
+        end
+      end
+
+      def print_report
+        if data.empty?
+          log :info, "FactoryDefault profiler collected no data"
+          return
+        end
+
+        # Merge object overrides into one stats record
+        data = self.data.each_with_object({}) do |(name, stats), acc|
+          name = name.gsub(/\$id\$.+\$di\$/, "<id>")
+          if acc.key?(name)
+            acc[name][:count] += stats[:count]
+            acc[name][:time] += stats[:time]
+          else
+            acc[name] = stats
+          end
+        end
+
+        msgs = []
+
+        msgs <<
+          <<~MSG
+            Factory associations usage:
+          MSG
+
+        first_column = data.keys.map(&:size).max + 2
+
+        msgs << format(
+          "%#{first_column}s  %9s  %12s",
+          "factory", "count", "total time"
+        )
+
+        msgs << ""
+
+        total_count = 0
+        total_time = 0.0
+
+        data.to_a.sort_by { |(_, v)| -v[:time] }.each do |(key, factory_stats)|
+          total_count += factory_stats[:count]
+          total_time += factory_stats[:time]
+
+          msgs << format(
+            "%#{first_column}s  %9d  %12s",
+            key, factory_stats[:count], factory_stats[:time].duration
+          )
+        end
+
+        msgs <<
+          <<~MSG
+
+            Total associations created: #{total_count}
+            Total uniq associations created: #{data.size}
+            Total time spent: #{total_time.duration}
+
+          MSG
+
+        log :info, msgs.join("\n")
+      end
+
+      private
+
+      def build_association_name(name, traits, overrides)
+        traits_str = "[#{traits.join(",")}]" if traits&.any?
+        overrides_str = "{#{overrides.map { |k, v| "#{k}:#{v.to_override_key}" }.join(",")}}" if overrides&.any?
+        "#{name}#{traits_str}#{overrides_str}"
+      end
+    end
+
+    class NoopProfiler
+      def instrument(*)
+        yield
+      end
+
+      def print_report
+      end
+    end
+
     module DefaultSyntax # :nodoc:
       def create_default(name, *args, &block)
         options = args.extract_options!
@@ -42,12 +169,16 @@ module TestProf
 
     class Configuration
       attr_accessor :preserve_traits, :preserve_attributes,
-        :report_summary, :report_stats
+        :report_summary, :report_stats,
+        :profiling_enabled
+
+      alias_method :profiling_enabled?, :profiling_enabled
 
       def initialize
         # TODO(v2): Switch to true
         @preserve_traits = false
         @preserve_attributes = false
+        @profiling_enabled = ENV["FACTORY_DEFAULT_PROF"] == "1"
         @report_summary = ENV["FACTORY_DEFAULT_SUMMARY"] == "1"
         @report_stats = ENV["FACTORY_DEFAULT_STATS"] == "1"
       end
@@ -57,7 +188,7 @@ module TestProf
       include Logging
 
       attr_accessor :current_context
-      attr_reader :stats
+      attr_reader :stats, :profiler
 
       def init
         TestProf::FactoryBot::Syntax::Methods.include DefaultSyntax
@@ -66,6 +197,7 @@ module TestProf
         TestProf::FactoryBot::Strategy::Build.prepend StrategyExt
         TestProf::FactoryBot::Strategy::Stub.prepend StrategyExt
 
+        @profiler = config.profiling_enabled? ? Profiler.new : NoopProfiler.new
         @enabled = ENV["FACTORY_DEFAULT_DISABLED"] != "1"
         @stats = {}
       end
@@ -166,6 +298,7 @@ module TestProf
       end
 
       def print_report
+        profiler.print_report
         return unless config.report_stats || config.report_summary
 
         if stats.empty?

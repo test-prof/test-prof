@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add FactoryDefault profiler (factory associations profilers). ([@palkan][])
+
 - FactoryDefault: Allow creating a default per trait (or set of traits). ([@palkan][])
 
 Now `create_default(:user)` and `create_default(:user, :admin)` would result into two defaults corresponding to the specified traits.
