@@ -1,0 +1,19 @@
+pre-commit:
+  commands:
+    mdl:
+      tags: style
+      glob: "**/*.md"
+      exclude: ".github/*"
+      run: mdl {staged_files}
+    forspell:
+      tags: grammar
+      glob: "**/*.md"
+      run: forspell {staged_files}
+    rubocop:
+      tags: style
+      glob: "**/*.md"
+      run: bundle exec rubocop --force-exclusion {staged_files}
+    lychee:
+      tags: links
+      glob: "**/*.md"
+      run: lychee docs/*

@@ -47,7 +47,7 @@ module TestProf
         @let_top_count = (ENV["RD_PROF_LET_TOP"] || 3).to_i
         @top_count = (ENV["RD_PROF_TOP"] || 5).to_i
         @stamp = ENV["RD_PROF_STAMP"]
-        @mode = ENV["RD_PROF"] == "1" ? "all" : ENV["RD_PROF"]
+        @mode = (ENV["RD_PROF"] == "1") ? "all" : ENV["RD_PROF"]
 
         unless MODES.include?(mode)
           raise "Unknown RSpecDissect mode: #{mode};" \
