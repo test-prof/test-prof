@@ -56,6 +56,18 @@ describe TestProf::FactoryDefault, :transactional do
       expect(post.user).to eq user
       expect(post_traited.user).not_to eq user
     end
+
+    context "when has default with the trait" do
+      let!(:traited_user) { TestProf::FactoryBot.create_default(:user, :traited) }
+
+      it "re-uses default record for this trait" do
+        post = TestProf::FactoryBot.create_default(:post)
+        post_traited = TestProf::FactoryBot.create(:post, :with_traited_user)
+
+        expect(post.user).to eq user
+        expect(post_traited.user).to eq traited_user
+      end
+    end
   end
 
   context "when preserve_attributes = true" do

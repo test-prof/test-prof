@@ -123,6 +123,10 @@ Defaults created within `before_all` and `let_it_be` are not reset after each ex
 You can use traits in your associations, for example:
 
 ```ruby
+factory :comment do
+  user
+end
+
 factory :post do
   association :user, factory: %i[user able_to_post]
 end
@@ -144,6 +148,20 @@ end
 
 # or in-place
 create_default(:user, preserve_traits: true)
+```
+
+Creating a default with trait works as follows:
+
+```ruby
+# Create a default with trait
+user = create_default(:user_poster, :able_to_post)
+
+# When an association has no traits specified, the default with trait is used
+create(:comment).user == user #=> true
+# When an association has the matching trait specified, the default is used, too
+create(:post).user == user #=> true
+# When the association's trait differs, default is skipped
+create(:view).user == user #=> false
 ```
 
 ### Handling attribute overrides
