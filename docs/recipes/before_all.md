@@ -59,6 +59,36 @@ Make sure to check the [Caveats section](#caveats) of this document for details.
 
 ## Instructions
 
+### Multiple database support
+
+The ActiveRecord BeforeAll adapter will only start a transaction using ActiveRecord::Base connection.
+If you want to ensure `before_all` can use multiple connections, you need to ensure the connection
+classes are loaded before using `before_all`.
+
+For example, imagine you have `ApplicationRecord` and a separate database for user accounts:
+
+```ruby
+class Users < AccountsRecord
+
+end
+
+class Articles < ApplicationRecord
+
+end
+```
+
+Then those two Connection Classes do need to be loaded before the tests are run:
+
+```ruby
+
+# Ensure connection classes are loaded
+ApplicationRecord
+AccountsRecord
+```
+
+This code can be added to `rails_helper.rb` or the rake tasks thats runs minitests.
+
+
 ### RSpec
 
 In your `rails_helper.rb` (or `spec_helper.rb` after *ActiveRecord* has been loaded):
