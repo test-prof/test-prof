@@ -36,7 +36,7 @@ You can also use `TestProf::FactoryDefault.disable!(&block)`.
 - Add support for global `before_all` tags ([@maxshend][])
 ```ruby
 TestProf::BeforeAll.configure do |config|
-  config.before(:begin, reset_sequences: proc(&:present?)) do
+  config.before(:begin, reset_sequences: true, foo: :bar) do
     warn <<~MESSAGE
       Do NOT create objects outside of transaction
       because all db sequences will be reset to 1
