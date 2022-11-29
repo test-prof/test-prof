@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- LetItBe: freeze records during initialization with `freeze: true`. ([@palkan][])
+
 - Add FactoryDefault profiler (factory associations profilers). ([@palkan][])
 
 - FactoryDefault: Allow creating a default per trait (or set of traits). ([@palkan][])
