@@ -34,6 +34,18 @@ TestProf::BeforeAll.configure do |config|
     Events.add_event :setup_before_all_with_meta
   end
 
+  config.before(:begin, with_meta: false) do
+    Events.add_event :setup_before_all_with_meta_false
+  end
+
+  config.before(:begin, foo: :bar) do
+    Events.add_event :setup_before_all_with_bar_tag
+  end
+
+  config.before(:begin, foo: :baz) do
+    Events.add_event :setup_before_all_with_baz_tag
+  end
+
   config.after(:begin) do
     Events.add_event :before_all_was_set_up
   end
@@ -92,7 +104,7 @@ describe "A test suite" do
   end
 
   context "with before_all" do
-    context "with matched metadata", with_meta: true do
+    context "with matched metadata", with_meta: true, foo: :bar do
       before_all { Events.add_event :before_all }
       after(:all) { Events.events.clear }
 
@@ -100,6 +112,7 @@ describe "A test suite" do
         expect(Events.events).to eq([
           :setup_before_all,
           :setup_before_all_with_meta,
+          :setup_before_all_with_bar_tag,
           :before_all_was_set_up,
           :before_all_was_set_up_with_meta,
           :before_all,
