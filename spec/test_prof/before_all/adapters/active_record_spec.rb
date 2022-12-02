@@ -10,17 +10,12 @@ end
 require "test_prof/before_all/adapters/active_record"
 
 describe "TestProf::BeforeAll::Adapters::ActiveRecord" do
-  let(:connection_class_1) { ActiveRecord::Base }
-  let(:connection_1) { connection_class_1.connection }
-
-  let(:connection_class_2) { ActiveRecord::Base }
-  let(:connection_2) { connection_class_2.connection }
+  let(:connection_pool_list) { [ActiveRecord::Base, ActiveRecord::Base.clone] }
+  let(:connection_1) { connection_pool_list.first.connection }
+  let(:connection_2) { connection_pool_list.second.connection }
 
   before do
-    allow(ActiveRecord::Base).to receive(:descendants).and_return([connection_class_2])
-
-    allow(connection_class_2).to receive(:connection_class?).and_return(true)
-    allow(connection_class_2).to receive(:connection).and_return(connection_2)
+    allow(::ActiveRecord::Base.connection_handler).to receive(:connection_pool_list).with(:writing).and_return(connection_pool_list)
   end
 
   describe ".begin_transaction" do
