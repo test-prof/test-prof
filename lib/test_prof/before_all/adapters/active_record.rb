@@ -6,26 +6,24 @@ module TestProf
       # ActiveRecord adapter for `before_all`
       module ActiveRecord
         class << self
-          def all_connection_classes
-            @all_connection_classes ||= [::ActiveRecord::Base] + ::ActiveRecord::Base.descendants.select do |descendant|
-              descendant&.connection_class?
-            end.compact
+          def all_connections
+            @all_connections ||= ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).map(&:connection)
           end
 
           def begin_transaction
-            all_connection_classes.each do |connection_class|
-              connection_class.connection.begin_transaction(joinable: false)
+            all_connections.each do |connection|
+              connection.begin_transaction(joinable: false)
             end
           end
 
           def rollback_transaction
-            all_connection_classes.each do |connection_class|
-              if connection_class.connection.open_transactions.zero?
+            all_connections.each do |connection|
+              if connection.open_transactions.zero?
                 warn "!!! before_all transaction has been already rollbacked and " \
                       "could work incorrectly"
                 next
               end
-              connection_class.connection.rollback_transaction
+              connection.rollback_transaction
             end
           end
 
