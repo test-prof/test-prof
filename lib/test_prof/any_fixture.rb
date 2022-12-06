@@ -102,19 +102,6 @@ module TestProf
         yield config
       end
 
-      # Backward compatibility
-      def reporting_enabled=(val)
-        warn "AnyFixture.reporting_enabled is deprecated and will be removed in 1.1. Use AnyFixture.config.reporting_enabled instead"
-        config.reporting_enabled = val
-      end
-
-      def reporting_enabled
-        warn "AnyFixture.reporting_enabled is deprecated and will be removed in 1.1. Use AnyFixture.config.reporting_enabled instead"
-        config.reporting_enabled
-      end
-
-      alias_method :reporting_enabled?, :reporting_enabled
-
       # Register a block of code as a fixture,
       # returns the result of the block execution
       def register(id)
