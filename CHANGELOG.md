@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.1.0 (2022-12-06)
+
 - LetItBe: freeze records during initialization with `freeze: true`. ([@palkan][])
 
 - Add FactoryDefault profiler (factory associations profilers). ([@palkan][])
@@ -34,6 +36,7 @@ end
 You can also use `TestProf::FactoryDefault.disable!(&block)`.
 
 - Add support for global `before_all` tags ([@maxshend][])
+
 ```ruby
 TestProf::BeforeAll.configure do |config|
   config.before(:begin, reset_sequences: true, foo: :bar) do
