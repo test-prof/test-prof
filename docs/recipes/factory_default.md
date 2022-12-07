@@ -112,7 +112,7 @@ before { FactoryBot.set_factory_default(:user, user) }
 
 ### Using with `before_all` / `let_it_be`
 
-Defaults created within `before_all` and `let_it_be` are not reset after each example, but only at the end of the corresponding example group. So, it's possible to call `create_defatul` within `let_it_be` without any additional configuration. **RSpec only**
+Defaults created within `before_all` and `let_it_be` are not reset after each example, but only at the end of the corresponding example group. So, it's possible to call `create_default` within `let_it_be` without any additional configuration. **RSpec only**
 
 **IMPORTANT:** You must load FactoryDefault after loading BeforeAll to make this feature work.
 
