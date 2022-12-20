@@ -14,6 +14,7 @@ rescue LoadError
 end
 
 def multi_db?
+  return false unless ActiveRecord::Base.respond_to? :connects_to
   return false unless ENV["MULTI_DB"]
 
   ENV["MULTI_DB"] == "true"
@@ -56,6 +57,11 @@ if multi_db?
 
     connects_to database: {writing: :comments, reading: :comments}
   end
+
+  class Comment < CommentsRecord
+    belongs_to :user, dependent: :destroy
+  end
+
   CommentsRecord.establish_connection
 else
   ActiveRecord::Base.configurations = {default_env: DB_CONFIG}
@@ -63,7 +69,8 @@ else
     self.abstract_class = true
   end
 
-  class CommentsRecord < ApplicationRecord
+  class Comment < ApplicationRecord
+    belongs_to :user, dependent: :destroy
   end
 end
 
@@ -125,10 +132,6 @@ class Post < ApplicationRecord
   belongs_to :user
 
   attr_accessor :dirty
-end
-
-class Comment < CommentsRecord
-  belongs_to :user, dependent: :destroy
 end
 
 TestProf::FactoryBot.define do

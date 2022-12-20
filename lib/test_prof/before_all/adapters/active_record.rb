@@ -7,7 +7,11 @@ module TestProf
       module ActiveRecord
         class << self
           def all_connections
-            @all_connections ||= ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).map(&:connection)
+            @all_connections ||= if ::ActiveRecord::Base.respond_to? :connects_to
+              ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).map(&:connection)
+            else
+              Array.wrap(::ActiveRecord::Base.connection)
+            end
           end
 
           def begin_transaction
