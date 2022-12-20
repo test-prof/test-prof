@@ -28,7 +28,7 @@ class FailingJob
   end
 end
 
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   attr_accessor :commited
 end
 
