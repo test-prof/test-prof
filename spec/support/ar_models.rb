@@ -13,6 +13,12 @@ begin
 rescue LoadError
 end
 
+def multi_db?
+  return false unless ENV["MULTI_DB"]
+
+  ENV["MULTI_DB"] == "true"
+end
+
 DB_CONFIG =
   if ENV["DB"] == "sqlite-file"
     FileUtils.mkdir_p TestProf.config.output_dir
@@ -31,6 +37,35 @@ DB_CONFIG =
   else
     {adapter: "sqlite3", database: ":memory:"}
   end
+
+if multi_db?
+  FileUtils.mkdir_p TestProf.config.output_dir
+  db_comments_path = File.join(TestProf.config.output_dir, "testdb_comments.sqlite")
+  FileUtils.rm(db_comments_path) if File.file?(db_comments_path)
+  DB_CONFIG_COMMENTS = {adapter: "sqlite3", database: db_comments_path}
+  ActiveRecord::Base.configurations = {default_env: {comments: DB_CONFIG_COMMENTS, posts: DB_CONFIG}}
+
+  class ApplicationRecord < ActiveRecord::Base
+    self.abstract_class = true
+
+    connects_to database: {writing: :posts, reading: :posts}
+  end
+
+  class CommentsRecord < ApplicationRecord
+    self.abstract_class = true
+
+    connects_to database: {writing: :comments, reading: :comments}
+  end
+  CommentsRecord.establish_connection
+else
+  ActiveRecord::Base.configurations = {default_env: DB_CONFIG}
+  class ApplicationRecord < ActiveRecord::Base
+    self.abstract_class = true
+  end
+
+  class CommentsRecord < ApplicationRecord
+  end
+end
 
 ActiveRecord::Base.establish_connection(**DB_CONFIG)
 
@@ -59,16 +94,25 @@ ActiveRecord::Schema.define do
   end
 end
 
+ActiveRecord::Base.establish_connection DB_CONFIG_COMMENTS if multi_db?
+ActiveRecord::Schema.define do
+  create_table :comments, if_not_exists: true do |t|
+    t.string :post_id # String because it could be a UUID
+    t.string :user_id # String because it could be a UUID
+    t.string :comment
+  end
+end
+
 ActiveRecord::Base.logger =
   if ENV["DEBUG"]
     Logger.new($stdout)
   else
     Logger.new(IO::NULL)
   end
-
-class User < ActiveRecord::Base
+class User < ApplicationRecord
   validates :name, presence: true
   has_many :posts, dependent: :destroy
+  has_many :comments, dependent: :destroy
 
   def clone
     copy = dup
@@ -77,10 +121,14 @@ class User < ActiveRecord::Base
   end
 end
 
-class Post < ActiveRecord::Base
+class Post < ApplicationRecord
   belongs_to :user
 
   attr_accessor :dirty
+end
+
+class Comment < CommentsRecord
+  belongs_to :user, dependent: :destroy
 end
 
 TestProf::FactoryBot.define do
@@ -120,6 +168,22 @@ TestProf::FactoryBot.define do
 
     trait :with_other_traited_user do
       association :user, factory: %i[user other_trait]
+    end
+  end
+
+  factory :comment do
+    comment { "Interesting Post!" }
+
+    trait :with_post do
+      after(:create) do
+        TestProf::FactoryBot.create(:post)
+      end
+    end
+
+    trait :with_user do
+      after(:create) do
+        TestProf::FactoryBot.create(:user)
+      end
     end
   end
 end
