@@ -88,7 +88,6 @@ AccountsRecord
 
 This code can be added to `rails_helper.rb` or the rake tasks thats runs minitests.
 
-
 ### RSpec
 
 In your `rails_helper.rb` (or `spec_helper.rb` after *ActiveRecord* has been loaded):
