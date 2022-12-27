@@ -22,9 +22,11 @@ jobs:
         - ruby: 3.1
           gemfile: "gemfiles/activerecord7.gemfile"
           db: "sqlite"
+          multi_db: "true"
         - ruby: 3.1
           gemfile: "gemfiles/activerecord7.gemfile"
           db: "postgres"
+          multi_db: "true"
         - ruby: 3.0
           gemfile: "gemfiles/activerecord6.gemfile"
           db: "sqlite"
@@ -75,6 +77,7 @@ jobs:
     - name: Run RSpec
       env:
           DB: ${{ matrix.db }}
+          MULTI_DB: ${{ matrix.multi_db }}
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
           DB_NAME: postgres
       run: |
