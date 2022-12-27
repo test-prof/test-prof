@@ -15,6 +15,7 @@ module TestProf
           end
 
           def begin_transaction
+            @all_connections = nil
             all_connections.each do |connection|
               connection.begin_transaction(joinable: false)
             end
