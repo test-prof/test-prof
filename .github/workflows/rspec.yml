@@ -44,7 +44,7 @@ jobs:
           db: "sqlite"
     services:
       postgres:
-        image: postgres:12
+        image: postgres:latest
         ports: ["5432:5432"]
         env:
           POSTGRES_PASSWORD: postgres
@@ -67,7 +67,7 @@ jobs:
     - name: Install system deps
       run: |
         sudo apt-get update
-        sudo apt-get install libsqlite3-dev libpq-dev postgresql-client-12
+        sudo apt-get install libsqlite3-dev libpq-dev postgresql-client
     - name: Bundle install
       run: |
         bundle config path /home/runner/bundle
