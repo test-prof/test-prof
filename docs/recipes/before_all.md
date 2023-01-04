@@ -69,11 +69,11 @@ For example, imagine you have `ApplicationRecord` and a separate database for us
 
 ```ruby
 class Users < AccountsRecord
-
+  # ...
 end
 
 class Articles < ApplicationRecord
-
+  # ...
 end
 ```
 
@@ -86,7 +86,7 @@ ApplicationRecord
 AccountsRecord
 ```
 
-This code can be added to `rails_helper.rb` or the rake tasks thats runs minitests.
+This code can be added to `rails_helper.rb` or the rake tasks that runs minitests.
 
 ### RSpec
 
