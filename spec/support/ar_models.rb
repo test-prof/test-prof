@@ -62,6 +62,7 @@ if multi_db?
     belongs_to :user, dependent: :destroy
   end
 
+  ApplicationRecord.establish_connection
   CommentsRecord.establish_connection
 else
   ActiveRecord::Base.configurations = {default_env: DB_CONFIG}
@@ -72,9 +73,9 @@ else
   class Comment < ApplicationRecord
     belongs_to :user, dependent: :destroy
   end
-end
 
-ActiveRecord::Base.establish_connection(**DB_CONFIG)
+  ActiveRecord::Base.establish_connection(**DB_CONFIG)
+end
 
 # #truncate_tables is not supported in older Rails, let's just ignore the failures
 ActiveRecord::Base.connection.truncate_tables(*ActiveRecord::Base.connection.tables) rescue nil # rubocop:disable Style/RescueModifier
