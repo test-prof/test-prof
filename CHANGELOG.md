@@ -281,7 +281,7 @@ end
 - Add threshold and custom event support to FactoryDoctor. ([@palkan][])
 
 ```sh
-$ FDOC=1 FDOC_EVENT="sql.rom" FDOC_THRESHOLD=0.1 rspec
+FDOC=1 FDOC_EVENT="sql.rom" FDOC_THRESHOLD=0.1 rspec
 ```
 
 - Add Fabrication support to FactoryDoctor. ([@palkan][])
@@ -330,16 +330,6 @@ end
 See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md) for versions <0.9.0.
 
 [@palkan]: https://github.com/palkan
-[@marshall-lee]: https://github.com/marshall-lee
-[@danielwestendorf]: https://github.com/danielwestendorf
-[@shkrt]: https://github.com/Shkrt
-[@idolgirev]: https://github.com/IDolgirev
-[@desoleary]: https://github.com/desoleary
-[@rabotyaga]: https://github.com/rabotyaga
-[@vasfed]: https://github.com/Vasfed
-[@szemek]: https://github.com/szemek
-[@mkldon]: https://github.com/mkldon
-[@dmagro]: https://github.com/dmagro
 [@danielwaterworth]: https://github.com/danielwaterworth
 [@envek]: https://github.com/Envek
 [@tyleriguchi]: https://github.com/tyleriguchi
@@ -349,9 +339,12 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@stefkin]: https://github.com/stefkin
 [@jaimerson]: https://github.com/jaimerson
 [@alexvko]: https://github.com/alexvko
-[@grillermo]: https://github.com/grillermo
 [@cou929]: https://github.com/cou929
 [@ruslanshakirov]: https://github.com/ruslanshakirov
 [@ygelfand]: https://github.com/ygelfand
 [@cbliard]: https://github.com/cbliard
 [@maxshend]: https://github.com/maxshend
+[@rutgerw]: https://github.com/rutgerw
+[@markedmondson]: https://github.com/markedmondson
+[@cbarton]: https://github.com/cbarton
+[@peret]: https://github.com/peret
