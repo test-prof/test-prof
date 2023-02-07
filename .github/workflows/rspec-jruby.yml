@@ -9,6 +9,7 @@ on:
 jobs:
   rspec-jruby:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
     env:
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
