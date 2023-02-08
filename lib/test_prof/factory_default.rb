@@ -169,7 +169,7 @@ module TestProf
       end
 
       def get_factory_default(name, *args)
-        FactoryDefault.get(name, traits = args, overrides = args.extract_options!, write_stats = false)
+        FactoryDefault.get(name, args, args.extract_options!, false)
       end
 
       def skip_factory_default(&block)
@@ -268,8 +268,8 @@ module TestProf
         end
 
         if write_stats
-            stats[name][:miss] -= 1
-            stats[name][:hit] += 1
+          stats[name][:miss] -= 1
+          stats[name][:hit] += 1
         end
 
         if record[:context] && (record[:context] != :example)
