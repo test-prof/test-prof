@@ -168,6 +168,10 @@ module TestProf
         )
       end
 
+      def get_factory_default(name, *args)
+        FactoryDefault.get(name, traits = args, overrides = args.extract_options!, write_stats = false)
+      end
+
       def skip_factory_default(&block)
         FactoryDefault.disable!(&block)
       end
@@ -236,7 +240,7 @@ module TestProf
         obj
       end
 
-      def get(name, traits = nil, overrides = nil)
+      def get(name, traits = nil, overrides = nil, write_stats = true)
         return unless enabled?
 
         record = store[name]
@@ -248,7 +252,7 @@ module TestProf
           traits = nil
         end
 
-        stats[name][:miss] += 1
+        stats[name][:miss] += 1 if write_stats
 
         if traits && !traits.empty? && record[:preserve_traits]
           return
@@ -263,8 +267,10 @@ module TestProf
           end
         end
 
-        stats[name][:miss] -= 1
-        stats[name][:hit] += 1
+        if write_stats
+            stats[name][:miss] -= 1
+            stats[name][:hit] += 1
+        end
 
         if record[:context] && (record[:context] != :example)
           object.refind
