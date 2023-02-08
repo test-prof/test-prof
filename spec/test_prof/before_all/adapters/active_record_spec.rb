@@ -43,12 +43,12 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
       context "when the connection is a transaction" do
         before do
           connection.begin_transaction
+          allow(connection).to receive(:rollback_transaction).and_call_original
         end
 
         it "calls rollback_transaction on all available connections" do
-          expect(connection).to receive(:rollback_transaction)
-
           subject
+          expect(connection).to have_received(:rollback_transaction)
         end
       end
     end
