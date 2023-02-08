@@ -2,7 +2,9 @@
 
 ## master (unreleased)
 
-- Add support for ActiveRecord multiple databases ([@rutgerw][])
+## 1.2.0 (2023-02-07)
+
+- Add support for multiple databases to `before_all` / `let_it_be` with Active Record. ([@rutgerw][])
 
 ## 1.1.0 (2022-12-06)
 
