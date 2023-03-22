@@ -14,13 +14,14 @@ require "test_prof/recipes/rspec/let_it_be"
 
 RSpec.configure do |config|
   config.fixture_path = File.join(__dir__, "fixtures")
+  config.use_transactional_fixtures = true
 end
 
 TestProf::BeforeAll.configure do |config|
   config.setup_fixtures = true
 end
 
-describe "Post", :transactional do
+describe "Post" do
   fixtures :users
 
   context "with before_all" do
