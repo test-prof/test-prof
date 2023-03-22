@@ -2,7 +2,7 @@
 
 $LOAD_PATH.unshift File.expand_path("../../lib", __FILE__)
 begin
-  require "pry-byebug"
+  require "debug" unless ENV["CI"]
 rescue LoadError
 end
 
