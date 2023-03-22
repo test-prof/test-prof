@@ -1,16 +1,13 @@
 source 'https://rubygems.org'
 
-gem "activerecord-jdbcsqlite3-adapter", "~> 52.0"
+gem "activerecord-jdbcsqlite3-adapter"
 gem "jdbc-sqlite3"
-gem "activerecord", "~> 5.2"
-gem "activerecord-import"
-# See https://github.com/ruby-i18n/i18n/issues/555
-gem "i18n", "1.8.7"
+gem "activerecord", "~> 7.0"
 
-gem "factory_bot", "~> 5.0"
+gem "factory_bot"
 gem "fabrication"
 
-gem "sidekiq", "~> 5.0"
-gem "timecop", "~> 0.9.1"
+gem "sidekiq"
+gem "timecop"
 
 gemspec path: '..'

@@ -13,24 +13,14 @@ jobs:
     env:
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
+      BUNDLE_GEMFILE: gemfiles/jruby.gemfile
       LET_IT_BE_IVAR_PREFIX: "@_matroskin_"
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v1
-      with:
-        path:  /home/runner/bundle
-        key: bundle-${{ hashFiles('**/gemfiles/jruby.gemfile') }}-${{ hashFiles('**/*.gemspec') }}
-        restore-keys: |
-          bundle-
+    - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: jruby-9.3
-    - name: Bundle install
-      run: |
-        bundle config path /home/runner/bundle
-        bundle config --global gemfile gemfiles/jruby.gemfile
-        bundle install
-        bundle update
+        ruby-version: jruby-head
+        bundler-cache: true
     - name: Run RSpec
       run: |
         bundle exec rspec --force-color
