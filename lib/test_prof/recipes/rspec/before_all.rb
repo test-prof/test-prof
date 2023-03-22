@@ -12,6 +12,7 @@ module TestProf
         if within_before_all?
           before(:all) do
             @__inspect_output = "before_all hook"
+            ::RSpec.current_scope = :before_all if ::RSpec.respond_to?(:current_scope=)
             instance_eval(&block)
           end
           return
@@ -22,6 +23,7 @@ module TestProf
 
         before(:all) do
           @__inspect_output = "before_all hook"
+          ::RSpec.current_scope = :before_all if ::RSpec.respond_to?(:current_scope=)
           BeforeAll.setup_fixtures(self) if setup_fixtures
           BeforeAll.begin_transaction(context, current_metadata) do
             instance_eval(&block)
