@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Fix regression with `before_all(setup_fixtures: true)` and `rspec-rails` v6.0+. ([@palkan][])
+
 - Upgrade to RubyProf 1.4+. ([@palkan][])
 
 ## 1.2.0 (2023-02-07)
