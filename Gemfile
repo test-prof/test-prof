@@ -31,8 +31,8 @@ else
   gem "timecop", "~> 0.9.1"
 
   platform :mri do
-    gem "pry-byebug"
-    gem "ruby-prof", ">= 0.16.0"
+    gem "debug" unless ENV["CI"]
+    gem "ruby-prof", ">= 1.4.0"
     gem "stackprof", ">= 0.2.9"
   end
 end

@@ -32,6 +32,9 @@ jobs:
           gemfile: "gemfiles/activerecord6.gemfile"
           db: "sqlite"
         - ruby: 3.0
+          gemfile: "gemfiles/rspecrails4.gemfile"
+          db: "sqlite"
+        - ruby: 3.0
           gemfile: "gemfiles/railsmaster.gemfile"
           db: "sqlite"
         - ruby: 2.7
