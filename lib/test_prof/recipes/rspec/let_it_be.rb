@@ -120,11 +120,13 @@ module TestProf
       LetItBe.module_for(self).module_eval do
         define_method(identifier) do
           # Trying to detect the context
-          # Based on https://github.com/rspec/rspec-rails/commit/7cb796db064f58da7790a92e73ab906ef50b1f34
-          if /(before|after)\(:context\)/.match?(@__inspect_output) || @__inspect_output.include?("before_all")
+          # First, check for ::RSpec.current_scope (modern RSpec) and then read @__inspect_output
+          # (based on https://github.com/rspec/rspec-rails/commit/7cb796db064f58da7790a92e73ab906ef50b1f34)
+          if ::RSpec.respond_to?(:current_scope) && %i[before_all before_context_hook after_context_hook].include?(::RSpec.current_scope)
+            instance_variable_get(:"#{PREFIX}#{identifier}")
+          elsif /(before|after)\(:context\)/.match?(@__inspect_output) || @__inspect_output.include?("before_all")
             instance_variable_get(:"#{PREFIX}#{identifier}")
           else
-            # Fallback to let definition
             super()
           end
         end
