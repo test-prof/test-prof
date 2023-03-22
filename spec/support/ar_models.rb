@@ -1,5 +1,8 @@
 # frozen_string_literal: true
 
+# Set RAILS_ENV explicitily, so configurations could be picked up
+ENV["RAILS_ENV"] = "test"
+
 require "active_record"
 require "fabrication"
 require "test_prof"
@@ -44,7 +47,7 @@ if multi_db?
   db_comments_path = File.join(TestProf.config.output_dir, "testdb_comments.sqlite")
   FileUtils.rm(db_comments_path) if File.file?(db_comments_path)
   DB_CONFIG_COMMENTS = {adapter: "sqlite3", database: db_comments_path}
-  ActiveRecord::Base.configurations = {default_env: {comments: DB_CONFIG_COMMENTS, posts: DB_CONFIG}}
+  ActiveRecord::Base.configurations = {test: {comments: DB_CONFIG_COMMENTS, posts: DB_CONFIG}}
 
   class ApplicationRecord < ActiveRecord::Base
     self.abstract_class = true
@@ -65,7 +68,7 @@ if multi_db?
   ApplicationRecord.establish_connection
   CommentsRecord.establish_connection
 else
-  ActiveRecord::Base.configurations = {default_env: DB_CONFIG}
+  ActiveRecord::Base.configurations = {test: DB_CONFIG}
   class ApplicationRecord < ActiveRecord::Base
     self.abstract_class = true
   end
