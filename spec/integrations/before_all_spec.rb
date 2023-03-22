@@ -28,6 +28,12 @@ describe "BeforeAll" do
       expect(output).to include("FailingJob")
     end
 
+    it "works with Rails fixtures" do
+      output = run_rspec("before_all_rails_fixtures", success: true)
+
+      expect(output).to include("3 examples, 0 failures")
+    end
+
     specify "database connection" do
       output = run_rspec("before_all_connection")
 
