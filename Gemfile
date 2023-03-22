@@ -20,6 +20,8 @@ else
   end
 
   gem "activerecord", "~> 6.0"
+  gem "actionview"
+  gem "actionpack"
   gem "activerecord-import"
 
   gem "factory_bot", "~> 5.0"
