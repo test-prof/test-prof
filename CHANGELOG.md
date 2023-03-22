@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Upgrade to RubyProf 1.4+. ([@palkan][])
+
 ## 1.2.0 (2023-02-07)
 
 - Add support for multiple databases to `before_all` / `let_it_be` with Active Record. ([@rutgerw][])

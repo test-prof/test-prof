@@ -40,7 +40,6 @@ describe TestProf::RubyProf do
 
     specify "with default config" do
       expect(ruby_prof).to receive(:new).with({
-        merge_fibers: true,
         include_threads: [Thread.current]
       }).and_return(profile)
 
@@ -50,9 +49,7 @@ describe TestProf::RubyProf do
     specify "with custom config" do
       described_class.config.include_threads = true
 
-      expect(ruby_prof).to receive(:new).with({
-        merge_fibers: true
-      }).and_return(profile)
+      expect(ruby_prof).to receive(:new).with({}).and_return(profile)
 
       described_class.profile
     end

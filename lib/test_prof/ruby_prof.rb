@@ -173,9 +173,7 @@ module TestProf
 
         return unless init_ruby_prof
 
-        options = {
-          merge_fibers: true
-        }
+        options = {}
 
         options[:include_threads] = [Thread.current] unless
           config.include_threads?
@@ -214,7 +212,7 @@ module TestProf
           <<~MSG
             Please, install 'ruby-prof' first:
                # Gemfile
-              gem 'ruby-prof', '>= 0.16.0', require: false
+              gem 'ruby-prof', '>= 1.4.0', require: false
           MSG
         ) { check_ruby_prof_version }
       end

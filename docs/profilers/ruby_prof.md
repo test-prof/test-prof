@@ -4,12 +4,12 @@ Easily integrate the power of [ruby-prof](https://github.com/ruby-prof/ruby-prof
 
 ## Instructions
 
-Install `ruby-prof` gem (>= 0.17):
+Install `ruby-prof` gem (>= 1.4.0):
 
 ```ruby
 # Gemfile
 group :development, :test do
-  gem "ruby-prof", ">= 0.17.0", require: false
+  gem "ruby-prof", ">= 1.4.0", require: false
 end
 ```
 
