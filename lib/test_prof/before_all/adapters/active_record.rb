@@ -8,10 +8,25 @@ module TestProf
         class << self
           def all_connections
             @all_connections ||= if ::ActiveRecord::Base.respond_to? :connects_to
-              ::ActiveRecord::Base.connection_handler.connection_pool_list.map(&:connection)
+              ::ActiveRecord::Base.connection_handler.connection_pool_list.filter_map {|pool|
+                begin
+                  pool.connection
+                rescue *pool_connection_errors => error
+                  log_pool_connection_error(pool, error)
+                  nil
+                end
+              }
             else
               Array.wrap(::ActiveRecord::Base.connection)
             end
+          end
+
+          def pool_connection_errors
+            @pool_connection_errors ||= []
+          end
+
+          def log_pool_connection_error(pool, error)
+            warn "Could not connect to pool #{pool.connection_class.name}. #{error.class}: #{error.message}"
           end
 
           def begin_transaction
