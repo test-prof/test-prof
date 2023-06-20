@@ -5,6 +5,10 @@ require "test_prof/cops/rspec/aggregate_examples"
 
 RSpec.describe RuboCop::Cop::RSpec::AggregateExamples,
   ".matchers_with_side_effects", :config do
+  let(:all_cops_config) do
+    {"DisplayCopNames" => false}
+  end
+
   subject(:cop) { described_class.new(config) }
 
   context "without side effect matchers defined in configuration" do

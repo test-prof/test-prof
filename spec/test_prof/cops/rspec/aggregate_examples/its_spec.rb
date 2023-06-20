@@ -3,8 +3,16 @@
 require "cop_helper"
 require "test_prof/cops/rspec/aggregate_examples"
 
-RSpec.describe RuboCop::Cop::RSpec::AggregateExamples, ".its" do
-  subject(:cop) { described_class.new }
+RSpec.describe RuboCop::Cop::RSpec::AggregateExamples, ".its", :config do
+  let(:all_cops_config) do
+    {"DisplayCopNames" => false}
+  end
+
+  let(:cop_config) do
+    {"AddAggregateFailuresMetadata" => false}
+  end
+
+  subject(:cop) { described_class.new(config) }
 
   # Regular `its` call with an attribute/method name, or a chain of methods
   # expressed as a string with dots.

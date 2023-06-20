@@ -4,6 +4,10 @@ require "cop_helper"
 require "test_prof/cops/rspec/aggregate_examples"
 
 RSpec.describe RuboCop::Cop::RSpec::AggregateExamples, :config do
+  let(:all_cops_config) do
+    {"DisplayCopNames" => false}
+  end
+
   subject(:cop) { described_class.new(config) }
 
   let(:cop_config) do
