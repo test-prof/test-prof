@@ -93,6 +93,10 @@ describe TestProf::AnyFixture, :transactional, :postgres, sqlite: :file do
       User.delete_all
     end
 
+    before do
+      skip unless ActiveRecord::Base.connection.adapter_name.match?(/(sqlite|postgres)/i)
+    end
+
     after do
       subject.reset
       # Reset manually data populated via CLI tools

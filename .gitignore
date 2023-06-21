@@ -11,5 +11,5 @@
 gemfiles/*.lock
 spec/integrations/fixtures/rspec/tmp/
 spec/integrations/fixtures/rspec/gemfiles/*.lock
-Gemfile.local
+Gemfile.local*
 tmp/
