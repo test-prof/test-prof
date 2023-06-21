@@ -15,11 +15,11 @@ else
   end
 
   platform :jruby do
-    gem "activerecord-jdbcsqlite3-adapter", "~> 60.0"
-    gem "activerecord", "~> 6.0"
+    gem "activerecord-jdbcsqlite3-adapter"
+    gem "activerecord", "~> 7.0"
   end
 
-  gem "activerecord", "~> 6.0"
+  gem "activerecord", "~> 7.0"
   gem "actionview"
   gem "actionpack"
   gem "activerecord-import"

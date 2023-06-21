@@ -13,6 +13,14 @@ jobs:
     env:
       BUNDLE_JOBS: 4
       BUNDLE_RETRY: 3
+      BUNDLE_GEMFILE: ${{ matrix.gemfile }}
+      CI: true
+      POSTGRES_URL: postgres://postgres:postgres@localhost:5432
+      MYSQL_URL: mysql2://rails:rails@127.0.0.1:3306
+      DB: ${{ matrix.db }}
+      MULTI_DB: ${{ matrix.multi_db }}
+      # Use postgres for all DB to avoid dealing with PG db creation
+      DB_NAME: postgres
     strategy:
       fail-fast: false
       matrix:
@@ -20,6 +28,9 @@ jobs:
         gemfile: ["gemfiles/activerecord6.gemfile"]
         db: ["postgres"]
         include:
+        - ruby: 3.2
+          gemfile: "gemfiles/railsmaster.gemfile"
+          db: "mysql"
         - ruby: 3.1
           gemfile: "gemfiles/activerecord7.gemfile"
           db: "sqlite"
@@ -31,6 +42,7 @@ jobs:
         - ruby: 3.0
           gemfile: "gemfiles/activerecord6.gemfile"
           db: "sqlite"
+          db_url: ~
         - ruby: 3.0
           gemfile: "gemfiles/rspecrails4.gemfile"
           db: "sqlite"
@@ -57,33 +69,30 @@ jobs:
           --health-interval 10s
           --health-timeout 5s
           --health-retries 5
+      mysql:
+        image: mysql:8
+        ports: ["3306:3306"]
+        env:
+          MYSQL_PASSWORD: rails
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: postgres
+          MYSQL_USER: rails
+        options: >-
+          --health-cmd "mysqladmin ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
     steps:
-    - uses: actions/checkout@v2
-    - uses: actions/cache@v1
-      with:
-        path: /home/runner/bundle
-        key: bundle-${{ matrix.ruby }}-${{ matrix.gemfile }}-${{ hashFiles(matrix.gemfile) }}-${{ hashFiles('**/*.gemspec') }}
-        restore-keys: |
-          bundle-${{ matrix.ruby }}-${{ matrix.gemfile }}-
-    - uses: ruby/setup-ruby@v1
-      with:
-        ruby-version: ${{ matrix.ruby }}
+    - uses: actions/checkout@v3
     - name: Install system deps
       run: |
         sudo apt-get update
         sudo apt-get install libsqlite3-dev libpq-dev postgresql-client
-    - name: Bundle install
-      run: |
-        bundle config path /home/runner/bundle
-        bundle config --global gemfile ${{ matrix.gemfile }}
-        bundle install
-        bundle update
+    - uses: ruby/setup-ruby@v1
+      with:
+        ruby-version: ${{ matrix.ruby }}
+        bundler-cache: true
     - name: Run RSpec
-      env:
-          DB: ${{ matrix.db }}
-          MULTI_DB: ${{ matrix.multi_db }}
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          DB_NAME: postgres
       run: |
         bundle exec rspec --force-color
 

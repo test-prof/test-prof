@@ -29,12 +29,21 @@ DB_CONFIG =
     db_path = File.join(TestProf.config.output_dir, "testdb.sqlite")
     FileUtils.rm(db_path) if File.file?(db_path)
     {adapter: "sqlite3", database: db_path}
-  elsif ENV["DB"] == "postgres"
+  elsif ENV["DB"] == "postgres" || ENV["DB"] == "mysql"
     require "active_record/database_configurations"
+    url = ENV.fetch("DATABASE_URL") do
+      case ENV["DB"]
+      when "postgres"
+        ENV.fetch("POSTGRES_URL")
+      when "mysql"
+        ENV.fetch("MYSQL_URL")
+      end
+    end
+
     config = ActiveRecord::DatabaseConfigurations::UrlConfig.new(
       "test",
       "primary",
-      ENV.fetch("DATABASE_URL"),
+      url,
       {"database" => ENV.fetch("DB_NAME", "test_prof_test")}
     )
     config.respond_to?(:configuration_hash) ? config.configuration_hash : config.config
@@ -120,6 +129,7 @@ ActiveRecord::Base.logger =
   else
     Logger.new(IO::NULL)
   end
+
 class User < ApplicationRecord
   validates :name, presence: true
   has_many :posts, dependent: :destroy
