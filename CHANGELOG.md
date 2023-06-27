@@ -2,6 +2,12 @@
 
 ## master (unreleased)
 
+## 1.2.2 (2023-06-27)
+
+- Ignore inaccessible connection pools in `before_all`. ([@bf4][])
+
+See [#267](https://github.com/test-prof/test-prof/pull/267).
+
 ## 1.2.1 (2023-03-22)
 
 - Fix regression with `before_all(setup_fixtures: true)` and `rspec-rails` v6.0+. ([@palkan][])
@@ -356,3 +362,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@markedmondson]: https://github.com/markedmondson
 [@cbarton]: https://github.com/cbarton
 [@peret]: https://github.com/peret
+[@bf4]: https://github.com/bf4
