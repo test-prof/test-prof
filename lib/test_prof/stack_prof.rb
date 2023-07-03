@@ -83,7 +83,7 @@ module TestProf
           log :warn, <<~MSG
             StackProf is activated globally, you cannot generate per-example report.
 
-            Make sure you haven's set the TEST_STACK_PROF environmental variable.
+            Make sure you haven't set the TEST_STACK_PROF environmental variable.
           MSG
           return false
         end
