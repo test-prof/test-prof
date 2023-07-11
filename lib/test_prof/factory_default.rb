@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_prof"
+require "test_prof/core"
 require "test_prof/factory_bot"
 require "test_prof/factory_default/factory_bot_patch"
 require "test_prof/ext/float_duration"

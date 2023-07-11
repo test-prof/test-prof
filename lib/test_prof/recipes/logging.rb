@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_prof"
+require "test_prof/core"
 
 module TestProf
   module Rails

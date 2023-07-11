@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_prof"
+require "test_prof/core"
 require "test_prof/recipes/rspec/before_all"
 
 module TestProf
