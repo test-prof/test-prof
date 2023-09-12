@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+## 1.2.3 (2023-09-11)
+
+- Minor fixes and dependecies upgrades.
+
 ## 1.2.2 (2023-06-27)
 
 - Ignore inaccessible connection pools in `before_all`. ([@bf4][])
