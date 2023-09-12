@@ -1,6 +1,12 @@
 # frozen_string_literal: true
 
 describe TestProf::RubyProf do
+  before do
+    next if defined?(::RubyProf::WALL_TIME)
+
+    stub_const("::RubyProf::WALL_TIME", 0)
+  end
+
   # Use fresh config all for every example
   after { described_class.remove_instance_variable(:@config) }
 
@@ -9,7 +15,7 @@ describe TestProf::RubyProf do
 
     specify "defaults", :aggregate_failures do
       expect(subject.printer).to eq :flat
-      expect(subject.mode).to eq :wall
+      expect(subject.mode).to eq "wall"
       expect(subject.min_percent).to eq 1
       expect(subject.include_threads).to eq false
     end
@@ -40,7 +46,8 @@ describe TestProf::RubyProf do
 
     specify "with default config" do
       expect(ruby_prof).to receive(:new).with({
-        include_threads: [Thread.current]
+        include_threads: [Thread.current],
+        measure_mode: 0
       }).and_return(profile)
 
       expect(described_class.profile).to be_a(described_class::Report)
@@ -49,7 +56,7 @@ describe TestProf::RubyProf do
     specify "with custom config" do
       described_class.config.include_threads = true
 
-      expect(ruby_prof).to receive(:new).with({}).and_return(profile)
+      expect(ruby_prof).to receive(:new).with({measure_mode: 0}).and_return(profile)
 
       described_class.profile
     end

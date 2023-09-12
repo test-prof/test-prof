@@ -53,7 +53,7 @@ module TestProf
       def initialize
         @printer = ENV["TEST_RUBY_PROF"].to_sym if PRINTERS.key?(ENV["TEST_RUBY_PROF"])
         @printer ||= ENV.fetch("TEST_RUBY_PROF_PRINTER", :flat).to_sym
-        @mode = ENV.fetch("TEST_RUBY_PROF_MODE", :wall).to_sym
+        @mode = ENV.fetch("TEST_RUBY_PROF_MODE", :wall).to_s
         @min_percent = 1
         @include_threads = false
         @exclude_common_methods = true
@@ -83,6 +83,22 @@ module TestProf
           PRINTERS.key?(type)
 
         [type, ::RubyProf.const_get(PRINTERS[type])]
+      end
+
+      # Based on deprecated https://github.com/ruby-prof/ruby-prof/blob/fd3a5236a459586c5ca7ce4de506c1835129516a/lib/ruby-prof.rb#L36
+      def ruby_prof_mode
+        case mode
+        when "wall", "wall_time"
+          ::RubyProf::WALL_TIME
+        when "allocations"
+          ::RubyProf::ALLOCATIONS
+        when "memory"
+          ::RubyProf::MEMORY
+        when "process", "process_time"
+          ::RubyProf::PROCESS_TIME
+        else
+          ::RubyProf::WALL_TIME
+        end
       end
     end
 
@@ -177,6 +193,7 @@ module TestProf
 
         options[:include_threads] = [Thread.current] unless
           config.include_threads?
+        options[:measure_mode] = config.ruby_prof_mode
 
         profiler = ::RubyProf::Profile.new(options)
         profiler.exclude_common_methods! if config.exclude_common_methods?
@@ -206,7 +223,6 @@ module TestProf
 
       def init_ruby_prof
         return @initialized if instance_variable_defined?(:@initialized)
-        ENV["RUBY_PROF_MEASURE_MODE"] = config.mode.to_s
         @initialized = TestProf.require(
           "ruby-prof",
           <<~MSG
