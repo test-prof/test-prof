@@ -6,9 +6,9 @@ module TestProf
     # Do not add these classes to resulted sample
     CORE_RUNNABLES = [
       Minitest::Test,
-      Minitest::Unit::TestCase,
+      defined?(Minitest::Unit::TestCase) ? Minitest::Unit::TestCase : nil,
       Minitest::Spec
-    ].freeze
+    ].compact.freeze
 
     class << self
       def suites
