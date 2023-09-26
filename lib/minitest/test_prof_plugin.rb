@@ -2,6 +2,7 @@
 
 require "test_prof/event_prof/minitest"
 require "test_prof/factory_doctor/minitest"
+require "test_prof/memory_prof/minitest"
 
 module Minitest # :nodoc:
   module TestProf # :nodoc:
@@ -13,6 +14,8 @@ module Minitest # :nodoc:
         opts[:per_example] = true if ENV["EVENT_PROF_EXAMPLES"]
         opts[:fdoc] = true if ENV["FDOC"]
         opts[:sample] = true if ENV["SAMPLE"] || ENV["SAMPLE_GROUPS"]
+        opts[:mem_prof_mode] = ENV["TEST_MEM_PROF"] if ENV["TEST_MEM_PROF"]
+        opts[:mem_prof_top_count] = ENV["TEST_MEM_PROF_COUNT"] if ENV["TEST_MEM_PROF_COUNT"]
       end
     end
   end
@@ -33,6 +36,12 @@ module Minitest # :nodoc:
     opts.on "--factory-doctor", TrueClass, "Enable Factory Doctor for your examples" do |flag|
       options[:fdoc] = flag
     end
+    opts.on "--mem-prof=MODE", "Enable MemoryProf for your examples" do |flag|
+      options[:mem_prof_mode] = flag
+    end
+    opts.on "--mem-prof-top-count=N", "Limits MemoryProf results with N groups/examples" do |flag|
+      options[:mem_prof_top_count] = flag
+    end
   end
 
   def self.plugin_test_prof_init(options)
@@ -40,6 +49,7 @@ module Minitest # :nodoc:
 
     reporter << TestProf::EventProfReporter.new(options[:io], options) if options[:event]
     reporter << TestProf::FactoryDoctorReporter.new(options[:io], options) if options[:fdoc]
+    reporter << TestProf::MemoryProfReporter.new(options[:io], options) if options[:mem_prof_mode]
 
     ::TestProf::MinitestSample.call if options[:sample]
   end
