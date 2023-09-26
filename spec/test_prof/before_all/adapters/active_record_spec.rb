@@ -35,7 +35,7 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
 
         it "warns when connection does not have open transaction" do
           expect { subject }.to output(
-            "!!! before_all transaction has been already rollbacked and could work incorrectly\n"
+            /!!! before_all transaction has been already rollbacked and could work incorrectly\n/
           ).to_stderr
         end
       end
@@ -83,7 +83,7 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
 
         it "warns when connection does not have open transaction" do
           expect { subject }.to output(
-            "!!! before_all transaction has been already rollbacked and could work incorrectly\n"
+            /!!! before_all transaction has been already rollbacked and could work incorrectly\n/
           ).to_stderr
         end
       end

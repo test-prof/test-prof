@@ -53,6 +53,10 @@ module TestProf
         data.size
       end
 
+      def empty?
+        size.zero?
+      end
+
       def to_a
         data.dup
       end
