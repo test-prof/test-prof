@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+# Test jruby
 
 require "test_prof/version"
 require "test_prof/core"
