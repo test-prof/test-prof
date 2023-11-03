@@ -5,10 +5,12 @@ module TestProf
     module Adapters
       # ActiveRecord adapter for `before_all`
       module ActiveRecord
+        POOL_ARGS = ((::ActiveRecord::VERSION::MAJOR > 6) ? [:writing] : []).freeze
+
         class << self
           def all_connections
             @all_connections ||= if ::ActiveRecord::Base.respond_to? :connects_to
-              ::ActiveRecord::Base.connection_handler.connection_pool_list.filter_map { |pool|
+              ::ActiveRecord::Base.connection_handler.connection_pool_list(*POOL_ARGS).filter_map { |pool|
                 begin
                   pool.connection
                 rescue *pool_connection_errors => error
