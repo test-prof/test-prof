@@ -1,6 +1,7 @@
 <!-- markdownlint-disable -->
 
 * [Getting Started](/getting_started.md)
+* [Playbook](/playbook.md)
 
 * Profilers
   * [RubyProf Integration](/profilers/ruby_prof.md)

@@ -59,7 +59,7 @@ Example output:
       model     00:01.127           00:00.446     40   32.26   12.82     00:00.028
 ```
 
-Multiple events are also supported.
+Multiple events are also supported (comma-separated).
 
 ## Pro-Tip: More Types
 
