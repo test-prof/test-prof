@@ -4,8 +4,7 @@
 * [Playbook](/playbook.md)
 
 * Profilers
-  * [RubyProf Integration](/profilers/ruby_prof.md)
-  * [StackProf Integration](/profilers/stack_prof.md)
+  * [Ruby profilers](/profilers/ruby_profilers.md)
   * [Event Profiler](/profilers/event_prof.md)
   * [Tag Profiler](/profilers/tag_prof.md)
   * [Factory Doctor](/profilers/factory_doctor.md)

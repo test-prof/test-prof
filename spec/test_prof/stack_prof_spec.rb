@@ -73,6 +73,7 @@ describe TestProf::StackProf do
     end
 
     it "stops profiling and stores results" do
+      expect(described_class).to receive(:dump_json_report)
       expect(stack_prof).to receive(:results).with(
         File.join(TestProf.config.output_dir, "stack-prof-report-wall-raw-stub.dump").to_s
       )

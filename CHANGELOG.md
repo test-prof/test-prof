@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- StackProf uses JSON format by default. ([@palkan][])
+
 - MemoryProf ia added. ([@Vankiru][])
 
 ## 1.2.3 (2023-09-11)

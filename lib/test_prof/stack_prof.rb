@@ -33,7 +33,7 @@ module TestProf
           if FORMATS.include?(ENV["TEST_STACK_PROF_FORMAT"])
             ENV["TEST_STACK_PROF_FORMAT"]
           else
-            "html"
+            "json"
           end
 
         sample_interval = ENV["TEST_STACK_PROF_INTERVAL"].to_i
