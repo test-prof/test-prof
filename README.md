@@ -93,7 +93,7 @@ Supported RSpec version (for RSpec features only): >= 3.5.0 (for older RSpec ver
 
 Check out our [docs][].
 
-## What's next?
+## What's next
 
 Have an idea? [Propose](https://github.com/test-prof/test-prof/issues/new) a feature request!
 

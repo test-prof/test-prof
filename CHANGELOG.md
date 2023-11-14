@@ -4,7 +4,7 @@
 
 ## 1.2.3 (2023-09-11)
 
-- Minor fixes and dependecies upgrades.
+- Minor fixes and dependencies upgrades.
 
 ## 1.2.2 (2023-06-27)
 
@@ -160,7 +160,7 @@ And for every test run see the overall factories usage:
 
 ## 1.0.0.rc2 (2021-01-06)
 
-- Make Rails fixtures accesible in `before_all`. ([@palkan][])
+- Make Rails fixtures accessible in `before_all`. ([@palkan][])
 
 You can load and access fixtures when explicitly enabling them via `before_all(setup_fixtures: true, &block)`.
 
@@ -221,7 +221,7 @@ end
 
   See more in [#181](https://github.com/test-prof/test-prof/issues/181).
 
-- Adds the ability to define stackprof's interval sampling by using `TEST_STACK_PROF_INTERVAL` env variable ([@LynxEyes][])
+- Adds the ability to define stackprof interval sampling by using `TEST_STACK_PROF_INTERVAL` env variable ([@LynxEyes][])
 
   Now you can use `$ TEST_STACK_PROF=1 TEST_STACK_PROF_INTERVAL=10000 rspec` to define a custom interval (in microseconds).
 
