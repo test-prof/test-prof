@@ -81,7 +81,7 @@ This is an important step for large codebases. We must prioritize quick fixes th
 
 We use [TagProf](./profilers/tag_prof.md) for that:
 
-```ruby
+```sh
 TAG_PROF=type TAG_PROF_FORMAT=html TAG_PROF_EVENT=sql.active_record,factory.create bin/rspec
 ```
 
