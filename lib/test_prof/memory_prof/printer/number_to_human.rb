@@ -18,7 +18,7 @@ module TestProf
           private
 
           def exponent(number)
-            return 0 if number.zero?
+            return 0 unless number.positive?
 
             max = UNITS.size - 1
 
