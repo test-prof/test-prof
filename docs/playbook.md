@@ -10,10 +10,10 @@ Low-hanging configuration fruits:
 
 - Disable logging in tests—it's useless. If you really need it, use our [logging utils](./recipes/logging.md).
 
-  ```ruby
-  config.logger = ActiveSupport::TaggedLogging.new(Logger.new(nil))
-  config.log_level = :fatal
-  ```
+```ruby
+config.logger = ActiveSupport::TaggedLogging.new(Logger.new(nil))
+config.log_level = :fatal
+```
 
 - Disable coverage and built-in profiling by default. Use env var to enable it (e.g., `COVERAGE=true`)
 
@@ -27,7 +27,7 @@ bundle add stackprof
 
 Configure Test Prof to generate JSON profiles by default:
 
-```sh
+```ruby
 TestProf::StackProf.configure do |config|
   config.format = "json"
 end
@@ -99,31 +99,31 @@ At this point, we may identify some misconfigured or misused dependencies/gems. 
 
 - Inlined Sidekiq jobs:
 
-  ```sh
-  EVENT_PROF=sidekiq.inline bin/rspec spec/models
-  ```
+```sh
+EVENT_PROF=sidekiq.inline bin/rspec spec/models
+```
 
 - Wisper broadcasts ([patch required](https://gist.github.com/palkan/aa7035cebaeca7ed76e433981f90c07b)):
 
-  ```sh
-  EVENT_PROF=wisper.publisher.broadcast bin/rspec spec/models
-  ```
+```sh
+EVENT_PROF=wisper.publisher.broadcast bin/rspec spec/models
+```
 
 - PaperTrail logs creation:
 
-  Enable custom profiling:
+Enable custom profiling:
 
-  ```rb
-  TestProf::EventProf.monitor(PaperTrail::RecordTrail, "paper_trail.record", :record_create)
-  TestProf::EventProf.monitor(PaperTrail::RecordTrail, "paper_trail.record", :record_destroy)
-  TestProf::EventProf.monitor(PaperTrail::RecordTrail, "paper_trail.record", :record_update)
-  ```
+```rb
+TestProf::EventProf.monitor(PaperTrail::RecordTrail, "paper_trail.record", :record_create)
+TestProf::EventProf.monitor(PaperTrail::RecordTrail, "paper_trail.record", :record_destroy)
+TestProf::EventProf.monitor(PaperTrail::RecordTrail, "paper_trail.record", :record_update)
+```
 
-  Run tests:
+Run tests:
 
-  ```sh
-  EVENT_PROF=paper_trail.record bin/rspec spec/models
-  ```
+```sh
+EVENT_PROF=paper_trail.record bin/rspec spec/models
+```
 
 See [the Sidekiq example](https://evilmartians.com/chronicles/testprof-a-good-doctor-for-slow-ruby-tests#background-jobs) on how to quickly fix such problems using [RSpecStamp](./recipes/rspec_stamp.md).
 
