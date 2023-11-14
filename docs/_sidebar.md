@@ -11,6 +11,7 @@
   * [Factory Doctor](/profilers/factory_doctor.md)
   * [Factory Profiler](/profilers/factory_prof.md)
   * [RSpecDissect Profiler](/profilers/rspec_dissect.md)
+  * [Memory Profiler](/profilers/memory_prof.md)
 
 * Recipes
   * [`before_all` Hook](/recipes/before_all.md)

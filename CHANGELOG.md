@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- MemoryProf ia added. ([@Vankiru][])
+
 ## 1.2.3 (2023-09-11)
 
 - Minor fixes and dependencies upgrades.
@@ -367,3 +369,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@cbarton]: https://github.com/cbarton
 [@peret]: https://github.com/peret
 [@bf4]: https://github.com/bf4
+[@Vankiru]: https://github.com/Vankiru
