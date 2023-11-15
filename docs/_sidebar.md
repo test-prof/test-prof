@@ -2,6 +2,10 @@
 
 * [Getting Started](/getting_started.md)
 * [Playbook](/playbook.md)
+<a rel="noopener" href="https://github.com/sponsors/test-prof" class="sponsor-link" target="_blank">
+  <img class='sponsor-badge' src='/assets/images/heart.svg' alt='heart' />
+  <span>Sponsor</span>
+</a>
 
 * Profilers
   * [Ruby profilers](/profilers/ruby_profilers.md)
