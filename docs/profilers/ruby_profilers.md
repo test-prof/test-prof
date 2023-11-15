@@ -6,6 +6,7 @@ Just install the profiler library and run your tests!
 Supported profilers:
 
 - [StackProf](#stackprof)
+- [Vernier](#vernier)
 - [RubyProf](#rubyprof)
 
 ## StackProf
@@ -84,6 +85,63 @@ Garbage collection time will still be present in the profile but not explicitly 
 its own frame.
 
 See [stack_prof.rb](https://github.com/test-prof/test-prof/tree/master/lib/test_prof/stack_prof.rb) for all available configuration options and their usage.
+
+## Vernier
+
+[Vernier][] is next generation sampling profiler for Ruby. Give it a try and see if it can help in identifying test peformance bottlenecks!
+
+Make sure you have `vernier` in your dependencies:
+
+```ruby
+# Gemfile
+group :development, :test do
+  gem "vernier", ">= 0.3.0", require: false
+end
+```
+
+### Profiling the whole test suite with Vernier
+
+**NOTE:** It's recommended to use [test sampling](../recipes/tests_sampling.md) to generate smaller profiling reports.
+
+You can activate Verner profiling by setting the `TEST_VERNIER` env variable:
+
+```sh
+TEST_VERNIER=1 bundle exec rake test
+
+# or for RSpec
+TEST_VERNIER=1 bundle exec rspec ...
+```
+
+At the end of the test run, you will see the message from Test Prof including the path to the generated report:
+
+```sh
+...
+
+[TEST PROF INFO] Vernier report generated: tmp/test_prof/vernier-report-wall-raw-total.json
+```
+
+Use the [profile-viewer](https://github.com/tenderlove/profiler/tree/ruby) gem or upload your profiles to [profiler.firefox.com](https://profiler.firefox.com).
+
+### Profiling individual examples with Vernier
+
+Test Prof provides a built-in shared context for RSpec to profile examples individually:
+
+```ruby
+it "is doing heavy stuff", :vernier do
+  # ...
+end
+```
+
+**NOTE:** per-example profiling doesn't work when the global (per-suite) profiling is activated.
+
+### Profiling application boot with Vernier
+
+You can also profile your application boot process:
+
+```sh
+# pick some random spec (1 is enough)
+TEST_VERNIER=boot bundle exec rspec ./spec/some_spec.rb
+```
 
 ## RubyProf
 
@@ -172,3 +230,4 @@ end
 
 [StackProf]: https://github.com/tmm1/stackprof
 [Speedscope]: https://www.speedscope.app
+[Vernier]: https://github.com/jhawthorn/vernier

@@ -5,6 +5,7 @@ require "test_prof/core"
 
 require "test_prof/ruby_prof"
 require "test_prof/stack_prof"
+require "test_prof/vernier"
 require "test_prof/event_prof"
 require "test_prof/factory_doctor"
 require "test_prof/factory_prof"

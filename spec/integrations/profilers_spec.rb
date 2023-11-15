@@ -4,6 +4,7 @@ PROFILERS_AVAILABLE =
   begin
     require "stackprof"
     require "ruby-prof"
+    require "vernier"
   rescue LoadError
   end
 
@@ -39,6 +40,24 @@ describe "general profilers", skip: !PROFILERS_AVAILABLE do
 
         expect(output).to include("StackProf (raw) enabled globally")
         expect(output).to include("StackProf report generated")
+        expect(output).to include("StackProf JSON report generated")
+        expect(output).to include("0 failures")
+      end
+    end
+
+    context "vernier" do
+      specify "per example" do
+        output = run_rspec("vernier")
+
+        expect(output).to match(/Vernier report generated.+vernier_fixture-rb-1-1/)
+        expect(output).to include("0 failures")
+      end
+
+      specify "global" do
+        output = run_rspec("vernier", env: {"TEST_VERNIER" => "1"})
+
+        expect(output).to include("Vernier enabled globally")
+        expect(output).to include("Vernier report generated")
         expect(output).to include("0 failures")
       end
     end

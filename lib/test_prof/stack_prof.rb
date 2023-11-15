@@ -81,9 +81,9 @@ module TestProf
       def profile(name = nil)
         if locked?
           log :warn, <<~MSG
-            StackProf is activated globally, you cannot generate per-example report.
+            StackProf has been already activated.
 
-            Make sure you haven't set the TEST_STACK_PROF environmental variable.
+            Make sure you have not set the TEST_STACK_PROF environmental variable.
           MSG
           return false
         end

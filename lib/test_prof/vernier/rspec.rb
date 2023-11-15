@@ -3,8 +3,8 @@
 require "test_prof/utils/rspec"
 
 module TestProf
-  module StackProf
-    # Reporter for RSpec to profile specific examples with StackProf
+  module Vernier
+    # Reporter for RSpec to profile specific examples with Vernier
     class Listener # :nodoc:
       class << self
         attr_accessor :report_name_generator
@@ -19,15 +19,15 @@ module TestProf
 
       def example_started(notification)
         return unless profile?(notification.example)
-
-        notification.example.metadata[:sprof_report] = TestProf::StackProf.profile
+        notification.example.metadata[:vernier_collector] = TestProf::Vernier.profile
       end
 
       def example_finished(notification)
         return unless profile?(notification.example)
-        return if notification.example.metadata[:sprof_report] == false
+        return unless notification.example.metadata[:vernier_collector]
 
-        TestProf::StackProf.dump(
+        TestProf::Vernier.dump(
+          notification.example.metadata[:vernier_collector],
           self.class.report_name_generator.call(notification.example)
         )
       end
@@ -35,7 +35,7 @@ module TestProf
       private
 
       def profile?(example)
-        example.metadata.key?(:sprof)
+        example.metadata.key?(:vernier)
       end
     end
   end
@@ -43,10 +43,10 @@ end
 
 RSpec.configure do |config|
   config.before(:suite) do
-    listener = TestProf::StackProf::Listener.new
+    listener = TestProf::Vernier::Listener.new
 
     config.reporter.register_listener(
-      listener, *TestProf::StackProf::Listener::NOTIFICATIONS
+      listener, *TestProf::Vernier::Listener::NOTIFICATIONS
     )
   end
 end
@@ -54,6 +54,6 @@ end
 # Handle boot profiling
 RSpec.configure do |config|
   config.append_before(:suite) do
-    TestProf::StackProf.dump("boot") if TestProf::StackProf.config.boot?
+    TestProf::Vernier.dump(TestProf::Vernier.default_collector, "boot") if TestProf::Vernier.config.boot?
   end
 end

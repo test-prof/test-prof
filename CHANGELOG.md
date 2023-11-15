@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add Vernier integration. ([@palkan][])
+
 - StackProf uses JSON format by default. ([@palkan][])
 
 - MemoryProf ia added. ([@Vankiru][])

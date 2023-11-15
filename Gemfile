@@ -34,5 +34,6 @@ else
     gem "debug" unless ENV["CI"]
     gem "ruby-prof", ">= 1.4.0"
     gem "stackprof", ">= 0.2.9"
+    gem "vernier"
   end
 end
