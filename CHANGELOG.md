@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.3.0 (2023-11-21)
+
 - Add Vernier integration. ([@palkan][])
 
 - StackProf uses JSON format by default. ([@palkan][])
