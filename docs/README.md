@@ -56,7 +56,11 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 - [TestProf: a good doctor for slow Ruby tests](https://evilmartians.com/chronicles/testprof-a-good-doctor-for-slow-ruby-tests)
 
-- [TestProf II: Factory therapy for your Ruby tests](https://evilmartians.com/chronicles/testprof-2-factory-therapy-for-your-ruby-tests-rspec-minitest)
+- [TestProf II: factory therapy for your Ruby tests](https://evilmartians.com/chronicles/testprof-2-factory-therapy-for-your-ruby-tests-rspec-minitest)
+
+- [TestProf III: guided and automated Ruby test profiling](https://evilmartians.com/chronicles/test-prof-3-guided-and-automated-ruby-test-profiling)
+
+- [Rails Testing on Rocket Fuel: How we made our tests 5x faster](https://www.zerogravity.co.uk/blog/ruby-on-rails-slow-tests)
 
 - Paris.rb, 2018, "99 Problems of Slow Tests" talk [[video](https://www.youtube.com/watch?v=eDMZS_fkRtk), [slides](https://speakerdeck.com/palkan/paris-dot-rb-2018-99-problems-of-slow-tests)]
 
