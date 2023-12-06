@@ -3,6 +3,7 @@
 require "test_prof/factory_prof/printers/simple"
 require "test_prof/factory_prof/printers/flamegraph"
 require "test_prof/factory_prof/printers/nate_heckler"
+require "test_prof/factory_prof/printers/json"
 require "test_prof/factory_prof/factory_builders/factory_bot"
 require "test_prof/factory_prof/factory_builders/fabrication"
 
@@ -25,6 +26,8 @@ module TestProf
             Printers::Flamegraph
           when "nate_heckler"
             Printers::NateHeckler
+          when "json"
+            Printers::Json
           else
             Printers::Simple
           end
