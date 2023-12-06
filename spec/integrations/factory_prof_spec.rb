@@ -43,6 +43,13 @@ describe "FactoryProf" do
       expect(output).to include("FactoryFlame report generated: ")
     end
 
+    specify "with nate printer always enabled and json profiler", :aggregate_failures do
+      output = run_rspec("factory_prof_with_nate", env: {"FPROF" => "json"})
+
+      expect(output).to match(/Time spent in factories: \d{2}+:\d{2}\.\d{3} \([\d.]+% of total time\)/)
+      expect(output).to include("Profile results to JSON: ")
+    end
+
     context "when no fabrication installed" do
       specify "simple printer", :aggregate_failures do
         output = run_rspec("factory_prof_no_fabrication", env: {"FPROF" => "1"})
