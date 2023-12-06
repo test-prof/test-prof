@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add support for dumping FactoryProf results in JSON format. ([@uzushino][])
+
 ## 1.3.0 (2023-11-21)
 
 - Add Vernier integration. ([@palkan][])
