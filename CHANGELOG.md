@@ -378,3 +378,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@peret]: https://github.com/peret
 [@bf4]: https://github.com/bf4
 [@Vankiru]: https://github.com/Vankiru
+[@uzushino]: https://github.com/uzushino
