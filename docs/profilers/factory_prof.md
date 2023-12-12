@@ -54,6 +54,25 @@ And for every test run see the overall factories usage:
 [TEST PROF INFO] Time spent in factories: 04:31.222 (54% of total time)
 ```
 
+### Exporting profile results to a JSON file
+
+FactoryProf can save profile results as a JSON file.
+
+To use this feature, set the `FPROF` environment variable to `json`:
+
+```sh
+FPROF=json rspec
+
+# or
+FPROF=json bundle exec rake test
+```
+
+Example output:
+
+```
+[TEST PROF INFO] Profile results to JSON: tmp/test_prof/test-prof.result.json
+```
+
 ## Factory Flamegraph
 
 The most useful feature of FactoryProf is the _FactoryFlame_ report. That's the special interpretation of Brendan Gregg's [flame graphs](http://www.brendangregg.com/flamegraphs.html) which allows you to identify _factory cascades_.
