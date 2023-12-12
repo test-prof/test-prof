@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.3.1 (2023-12-12)
+
 - Add support for dumping FactoryProf results in JSON format. ([@uzushino][])
 
 ## 1.3.0 (2023-11-21)
