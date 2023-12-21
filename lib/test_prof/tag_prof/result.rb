@@ -21,8 +21,8 @@ module TestProf
       def track(tag, time:, events: {})
         data[tag][:count] += 1
         data[tag][:time] += time
-        events.each do |k, v|
-          data[tag][k] += v
+        events.each do |event, time|
+          data[tag][event] += time
         end
       end
 

@@ -3,6 +3,7 @@
 require "test_prof/event_prof/minitest"
 require "test_prof/factory_doctor/minitest"
 require "test_prof/memory_prof/minitest"
+require "test_prof/tag_prof/minitest"
 
 module Minitest # :nodoc:
   module TestProf # :nodoc:
@@ -16,6 +17,7 @@ module Minitest # :nodoc:
         opts[:sample] = true if ENV["SAMPLE"] || ENV["SAMPLE_GROUPS"]
         opts[:mem_prof_mode] = ENV["TEST_MEM_PROF"] if ENV["TEST_MEM_PROF"]
         opts[:mem_prof_top_count] = ENV["TEST_MEM_PROF_COUNT"] if ENV["TEST_MEM_PROF_COUNT"]
+        opts[:tag_prof] = true if ENV["TAG_PROF"] == "type"
       end
     end
   end
@@ -50,6 +52,7 @@ module Minitest # :nodoc:
     reporter << TestProf::EventProfReporter.new(options[:io], options) if options[:event]
     reporter << TestProf::FactoryDoctorReporter.new(options[:io], options) if options[:fdoc]
     reporter << TestProf::MemoryProfReporter.new(options[:io], options) if options[:mem_prof_mode]
+    reporter << Minitest::TestProf::TagProfReporter.new(options[:io], options) if options[:tag_prof]
 
     ::TestProf::MinitestSample.call if options[:sample]
   end
