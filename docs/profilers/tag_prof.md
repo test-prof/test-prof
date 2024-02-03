@@ -30,7 +30,7 @@ That's how a report looks like:
 
 ## Instructions
 
-TagProf can be used with both RSpec and Minitest.
+TagProf can be used with both RSpec and Minitest (limited support, see  below).
 
 To activate TagProf use `TAG_PROF` environment variable:
 
