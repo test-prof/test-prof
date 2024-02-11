@@ -35,15 +35,17 @@ TagProf can be used with both RSpec and Minitest (limited support, see  below).
 To activate TagProf use `TAG_PROF` environment variable:
 
 With Rspec:
+
 ```sh
 # Group by type
 TAG_PROF=type rspec
 ```
 
 With Minitest:
+
 ```sh
 # using pure ruby
-TAG_PROF=type ruby 
+TAG_PROF=type ruby
 
 # using Rails built-in task
 TAG_PROF=type bin/rails test
@@ -56,14 +58,15 @@ Minitest does not support the usage of tags by default. TagProf therefore groups
 When no root test directory can be found the test statistics will not be grouped with other tests. They will be displayed per test with a significant warning message in the report.
 
 Example:
+
 ```sh
 [TEST PROF INFO] TagProf report for type
 
-       type          time   sql.active_record  total  %total   %time           avg
+type          time   sql.active_record  total  %total   %time           avg
 
-    subdirectory_not_found: subdirectory_not_found_fixture.rb     00:00.101       1  100.00  100.00     00:00.101
- controller     00:02.855           00:00.921     42   33.87   32.48     00:00.067
-      model     00:01.127           00:00.446     40   32.26   12.82     00:00.028
+subdirectory_not_found: subdirectory_not_found_fixture.rb     00:00.101       1  100.00  100.00     00:00.101
+controller     00:02.855           00:00.921     42   33.87   32.48     00:00.067
+model     00:01.127           00:00.446     40   32.26   12.82     00:00.028
 ```
 
 ## Profiling events
