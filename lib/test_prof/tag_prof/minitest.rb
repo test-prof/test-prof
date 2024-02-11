@@ -37,7 +37,7 @@ module Minitest
       private
 
       def main_folder_path(result)
-        return "subdirectory_not_found: #{result.source_location.first}" if absolute_path_from(result).nil?
+        return :__unknown__ if absolute_path_from(result).nil?
 
         absolute_path_from(result)
       end

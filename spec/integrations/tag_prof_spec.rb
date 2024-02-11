@@ -97,7 +97,7 @@ describe "TagProf" do
       end
 
       it "reports the statistic for the test result with an explicit error message" do
-        expect(output).to match(/subdirectory_not_found: tmp\/subdirectory_not_found_fixture.rb/)
+        expect(output).to match(/__unknown__/)
       end
 
       after do

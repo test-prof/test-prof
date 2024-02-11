@@ -51,6 +51,8 @@ TAG_PROF=type ruby
 TAG_PROF=type bin/rails test
 ```
 
+NB: if another value than "type" is used for TAG_PROF environment variable it will be ignored silently in both Minitest and RSpec.
+
 ### Usage specificity with Minitest
 
 Minitest does not support the usage of tags by default. TagProf therefore groups statistics by direct subdirectories of the root test directory. It assumes root test directory is named either `spec` or `test`.
@@ -62,11 +64,11 @@ Example:
 ```sh
 [TEST PROF INFO] TagProf report for type
 
-type          time   sql.active_record  total  %total   %time           avg
+       type          time   sql.active_record  total  %total   %time           avg
 
-subdirectory_not_found: subdirectory_not_found_fixture.rb     00:00.101       1  100.00  100.00     00:00.101
-controller     00:02.855           00:00.921     42   33.87   32.48     00:00.067
-model     00:01.127           00:00.446     40   32.26   12.82     00:00.028
+__unknown__     00:04.808           00:01.402     42   33.87   54.70     00:00.114
+ controller     00:02.855           00:00.921     42   33.87   32.48     00:00.067
+      model     00:01.127           00:00.446     40   32.26   12.82     00:00.028
 ```
 
 ## Profiling events
