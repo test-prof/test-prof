@@ -19,7 +19,7 @@ describe "FactoryDoctor" do
     end
 
     it "print message when no bad examples", :aggregate_failures do
-      output = run_minitest("factory_doctor", env: {"FDOC" => "1", "FDOC_THRESHOLD" => "0", "TESTOPTS" => "--name=test_0005_is_ignored"})
+      output = run_minitest("factory_doctor", env: {"FDOC" => "1", "FDOC_THRESHOLD" => "0", "TESTOPTS" => "--name=\"test_0005_is ignored\""})
 
       expect(output).to include("FactoryDoctor enabled")
       expect(output).to include('FactoryDoctor says: "Looks good to me!"')

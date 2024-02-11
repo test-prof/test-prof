@@ -53,7 +53,9 @@ module Minitest
       end
 
       def event_prof_activated?
-        tag_prof_event.present?
+        return false if tag_prof_event.nil?
+
+        !tag_prof_event.empty?
       end
 
       def tag_prof_event
