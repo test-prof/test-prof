@@ -1,6 +1,6 @@
 source "https://rubygems.org"
 
-gem "rails", "~> 7.0"
+gem "rails"
 
 gem "fabrication"
 gem "factory_bot", "~> 5.0"
