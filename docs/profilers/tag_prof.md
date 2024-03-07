@@ -30,13 +30,45 @@ That's how a report looks like:
 
 ## Instructions
 
-TagProf can only be used with RSpec.
+TagProf can be used with both RSpec and Minitest (limited support, see  below).
 
 To activate TagProf use `TAG_PROF` environment variable:
+
+With Rspec:
 
 ```sh
 # Group by type
 TAG_PROF=type rspec
+```
+
+With Minitest:
+
+```sh
+# using pure ruby
+TAG_PROF=type ruby
+
+# using Rails built-in task
+TAG_PROF=type bin/rails test
+```
+
+NB: if another value than "type" is used for TAG_PROF environment variable it will be ignored silently in both Minitest and RSpec.
+
+### Usage specificity with Minitest
+
+Minitest does not support the usage of tags by default. TagProf therefore groups statistics by direct subdirectories of the root test directory. It assumes root test directory is named either `spec` or `test`.
+
+When no root test directory can be found the test statistics will not be grouped with other tests. They will be displayed per test with a significant warning message in the report.
+
+Example:
+
+```sh
+[TEST PROF INFO] TagProf report for type
+
+       type          time   sql.active_record  total  %total   %time           avg
+
+__unknown__     00:04.808           00:01.402     42   33.87   54.70     00:00.114
+ controller     00:02.855           00:00.921     42   33.87   32.48     00:00.067
+      model     00:01.127           00:00.446     40   32.26   12.82     00:00.028
 ```
 
 ## Profiling events

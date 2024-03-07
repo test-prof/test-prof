@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add Minitest support for TagProf. ([@lioneldebauge][])
+
 ## 1.3.1 (2023-12-12)
 
 - Add support for dumping FactoryProf results in JSON format. ([@uzushino][])

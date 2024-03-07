@@ -6,6 +6,7 @@ ENV["RAILS_ENV"] = "test"
 require "active_record"
 require "fabrication"
 require "test_prof"
+require "active_support/inflector"
 require "test_prof/factory_bot"
 
 require "activerecord-jdbc-adapter" if defined? JRUBY_VERSION
