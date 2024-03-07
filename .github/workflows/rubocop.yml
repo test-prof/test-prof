@@ -9,12 +9,16 @@ on:
 jobs:
   rubocop:
     runs-on: ubuntu-latest
+    env:
+      BUNDLE_JOBS: 4
+      BUNDLE_RETRY: 3
+      BUNDLE_GEMFILE: "gemfiles/rubocop.gemfile"
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - uses: ruby/setup-ruby@v1
       with:
-        ruby-version: 2.7
+        ruby-version: 3.2
+        bundler-cache: true
     - name: Lint Ruby code with RuboCop
       run: |
-        bundle install --gemfile gemfiles/rubocop.gemfile --jobs 4 --retry 3
-        bundle exec --gemfile gemfiles/rubocop.gemfile rubocop
+        bundle exec rubocop

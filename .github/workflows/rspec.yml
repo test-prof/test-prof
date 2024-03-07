@@ -28,13 +28,13 @@ jobs:
         gemfile: ["gemfiles/activerecord6.gemfile"]
         db: ["postgres"]
         include:
-        - ruby: 3.2
+        - ruby: 3.3
           gemfile: "gemfiles/railsmaster.gemfile"
           db: "mysql"
-        - ruby: 3.2
+        - ruby: 3.3
           gemfile: "Gemfile"
           db: "sqlite"
-        - ruby: 3.1
+        - ruby: 3.2
           gemfile: "gemfiles/activerecord7.gemfile"
           db: "sqlite"
           multi_db: "true"
