@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.3.2 (2024-03-08) 🌷
+
 - Add Minitest support for TagProf. ([@lioneldebauge][])
 
 ## 1.3.1 (2023-12-12)
@@ -383,3 +385,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@bf4]: https://github.com/bf4
 [@Vankiru]: https://github.com/Vankiru
 [@uzushino]: https://github.com/uzushino
+[@lioneldebauge]: https://github.com/lioneldebauge
