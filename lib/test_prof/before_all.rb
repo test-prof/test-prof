@@ -66,7 +66,7 @@ module TestProf
       private
 
       def filters_apply?(metadata)
-        return true unless filters.present? && TestProf.rspec?
+        return true unless filters.is_a?(Hash) && TestProf.rspec?
 
         ::RSpec::Core::MetadataFilter.apply?(
           :all?,
