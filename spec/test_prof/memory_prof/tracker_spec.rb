@@ -2,6 +2,8 @@
 
 shared_examples "TestProf::MemoryProf::Tracker" do
   let(:list) { TestProf::MemoryProf::Tracker::LinkedList.new(100) }
+  let(:example) { double("example") }
+  let(:group) { double("group") }
 
   describe "#start" do
     it "initializes a linked list" do
@@ -25,7 +27,7 @@ shared_examples "TestProf::MemoryProf::Tracker" do
   end
 
   describe "#example_started" do
-    let(:example_started) { subject.example_started({name: :example}) }
+    let(:example_started) { subject.example_started(example, {name: :example}) }
 
     before do
       allow(subject).to receive(:track).and_return(200)
@@ -35,15 +37,15 @@ shared_examples "TestProf::MemoryProf::Tracker" do
     it "tracks memory at the start of an example" do
       example_started
 
-      expect(subject.list.head).to have_attributes(item: {name: :example}, memory_at_start: 200)
+      expect(subject.list.head).to have_attributes(id: example, item: {name: :example}, memory_at_start: 200)
     end
   end
 
   describe "#example_finished" do
-    let(:example_finished) { subject.example_finished({name: :example}) }
+    let(:example_finished) { subject.example_finished(example) }
 
     before do
-      list.add_node({name: :example}, 200)
+      list.add_node(example, {name: :example}, 200)
 
       allow(subject).to receive(:track).and_return(350)
       allow(subject).to receive(:list).and_return(list)
@@ -91,7 +93,7 @@ shared_examples "TestProf::MemoryProf::Tracker" do
   end
 
   describe "#group_started" do
-    let(:group_started) { subject.group_started({name: :group}) }
+    let(:group_started) { subject.group_started(group, {name: :group}) }
 
     before do
       allow(subject).to receive(:track).and_return(200)
@@ -101,15 +103,15 @@ shared_examples "TestProf::MemoryProf::Tracker" do
     it "tracks memory at the start of a group" do
       group_started
 
-      expect(subject.list.head).to have_attributes(item: {name: :group}, memory_at_start: 200)
+      expect(subject.list.head).to have_attributes(id: group, item: {name: :group}, memory_at_start: 200)
     end
   end
 
   describe "#group_finished" do
-    let(:group_finished) { subject.group_finished({name: :group}) }
+    let(:group_finished) { subject.group_finished(group) }
 
     before do
-      list.add_node({name: :group}, 200)
+      list.add_node(group, {name: :group}, 200)
 
       allow(subject).to receive(:track).and_return(350)
       allow(subject).to receive(:list).and_return(list)

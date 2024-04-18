@@ -23,8 +23,7 @@ describe "Groups Allocations" do
       @array = 500.times.map { SecureRandom.hex }
     end
 
-    it "does not allocate anything" do
-    end
+    it { 1 }
   end
 
   context "with 1000 allocations" do

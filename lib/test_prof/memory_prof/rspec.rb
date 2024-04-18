@@ -16,23 +16,26 @@ module TestProf
         @tracker = MemoryProf.tracker
         @printer = MemoryProf.printer(tracker)
 
+        @current_group = nil
+        @current_example = nil
+
         @tracker.start
       end
 
       def example_started(notification)
-        tracker.example_started(example(notification))
+        tracker.example_started(notification.example, example(notification))
       end
 
       def example_finished(notification)
-        tracker.example_finished(example(notification))
+        tracker.example_finished(notification.example)
       end
 
       def example_group_started(notification)
-        tracker.group_started(group(notification))
+        tracker.group_started(notification.group, group(notification))
       end
 
       def example_group_finished(notification)
-        tracker.group_finished(group(notification))
+        tracker.group_finished(notification.group)
       end
 
       def report

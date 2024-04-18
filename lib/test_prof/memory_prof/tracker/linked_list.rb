@@ -52,19 +52,20 @@ module TestProf
         attr_reader :head
 
         def initialize(memory_at_start)
-          add_node(:total, memory_at_start)
+          add_node(:total, :total, memory_at_start)
         end
 
-        def add_node(item, memory_at_start)
+        def add_node(id, item, memory_at_start)
           @head = LinkedListNode.new(
+            id: id,
             item: item,
             previous: head,
             memory_at_start: memory_at_start
           )
         end
 
-        def remove_node(item, memory_at_finish)
-          return if head.item != item
+        def remove_node(id, memory_at_finish)
+          return if head.id != id
           head.finish(memory_at_finish)
 
           current = head
@@ -75,9 +76,10 @@ module TestProf
       end
 
       class LinkedListNode
-        attr_reader :item, :previous, :memory_at_start, :memory_at_finish, :nested_memory
+        attr_reader :id, :item, :previous, :memory_at_start, :memory_at_finish, :nested_memory
 
-        def initialize(item:, memory_at_start:, previous:)
+        def initialize(id:, item:, memory_at_start:, previous:)
+          @id = id
           @item = item
           @previous = previous
 

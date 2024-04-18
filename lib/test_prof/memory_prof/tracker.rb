@@ -36,22 +36,26 @@ module TestProf
         @total_memory = node.total_memory
       end
 
-      def example_started(example)
-        list.add_node(example, track)
+      def example_started(id, example = id)
+        list.add_node(id, example, track)
       end
 
-      def example_finished(example)
-        node = list.remove_node(example, track)
-        examples << {**example, memory: node.total_memory}
+      def example_finished(id)
+        node = list.remove_node(id, track)
+        return unless node
+
+        examples << {**node.item, memory: node.total_memory}
       end
 
-      def group_started(group)
-        list.add_node(group, track)
+      def group_started(id, group = id)
+        list.add_node(id, group, track)
       end
 
-      def group_finished(group)
-        node = list.remove_node(group, track)
-        groups << {**group, memory: node.hooks_memory}
+      def group_finished(id)
+        node = list.remove_node(id, track)
+        return unless node
+
+        groups << {**node.item, memory: node.hooks_memory}
       end
     end
 
