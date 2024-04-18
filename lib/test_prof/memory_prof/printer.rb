@@ -50,6 +50,8 @@ module TestProf
       end
 
       def memory_percentage(item)
+        return 0 if tracker.total_memory.zero? || item[:memory].zero?
+
         (100.0 * item[:memory] / tracker.total_memory).round(2)
       end
 
