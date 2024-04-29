@@ -88,7 +88,7 @@ FPROF=flamegraph bundle exec rake test
 
 That's how a report looks like:
 
-![](../assets/factory-flame.gif)
+![](/assets/factory-flame.gif)
 
 How to read this?
 

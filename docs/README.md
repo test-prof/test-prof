@@ -6,7 +6,7 @@
 > Ruby tests profiling and optimization toolbox
 
 <img align="right" height="150" width="129"
-     title="TestProf logo" class="home-logo" src="./assets/images/logo.svg">
+     title="TestProf logo" class="home-logo" src="/assets/images/logo.svg">
 
 TestProf is a collection of different tools to analyze your test suite performance.
 
@@ -32,7 +32,7 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 <p align="center">
   <a href="http://bit.ly/test-prof-map-v1">
-    <img src="./assets/images/coggle.png" alt="TestProf map" width="738">
+    <img src="/assets/images/coggle.png" alt="TestProf map" width="738">
   </a>
 </p>
 
