@@ -26,7 +26,7 @@ TAG_PROF=type TAG_PROF_FORMAT=html bundle exec rspec
 
 That's how a report looks like:
 
-![TagProf UI](/assets/tag-prof.gif)
+<img alt="TagProf UI" data-origin="/assets/tag-prof.gif" src="/assets/tag-prof.gif">
 
 ## Instructions
 
