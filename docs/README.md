@@ -54,6 +54,8 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 ## Resources
 
+- [Profiling Ruby tests with Swiss precision](https://evilmartians.com/events/profiling-ruby-tests-with-swiss-precision-helvetic-ruby)
+
 - [TestProf: a good doctor for slow Ruby tests](https://evilmartians.com/chronicles/testprof-a-good-doctor-for-slow-ruby-tests)
 
 - [TestProf II: factory therapy for your Ruby tests](https://evilmartians.com/chronicles/testprof-2-factory-therapy-for-your-ruby-tests-rspec-minitest)
