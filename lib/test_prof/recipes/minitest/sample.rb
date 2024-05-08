@@ -29,11 +29,18 @@ module TestProf
         all_examples = suites.flat_map do |runnable|
           runnable.runnable_methods.map { |method| [runnable, method] }
         end
-        sample = all_examples.sample(sample_size)
+
+        sample = all_examples.sample(sample_size).group_by(&:first)
+        sample.transform_values! { |v| v.map(&:last) }
+
         # Filter examples by overriding #runnable_methods for all suites
         suites.each do |runnable|
-          runnable.define_singleton_method(:runnable_methods) do
-            super() & sample.select { |ex| ex.first.equal?(runnable) }.map(&:last)
+          if sample.key?(runnable)
+            runnable.define_singleton_method(:runnable_methods) do
+              super() & sample[runnable]
+            end
+          else
+            runnable.define_singleton_method(:runnable_methods) { [] }
           end
         end
       end
