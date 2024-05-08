@@ -7,14 +7,16 @@ module TestProf
     CORE_RUNNABLES = [
       Minitest::Test,
       defined?(Minitest::Unit::TestCase) ? Minitest::Unit::TestCase : nil,
-      Minitest::Spec
+      defined?(Minitest::Spec) ? Minitest::Spec : nil
     ].compact.freeze
 
     class << self
       def suites
         # Make sure that sample contains only _real_ suites
         Minitest::Runnable.runnables
-          .reject { |suite| CORE_RUNNABLES.include?(suite) }
+          .select do |suite|
+            CORE_RUNNABLES.any? { |kl| suite < kl } && suite.runnable_methods.any?
+          end
       end
 
       def sample_groups(sample_size)

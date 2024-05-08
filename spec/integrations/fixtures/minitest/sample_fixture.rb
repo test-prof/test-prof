@@ -14,7 +14,10 @@ class SomethingTest < Minitest::Test
   end
 end
 
-class AnotherSomethingTest < Minitest::Test
+class CustomTestCase < Minitest::Test
+end
+
+class AnotherSomethingTest < CustomTestCase
   def test_pass
     assert true
   end
