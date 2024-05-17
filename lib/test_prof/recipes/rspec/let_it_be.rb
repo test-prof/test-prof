@@ -7,6 +7,8 @@ module TestProf
   # Just like `let`, but persist the result for the whole group.
   # NOTE: Experimental and magical, for more control use `before_all`.
   module LetItBe
+    class DuplicationError < StandardError; end
+
     Modifier = Struct.new(:scope, :block) do
       def call(record, config)
         block.call(record, config)
@@ -30,6 +32,19 @@ module TestProf
         raise ArgumentError, "Modifier #{key} is already defined for let_it_be" if LetItBe.modifiers.key?(key)
 
         LetItBe.modifiers[key] = Modifier.new(on, block)
+      end
+
+      def report_duplicates=(value)
+        value = value.to_sym
+        unless %i[warn raise].include?(value)
+          raise ArgumentError, "#{value} is not acceptable, acceptable values are :warn or :raise"
+        end
+
+        @report_duplicates = value
+      end
+
+      def report_duplicates
+        @report_duplicates ||= false
       end
 
       def default_modifiers
@@ -117,6 +132,8 @@ module TestProf
         instance_variable_get(:"#{PREFIX}#{identifier}")
       end
 
+      report_duplicates(identifier) if LetItBe.config.report_duplicates
+
       LetItBe.module_for(self).module_eval do
         define_method(identifier) do
           # Trying to detect the context
@@ -133,6 +150,18 @@ module TestProf
       end
 
       let(identifier, &let_accessor)
+    end
+
+    private def report_duplicates(identifier)
+      if instance_methods.include?(identifier) && File.basename(__FILE__) == File.basename(instance_method(identifier).source_location[0])
+        error_msg = "let_it_be(:#{identifier}) was redefined in nested group"
+
+        if LetItBe.config.report_duplicates == :warn
+          ::RSpec.warn_with(error_msg)
+        else
+          raise DuplicationError, error_msg
+        end
+      end
     end
 
     module Freezer

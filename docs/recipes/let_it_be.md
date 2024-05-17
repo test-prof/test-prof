@@ -266,3 +266,36 @@ end
 And then tag contexts/examples with `:let_it_be_frost` to enable this feature.
 
 Alternatively, you can specify `freeze` modifier explicitly (`let_it_be(freeze: true)`) or configure an alias.
+
+## Report duplicates
+
+Although we suggest using `let_it_be` instead of `let!`, there is one important difference: you can override `let!` definition with the same or nested context, so only the latter one is called; `let_it_be` records could be overridden, but still created. For example:
+
+```ruby
+context "A" do
+  let!(:user) { create(:user, name: "a") }
+  let_it_be(:post) { create(:post, title: "A") }
+
+  specify { expect(User.all.pluck(:name)).to eq ["a"] }
+  specify { expect(Post.all.pluck(:title)).to eq ["A"] }
+
+  context "B" do
+    let!(:user) { create(:user, name: "b") }
+    let_it_be(:post) { create(:post, title: "B") }
+
+    specify { expect(User.all.pluck(:name)).to eq ["b"] }
+    specify { expect(Post.all.pluck(:title)).to eq ["B"] } # fails, because there are two posts
+  end
+end
+```
+
+So for your convenience, you can configure the behavior when let_it_be is overridden.
+
+```ruby
+TestProf::LetItBe.configure do |config|
+  config.report_duplicates = :warn # Rspec.warn_with
+  config.report_duplicates = :raise # Kernel.raise
+end
+```
+
+By default this parameter is disabled. You can configure the behavior that will generate a warning or raise an exception.

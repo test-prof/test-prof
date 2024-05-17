@@ -4,6 +4,8 @@
 
 - Support latest Timecop patching `Process.clock_gettime`. ([@palkan][])
 
+- Add support for `report_duplicates` config option for `let_it_be` ([@lHydra][])
+
 - Vernier: Add hooks configuration parameter. ([@lHydra][])
 
 Now you can add more insights to the resulting report by adding event markers from Active Support Notifications.
