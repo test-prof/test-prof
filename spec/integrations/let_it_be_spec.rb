@@ -18,4 +18,10 @@ describe "LetItBe" do
 
     expect(output).to include("0 failures")
   end
+
+  specify "it detects let_it_be override" do
+    output = run_rspec("let_it_be_nested")
+
+    expect(output).to include("0 failures")
+  end
 end
