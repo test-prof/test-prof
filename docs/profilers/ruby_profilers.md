@@ -143,6 +143,25 @@ You can also profile your application boot process:
 TEST_VERNIER=boot bundle exec rspec ./spec/some_spec.rb
 ```
 
+### Add markers from  Active Support Notifications
+
+You can add more insights to the resulting report by adding event markers from Active Support Notifications:
+
+```sh
+TEST_VERNIER=1 TEST_VERNIER_HOOKS=rails bundle exec rake test
+
+# or for RSpec
+TEST_VERNIER=1 TEST_VERNIER_HOOKS=rails bundle exec rspec ...
+```
+
+Or you can set the hooks parameter through the `Vernier` configuration:
+
+```ruby
+TestProf::Vernier.configure do |config|
+  config.hooks = :rails
+end
+```
+
 ## RubyProf
 
 Easily integrate the power of [ruby-prof](https://github.com/ruby-prof/ruby-prof) into your test suite.

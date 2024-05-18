@@ -2,6 +2,17 @@
 
 ## master (unreleased)
 
+- Vernier: Add hooks configuration parameter. ([@lHydra][])
+
+Now you can add more insights to the resulting report by adding event markers from Active Support Notifications.
+To do this, specify the `TEST_VERNIER_HOOKS=rails` env var or set it through `Vernier` configuration:
+
+```ruby
+TestProf::Vernier.configure do |config|
+  config.hooks = :rails
+end
+```
+
 ## 1.3.3 (2024-04-19)
 
 - Fix MemProf bugs. ([@palkan][])
@@ -390,3 +401,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@Vankiru]: https://github.com/Vankiru
 [@uzushino]: https://github.com/uzushino
 [@lioneldebauge]: https://github.com/lioneldebauge
+[@lHydra]: https://github.com/lHydra
