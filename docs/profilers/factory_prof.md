@@ -119,6 +119,28 @@ The wider column the more often this stack appears.
 
 The `root` cell shows the total number of `create` calls.
 
+## Threshold config
+
+When running FactoryProf, the output may contain a lot of lines for factories that has been used a few times.
+To avoid this and focus on the most important statistics you can specify a threshold value. Then you will be shown the factories whose total number exceeds the threshold.
+
+To use threshold option set `FPROF_THRESHOLD` environment variable to `N` (where `N` is a threshold number):
+
+```sh
+FPROF=1 FPROF_THRESHOLD=30 rspec
+
+# or
+FPROF=1 FPROF_THRESHOLD=30 bundle exec rake test
+```
+
+Or you can set the threshold parameter through the `FactoryProf` configuration:
+
+```ruby
+TestProf::FactoryProf.configure do |config|
+  config.threshold = 30
+end
+```
+
 ## Acknowledgments
 
 - Thanks to [Martin Spier](https://github.com/spiermar) for [d3-flame-graph](https://github.com/spiermar/d3-flame-graph)

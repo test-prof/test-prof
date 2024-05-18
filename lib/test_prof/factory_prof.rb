@@ -16,7 +16,7 @@ module TestProf
 
     # FactoryProf configuration
     class Configuration
-      attr_accessor :mode, :printer
+      attr_accessor :mode, :printer, :threshold
 
       def initialize
         @mode = (ENV["FPROF"] == "flamegraph") ? :flamegraph : :simple
@@ -31,11 +31,16 @@ module TestProf
           else
             Printers::Simple
           end
+        @threshold = ENV.fetch("FPROF_THRESHOLD", 0).to_i
       end
 
       # Whether we want to generate flamegraphs
       def flamegraph?
         @mode == :flamegraph
+      end
+
+      def simple?
+        @mode == :simple
       end
     end
 
@@ -106,6 +111,10 @@ module TestProf
         started_at = TestProf.now
 
         at_exit do
+          if config.simple? && config.threshold.positive?
+            @stats.select! { |_, factory_stat| factory_stat[:total_count] >= config.threshold }
+          end
+
           print(started_at)
         end
 
