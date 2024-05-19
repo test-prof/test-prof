@@ -5,7 +5,19 @@ module TestProf
     # Wrap #run method with FactoryProf tracking
     module FactoryBotPatch
       def run(strategy = @strategy)
-        FactoryBuilders::FactoryBot.track(strategy, @name) { super }
+        variation = ""
+
+        if @traits || @overrides
+          unless @traits.empty?
+            variation += @traits.sort.join(".").prepend(".")
+          end
+
+          unless @overrides.empty?
+            variation += @overrides.keys.sort.to_s.gsub(/[\\":]/, "")
+          end
+        end
+
+        FactoryBuilders::FactoryBot.track(strategy, @name, variation: variation.to_sym) { super }
       end
     end
   end

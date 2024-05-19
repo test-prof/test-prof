@@ -16,7 +16,7 @@ module TestProf
 
     # FactoryProf configuration
     class Configuration
-      attr_accessor :mode, :printer, :threshold
+      attr_accessor :mode, :printer, :threshold, :variations_limit
 
       def initialize
         @mode = (ENV["FPROF"] == "flamegraph") ? :flamegraph : :simple
@@ -32,6 +32,7 @@ module TestProf
             Printers::Simple
           end
         @threshold = ENV.fetch("FPROF_THRESHOLD", 0).to_i
+        @variations_limit = ENV.fetch("FPROF_VARIATIONS_LIMIT", 2).to_i
       end
 
       # Whether we want to generate flamegraphs
@@ -50,8 +51,14 @@ module TestProf
 
       # Returns sorted stats
       def stats
-        @stats ||= @raw_stats.values
-          .sort_by { |el| -el[:total_count] }
+        @stats ||= @raw_stats.values.sort_by { |el| -el[:total_count] }.map do |stat|
+          unless stat[:variations].empty?
+            stat = stat.dup
+            stat[:variations] = stat[:variations].values.sort_by { |nested_el| -nested_el[:total_count] }
+          end
+
+          stat
+        end
       end
 
       def total_count
@@ -60,14 +67,6 @@ module TestProf
 
       def total_time
         @total_time ||= @raw_stats.values.sum { |v| v[:total_time] }
-      end
-
-      private
-
-      def sorted_stats(key)
-        @raw_stats.values
-          .map { |el| [el[:name], el[key]] }
-          .sort_by { |el| -el[1] }
       end
     end
 
@@ -132,20 +131,19 @@ module TestProf
         Result.new(@stacks, @stats)
       end
 
-      def track(factory)
+      def track(factory, variation:)
         return yield unless running?
         @depth += 1
         @current_stack << factory if config.flamegraph?
-        @stats[factory][:total_count] += 1
-        @stats[factory][:top_level_count] += 1 if @depth == 1
+        track_count(@stats[factory])
+        track_count(@stats[factory][:variations][variation_name(variation)]) unless variation.empty?
         t1 = TestProf.now
         begin
           yield
         ensure
           t2 = TestProf.now
-          elapsed = t2 - t1
-          @stats[factory][:total_time] += elapsed
-          @stats[factory][:top_level_time] += elapsed if @depth == 1
+          track_time(@stats[factory], t1, t2)
+          track_time(@stats[factory][:variations][variation_name(variation)], t1, t2) unless variation.empty?
           @depth -= 1
           flush_stack if @depth.zero?
         end
@@ -153,19 +151,43 @@ module TestProf
 
       private
 
+      def variation_name(variation)
+        variations_count = variation.to_s.scan(/[\w]+/).size
+        return "[...]" if variations_count > config.variations_limit
+
+        variation
+      end
+
       def reset!
         @stacks = [] if config.flamegraph?
         @depth = 0
         @stats = Hash.new do |h, k|
-          h[k] = {
-            name: k,
-            total_count: 0,
-            top_level_count: 0,
-            total_time: 0.0,
-            top_level_time: 0.0
-          }
+          h[k] = hash_template(k)
+          h[k][:variations] = Hash.new { |hh, variation_key| hh[variation_key] = hash_template(variation_key) }
+          h[k]
         end
         flush_stack
+      end
+
+      def hash_template(name)
+        {
+          name: name,
+          total_count: 0,
+          top_level_count: 0,
+          total_time: 0.0,
+          top_level_time: 0.0
+        }
+      end
+
+      def track_count(factory)
+        factory[:total_count] += 1
+        factory[:top_level_count] += 1 if @depth == 1
+      end
+
+      def track_time(factory, t1, t2)
+        elapsed = t2 - t1
+        factory[:total_time] += elapsed
+        factory[:top_level_time] += elapsed if @depth == 1
       end
 
       def flush_stack
