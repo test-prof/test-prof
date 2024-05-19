@@ -5,7 +5,13 @@ module TestProf
     # Wrap #run method with FactoryProf tracking
     module FabricationPatch
       def create(name, overrides = {})
-        FactoryBuilders::Fabrication.track(name) { super }
+        variation = ""
+
+        unless overrides.empty?
+          variation += overrides.keys.sort.to_s.gsub(/[\\":]/, "")
+        end
+
+        FactoryBuilders::Fabrication.track(name, variation: variation.to_sym) { super }
       end
     end
   end

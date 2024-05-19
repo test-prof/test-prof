@@ -18,9 +18,9 @@ module TestProf
             defined? TestProf::FactoryBot
         end
 
-        def self.track(strategy, factory, &block)
+        def self.track(strategy, factory, **opts, &block)
           return yield unless strategy.create?
-          FactoryProf.track(factory, &block)
+          FactoryProf.track(factory, **opts, &block)
         end
       end
     end

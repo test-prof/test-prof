@@ -15,8 +15,8 @@ module TestProf
           end
         end
 
-        def self.track(factory, &block)
-          FactoryProf.track(factory, &block)
+        def self.track(factory, **opts, &block)
+          FactoryProf.track(factory, **opts, &block)
         end
       end
     end

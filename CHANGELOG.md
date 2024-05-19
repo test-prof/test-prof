@@ -6,6 +6,10 @@
 
 - Add support for `report_duplicates` config option for `let_it_be` ([@lHydra][])
 
+- FactoryProf: Add variations information to the FactorProf data in simple mode. Add `variations_limit` configuration parameter. ([@lHydra][])
+
+Now you can see common variations (traits and attribute overrides) while collecting data with `FactoryProf`
+
 - Vernier: Add hooks configuration parameter. ([@lHydra][])
 
 Now you can add more insights to the resulting report by adding event markers from Active Support Notifications.

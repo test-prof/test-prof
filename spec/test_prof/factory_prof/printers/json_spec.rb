@@ -15,10 +15,10 @@ describe TestProf::FactoryProf::Printers::Json do
 
   let(:stats) do
     {
-      user: {name: :user, total_count: 5, total_time: 1.0, top_level_count: 5, top_level_time: 0.1},
-      account: {name: :account, total_count: 6, total_time: 2.0, top_level_count: 6, top_level_time: 0.2},
-      comment: {name: :comment, total_count: 2, total_time: 3.0, top_level_count: 2, top_level_time: 0.3},
-      name: {name: :post, total_count: 2, total_time: 4.0, top_level_count: 0, top_level_time: 0.4}
+      user: {name: :user, total_count: 5, total_time: 1.0, top_level_count: 5, top_level_time: 0.1, variations: []},
+      account: {name: :account, total_count: 6, total_time: 2.0, top_level_count: 6, top_level_time: 0.2, variations: []},
+      comment: {name: :comment, total_count: 2, total_time: 3.0, top_level_count: 2, top_level_time: 0.3, variations: []},
+      name: {name: :post, total_count: 2, total_time: 4.0, top_level_count: 0, top_level_time: 0.4, variations: []}
     }
   end
 

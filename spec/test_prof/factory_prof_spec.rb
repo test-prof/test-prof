@@ -18,6 +18,7 @@ describe TestProf::FactoryProf, :transactional do
     xs.map do |x|
       expect(x.delete(:total_time)).to be_a(Float)
       expect(x.delete(:top_level_time)).to be_a(Float)
+      x[:variations] = without_time(x[:variations]) unless x[:variations].nil?
       x
     end
   end
@@ -74,13 +75,13 @@ describe TestProf::FactoryProf, :transactional do
         )
         expect(without_time(result.stats)).to eq(
           [
-            {name: :post, total_count: 1, top_level_count: 1},
-            {name: :user, total_count: 1, top_level_count: 0}
+            {name: :post, total_count: 1, top_level_count: 1, variations: []},
+            {name: :user, total_count: 1, top_level_count: 0, variations: []}
           ]
         )
       end
 
-      it "contains many stacks" do
+      it "contains many stacks with variations" do
         TestProf::FactoryBot.create_pair(:user)
         TestProf::FactoryBot.create(:post)
         TestProf::FactoryBot.create(:user, :with_posts)
@@ -95,8 +96,10 @@ describe TestProf::FactoryProf, :transactional do
         )
         expect(without_time(result.stats)).to eq(
           [
-            {name: :user, total_count: 6, top_level_count: 3},
-            {name: :post, total_count: 3, top_level_count: 1}
+            {name: :user, total_count: 6, top_level_count: 3, variations: [
+              {name: :".with_posts", top_level_count: 1, total_count: 1}
+            ]},
+            {name: :post, total_count: 3, top_level_count: 1, variations: []}
           ]
         )
       end
@@ -116,9 +119,9 @@ describe TestProf::FactoryProf, :transactional do
         expect(result.stacks.first).to eq([:user])
       end
 
-      it "contains many stacks" do
+      it "contains many stacks with variations" do
         Fabricate.times(2, :user)
-        Fabricate.create(:post)
+        Fabricate.create(:post, text: "some text")
         Fabricate.create(:user) { Fabricate.times(2, :post) }
 
         expect(result.stacks.size).to eq 4
@@ -131,8 +134,10 @@ describe TestProf::FactoryProf, :transactional do
         )
         expect(without_time(result.stats)).to eq(
           [
-            {name: :user, total_count: 6, top_level_count: 3},
-            {name: :post, total_count: 3, top_level_count: 1}
+            {name: :user, total_count: 6, top_level_count: 3, variations: []},
+            {name: :post, total_count: 3, top_level_count: 1, variations: [
+              {name: :"[text]", top_level_count: 1, total_count: 1}
+            ]}
           ]
         )
       end
