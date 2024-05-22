@@ -13,6 +13,17 @@ TestProf::Vernier.configure do |config|
 end
 ```
 
+- FactoryProf: Add threshold configuration parameter. ([@lHydra][])
+
+Now you can ignore factories which total number of calls is less than the provided threshold. To do this, specify
+the `FPROF_THRESHOLD=30` env var or set it through `FactoryProf` configuration:
+
+```ruby
+TestProf::FactoryProf.configure do |config|
+  config.threshold = 30
+end
+```
+
 ## 1.3.3 (2024-04-19)
 
 - Fix MemProf bugs. ([@palkan][])

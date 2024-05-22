@@ -9,7 +9,7 @@ module TestProf::FactoryProf
         using TestProf::FloatDuration
         include TestProf::Logging
 
-        def dump(result, start_time:)
+        def dump(result, start_time:, **)
           return log(:info, "No factories detected") if result.raw_stats == {}
 
           outpath = TestProf.artifact_path("test-prof.result.json")

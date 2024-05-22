@@ -73,6 +73,28 @@ Example output:
 [TEST PROF INFO] Profile results to JSON: tmp/test_prof/test-prof.result.json
 ```
 
+### Reducing the output
+
+When running FactoryProf, the output may contain a lot of lines for factories that has been used a few times.
+To avoid this and focus on the most important statistics you can specify a threshold value. Then you will be shown the factories whose total number exceeds the threshold.
+
+To use threshold option set `FPROF_THRESHOLD` environment variable to `N` (where `N` is a threshold number):
+
+```sh
+FPROF=1 FPROF_THRESHOLD=30 rspec
+
+# or
+FPROF=1 FPROF_THRESHOLD=30 bundle exec rake test
+```
+
+Or you can set the threshold parameter through the `FactoryProf` configuration:
+
+```ruby
+TestProf::FactoryProf.configure do |config|
+  config.threshold = 30
+end
+```
+
 ## Factory Flamegraph
 
 The most useful feature of FactoryProf is the _FactoryFlame_ report. That's the special interpretation of Brendan Gregg's [flame graphs](http://www.brendangregg.com/flamegraphs.html) which allows you to identify _factory cascades_.

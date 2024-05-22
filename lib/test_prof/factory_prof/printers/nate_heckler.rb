@@ -10,7 +10,7 @@ module TestProf::FactoryProf
         using TestProf::FloatDuration
         include TestProf::Logging
 
-        def dump(result, start_time:)
+        def dump(result, start_time:, **)
           return if result.raw_stats == {}
 
           total_time = result.stats.sum { |stat| stat[:top_level_time] }
