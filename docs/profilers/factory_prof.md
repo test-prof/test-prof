@@ -73,7 +73,7 @@ Example output:
 [TEST PROF INFO] Profile results to JSON: tmp/test_prof/test-prof.result.json
 ```
 
-### Threshold config
+### Reducing the output
 
 When running FactoryProf, the output may contain a lot of lines for factories that has been used a few times.
 To avoid this and focus on the most important statistics you can specify a threshold value. Then you will be shown the factories whose total number exceeds the threshold.

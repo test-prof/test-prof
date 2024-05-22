@@ -111,10 +111,6 @@ module TestProf
         started_at = TestProf.now
 
         at_exit do
-          if config.simple? && config.threshold.positive?
-            @stats.select! { |_, factory_stat| factory_stat[:total_count] >= config.threshold }
-          end
-
           print(started_at)
         end
 
@@ -124,7 +120,7 @@ module TestProf
       def print(started_at)
         printer = config.printer
 
-        printer.dump(result, start_time: started_at)
+        printer.dump(result, start_time: started_at, threshold: config.threshold)
       end
 
       def start

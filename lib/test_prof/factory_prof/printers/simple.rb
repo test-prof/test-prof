@@ -9,7 +9,7 @@ module TestProf::FactoryProf
         using TestProf::FloatDuration
         include TestProf::Logging
 
-        def dump(result, start_time:)
+        def dump(result, start_time:, threshold:)
           return log(:info, "No factories detected") if result.raw_stats == {}
           msgs = []
 
@@ -32,6 +32,8 @@ module TestProf::FactoryProf
             MSG
 
           result.stats.each do |stat|
+            next if stat[:total_count] < threshold
+
             time_per_call = stat[:total_time] / stat[:total_count]
 
             msgs << format("%8d %11d %13.4fs %17.4fs %18.4fs %18s", stat[:total_count], stat[:top_level_count], stat[:total_time], time_per_call, stat[:top_level_time], stat[:name])

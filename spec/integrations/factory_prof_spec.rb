@@ -19,9 +19,10 @@ describe "FactoryProf" do
       expect(output).to include("FactoryProf enabled (simple mode)")
 
       expect(output).to include("Factories usage")
-      expect(output).to match(/Total: 16\n\s+Total top-level: 8\n\s+Total time: \d{2}+:\d{2}\.\d{3} \(out of \d{2}+:\d{2}\.\d{3}\)\n\s+Total uniq factories: 1/)
+      expect(output).to match(/Total: 26\n\s+Total top-level: 14\n\s+Total time: \d{2}+:\d{2}\.\d{3} \(out of \d{2}+:\d{2}\.\d{3}\)\n\s+Total uniq factories: 2/)
       expect(output).to match(/total\s+top-level\s+total time\s+time per call\s+top-level time\s+name/)
       expect(output).to match(/\s+16\s+8\s+(\d+\.\d{4}s\s+){3}user\n/)
+      expect(output).not_to match(/\s+10\s+6\s+\s+(\d+\.\d{4}s\s+){3}post/)
     end
 
     specify "flamegraph printer" do
