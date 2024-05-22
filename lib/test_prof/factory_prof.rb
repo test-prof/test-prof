@@ -38,10 +38,6 @@ module TestProf
       def flamegraph?
         @mode == :flamegraph
       end
-
-      def simple?
-        @mode == :simple
-      end
     end
 
     class Result # :nodoc:
