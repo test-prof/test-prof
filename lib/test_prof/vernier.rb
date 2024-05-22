@@ -27,7 +27,7 @@ module TestProf
 
         sample_interval = ENV["TEST_VERNIER_INTERVAL"].to_i
         @interval = (sample_interval > 0) ? sample_interval : nil
-        @hooks = (ENV["TEST_VERNIER_HOOKS"] == "rails") ? :rails : nil
+        @hooks = ENV["TEST_VERNIER_HOOKS"]&.split(",")&.map { |hook| hook.strip.to_sym }
       end
 
       def boot?
