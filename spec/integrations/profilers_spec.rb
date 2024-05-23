@@ -60,6 +60,15 @@ describe "general profilers", skip: !PROFILERS_AVAILABLE do
         expect(output).to include("Vernier report generated")
         expect(output).to include("0 failures")
       end
+
+      specify "with hooks vernier contains rails events" do
+        output = run_rspec("vernier", env: {"TEST_VERNIER_HOOKS" => "rails"})
+        sample_rails_event = "load_config_initializer.railties"
+        vernier_report = File.read("tmp/test_prof/vernier-report-wall--vernier_fixture-rb-1-1-.json")
+
+        expect(output).to include("0 failures")
+        expect(vernier_report).to match(/#{sample_rails_event}/)
+      end
     end
   end
 

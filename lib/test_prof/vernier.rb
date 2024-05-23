@@ -19,7 +19,7 @@ module TestProf
   module Vernier
     # Vernier configuration
     class Configuration
-      attr_accessor :mode, :target, :interval
+      attr_accessor :mode, :target, :interval, :hooks
 
       def initialize
         @mode = ENV.fetch("TEST_VERNIER_MODE", :wall).to_sym
@@ -27,6 +27,7 @@ module TestProf
 
         sample_interval = ENV["TEST_VERNIER_INTERVAL"].to_i
         @interval = (sample_interval > 0) ? sample_interval : nil
+        @hooks = ENV["TEST_VERNIER_HOOKS"]&.split(",")&.map { |hook| hook.strip.to_sym }
       end
 
       def boot?
@@ -82,6 +83,7 @@ module TestProf
         options = {}
 
         options[:interval] = config.interval if config.interval
+        options[:hooks] = config.hooks if config.hooks
 
         if block_given?
           options[:mode] = config.mode

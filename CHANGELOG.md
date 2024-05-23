@@ -2,6 +2,17 @@
 
 ## master (unreleased)
 
+- Vernier: Add hooks configuration parameter. ([@lHydra][])
+
+Now you can add more insights to the resulting report by adding event markers from Active Support Notifications.
+To do this, specify the `TEST_VERNIER_HOOKS=rails` env var or set it through `Vernier` configuration:
+
+```ruby
+TestProf::Vernier.configure do |config|
+  config.hooks = :rails
+end
+```
+
 - FactoryProf: Add threshold configuration parameter. ([@lHydra][])
 
 Now you can ignore factories which total number of calls is less than the provided threshold. To do this, specify
