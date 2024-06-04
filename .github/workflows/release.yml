@@ -19,7 +19,6 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.2
-          bundler-cache: true
       - name: Configure RubyGems Credentials
         uses: rubygems/configure-rubygems-credentials@main
       - name: Publish to RubyGems

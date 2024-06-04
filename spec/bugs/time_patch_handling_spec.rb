@@ -16,11 +16,24 @@ describe "Time.now patching handling (e.g. Timecop)", type: :integration do
       expect(s + ms).to be > 0
     end
 
-    specify "works with timecop" do
+    specify "works with timecop loaded before test-prof" do
       output = run_rspec(
         "timecop",
         chdir: File.join(__dir__, "fixtures"),
-        env: {"TAG_PROF" => "a"}
+        env: {"TAG_PROF" => "a", "TIMECOP_ORDER" => "before"}
+      )
+
+      matches = output.match(/x\s+\d{2}:(\d{2})\.(\d{3})\s+/)
+      s, ms = matches[1].to_i, matches[2].to_i
+
+      expect(s + ms).to be > 0
+    end
+
+    specify "works with timecop loaded after test-prof" do
+      output = run_rspec(
+        "timecop",
+        chdir: File.join(__dir__, "fixtures"),
+        env: {"TAG_PROF" => "a", "TIMECOP_ORDER" => "after"}
       )
 
       matches = output.match(/x\s+\d{2}:(\d{2})\.(\d{3})\s+/)

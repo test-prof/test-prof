@@ -1,8 +1,9 @@
 # frozen_string_literal: true
 
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
-require "timecop"
+require "timecop" if ENV.fetch("TIMECOP_ORDER", "before") == "before"
 require "test-prof"
+require "timecop" if ENV.fetch("TIMECOP_ORDER", "before") == "after"
 
 Timecop.freeze
 

@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Support latest Timecop patching `Process.clock_gettime`. ([@palkan][])
+
 - Vernier: Add hooks configuration parameter. ([@lHydra][])
 
 Now you can add more insights to the resulting report by adding event markers from Active Support Notifications.

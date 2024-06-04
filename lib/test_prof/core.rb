@@ -6,6 +6,29 @@ require "logger"
 require "test_prof/logging"
 require "test_prof/utils"
 
+# Add an alias for Process.clock_gettime "reserved" for TestProf
+# (in case some other tool would like to patch it)
+module ::Process
+  class << self
+    # Already patched by Timecop
+    if method_defined?(:clock_gettime_without_mock)
+      alias_method :clock_gettime_for_test_prof, :clock_gettime_without_mock
+    else
+      alias_method :clock_gettime_for_test_prof, :clock_gettime
+
+      def singleton_method_added(method_name)
+        return super unless method_name == :clock_gettime_without_mock
+
+        define_method(:clock_gettime_for_test_prof) { |*args| clock_gettime_without_mock(*args) }
+      end
+    end
+  end
+end
+
+# Main TestProf module
+#
+# Contains configuration and common methods
+
 # Ruby applications tests profiling tools.
 #
 # Contains tools to analyze factories usage, integrate with Ruby profilers,
@@ -54,7 +77,7 @@ module TestProf
 
     # Returns the current process time
     def now
-      Process.clock_gettime(Process::CLOCK_MONOTONIC)
+      Process.clock_gettime_for_test_prof(Process::CLOCK_MONOTONIC)
     end
 
     # Require gem and shows a custom
