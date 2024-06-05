@@ -16,6 +16,8 @@ module TestProf
     end
 
     class Configuration
+      attr_accessor :report_duplicates
+
       # Define an alias for `let_it_be` with the predefined options:
       #
       #   TestProf::LetItBe.configure do |config|
@@ -32,19 +34,6 @@ module TestProf
         raise ArgumentError, "Modifier #{key} is already defined for let_it_be" if LetItBe.modifiers.key?(key)
 
         LetItBe.modifiers[key] = Modifier.new(on, block)
-      end
-
-      def report_duplicates=(value)
-        value = value.to_sym
-        unless %i[warn raise].include?(value)
-          raise ArgumentError, "#{value} is not acceptable, acceptable values are :warn or :raise"
-        end
-
-        @report_duplicates = value
-      end
-
-      def report_duplicates
-        @report_duplicates ||= false
       end
 
       def default_modifiers
@@ -155,10 +144,11 @@ module TestProf
     private def report_duplicates(identifier)
       if instance_methods.include?(identifier) && File.basename(__FILE__) == File.basename(instance_method(identifier).source_location[0])
         error_msg = "let_it_be(:#{identifier}) was redefined in nested group"
+        report_level = LetItBe.config.report_duplicates.to_sym
 
-        if LetItBe.config.report_duplicates == :warn
+        if report_level == :warn
           ::RSpec.warn_with(error_msg)
-        else
+        elsif report_level == :raise
           raise DuplicationError, error_msg
         end
       end
