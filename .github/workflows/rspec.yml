@@ -55,12 +55,6 @@ jobs:
         - ruby: 2.7
           gemfile: "gemfiles/activerecord60.gemfile"
           db: "postgres"
-        - ruby: 2.6
-          gemfile: "gemfiles/activerecord5.gemfile"
-          db: "sqlite-file"
-        - ruby: 2.5
-          gemfile: "gemfiles/activerecord5.gemfile"
-          db: "sqlite"
     services:
       postgres:
         image: postgres:latest

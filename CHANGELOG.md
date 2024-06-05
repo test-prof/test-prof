@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Drop support for **Ruby <2.7** and **Rails <6**.
+
 - FactoryDefault: Add `#get_factory_default`. [[@john-h-k][]]
 
 - Add variations information to FactorProf reports. ([@lHydra][])
