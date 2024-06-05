@@ -159,7 +159,8 @@ module TestProf
         set_factory_default(name, obj, **default_options)
       end
 
-      def set_factory_default(name, obj, preserve_traits: FactoryDefault.config.preserve_traits, preserve_attributes: FactoryDefault.config.preserve_attributes, **other)
+      def set_factory_default(*name, obj, preserve_traits: FactoryDefault.config.preserve_traits, preserve_attributes: FactoryDefault.config.preserve_attributes, **other)
+        name = name.first if name.size == 1
         FactoryDefault.register(
           name, obj,
           preserve_traits: preserve_traits,
@@ -168,8 +169,8 @@ module TestProf
         )
       end
 
-      def get_factory_default(name, *args)
-        FactoryDefault.get(name, args, args.extract_options!, false)
+      def get_factory_default(name, *traits, **overrides)
+        FactoryDefault.get(name, traits, overrides, skip_stats: true)
       end
 
       def skip_factory_default(&block)
@@ -240,7 +241,7 @@ module TestProf
         obj
       end
 
-      def get(name, traits = nil, overrides = nil, write_stats = true)
+      def get(name, traits = nil, overrides = nil, skip_stats: false)
         return unless enabled?
 
         record = store[name]
@@ -252,7 +253,7 @@ module TestProf
           traits = nil
         end
 
-        stats[name][:miss] += 1 if write_stats
+        stats[name][:miss] += 1 unless skip_stats
 
         if traits && !traits.empty? && record[:preserve_traits]
           return
@@ -267,7 +268,7 @@ module TestProf
           end
         end
 
-        if write_stats
+        unless skip_stats
           stats[name][:miss] -= 1
           stats[name][:hit] += 1
         end

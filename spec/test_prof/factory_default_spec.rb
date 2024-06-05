@@ -35,6 +35,7 @@ describe TestProf::FactoryDefault, :transactional do
 
     expect(TestProf::FactoryBot.get_factory_default(:user)).to eq user
     expect(post.user).to eq user
+    expect(TestProf::FactoryBot.get_factory_default(:user, :traited)).to eq user
   end
 
   it "re-uses default record independently of attributes" do
@@ -67,7 +68,10 @@ describe TestProf::FactoryDefault, :transactional do
     end
 
     context "when has default with the trait" do
-      let!(:traited_user) { TestProf::FactoryBot.create_default(:user, :traited) }
+      let!(:traited_user) do
+        user = TestProf::FactoryBot.create(:user, :traited)
+        TestProf::FactoryBot.set_factory_default(:user, :traited, user)
+      end
 
       it "re-uses default record for this trait" do
         post = TestProf::FactoryBot.create_default(:post)
