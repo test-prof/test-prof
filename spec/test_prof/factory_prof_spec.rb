@@ -5,6 +5,7 @@ TestProf::FactoryProf.init
 TestProf::FactoryProf.configure do |config|
   # turn on stacks collection
   config.mode = :flamegraph
+  config.include_variations = true
 end
 
 describe TestProf::FactoryProf, :transactional do

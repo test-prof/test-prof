@@ -2,13 +2,13 @@
 
 ## master (unreleased)
 
-- Support latest Timecop patching `Process.clock_gettime`. ([@palkan][])
+- Add variations information to FactorProf reports. ([@lHydra][])
+
+Get info on traits/overrides used by running `FPROF=1 FPROF_VARS=1 <your test command>`.
 
 - Add support for `report_duplicates` config option for `let_it_be` ([@lHydra][])
 
-- FactoryProf: Add variations information to the FactorProf data in simple mode. Add `variations_limit` configuration parameter. ([@lHydra][])
-
-Now you can see common variations (traits and attribute overrides) while collecting data with `FactoryProf`
+- Support latest Timecop patching `Process.clock_gettime`. ([@palkan][])
 
 - Vernier: Add hooks configuration parameter. ([@lHydra][])
 

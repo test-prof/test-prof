@@ -15,16 +15,11 @@ Total uniq factories: 119
    name           total   top-level   total time    time per call      top-level time
 
    user            6091        2715    115.7671s          0.0426s            50.2517s
-     .admin         123         715     15.7671s          0.0466s             5.2517s
-     [name,role]     25          11       7.671s          0.0666s             1.2517s
    post            2142        2098     93.3152s          0.0444s            92.1915s
-     .draft[tags]    12          12       9.3152s          0.164s            42.1915s
    ...
 ```
 
-It shows both the total number of the factory and its variations (such as traits, overrides) runs and the number of _top-level_ runs, i.e. not during another factory invocation (e.g. when using associations.)
-
-In the example above, `.xxx` indicates a trait and `[a,b]` indicates the overrides keys, e.g., `create(:user, :admin)` is an `.admin` variation, while `create(:post, :draft, tags: ["a"])`—`.draft[tags]`
+It shows both the total number of the factory runs and the number of _top-level_ runs, i.e. not during another factory invocation (e.g. when using associations.)
 
 It also shows the time spent generating records with factories and the amount of time taken per factory call.
 
@@ -60,6 +55,65 @@ And for every test run see the overall factories usage:
 [TEST PROF INFO] Time spent in factories: 04:31.222 (54% of total time)
 ```
 
+### Variations
+
+You can also add _variations_ (such as traits, overrides) information to reports by providing the `FPROF_VARS=1` environment variable or enabling it in your code:
+
+```ruby
+TestProf::FactoryProf.configure do |config|
+  config.include_variations = true
+end
+```
+
+For example:
+
+```sh
+$ FPROF=1 FPROF_VARS=1 bin/rails test
+
+...
+
+[TEST PROF INFO] Factories usage
+
+Total: 15285
+Total top-level: 10286
+Total time: 04:31.222 (out of 07.16.124)
+Total uniq factories: 119
+
+   name           total   top-level   total time    time per call      top-level time
+
+   user            6091        2715    115.7671s          0.0426s            50.2517s
+     .admin         123         715     15.7671s          0.0466s             5.2517s
+     [name,role]     25          11       7.671s          0.0666s             1.2517s
+   post            2142        2098     93.3152s          0.0444s            92.1915s
+     .draft[tags]    12          12       9.3152s          0.164s            42.1915s
+   ...
+```
+
+In the example above, `.xxx` indicates a trait and `[a,b]` indicates the overrides keys, e.g., `create(:user, :admin)` is an `.admin` variation, while `create(:post, :draft, tags: ["a"])`—`.draft[tags]`
+
+#### Variations limit config
+
+When running FactoryProf, the output may contain a variant that is too long, which will distort the output.
+
+To avoid this and focus on the most important statistics you can specify a variations limit value. Then a special ID (`[...]`) will be shown instead of the variant with the number of traits/overrides exceeding the limit.
+
+To use variations limit parameter set `FPROF_VARIATIONS_LIMIT` environment variable to `N` (where `N` is a limit number):
+
+```sh
+FPROF=1 FPROF_VARIATIONS_LIMIT=5 rspec
+
+# or
+FPROF=1 FPROF_VARIATIONS_LIMIT=5 bundle exec rake test
+```
+
+Or you can set the limit parameter through the `FactoryProf` configuration:
+
+```ruby
+TestProf::FactoryProf.configure do |config|
+  config.variations_limit = 5
+end
+```
+
 ### Exporting profile results to a JSON file
 
 FactoryProf can save profile results as a JSON file.
@@ -75,7 +129,7 @@ FPROF=json bundle exec rake test
 
 Example output:
 
-```
+```sh
 [TEST PROF INFO] Profile results to JSON: tmp/test_prof/test-prof.result.json
 ```
 
@@ -98,28 +152,6 @@ Or you can set the threshold parameter through the `FactoryProf` configuration:
 ```ruby
 TestProf::FactoryProf.configure do |config|
   config.threshold = 30
-end
-```
-
-### Variations limit config
-
-When running FactoryProf, the output may contain a variant that is too long, which will distort the output.
-To avoid this and focus on the most important statistics you can specify a variations limit value. Then a special ID (`[...]`) will be shown instead of the variant with the number of traits/overrides exceeding the limit.
-
-To use variations limit parameter set `FPROF_VARIATIONS_LIMIT` environment variable to `N` (where `N` is a limit number):
-
-```sh
-FPROF=1 FPROF_VARIATIONS_LIMIT=5 rspec
-
-# or
-FPROF=1 FPROF_VARIATIONS_LIMIT=5 bundle exec rake test
-```
-
-Or you can set the limit parameter through the `FactoryProf` configuration:
-
-```ruby
-TestProf::FactoryProf.configure do |config|
-  config.variations_limit = 5
 end
 ```
 

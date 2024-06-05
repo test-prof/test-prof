@@ -16,7 +16,7 @@ module TestProf
 
     # FactoryProf configuration
     class Configuration
-      attr_accessor :mode, :printer, :threshold, :variations_limit
+      attr_accessor :mode, :printer, :threshold, :include_variations, :variations_limit
 
       def initialize
         @mode = (ENV["FPROF"] == "flamegraph") ? :flamegraph : :simple
@@ -32,6 +32,7 @@ module TestProf
             Printers::Simple
           end
         @threshold = ENV.fetch("FPROF_THRESHOLD", 0).to_i
+        @include_variations = ENV["FPROF_VARS"] == "1"
         @variations_limit = ENV.fetch("FPROF_VARIATIONS_LIMIT", 2).to_i
       end
 

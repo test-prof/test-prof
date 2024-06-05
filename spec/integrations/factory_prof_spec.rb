@@ -13,16 +13,13 @@ describe "FactoryProf" do
       expect(output).to match(
         /
           user\s+16\s+8\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+.with_posts\[name\]\s+1\s+1\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+\[name\]\s+1\s+1\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
           \s+post\s+10\s+6\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+\[user\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s
         /x
       )
     end
 
     specify "simple printer with variations", :aggregate_failures do
-      output = run_rspec("factory_prof_with_variations", env: {"FPROF" => "1", "FPROF_VARIATIONS_LIMIT" => "2"})
+      output = run_rspec("factory_prof_with_variations", env: {"FPROF" => "1", "FPROF_VARS" => "1", "FPROF_VARIATIONS_LIMIT" => "2"})
 
       expect(output).to include("FactoryProf enabled (simple mode)")
 

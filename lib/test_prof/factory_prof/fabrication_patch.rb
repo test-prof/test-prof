@@ -7,7 +7,7 @@ module TestProf
       def create(name, overrides = {})
         variation = ""
 
-        unless overrides.empty?
+        if FactoryProf.config.include_variations && !overrides.empty?
           variation += overrides.keys.sort.to_s.gsub(/[\\":]/, "")
         end
 
