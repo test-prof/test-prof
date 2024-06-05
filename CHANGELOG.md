@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- FactoryDefault: Add `#get_factory_default`. [[@john-h-k][]]
+
 - Add variations information to FactorProf reports. ([@lHydra][])
 
 Get info on traits/overrides used by running `FPROF=1 FPROF_VARS=1 <your test command>`.
@@ -421,3 +423,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@uzushino]: https://github.com/uzushino
 [@lioneldebauge]: https://github.com/lioneldebauge
 [@lHydra]: https://github.com/lHydra
+[@john-h-k]: https://github.com/john-h-k

@@ -94,9 +94,9 @@ In your `spec_helper.rb`:
 require "test_prof/recipes/rspec/factory_default"
 ```
 
-This adds three new methods to FactoryBot:
+This adds the following methods to FactoryBot:
 
-- `FactoryBot#set_factory_default(factory, object)` – use the `object` as default for associations built with `factory`
+- `FactoryBot#set_factory_default(factory, object)` – use the `object` as default for associations built with `factory`.
 
 Example:
 
@@ -104,11 +104,22 @@ Example:
 let(:user) { create(:user) }
 
 before { FactoryBot.set_factory_default(:user, user) }
+
+# You can also set the default factory with traits
+FactoryBot.set_factory_default([:user, :amdin], admin)
+
+# Or (since v1.4)
+FactoryBot.set_factory_default(:user, :amdin, admin)
 ```
 
-- `FactoryBot#create_default(factory, *args)` – is a shortcut for `create` + `set_factory_default`.
+- `FactoryBot#create_default(...)` – is a shortcut for `create` + `set_factory_default`.
 
-- `FactoryBot#get_factory_default(factory, *args)` – retrieves the default value for `factory`
+- `FactoryBot#get_factory_default(factory)` – retrieves the default value for `factory` (since v1.4).
+
+```rb
+# This method also supports traits
+admin = FactoryBot.get_factory_default(:user, :amdin)
+```
 
 **IMPORTANT:** Defaults are **cleaned up after each example** by default (i.e., when using `test_prof/recipes/rspec/factory_default`).
 
