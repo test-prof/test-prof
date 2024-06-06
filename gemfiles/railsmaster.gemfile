@@ -1,10 +1,10 @@
 source "https://rubygems.org"
 
-gem "rails"
+gem "rails", github: "rails/rails", branch: "main"
 
 gem "fabrication"
 gem "factory_bot", "~> 5.0"
-gem "sqlite3", "~> 1.4"
+gem "sqlite3", "~> 2.0"
 gem "sidekiq", "~> 4.0"
 gem "timecop", "~> 0.9.1"
 gem "pg"

@@ -18,7 +18,7 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
       subject { ::TestProf::BeforeAll::Adapters::ActiveRecord.begin_transaction }
 
       it "calls begin_transaction on all available connections" do
-        expect(connection).to receive(:begin_transaction).with(joinable: false)
+        expect(connection).to receive(:begin_transaction).with(a_hash_including(joinable: false))
 
         subject
       end

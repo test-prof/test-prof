@@ -34,6 +34,9 @@ jobs:
         - ruby: 3.3
           gemfile: "Gemfile"
           db: "sqlite"
+        - ruby: 3.3
+          gemfile: "gemfiles/activerecord72.gemfile"
+          db: "sqlite-file"
         - ruby: 3.2
           gemfile: "gemfiles/activerecord7.gemfile"
           db: "sqlite"
