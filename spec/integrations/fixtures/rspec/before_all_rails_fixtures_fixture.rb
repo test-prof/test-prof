@@ -51,4 +51,20 @@ describe "Post" do
       expect(Post.count).to eq 0
     end
   end
+
+  context "before_all with thread" do
+    before_all do
+      Thread.new do
+        TestProf::FactoryBot.create(:user, tag: :thread)
+      end.join
+    end
+
+    specify { expect(User.find_by(tag: :thread)).to be_a(User) }
+
+    specify { expect(User.count).to eq 2 }
+  end
+
+  context "after before_all with thread the database must be clean" do
+    specify { expect(User.count).to eq 1 }
+  end
 end
