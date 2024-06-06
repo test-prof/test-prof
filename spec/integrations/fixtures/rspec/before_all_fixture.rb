@@ -78,6 +78,10 @@ describe "User", :transactional do
 
     specify { expect(User.count).to eq 1 }
   end
+
+  context "after before_all with thread the database must be clean" do
+    specify { expect(User.count).to eq 0 }
+  end
 end
 
 describe "User", :transactional, :with_user do
