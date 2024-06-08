@@ -1,6 +1,6 @@
 source 'https://rubygems.org'
 
-gem "rails", "7.2.0.beta2"
+gem "rails", github: "rails/rails", branch: "7-2-stable"
 gem "factory_bot"
 gem "fabrication"
 gem "sqlite3", "~> 2.0"
