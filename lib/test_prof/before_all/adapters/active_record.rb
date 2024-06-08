@@ -9,43 +9,15 @@ module TestProf
 
         class << self
           if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
-            ::ActiveRecord::ConnectionAdapters::ConnectionPool.prepend(Module.new do
-              # FIXME: Why `@pinned_connection = nil; super` doesn't work?
-              def pin_connection!(lock_thread) # :nodoc:
-                # raise "There is already a pinned connection" if @pinned_connection
-
-                @pinned_connection = connection_lease&.connection || checkout
-                # Any leased connection must be in @connections otherwise
-                # some methods like #connected? won't behave correctly
-                unless @connections.include?(@pinned_connection)
-                  @connections << @pinned_connection
-                end
-
-                @pinned_connection.lock_thread = ActiveSupport::IsolatedExecutionState.context if lock_thread
-                @pinned_connection.verify! # eagerly validate the connection
-                @pinned_connection.begin_transaction joinable: false, _lazy: false
-              end
-            end)
-
             def begin_transaction
-              ::ActiveRecord::Base.connection_handler.connection_pool_list(*POOL_ARGS).each do |pool|
+              ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).each do |pool|
                 pool.pin_connection!(true)
               end
             end
 
             def rollback_transaction
-              ::ActiveRecord::Base.connection_handler.connection_pool_list(*POOL_ARGS).each do |pool|
-                # If it has pinned connection, we must unpin it;
-                # if it has been already unpinned, just rollback
-                next pool.unpin_connection! if pool.instance_variable_get(:@pinned_connection)
-
-                connection = pool.lease_connection
-                if connection.open_transactions.zero?
-                  warn "!!! before_all transaction has been already rollbacked and " \
-                        "could work incorrectly"
-                  next
-                end
-                connection.rollback_transaction
+              ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).each do |pool|
+                pool.unpin_connection!
               end
             end
           else

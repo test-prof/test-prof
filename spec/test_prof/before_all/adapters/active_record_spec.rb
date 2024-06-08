@@ -11,44 +11,60 @@ require "test_prof/before_all/adapters/active_record"
 
 describe TestProf::BeforeAll::Adapters::ActiveRecord do
   context "when using single database", skip: (multi_db? ? "Using multiple databases" : nil) do
-    let(:connection_pool) { ApplicationRecord }
+    let(:connection_pool) { ApplicationRecord.connection_pool }
     let(:connection) { connection_pool.connection }
 
     describe ".begin_transaction" do
       subject { ::TestProf::BeforeAll::Adapters::ActiveRecord.begin_transaction }
 
-      it "calls begin_transaction on all available connections" do
-        expect(connection).to receive(:begin_transaction).with(a_hash_including(joinable: false))
+      if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
+        it "calls pin_connection! on all available connections" do
+          expect(connection_pool).to receive(:pin_connection!).with(true)
 
-        subject
+          subject
+        end
+      else
+        it "calls begin_transaction on all available connections" do
+          expect(connection).to receive(:begin_transaction).with(a_hash_including(joinable: false))
+
+          subject
+        end
       end
     end
 
     describe ".rollback_transaction" do
       subject { ::TestProf::BeforeAll::Adapters::ActiveRecord.rollback_transaction }
 
-      context "when not all connections have started a transaction" do
-        before do
-          # Ensure no transactions are open due to randomization of specs
-          connection.rollback_transaction unless connection.open_transactions.zero?
-        end
+      if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
+        it "calls unpin_connection! on all available connections" do
+          expect(connection_pool).to receive(:unpin_connection!)
 
-        it "warns when connection does not have open transaction" do
-          expect { subject }.to output(
-            /!!! before_all transaction has been already rollbacked and could work incorrectly\n/
-          ).to_stderr
-        end
-      end
-
-      context "when the connection is a transaction" do
-        before do
-          connection.begin_transaction
-          allow(connection).to receive(:rollback_transaction).and_call_original
-        end
-
-        it "calls rollback_transaction on all available connections" do
           subject
-          expect(connection).to have_received(:rollback_transaction)
+        end
+      else
+        context "when not all connections have started a transaction" do
+          before do
+            # Ensure no transactions are open due to randomization of specs
+            connection.rollback_transaction unless connection.open_transactions.zero?
+          end
+
+          it "warns when connection does not have open transaction" do
+            expect { subject }.to output(
+              /!!! before_all transaction has been already rollbacked and could work incorrectly\n/
+            ).to_stderr
+          end
+        end
+
+        context "when the connection is a transaction" do
+          before do
+            connection.begin_transaction
+            allow(connection).to receive(:rollback_transaction).and_call_original
+          end
+
+          it "calls rollback_transaction on all available connections" do
+            subject
+            expect(connection).to have_received(:rollback_transaction)
+          end
         end
       end
     end
