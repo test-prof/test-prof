@@ -106,10 +106,10 @@ let(:user) { create(:user) }
 before { FactoryBot.set_factory_default(:user, user) }
 
 # You can also set the default factory with traits
-FactoryBot.set_factory_default([:user, :amdin], admin)
+FactoryBot.set_factory_default([:user, :admin], admin)
 
 # Or (since v1.4)
-FactoryBot.set_factory_default(:user, :amdin, admin)
+FactoryBot.set_factory_default(:user, :admin, admin)
 ```
 
 - `FactoryBot#create_default(...)` – is a shortcut for `create` + `set_factory_default`.
@@ -118,7 +118,7 @@ FactoryBot.set_factory_default(:user, :amdin, admin)
 
 ```rb
 # This method also supports traits
-admin = FactoryBot.get_factory_default(:user, :amdin)
+admin = FactoryBot.get_factory_default(:user, :admin)
 ```
 
 **IMPORTANT:** Defaults are **cleaned up after each example** by default (i.e., when using `test_prof/recipes/rspec/factory_default`).
