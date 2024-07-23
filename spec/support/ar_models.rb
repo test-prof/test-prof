@@ -214,3 +214,7 @@ Fabricator(:post) do
   text { sequence(:text) { |n| "Post ##{n}}" } }
   user
 end
+
+Fabricator(:alice_post, from: :post) do
+  user { Fabricate(:user, name: "Alice") }
+end

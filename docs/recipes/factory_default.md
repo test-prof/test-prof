@@ -2,8 +2,6 @@
 
 _FactoryDefault_ aims to help you cope with _factory cascades_ (see [FactoryProf](../profilers/factory_prof.md)) by reusing associated records.
 
-**NOTE**. Only works with FactoryGirl/FactoryBot.
-
 It can be very useful when you're working on a typical SaaS application (or other hierarchical data).
 
 Consider an example. Assume we have the following factories:
@@ -26,6 +24,19 @@ factory :task do
   project
   user
 end
+```
+
+Or in case of Fabrication:
+
+```ruby
+Fabricator(:account) do
+end
+
+Fabricator(:user) do
+  account
+end
+
+# etc.
 ```
 
 And we want to test the `Task` model:
@@ -94,9 +105,9 @@ In your `spec_helper.rb`:
 require "test_prof/recipes/rspec/factory_default"
 ```
 
-This adds the following methods to FactoryBot:
+This adds the following methods to FactoryBot and/or Fabrication:
 
-- `FactoryBot#set_factory_default(factory, object)` – use the `object` as default for associations built with `factory`.
+- `FactoryBot#set_factory_default(factory, object)` / `Fabricate.set_fabricate_default(factory, object)` – use the `object` as default for associations built with `factory`.
 
 Example:
 
@@ -110,11 +121,14 @@ FactoryBot.set_factory_default([:user, :admin], admin)
 
 # Or (since v1.4)
 FactoryBot.set_factory_default(:user, :admin, admin)
+
+# You can also register a default record for specific attribute overrides
+Fabricate.set_fabricate_default(:post, post, state: "draft")
 ```
 
-- `FactoryBot#create_default(...)` – is a shortcut for `create` + `set_factory_default`.
+- `FactoryBot#create_default(...)` / `Fabricate.create_default(...)` – is a shortcut for `create` + `set_factory_default`.
 
-- `FactoryBot#get_factory_default(factory)` – retrieves the default value for `factory` (since v1.4).
+- `FactoryBot#get_factory_default(factory)` / `Fabricate.get_fabricate_default(factory)` – retrieves the default value for `factory` (since v1.4).
 
 ```rb
 # This method also supports traits
