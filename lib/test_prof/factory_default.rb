@@ -1,8 +1,10 @@
 # frozen_string_literal: true
 
 require "test_prof/core"
-require "test_prof/factory_bot"
+
 require "test_prof/factory_default/factory_bot_patch"
+require "test_prof/factory_default/fabrication_patch"
+
 require "test_prof/ext/float_duration"
 require "test_prof/ext/active_record_refind" if defined?(::ActiveRecord::Base)
 
@@ -144,40 +146,6 @@ module TestProf
       end
     end
 
-    module DefaultSyntax # :nodoc:
-      def create_default(name, *args, &block)
-        options = args.extract_options!
-        default_options = {}
-        default_options[:preserve_traits] = options.delete(:preserve_traits) if options.key?(:preserve_traits)
-        default_options[:preserve_attributes] = options.delete(:preserve_attributes) if options.key?(:preserve_attributes)
-
-        obj = TestProf::FactoryBot.create(name, *args, options, &block)
-
-        # Factory with traits
-        name = [name, *args] if args.any?
-
-        set_factory_default(name, obj, **default_options)
-      end
-
-      def set_factory_default(*name, obj, preserve_traits: FactoryDefault.config.preserve_traits, preserve_attributes: FactoryDefault.config.preserve_attributes, **other)
-        name = name.first if name.size == 1
-        FactoryDefault.register(
-          name, obj,
-          preserve_traits: preserve_traits,
-          preserve_attributes: preserve_attributes,
-          **other
-        )
-      end
-
-      def get_factory_default(name, *traits, **overrides)
-        FactoryDefault.get(name, traits, overrides, skip_stats: true)
-      end
-
-      def skip_factory_default(&block)
-        FactoryDefault.disable!(&block)
-      end
-    end
-
     class Configuration
       attr_accessor :preserve_traits, :preserve_attributes,
         :report_summary, :report_stats,
@@ -202,11 +170,8 @@ module TestProf
       attr_reader :stats, :profiler
 
       def init
-        TestProf::FactoryBot::Syntax::Methods.include DefaultSyntax
-        TestProf::FactoryBot.extend DefaultSyntax
-        TestProf::FactoryBot::Strategy::Create.prepend StrategyExt
-        TestProf::FactoryBot::Strategy::Build.prepend StrategyExt
-        TestProf::FactoryBot::Strategy::Stub.prepend StrategyExt
+        FactoryBotPatch.patch
+        FabricationPatch.patch
 
         @profiler = config.profiling_enabled? ? Profiler.new : NoopProfiler.new
         @enabled = ENV["FACTORY_DEFAULT_DISABLED"] != "1"
