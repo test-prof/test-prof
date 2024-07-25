@@ -1,15 +1,19 @@
 # frozen_string_literal: true
 
+require "test_prof/factory_bot"
+
 module TestProf
   module FactoryDefault # :nodoc: all
     module FactoryBotPatch
-      module RunnerExt
-        refine TestProf::FactoryBot::FactoryRunner do
-          attr_reader :name, :traits, :overrides
+      if defined?(TestProf::FactoryBot::FactoryRunner)
+        module RunnerExt
+          refine TestProf::FactoryBot::FactoryRunner do
+            attr_reader :name, :traits, :overrides
+          end
         end
-      end
 
-      using RunnerExt
+        using RunnerExt
+      end
 
       module StrategyExt
         def association(runner)
@@ -53,7 +57,6 @@ module TestProf
       end
 
       def self.patch
-        require "test_prof/factory_bot"
         return unless defined?(TestProf::FactoryBot)
 
         TestProf::FactoryBot::Syntax::Methods.include SyntaxExt
