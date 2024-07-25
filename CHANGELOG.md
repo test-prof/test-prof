@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add new TPS (tests per second) profiler. ([@palkan][])
+
 - FactoryDefault: add Fabrication support. ([@palkan][])
 
 - Drop support for **Ruby <2.7** and **Rails <6**.
