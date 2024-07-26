@@ -25,6 +25,14 @@ describe "general profilers", skip: !PROFILERS_AVAILABLE do
         expect(output).to include("RubyProf report generated")
         expect(output).to include("0 failures")
       end
+
+      specify "examples only" do
+        output = run_rspec("ruby_prof", env: {"TEST_RUBY_PROF" => "1", "TEST_RUBY_PROF_BOOT" => "0"})
+
+        expect(output).to include("RubyProf enabled for examples")
+        expect(output).to include("RubyProf report generated")
+        expect(output).to include("0 failures")
+      end
     end
 
     context "stackprof" do

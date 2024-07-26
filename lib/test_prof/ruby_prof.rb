@@ -48,12 +48,13 @@ module TestProf
       attr_accessor :printer, :mode, :min_percent,
         :include_threads, :exclude_common_methods,
         :test_prof_exclusions_enabled,
-        :custom_exclusions
+        :custom_exclusions, :skip_boot
 
       def initialize
         @printer = ENV["TEST_RUBY_PROF"].to_sym if PRINTERS.key?(ENV["TEST_RUBY_PROF"])
         @printer ||= ENV.fetch("TEST_RUBY_PROF_PRINTER", :flat).to_sym
         @mode = ENV.fetch("TEST_RUBY_PROF_MODE", :wall).to_s
+        @skip_boot = %w[0 false f].include?(ENV["TEST_RUBY_PROF_BOOT"])
         @min_percent = 1
         @include_threads = false
         @exclude_common_methods = true
@@ -63,6 +64,10 @@ module TestProf
 
       def include_threads?
         include_threads == true
+      end
+
+      def skip_boot?
+        skip_boot == true
       end
 
       def exclude_common_methods?
@@ -166,23 +171,21 @@ module TestProf
       #
       # Use this method to profile the whole run.
       def run
-        report = profile
+        report = profile(locked: true)
 
         return unless report
-
-        @locked = true
 
         log :info, "RubyProf enabled globally"
 
         at_exit { report.dump("total") }
       end
 
-      def profile
+      def profile(locked: false)
         if locked?
           log :warn, <<~MSG
             RubyProf is activated globally, you cannot generate per-example report.
 
-            Make sure you haven't set the TEST_RUBY_PROF environmental variable.
+            Make sure you haven not set the TEST_RUBY_PROF environmental variable.
           MSG
           return
         end
@@ -211,6 +214,8 @@ module TestProf
         end
 
         profiler.start
+
+        @locked = true if locked
 
         Report.new(profiler)
       end
@@ -282,5 +287,13 @@ end
 
 # Hook to run RubyProf globally
 TestProf.activate("TEST_RUBY_PROF") do
-  TestProf::RubyProf.run
+  if TestProf::RubyProf.config.skip_boot?
+    if TestProf.rspec?
+      require "test_prof/ruby_prof/rspec_no_boot"
+    else
+      TestProf.log :warn, "RubyProf tests profiling w/o test suite boot is only supported in RSpec"
+    end
+  else
+    TestProf::RubyProf.run
+  end
 end
