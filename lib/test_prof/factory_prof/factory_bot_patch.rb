@@ -7,7 +7,7 @@ module TestProf
       def run(strategy = @strategy)
         variation = ""
 
-        if FactoryProf.config.include_variations
+        if FactoryProf.config.include_variations?
           if @traits || @overrides
             unless @traits.empty?
               variation += @traits.sort.join(".").prepend(".")

@@ -40,6 +40,10 @@ module TestProf
       def flamegraph?
         @mode == :flamegraph
       end
+
+      def include_variations?
+        @include_variations == true
+      end
     end
 
     class Result # :nodoc:
@@ -137,14 +141,14 @@ module TestProf
         @depth += 1
         @current_stack << factory if config.flamegraph?
         track_count(@stats[factory])
-        track_count(@stats[factory][:variations][variation_name(variation)]) unless variation.empty?
+        track_count(@stats[factory][:variations][variation_name(variation)]) if config.include_variations?
         t1 = TestProf.now
         begin
           yield
         ensure
           t2 = TestProf.now
           track_time(@stats[factory], t1, t2)
-          track_time(@stats[factory][:variations][variation_name(variation)], t1, t2) unless variation.empty?
+          track_time(@stats[factory][:variations][variation_name(variation)], t1, t2) if config.include_variations?
           @depth -= 1
           flush_stack if @depth.zero?
         end
@@ -153,6 +157,7 @@ module TestProf
       private
 
       def variation_name(variation)
+        return "-" if variation.empty?
         variations_count = variation.to_s.scan(/[\w]+/).size
         return "[...]" if variations_count > config.variations_limit
 

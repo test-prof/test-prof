@@ -81,15 +81,17 @@ Total uniq factories: 119
 
    name           total   top-level   total time    time per call      top-level time
 
-   user            6091        2715    115.7671s          0.0426s            50.2517s
-     .admin         123         715     15.7671s          0.0466s             5.2517s
-     [name,role]     25          11       7.671s          0.0666s             1.2517s
-   post            2142        2098     93.3152s          0.0444s            92.1915s
-     .draft[tags]    12          12       9.3152s          0.164s            42.1915s
+   user            6091        2715    115.7671s          0.0426s             50.251s
+     -             5243        1989      84.231s          0.0412s             34.321s
+     .admin         823         715      15.767s          0.0466s              5.257s
+     [name,role]     25          11       7.671s          0.0666s              1.257s
+   post            2142        2098      93.315s          0.0444s             92.191s
+     _             2130        2086      87.685s          0.0412s             88.191s
+     .draft[tags]    12          12       9.315s           0.164s             42.115s
    ...
 ```
 
-In the example above, `.xxx` indicates a trait and `[a,b]` indicates the overrides keys, e.g., `create(:user, :admin)` is an `.admin` variation, while `create(:post, :draft, tags: ["a"])`—`.draft[tags]`
+In the example above, `-` indicates a factory without traits or overrides (e.g., `create(:user)`), `.xxx` indicates a trait and `[a,b]` indicates the overrides keys, e.g., `create(:user, :admin)` is an `.admin` variation, while `create(:post, :draft, tags: ["a"])`—`.draft[tags]`
 
 #### Variations limit config
 

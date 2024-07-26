@@ -29,10 +29,12 @@ describe "FactoryProf" do
       expect(output).to match(
         /
           user\s+15\s+7\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+-\s+9\s+1\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
           \s+.traited.with_posts\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
           \s+\[name\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
           \s+\[...\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
           \s+post\s+10\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+-\s+8\s+0\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
           \s+\[text,\suser\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s
         /x
       )

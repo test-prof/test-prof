@@ -40,6 +40,8 @@ module TestProf::FactoryProf
               (variation[:name] == "[...]") ? stat[:variations].size + 1 : i
             end
             sorted_variations.each do |variation_stat|
+              next if variation_stat[:total_count] < threshold
+
               msgs << format("%-5s%-18s %8d %11d %13.4fs %17.4fs %18.4fs", *format_args(variation_stat))
             end
           end

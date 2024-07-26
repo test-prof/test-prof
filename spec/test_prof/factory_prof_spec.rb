@@ -5,12 +5,14 @@ TestProf::FactoryProf.init
 TestProf::FactoryProf.configure do |config|
   # turn on stacks collection
   config.mode = :flamegraph
-  config.include_variations = true
+  config.include_variations = false
 end
 
 describe TestProf::FactoryProf, :transactional do
   before { described_class.start }
   after { described_class.stop }
+
+  after { TestProf::FactoryProf.config.include_variations = false }
 
   # Ensure meta-queries have been performed
   before(:all) { User.first }
@@ -83,6 +85,8 @@ describe TestProf::FactoryProf, :transactional do
       end
 
       it "contains many stacks with variations" do
+        TestProf::FactoryProf.config.include_variations = true
+
         TestProf::FactoryBot.create_pair(:user)
         TestProf::FactoryBot.create(:post)
         TestProf::FactoryBot.create(:user, :with_posts)
@@ -98,9 +102,12 @@ describe TestProf::FactoryProf, :transactional do
         expect(without_time(result.stats)).to eq(
           [
             {name: :user, total_count: 6, top_level_count: 3, variations: [
+              {name: "-", top_level_count: 2, total_count: 5},
               {name: :".with_posts", top_level_count: 1, total_count: 1}
             ]},
-            {name: :post, total_count: 3, top_level_count: 1, variations: []}
+            {name: :post, total_count: 3, top_level_count: 1, variations: [
+              {name: "-", top_level_count: 1, total_count: 3}
+            ]}
           ]
         )
       end
@@ -121,6 +128,8 @@ describe TestProf::FactoryProf, :transactional do
       end
 
       it "contains many stacks with variations" do
+        TestProf::FactoryProf.config.include_variations = true
+
         Fabricate.times(2, :user)
         Fabricate.create(:post, text: "some text")
         Fabricate.create(:user) { Fabricate.times(2, :post) }
@@ -135,8 +144,9 @@ describe TestProf::FactoryProf, :transactional do
         )
         expect(without_time(result.stats)).to eq(
           [
-            {name: :user, total_count: 6, top_level_count: 3, variations: []},
+            {name: :user, total_count: 6, top_level_count: 3, variations: [{name: "-", top_level_count: 3, total_count: 6}]},
             {name: :post, total_count: 3, top_level_count: 1, variations: [
+              {name: "-", top_level_count: 0, total_count: 2},
               {name: :"[text]", top_level_count: 1, total_count: 1}
             ]}
           ]
