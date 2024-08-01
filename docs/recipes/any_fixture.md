@@ -28,11 +28,8 @@ RSpec.shared_context "account", account: true do
     end
   end
 
-  # Use .register here to track the usage stats (see below)
-  let(:account) { TestProf::AnyFixture.register(:account) }
-
-  # Or hard-reload object if there is chance of in-place modification
-  let(:account) { Account.find(TestProf::AnyFixture.register(:account).id) }
+  # Use .cached to retrieve the fixiture record
+  let(:account) { TestProf::AnyFixture.cached(:account) }
 end
 
 # You can enhance the existing database cleaning. Posts will be deleted before fixtures reset
@@ -96,7 +93,7 @@ require "test_prof/any_fixture/dsl"
 using TestProf::AnyFixture::DSL
 
 # and then you can use `fixture` method (which is just an alias for `TestProf::AnyFixture.register`)
-before(:all) { fixture(:account) }
+before(:all) { fixture(:account) { create(:account) } }
 
 # You can also use it to fetch the record (instead of storing it in instance variable)
 let(:account) { fixture(:account) }
@@ -106,20 +103,14 @@ before_fixtures_reset { Post.delete_all }
 after_fixtures_reset { Post.delete_all }
 ```
 
-## `ActiveRecord#refind`
-
-TestProf also provides an extension to _hard-reload_ ActiveRecord objects:
+Note that the `#fixture` method also _refinds_ Active Record objects on read, i.e., the following two expressions works similarly:
 
 ```ruby
-# instead of
-let(:account) { Account.find(fixture(:account).id) }
+let(:account) { fixture(:account) }
 
-# load refinement
-require "test_prof/ext/active_record_refind"
+# similar to
 
-using TestProf::Ext::ActiveRecordRefind
-
-let(:account) { fixture(:account).refind }
+let(:account) { Account.find(TestProf::AnyFixture.cached(:account).id) }
 ```
 
 ## Temporary disable fixtures
@@ -139,9 +130,14 @@ context "global state", :with_clean_fixture do
 end
 ```
 
-How does it work? It wraps the example group into a transaction (using [`before_all`](./before_all.md)) and calls `TestProf::AnyFixture.clean` before running the examples.
+How does it work? It wraps the example group into a transaction (using [`before_all`](./before_all.md)) and calls `TestProf::AnyFixture.clean` and `TestProf::AnyFixture.disable!` before running the examples and then call `TestProf::AnyFixture.enable!` at the context exit. The `disable!`/`enable!` method toggle the cache state. That makes it possible to re-use blocks passed during registration like there is no AnyFixture:
 
-Thus, this context is a little bit _heavy_. Try to avoid such situations and write specs independent of the global state.
+```ruby
+# Here we create a new account if AnyFixture is disabled
+let(:account) { fixture(:account) { create(:account) } }
+```
+
+Reseting fixtures (i.e., delete data from the affected tables) can be _heavy_. Try to avoid such situations and write specs independent of the global state.
 
 ## Usage report
 

@@ -5,7 +5,6 @@ require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/any_fixture"
 
-require "test_prof/any_fixture/dsl"
 using TestProf::AnyFixture::DSL
 
 shared_context "user", user: true do
@@ -15,7 +14,8 @@ shared_context "user", user: true do
     end
   end
 
-  let(:user) { User.find(fixture(:user).id) }
+  let(:user) { fixture(:user) }
+  let(:a_user) { fixture(:user) { TestProf::FactoryBot.create(:user) } }
 end
 
 describe "User", :user do
@@ -27,6 +27,7 @@ describe "User", :user do
   context "with clean fixture", :transactional do
     specify "no users", :with_clean_fixture do
       expect(User.count).to eq 0
+      expect { a_user }.to change(User, :count).by(1)
     end
   end
 end

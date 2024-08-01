@@ -1,6 +1,9 @@
 # frozen_string_literal: true
 
 require "test_prof/any_fixture"
+require "test_prof/any_fixture/dsl"
+require "test_prof/ext/active_record_refind"
+
 require "test_prof/recipes/rspec/before_all"
 
 RSpec.shared_context "any_fixture:clean" do
@@ -8,6 +11,11 @@ RSpec.shared_context "any_fixture:clean" do
 
   before_all do
     TestProf::AnyFixture.clean
+    TestProf::AnyFixture.disable!
+  end
+
+  after(:all) do
+    TestProf::AnyFixture.enable!
   end
 end
 

@@ -108,14 +108,18 @@ module TestProf
         cached(id) do
           raise "No fixture named #{id} has been registered" unless block_given?
 
+          next yield if @disabled
+
           ActiveSupport::Notifications.subscribed(method(:subscriber), "sql.active_record") do
             yield
           end
         end
       end
 
-      def cached(id)
-        cache.fetch(id) { yield }
+      def cached(id, &block)
+        return (block_given? ? yield : nil) if @disabled
+
+        cache.fetch(id, &block)
       end
 
       # Create and register new SQL dump.
@@ -172,6 +176,14 @@ module TestProf
 
         callbacks[:after_fixtures_reset].each(&:call)
         callbacks.clear
+      end
+
+      def disable!
+        @disabled = true
+      end
+
+      def enable!
+        @disabled = false
       end
 
       def before_fixtures_reset(&block)
@@ -266,5 +278,7 @@ module TestProf
         connection.disable_referential_integrity { yield }
       end
     end
+
+    enable!
   end
 end
