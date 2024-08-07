@@ -4,11 +4,13 @@ This document aims to help you get started with profiling test suites and answer
 
 **NOTE**: This document assumes you're working with a Ruby on Rails application and RSpec testing framework. The ideas can easily be translated into other frameworks.
 
+> 📼 Check out also the ["From slow to go" RailsConf 2024 workshop recording](https://evilmartians.com/events/from-slow-to-go-rails-test-profiling-hands-on-railsconf-2024) to see this playbook in action.
+
 ## Step 0. Configuration basics
 
 Low-hanging configuration fruits:
 
-- Disable logging in tests—it's useless. If you really need it, use our [logging utils](./recipes/logging.md).
+- Disable logging\* in tests—it's useless. If you really need it, use our [logging utils](./recipes/logging.md).
 
 ```ruby
 config.logger = ActiveSupport::TaggedLogging.new(Logger.new(nil))
@@ -17,15 +19,19 @@ config.log_level = :fatal
 
 - Disable coverage and built-in profiling by default. Use env var to enable it (e.g., `COVERAGE=true`)
 
+\* Modern SSD hard drives make the overhead of file-based logging almost negligible. Still, we recommend disabling logging to make sure tests are not affected in any environment (e.g., Docker on MacOS).
+
 ## Step 1. General profiling
 
-It helps to identify not-so-low hanging fruits. We recommend using [StackProf](./profilers/stack_prof.md), so you must install it first (if not yet):
+It helps to identify not-so-low hanging fruits. We recommend using [StackProf](./profilers/ruby_profilers.md#stack_prof) or [Vernier](./profilers/ruby_profilers.md#vernier), so you must install them first (if not yet):
 
 ```sh
 bundle add stackprof
+# or
+bundle add vernier
 ```
 
-Configure Test Prof to generate JSON profiles by default:
+Configure TestProf to generate JSON profiles by default:
 
 ```ruby
 TestProf::StackProf.configure do |config|
@@ -46,7 +52,7 @@ TEST_STACK_PROF=boot rspec ./spec/some_spec.rb
 What to look for? Some examples:
 
 - No [Bootsnap](https://github.com/Shopify/bootsnap) used or not configured to cache everything (e.g., YAML files)
-- Slow Rails initializers that are not needed in tests.
+- Slow Rails initializers that are not needed in tests. Vernier's Rails hooks feature is especially useful in analyzing Rails initializers.
 
 ### Step 1.2. Sampling tests profiling
 
