@@ -11,7 +11,7 @@ if File.exist?(local_gemfile)
   eval_gemfile(local_gemfile) # rubocop:disable Security/Eval
 else
   platform :mri do
-    gem "sqlite3", "~> 1.4"
+    gem "sqlite3", "~> 2.0"
   end
 
   platform :jruby do
