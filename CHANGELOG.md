@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.4.0 (2024-08-12)
+
 - AnyFixture: Disable fixtures cache within _clean fixture_ context. Automatically _refind_ records when using `#fixture`. ([@palkan][])
 
 - Add new TPS (tests per second) profiler. ([@palkan][])
