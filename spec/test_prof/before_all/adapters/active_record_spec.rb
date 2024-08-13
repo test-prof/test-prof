@@ -12,7 +12,14 @@ require "test_prof/before_all/adapters/active_record"
 describe TestProf::BeforeAll::Adapters::ActiveRecord do
   context "when using single database", skip: (multi_db? ? "Using multiple databases" : nil) do
     let(:connection_pool) { ApplicationRecord.connection_pool }
-    let(:connection) { connection_pool.lease_connection }
+
+    let(:connection) do
+      if Gem::Version.new(::ActiveRecord::VERSION::STRING) >= Gem::Version.new("7.2.0")
+        connection_pool.lease_connection
+      else
+        connection_pool.connection
+      end
+    end
 
     describe ".begin_transaction" do
       subject { ::TestProf::BeforeAll::Adapters::ActiveRecord.begin_transaction }

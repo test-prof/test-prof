@@ -26,7 +26,7 @@ module TestProf
                 ::ActiveRecord::Base.connection_handler.connection_pool_list(*POOL_ARGS).filter_map { |pool|
                   begin
                     # ActiveRecord 7.2+ deprecated `ConnectionPool#connection` method in favour of `lease_connection`
-                    if Gem::Version.new(ActiveRecord::VERSION::STRING) >= Gem::Version.new("7.2.0")
+                    if Gem::Version.new(::ActiveRecord::VERSION::STRING) >= Gem::Version.new("7.2.0")
                       pool.lease_connection
                     else
                       pool.connection
