@@ -25,7 +25,12 @@ module TestProf
               @all_connections ||= if ::ActiveRecord::Base.respond_to? :connects_to
                 ::ActiveRecord::Base.connection_handler.connection_pool_list(*POOL_ARGS).filter_map { |pool|
                   begin
-                    pool.connection
+                    # ActiveRecord 7.2+ deprecated `ConnectionPool#connection` method in favour of `lease_connection`
+                    if Gem::Version.new(ActiveRecord::VERSION::STRING) >= Gem::Version.new("7.2.0")
+                      pool.lease_connection
+                    else
+                      pool.connection
+                    end
                   rescue *pool_connection_errors => error
                     log_pool_connection_error(pool, error)
                     nil
@@ -91,12 +96,12 @@ module TestProf
         # thus using thread in `before_all` (e.g. ActiveJob async adapter)
         # might lead to leaking connections
         config.before(:begin) do
-          instance_variable_set("#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread", ::ActiveRecord::Base.connection.pool.instance_variable_get(:@lock_thread)) unless instance_variable_defined? "#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread"
+          instance_variable_set(:"#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread", ::ActiveRecord::Base.connection.pool.instance_variable_get(:@lock_thread)) unless instance_variable_defined? :"#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread"
           ::ActiveRecord::Base.connection.pool.lock_thread = true
         end
 
         config.after(:rollback) do
-          ::ActiveRecord::Base.connection.pool.lock_thread = instance_variable_get("#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread")
+          ::ActiveRecord::Base.connection.pool.lock_thread = instance_variable_get(:"#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread")
         end
       end
     end
