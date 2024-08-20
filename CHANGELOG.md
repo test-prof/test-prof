@@ -2,6 +2,9 @@
 
 ## master (unreleased)
 
+## 1.4.1 (2024-08-20)
+- Skips loading the ActiveRecord adapter for runs where RSpec --dry-run mode is enabled. ([@devinburnette][])
+
 ## 1.4.0 (2024-08-12)
 
 - AnyFixture: Disable fixtures cache within _clean fixture_ context. Automatically _refind_ records when using `#fixture`. ([@palkan][])
