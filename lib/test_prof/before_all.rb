@@ -15,7 +15,11 @@ module TestProf
     end
 
     class << self
-      attr_accessor :adapter
+      attr_writer :adapter
+
+      def adapter
+        @adapter ||= default_adapter
+      end
 
       def begin_transaction(scope = nil, metadata = [])
         raise AdapterMissing if adapter.nil?
@@ -46,6 +50,17 @@ module TestProf
 
       def configure
         yield config
+      end
+
+      private
+
+      def default_adapter
+        if defined?(::ActiveRecord::Base)
+          return if TestProf.rspec? && ::RSpec.configuration.dry_run?
+
+          require "test_prof/before_all/adapters/active_record"
+          Adapters::ActiveRecord
+        end
       end
     end
 
@@ -136,12 +151,6 @@ module TestProf
       attr_reader :hooks
     end
   end
-end
-
-if defined?(::ActiveRecord::Base)
-  require "test_prof/before_all/adapters/active_record"
-
-  TestProf::BeforeAll.adapter = TestProf::BeforeAll::Adapters::ActiveRecord
 end
 
 if defined?(::Isolator)

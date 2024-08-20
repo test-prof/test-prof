@@ -16,7 +16,6 @@ else
 
   platform :jruby do
     gem "activerecord-jdbcsqlite3-adapter"
-    gem "activerecord", "~> 7.0"
   end
 
   gem "activerecord", "~> 7.0"
