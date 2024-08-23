@@ -64,7 +64,7 @@ module RuboCop
             return super unless its?(example.send_node)
 
             # First parameter to `its` is not metadata.
-            example.send_node.arguments[1..-1]
+            example.send_node.arguments[1..]
           end
 
           def its?(node)

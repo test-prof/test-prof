@@ -143,7 +143,7 @@ module TestProf
           elsif expr.first == :@const
             expr[1]
           elsif expr.first == :const_path_ref
-            expr[1..-1].map(&method(:parse_const)).join("::")
+            expr[1..].map(&method(:parse_const)).join("::")
           end
         end
       end

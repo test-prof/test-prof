@@ -123,7 +123,7 @@ module RuboCop
         def on_block(node)
           example_group_with_several_examples(node) do |all_examples|
             example_clusters(all_examples).each do |_, examples|
-              examples[1..-1].each do |example|
+              examples[1..].each do |example|
                 add_offense(example,
                   location: :expression,
                   message: message_for(example, examples[0]))
@@ -141,7 +141,7 @@ module RuboCop
               range = range_for_replace(examples)
               replacement = aggregated_example(examples, metadata)
               corrector.replace(range, replacement)
-              examples[1..-1].map { |example| drop_example(corrector, example) }
+              examples[1..].map { |example| drop_example(corrector, example) }
             end
           end
         end

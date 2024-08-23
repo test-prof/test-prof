@@ -12,7 +12,7 @@ module TestProf
         head = ((limit - 3) / 2)
         tail = head + 3 - limit
 
-        "#{self[0..(head - 1)]}...#{self[tail..-1]}"
+        "#{self[0..(head - 1)]}...#{self[tail..]}"
       end
     end
   end
