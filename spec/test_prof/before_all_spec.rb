@@ -21,25 +21,21 @@ RSpec.describe TestProf::BeforeAll do
         described_class.adapter = nil
       end
 
-      context "when dry run mode is not enabled" do
-        before do
-          allow(TestProf).to receive(:rspec?).and_return(false)
-          allow(RSpec.configuration).to receive(:dry_run?).and_return(false)
-        end
+      let(:dry_run) { false }
 
-        it "returns the ActiveRecord adapter" do
-          expect(described_class.adapter).to eq(TestProf::BeforeAll::Adapters::ActiveRecord)
-        end
+      before do
+        allow(TestProf).to receive(:dry_run?).and_return(dry_run)
+      end
+
+      it "returns the ActiveRecord adapter" do
+        expect(described_class.adapter).to eq(TestProf::BeforeAll::Adapters::ActiveRecord)
       end
 
       context "when dry run mode is enabled" do
-        before do
-          allow(TestProf).to receive(:rspec?).and_return(true)
-          allow(RSpec.configuration).to receive(:dry_run?).and_return(true)
-        end
+        let(:dry_run) { true }
 
-        it "returns nil" do
-          expect(described_class.adapter).to eq(nil)
+        it "returns NoopAdapter" do
+          expect(described_class.adapter).to eq(TestProf::BeforeAll::NoopAdapter)
         end
       end
     end

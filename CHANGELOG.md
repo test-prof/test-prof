@@ -2,7 +2,8 @@
 
 ## master (unreleased)
 
-## 1.4.1 (2024-08-20)
+## 1.4.1 (2024-08-23)
+
 - Skips loading the ActiveRecord adapter for runs where RSpec --dry-run mode is enabled. ([@devinburnette][])
 
 ## 1.4.0 (2024-08-12)
@@ -437,3 +438,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@lioneldebauge]: https://github.com/lioneldebauge
 [@lHydra]: https://github.com/lHydra
 [@john-h-k]: https://github.com/john-h-k
+[@devinburnette]: https://github.com/devinburnette

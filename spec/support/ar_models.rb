@@ -75,8 +75,8 @@ if multi_db?
     belongs_to :user, dependent: :destroy
   end
 
-  ApplicationRecord.establish_connection
-  CommentsRecord.establish_connection
+  ApplicationRecord.establish_connection unless ENV["DRY_RUN"] == "true"
+  CommentsRecord.establish_connection unless ENV["DRY_RUN"] == "true"
 else
   ActiveRecord::Base.configurations = {test: DB_CONFIG}
   class ApplicationRecord < ActiveRecord::Base
@@ -87,40 +87,42 @@ else
     belongs_to :user, dependent: :destroy
   end
 
-  ActiveRecord::Base.establish_connection(**DB_CONFIG)
+  ActiveRecord::Base.establish_connection(**DB_CONFIG) unless ENV["DRY_RUN"] == "true"
 end
 
-# #truncate_tables is not supported in older Rails, let's just ignore the failures
-ActiveRecord::Base.connection.truncate_tables(*ActiveRecord::Base.connection.tables) rescue nil # rubocop:disable Style/RescueModifier
+unless ENV["DRY_RUN"] == "true"
+  # #truncate_tables is not supported in older Rails, let's just ignore the failures
+  ActiveRecord::Base.connection.truncate_tables(*ActiveRecord::Base.connection.tables) rescue nil # rubocop:disable Style/RescueModifier
 
-ActiveRecord::Schema.define do
-  using_pg = ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
+  ActiveRecord::Schema.define do
+    using_pg = ActiveRecord::Base.connection.adapter_name == "PostgreSQL"
 
-  enable_extension "pgcrypto" if using_pg
+    enable_extension "pgcrypto" if using_pg
 
-  create_table :users, id: (using_pg ? :uuid : :bigint), if_not_exists: true do |t|
-    t.string :name
-    t.string :tag
-  end
-
-  create_table :posts, if_not_exists: true do |t|
-    t.text :text
-    if using_pg
-      t.uuid :user_id
-    else
-      t.bigint :user_id
+    create_table :users, id: (using_pg ? :uuid : :bigint), if_not_exists: true do |t|
+      t.string :name
+      t.string :tag
     end
-    t.foreign_key :users
-    t.timestamps
-  end
-end
 
-ActiveRecord::Base.establish_connection DB_CONFIG_COMMENTS if multi_db?
-ActiveRecord::Schema.define do
-  create_table :comments, if_not_exists: true do |t|
-    t.string :post_id # String because it could be a UUID
-    t.string :user_id # String because it could be a UUID
-    t.string :comment
+    create_table :posts, if_not_exists: true do |t|
+      t.text :text
+      if using_pg
+        t.uuid :user_id
+      else
+        t.bigint :user_id
+      end
+      t.foreign_key :users
+      t.timestamps
+    end
+  end
+
+  ActiveRecord::Base.establish_connection DB_CONFIG_COMMENTS if multi_db?
+  ActiveRecord::Schema.define do
+    create_table :comments, if_not_exists: true do |t|
+      t.string :post_id # String because it could be a UUID
+      t.string :user_id # String because it could be a UUID
+      t.string :comment
+    end
   end
 end
 

@@ -75,6 +75,10 @@ module TestProf
       defined?(::Spring::Application) && (disabled.nil? || disabled.empty? || disabled == "0")
     end
 
+    def dry_run?
+      rspec? && ::RSpec.configuration.dry_run?
+    end
+
     # Returns the current process time
     def now
       Process.clock_gettime_for_test_prof(Process::CLOCK_MONOTONIC)

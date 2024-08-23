@@ -14,6 +14,20 @@ module TestProf
       end
     end
 
+    # Used in dry-run mode
+    class NoopAdapter
+      class << self
+        def begin_transaction(...)
+        end
+
+        def rollback_transaction(...)
+        end
+
+        def setup_fixtures(...)
+        end
+      end
+    end
+
     class << self
       attr_writer :adapter
 
@@ -55,9 +69,9 @@ module TestProf
       private
 
       def default_adapter
-        if defined?(::ActiveRecord::Base)
-          return if TestProf.rspec? && ::RSpec.configuration.dry_run?
+        return NoopAdapter if TestProf.dry_run?
 
+        if defined?(::ActiveRecord::Base)
           require "test_prof/before_all/adapters/active_record"
           Adapters::ActiveRecord
         end

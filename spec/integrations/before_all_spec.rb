@@ -39,6 +39,12 @@ describe "BeforeAll" do
 
       expect(output).to include("0 failures")
     end
+
+    specify "dry-run" do
+      output = run_rspec("before_all", options: "--dry-run", env: {"DRY_RUN" => "true", "DB" => "postgres", "DATABASE_URL" => "postgres://bla-bla-host/test_prof_test"})
+
+      expect(output).to include("0 failures")
+    end
   end
 
   context "Minitest" do
