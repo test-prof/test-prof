@@ -150,7 +150,7 @@ Now, we can narrow our scope further to the top 10 files from the generated repo
 **TIP:** In RSpec, you can mark the slowest examples with a custom tag automatically using the following command:
 
 ```sh
-EVENT_PROF=factory.create EVEN_PROF_STAMP=slow:factory bin/rspec spec/models
+EVENT_PROF=factory.create EVENT_PROF_STAMP=slow:factory bin/rspec spec/models
 ```
 
 ## Step 4. Factories usage
