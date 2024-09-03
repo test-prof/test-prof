@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.4.2 (2024-09-03) 🗓️
+
 - Ignore default scopes in `ActiveRecord::Base#refind`. ([@palkan][])
 
 ## 1.4.1 (2024-08-23)
