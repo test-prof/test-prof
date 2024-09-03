@@ -3,7 +3,7 @@ source "https://rubygems.org"
 gem "rails", github: "rails/rails", branch: "main"
 
 gem "fabrication"
-gem "factory_bot", "~> 5.0"
+gem "factory_bot", "~> 6"
 gem "sqlite3", "~> 2.0"
 gem "sidekiq", "~> 4.0"
 gem "timecop", "~> 0.9.1"
