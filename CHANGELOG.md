@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Ignore default scopes in `ActiveRecord::Base#refind`. ([@palkan][])
+
 ## 1.4.1 (2024-08-23)
 
 - Skips loading the ActiveRecord adapter for runs where RSpec --dry-run mode is enabled. ([@devinburnette][])

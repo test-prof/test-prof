@@ -17,5 +17,17 @@ describe TestProf::Ext::ActiveRecordRefind, :transactional do
       expect(ruser).not_to be_equal user
       expect(ruser.posts.first.text).to eq "clean"
     end
+
+    it "ignores default scopes" do
+      scoped_post_class = Class.new(Post) do
+        default_scope { where.not(text: "dirty") }
+      end
+
+      post = scoped_post_class.create!(text: "dirty")
+
+      rpost = post.refind
+
+      expect(rpost.text).to eq "dirty"
+    end
   end
 end

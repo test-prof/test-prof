@@ -12,7 +12,7 @@ module TestProf
         #
         # We need it to make sure that the state is clean.
         def refind
-          self.class.find(send(self.class.primary_key))
+          self.class.unscoped.find(send(self.class.primary_key))
         end
       end
     end
