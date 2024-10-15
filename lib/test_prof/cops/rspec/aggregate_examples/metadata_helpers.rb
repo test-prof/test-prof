@@ -3,7 +3,7 @@
 module RuboCop
   module Cop
     module RSpec
-      class AggregateExamples < ::RuboCop::Cop::Cop
+      class AggregateExamples < ::RuboCop::Cop::Base
         # @internal
         #   Support methods for example metadata.
         #   Examples with similar metadata are grouped.
