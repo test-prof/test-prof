@@ -105,9 +105,10 @@ module TestProf
       # Do not analyze code within the block
       def ignore
         @ignored = true
-        yield
+        res = yield
       ensure
         @ignored = false
+        res
       end
 
       def ignore!
