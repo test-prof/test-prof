@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Updates Rubocop::Cop code to comply with most modern API. ([@aseroff][])
+
 ## 1.4.2 (2024-09-03) 🗓️
 
 - Ignore default scopes in `ActiveRecord::Base#refind`. ([@palkan][])
