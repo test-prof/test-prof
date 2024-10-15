@@ -5,7 +5,7 @@ require "test_prof/cops/rspec/language"
 module RuboCop
   module Cop
     module RSpec
-      class AggregateExamples < ::RuboCop::Cop::Cop
+      class AggregateExamples < ::RuboCop::Cop::Base
         # @internal
         #   Node matchers and searchers.
         module NodeMatchers
