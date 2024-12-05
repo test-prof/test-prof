@@ -32,7 +32,7 @@ describe TestProf::RSpecStamp do
   end
 
   describe ".apply_tags" do
-    let(:code) { source.split("\n") }
+    let(:code) { source.split("\n").map { _1 + "\n" } }
 
     let(:lines) { [1] }
 
@@ -58,7 +58,7 @@ describe TestProf::RSpecStamp do
 
     specify do
       is_expected.to eq 0
-      expect(code.join("\n")).to eq expected.strip
+      expect(code.join).to eq expected
     end
 
     context "with several examples" do
@@ -98,7 +98,7 @@ describe TestProf::RSpecStamp do
 
       specify do
         is_expected.to eq 0
-        expect(code.join("\n")).to eq expected.strip
+        expect(code.join).to eq expected
       end
 
       context "patch all" do
@@ -122,7 +122,7 @@ describe TestProf::RSpecStamp do
 
         specify do
           is_expected.to eq 0
-          expect(code.join("\n")).to eq expected.strip
+          expect(code.join).to eq expected
         end
       end
     end
@@ -146,7 +146,7 @@ describe TestProf::RSpecStamp do
 
       specify do
         is_expected.to eq 0
-        expect(code.join("\n")).to eq expected.strip
+        expect(code.join).to eq expected
       end
     end
 
@@ -165,7 +165,7 @@ describe TestProf::RSpecStamp do
 
       specify do
         is_expected.to eq 0
-        expect(code.join("\n")).to eq expected.strip
+        expect(code.join).to eq expected
       end
     end
 
@@ -184,7 +184,7 @@ describe TestProf::RSpecStamp do
 
       specify do
         is_expected.to eq 0
-        expect(code.join("\n")).to eq expected.strip
+        expect(code.join).to eq expected
       end
     end
 
@@ -207,7 +207,7 @@ describe TestProf::RSpecStamp do
 
       specify do
         is_expected.to eq 0
-        expect(code.join("\n")).to eq expected.strip
+        expect(code.join).to eq expected
       end
     end
 
@@ -232,7 +232,7 @@ describe TestProf::RSpecStamp do
 
       specify do
         is_expected.to eq 0
-        expect(code.join("\n")).to eq expected.strip
+        expect(code.join).to eq expected
       end
 
       context "with existing tags" do
@@ -254,7 +254,7 @@ describe TestProf::RSpecStamp do
 
         specify do
           is_expected.to eq 0
-          expect(code.join("\n")).to eq expected.strip
+          expect(code.join).to eq expected
         end
       end
 
@@ -279,7 +279,7 @@ describe TestProf::RSpecStamp do
 
         specify do
           is_expected.to eq 0
-          expect(code.join("\n")).to eq expected.strip
+          expect(code.join).to eq expected
         end
       end
     end
@@ -298,7 +298,7 @@ describe TestProf::RSpecStamp do
 
       specify do
         is_expected.to eq 1
-        expect(code.join("\n")).to eq source.strip
+        expect(code.join).to eq source
       end
     end
 
@@ -343,7 +343,7 @@ describe TestProf::RSpecStamp do
 
       specify do
         is_expected.to eq 0
-        expect(code.join("\n")).to eq expected.strip
+        expect(code.join).to eq expected
       end
 
       context "with existing tags" do
@@ -373,7 +373,7 @@ describe TestProf::RSpecStamp do
 
         specify do
           is_expected.to eq 0
-          expect(code.join("\n")).to eq expected.strip
+          expect(code.join).to eq expected
         end
       end
 
@@ -402,7 +402,7 @@ describe TestProf::RSpecStamp do
 
         specify do
           is_expected.to eq 0
-          expect(code.join("\n")).to eq expected.strip
+          expect(code.join).to eq expected
         end
       end
     end
