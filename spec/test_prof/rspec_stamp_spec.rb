@@ -150,6 +150,29 @@ describe TestProf::RSpecStamp do
       end
     end
 
+    context "with escaped single quotes" do
+      let(:source) do
+        <<~CODE
+          it 'has a \\' in the description' do # with comment
+            expect(subject.body).to eq("Not Found")
+          end
+        CODE
+      end
+
+      let(:expected) do
+        <<~CODE
+          it "has a in the description", :todo do # with comment
+            expect(subject.body).to eq("Not Found")
+          end
+        CODE
+      end
+
+      specify do
+        is_expected.to eq 0
+        expect(code.join).to eq expected
+      end
+    end
+
     context "one-liner" do
       let(:source) do
         <<~CODE
