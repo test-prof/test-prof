@@ -57,12 +57,12 @@ if multi_db?
   db_comments_path = File.join(TestProf.config.output_dir, "testdb_comments.sqlite")
   FileUtils.rm(db_comments_path) if File.file?(db_comments_path)
   DB_CONFIG_COMMENTS = {adapter: "sqlite3", database: db_comments_path}
-  ActiveRecord::Base.configurations = {test: {comments: DB_CONFIG_COMMENTS, posts: DB_CONFIG}}
+  ActiveRecord::Base.configurations = {test: {primary: DB_CONFIG, comments: DB_CONFIG_COMMENTS}}
 
   class ApplicationRecord < ActiveRecord::Base
     self.abstract_class = true
 
-    connects_to database: {writing: :posts, reading: :posts}
+    connects_to database: {writing: :primary, reading: :primary}
   end
 
   class CommentsRecord < ApplicationRecord
@@ -124,6 +124,11 @@ unless ENV["DRY_RUN"] == "true"
       t.string :comment
     end
   end
+end
+
+if multi_db?
+  ActiveRecord::Base.establish_connection
+  CommentsRecord.establish_connection DB_CONFIG_COMMENTS
 end
 
 ActiveRecord::Base.logger =

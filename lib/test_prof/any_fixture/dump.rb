@@ -69,7 +69,7 @@ module TestProf
         end
 
         def commit
-          return unless defined?(:@file)
+          return unless instance_variable_defined?(:@file)
 
           file.close
 

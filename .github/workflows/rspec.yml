@@ -24,10 +24,14 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [2.7]
-        gemfile: ["gemfiles/activerecord6.gemfile"]
+        ruby: [3.3]
+        gemfile: ["gemfiles/activerecord8.gemfile"]
         db: ["postgres"]
         include:
+        - ruby: 3.3
+          gemfile: "gemfiles/activerecord8.gemfile"
+          db: "postgres"
+          multi_db: "true"
         - ruby: 3.3
           gemfile: "gemfiles/railsmaster.gemfile"
           db: "mysql"
@@ -39,7 +43,7 @@ jobs:
           db: "sqlite-file"
         - ruby: 3.2
           gemfile: "gemfiles/activerecord7.gemfile"
-          db: "sqlite"
+          db: "sqlite-file"
           multi_db: "true"
         - ruby: 3.1
           gemfile: "gemfiles/activerecord7.gemfile"
@@ -95,4 +99,3 @@ jobs:
     - name: Run RSpec
       run: |
         bundle exec rspec --force-color
-

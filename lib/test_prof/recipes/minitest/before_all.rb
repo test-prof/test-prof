@@ -104,7 +104,7 @@ module TestProf
           if base.respond_to?(:parallelize_teardown)
             base.parallelize_teardown do
               last_klass = ::Minitest.previous_klass
-              if last_klass&.respond_to?(:parallelized) && last_klass&.parallelized
+              if last_klass&.respond_to?(:parallelized) && last_klass.parallelized
                 last_klass.before_all_executor&.deactivate!
               end
             end

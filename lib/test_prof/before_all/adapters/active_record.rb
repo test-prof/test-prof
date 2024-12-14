@@ -10,6 +10,7 @@ module TestProf
         class << self
           if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
             def begin_transaction
+              subscribe!
               ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).each do |pool|
                 pool.pin_connection!(true)
               end
@@ -19,6 +20,26 @@ module TestProf
               ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).each do |pool|
                 pool.unpin_connection!
               end
+              unsubscribe!
+            end
+
+            def subscribe!
+              Thread.current[:before_all_connection_subscriber] = ActiveSupport::Notifications.subscribe("!connection.active_record") do |_, _, _, _, payload|
+                connection_name = payload[:connection_name] if payload.key?(:connection_name)
+                shard = payload[:shard] if payload.key?(:shard)
+                next unless connection_name
+
+                pool = ::ActiveRecord::Base.connection_handler.retrieve_connection_pool(connection_name, shard: shard)
+                next unless pool && pool.role == :writing
+
+                pool.pin_connection!(true)
+              end
+            end
+
+            def unsubscribe!
+              return unless Thread.current[:before_all_connection_subscriber]
+              ActiveSupport::Notifications.unsubscribe(Thread.current[:before_all_connection_subscriber])
+              Thread.current[:before_all_connection_subscriber] = nil
             end
           else
             def all_connections

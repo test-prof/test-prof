@@ -18,6 +18,7 @@ else
     gem "activerecord-jdbcsqlite3-adapter"
   end
 
+  gem "pg"
   gem "activerecord", "~> 7.0"
   gem "actionview"
   gem "actionpack"
