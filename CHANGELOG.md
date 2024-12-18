@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+## 1.4.3 (2024-12-18)
+
+- Fix handling new (lazy) connection pools in `before_all`. ([@palkan][])
+
 - Updates Rubocop::Cop code to comply with most modern API. ([@aseroff][])
 
 ## 1.4.2 (2024-09-03) 🗓️
