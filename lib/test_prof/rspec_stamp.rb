@@ -153,14 +153,16 @@ module TestProf
           end
         end
 
-        replacement = "\\1#{parsed.fname}#{need_parens ? "(" : " "}" \
-                      "#{[desc, tags_str, htags_str].compact.join(", ")}" \
-                      "#{need_parens ? ") " : " "}\\3"
+        replacement = proc do
+          $1 + "#{parsed.fname}#{need_parens ? "(" : " "}" \
+          "#{[desc, tags_str, htags_str].compact.join(", ")}" \
+          "#{need_parens ? ") " : " "}" + $3
+        end
 
         if config.dry_run?
-          log :info, "Patched: #{example.sub(EXAMPLE_RXP, replacement)}"
+          log :info, "Patched: #{example.sub(EXAMPLE_RXP, &replacement)}"
         else
-          example.sub!(EXAMPLE_RXP, replacement)
+          example.sub!(EXAMPLE_RXP, &replacement)
         end
         true
       end

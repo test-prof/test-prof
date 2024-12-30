@@ -161,7 +161,7 @@ describe TestProf::RSpecStamp do
 
       let(:expected) do
         <<~CODE
-          it "has a in the description", :todo do # with comment
+          it "has a \\' in the description", :todo do # with comment
             expect(subject.body).to eq("Not Found")
           end
         CODE
