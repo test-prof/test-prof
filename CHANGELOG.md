@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+## 1.4.4 (2025-01-03)
+
+- Fix _stamping_ specs with single quotes with Rpsec Stamp. ([@elasticspoon][])
+
 ## 1.4.3 (2024-12-18)
 
 - Fix handling new (lazy) connection pools in `before_all`. ([@palkan][])
@@ -449,3 +453,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@lHydra]: https://github.com/lHydra
 [@john-h-k]: https://github.com/john-h-k
 [@devinburnette]: https://github.com/devinburnette
+[@elasticspoon]: https://github.com/elasticspoon
