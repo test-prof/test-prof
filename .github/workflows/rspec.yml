@@ -24,42 +24,42 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        ruby: [3.3]
+        ruby: ["3.3"]
         gemfile: ["gemfiles/activerecord8.gemfile"]
         db: ["postgres"]
         include:
-        - ruby: 3.3
+        - ruby: "3.4"
           gemfile: "gemfiles/activerecord8.gemfile"
           db: "postgres"
           multi_db: "true"
-        - ruby: 3.3
+        - ruby: "3.4"
           gemfile: "gemfiles/railsmaster.gemfile"
           db: "mysql"
-        - ruby: 3.3
+        - ruby: "3.3"
           gemfile: "Gemfile"
           db: "sqlite"
-        - ruby: 3.3
+        - ruby: "3.3"
           gemfile: "gemfiles/activerecord72.gemfile"
           db: "sqlite-file"
-        - ruby: 3.2
+        - ruby: "3.2"
           gemfile: "gemfiles/activerecord7.gemfile"
           db: "sqlite-file"
           multi_db: "true"
-        - ruby: 3.1
+        - ruby: "3.1"
           gemfile: "gemfiles/activerecord7.gemfile"
           db: "postgres"
           multi_db: "true"
-        - ruby: 3.0
+        - ruby: "3.0"
           gemfile: "gemfiles/activerecord6.gemfile"
           db: "sqlite"
           db_url: ~
-        - ruby: 3.0
+        - ruby: "3.0"
           gemfile: "gemfiles/rspecrails4.gemfile"
           db: "sqlite"
-        - ruby: 3.0
+        - ruby: "3.4"
           gemfile: "gemfiles/railsmaster.gemfile"
           db: "sqlite"
-        - ruby: 2.7
+        - ruby: "2.7"
           gemfile: "gemfiles/activerecord60.gemfile"
           db: "postgres"
     services:

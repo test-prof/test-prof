@@ -24,7 +24,7 @@ else
   gem "actionpack"
   gem "activerecord-import"
 
-  gem "factory_bot", "~> 5.0"
+  gem "factory_bot", ">= 6.0"
   gem "fabrication"
 
   gem "sidekiq", "~> 6.0"
