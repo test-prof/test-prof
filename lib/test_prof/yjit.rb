@@ -4,10 +4,11 @@ module TestProf
   # YJIT checker.
   #
   # Complains about YJIT being turned on, as it is designed for production
-  # environments and it is known to slowdown test suites.
+  # environments and is known to slowdown test suites.
   #
   # It is currently not possible to programmatically disable YJIT, only to
-  # enable it. If once it becomes possible, we should disable it by default.
+  # enable it. Once and if disabling becomes possible, we should disable it 
+  # by default.
   #
   # @see https://github.com/rails/rails/pull/53746
   module YJIT
@@ -33,7 +34,7 @@ module TestProf
           MSG
         else
           log(:warn, <<~MSG)
-            Check your code for `RubyVM::YJIT.enable` call, or your scripts for the `--yjit` flag.
+            Check your code for a `RubyVM::YJIT.enable` call, or your scripts for the `--yjit` flag.
           MSG
         end
 
