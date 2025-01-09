@@ -7,7 +7,7 @@ module TestProf
   # environments and is known to slowdown test suites.
   #
   # It is currently not possible to programmatically disable YJIT, only to
-  # enable it. Once and if disabling becomes possible, we should disable it 
+  # enable it. Once and if disabling becomes possible, we should disable it
   # by default.
   #
   # @see https://github.com/rails/rails/pull/53746
