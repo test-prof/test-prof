@@ -4,7 +4,7 @@ describe TestProf::YJIT do
   context "with YJIT usage warning" do
     context "by default" do
       specify "stays silent" do
-        output = run_rspec("sample")
+        output = run_rspec("dummy")
 
         expect(output).to_not include("YJIT")
       end
