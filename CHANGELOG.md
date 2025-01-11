@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add a warning to check if YJIT is enabled, as it is known to slow down test environments. ([@yaroslav][])
+
 ## 1.4.3 (2024-12-18)
 
 - Fix handling new (lazy) connection pools in `before_all`. ([@palkan][])
@@ -449,3 +451,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@lHydra]: https://github.com/lHydra
 [@john-h-k]: https://github.com/john-h-k
 [@devinburnette]: https://github.com/devinburnette
+[@yaroslav]: https://github.com/yaroslav
