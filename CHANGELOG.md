@@ -4,7 +4,7 @@
 
 ## 1.4.4 (2025-01-03)
 
-- Fix _stamping_ specs with single quotes with Rpsec Stamp. ([@elasticspoon][])
+- Fix _stamping_ specs with single quotes with RSpec Stamp. ([@elasticspoon][])
 
 ## 1.4.3 (2024-12-18)
 
