@@ -17,6 +17,16 @@ describe TestProf::FactoryDoctor, :transactional do
     described_class.config.threshold = was_threshold
   end
 
+  let(:debug_queries) { @debug_queries }
+  around do |ex|
+    @debug_queries = []
+    subscriber = ActiveSupport::Notifications.subscribe("sql.active_record") do |_, _, _, _, details|
+      @debug_queries << details[:sql]
+    end
+    ex.run
+    ActiveSupport::Notifications.unsubscribe(subscriber)
+  end
+
   describe "#result" do
     subject(:result) { described_class.result }
 
@@ -26,7 +36,7 @@ describe TestProf::FactoryDoctor, :transactional do
       expect(result).not_to be_bad
       expect(result.count).to eq 0
       expect(result.time).to eq 0
-      expect(result.queries_count).to eq 1
+      expect(result.queries_count).to eq(1), debug_queries.join("\n")
     end
 
     it "detects one useless object" do
@@ -42,7 +52,7 @@ describe TestProf::FactoryDoctor, :transactional do
 
       expect(result).not_to be_bad
       expect(result.count).to eq 1
-      expect(result.queries_count).to eq 1
+      expect(result.queries_count).to eq(1), debug_queries.join("\n")
       expect(result.time).to be > 0
     end
 
@@ -52,7 +62,7 @@ describe TestProf::FactoryDoctor, :transactional do
 
       expect(result).not_to be_bad
       expect(result.count).to eq 1
-      expect(result.queries_count).to eq 1
+      expect(result.queries_count).to eq(1), debug_queries.join("\n")
       expect(result.time).to be > 0
     end
 

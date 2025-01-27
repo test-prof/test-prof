@@ -27,6 +27,7 @@ module TestProf
       pg_attribute|
       pg_namespace|
       show\stables|
+      show\ssearch_path|
       pragma|
       sqlite_master/rollback|
       \ATRUNCATE TABLE|
