@@ -3,6 +3,7 @@
 # Set RAILS_ENV explicitily, so configurations could be picked up
 ENV["RAILS_ENV"] = "test"
 
+require "logger"
 require "active_record"
 require "fabrication"
 require "test_prof"
