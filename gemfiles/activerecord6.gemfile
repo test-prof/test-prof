@@ -8,4 +8,6 @@ gem "sidekiq", "~> 6.0"
 gem "timecop", "~> 0.9.1"
 gem "pg"
 
+gem "logger"
+
 gemspec path: '..'
