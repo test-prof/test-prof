@@ -4,7 +4,7 @@ require "test_prof/ext/float_duration"
 
 module TestProf::FactoryProf
   module Printers
-    module Simple # :nodoc: all
+    class Simple # :nodoc: all
       class << self
         using TestProf::FloatDuration
         include TestProf::Logging
@@ -34,7 +34,7 @@ module TestProf::FactoryProf
           result.stats.each do |stat|
             next if stat[:total_count] < threshold
 
-            msgs << format("%-3s%-20s %8d %11d %13.4fs %17.4fs %18.4fs", *format_args(stat))
+            msgs << formatted(3, 20, stat)
             # move other variation ("[...]") to the end of the array
             sorted_variations = stat[:variations].sort_by.with_index do |variation, i|
               (variation[:name] == "[...]") ? stat[:variations].size + 1 : i
@@ -42,7 +42,7 @@ module TestProf::FactoryProf
             sorted_variations.each do |variation_stat|
               next if variation_stat[:total_count] < threshold
 
-              msgs << format("%-5s%-18s %8d %11d %13.4fs %17.4fs %18.4fs", *format_args(variation_stat))
+              msgs << formatted(5, 18, variation_stat)
             end
           end
 
@@ -51,12 +51,20 @@ module TestProf::FactoryProf
 
         private
 
+        def formatted(indent, name, stat)
+          format(format_string(indent, name), *format_args(stat))
+        end
+
         def format_args(stat)
           time_per_call = stat[:total_time] / stat[:total_count]
           format_args = [""]
           format_args += stat.values_at(:name, :total_count, :top_level_count, :total_time)
           format_args << time_per_call
           format_args << stat[:top_level_time]
+        end
+
+        def format_string(indent, name)
+          "%-#{indent}s%-#{name}s %8d %11d %13.4fs %17.4fs %18.4fs"
         end
       end
     end
