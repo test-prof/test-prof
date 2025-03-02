@@ -41,3 +41,29 @@ describe "User" do
     end
   end
 end
+
+describe "Supercalifragilisticexpialidocious" do
+  let(:factory) { :supercalifragilisticexpialidocious }
+  let(:trait) { :other_trait_with_very_long_name }
+  let(:other_trait) { :traited }
+
+  context "created by factory_bot" do
+    context "with few traits" do
+      let!(:user_with_traits) { TestProf::FactoryBot.create(factory, trait) }
+      let!(:user_with_same_traits) { TestProf::FactoryBot.create(factory, trait) }
+
+      it "works" do
+        expect(true).to eq true
+      end
+    end
+
+    context "with many traits" do
+      let!(:user_over_limit) { TestProf::FactoryBot.create(factory, trait, other_trait, tag: "tag") }
+      let!(:another_user_over_limit) { TestProf::FactoryBot.create(factory, other_trait, tag: "some tag") }
+
+      it "works" do
+        expect(true).to eq true
+      end
+    end
+  end
+end

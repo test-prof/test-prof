@@ -39,6 +39,8 @@ FPROF=1 rspec
 FPROF=1 bundle exec rake test
 ```
 
+If you wish to truncate long names in the output you can do so via `FPROF=truncated`.
+
 ### [_Nate Heckler_](https://twitter.com/nateberkopec/status/1389945187766456333) mode
 
 To encourage you to fix your factories as soon as possible, we also have a special _Nate heckler_ mode.

@@ -71,3 +71,25 @@ describe "Post" do
     end
   end
 end
+
+describe "Supercalifragilisticexpialidocious" do
+  let(:factory) { :supercalifragilisticexpialidocious }
+
+  context "created by factory_bot" do
+    let(:supercali) { TestProf::FactoryBot.create(factory) }
+
+    it "generates random names" do
+      supercali2 = TestProf::FactoryBot.create(factory)
+      expect(supercali.name).not_to eq supercali2.name
+    end
+  end
+
+  context "created by fabrication" do
+    let(:supercali) { Fabricate(factory) }
+
+    it "generates random names" do
+      supercali2 = Fabricate(factory)
+      expect(supercali.name).not_to eq supercali2.name
+    end
+  end
+end
