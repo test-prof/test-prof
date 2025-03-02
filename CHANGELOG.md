@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+- feat: add Printer::SimpleTruncated that truncates overly long names ([@skaestle][])
+
+`FPROF=truncated <your test command>`.
+
 ## 1.4.4 (2025-01-03)
 
 - Fix _stamping_ specs with single quotes with RSpec Stamp. ([@elasticspoon][])

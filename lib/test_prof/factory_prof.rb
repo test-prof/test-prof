@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 require "test_prof/factory_prof/printers/simple"
+require "test_prof/factory_prof/printers/simple_truncated"
 require "test_prof/factory_prof/printers/flamegraph"
 require "test_prof/factory_prof/printers/nate_heckler"
 require "test_prof/factory_prof/printers/json"
@@ -28,6 +29,8 @@ module TestProf
             Printers::NateHeckler
           when "json"
             Printers::Json
+          when "truncated"
+            Printers::SimpleTruncated
           else
             Printers::Simple
           end

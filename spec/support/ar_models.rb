@@ -115,6 +115,11 @@ unless ENV["DRY_RUN"] == "true"
       t.foreign_key :users
       t.timestamps
     end
+
+    create_table :supercalifragilisticexpialidocious, id: (using_pg ? :uuid : :bigint), if_not_exists: true do |t|
+      t.string :name
+      t.string :tag
+    end
   end
 
   ActiveRecord::Base.establish_connection DB_CONFIG_COMMENTS if multi_db?
@@ -155,6 +160,16 @@ class Post < ApplicationRecord
   belongs_to :user
 
   attr_accessor :dirty
+end
+
+class Supercalifragilisticexpialidocious < ApplicationRecord
+  validates :name, presence: true
+
+  def clone
+    copy = dup
+    copy.name = "#{name} (cloned)"
+    copy
+  end
 end
 
 TestProf::FactoryBot.define do
@@ -212,6 +227,18 @@ TestProf::FactoryBot.define do
       end
     end
   end
+
+  factory :supercalifragilisticexpialidocious do
+    sequence(:name) { |n| "John #{n}" }
+
+    trait :traited do
+      tag { "traited" }
+    end
+
+    trait :other_trait_with_very_long_name do
+      tag { "other_trait_with_very_long_name" }
+    end
+  end
 end
 
 Fabricator(:user) do
@@ -225,4 +252,8 @@ end
 
 Fabricator(:alice_post, from: :post) do
   user { Fabricate(:user, name: "Alice") }
+end
+
+Fabricator(:supercalifragilisticexpialidocious) do
+  name { sequence(:name) { |n| "John #{n}" } }
 end
