@@ -2,9 +2,17 @@
 
 ## master (unreleased)
 
-- feat: add Printer::SimpleTruncated that truncates overly long names ([@skaestle][])
+- FactoryProf: Add truncate_names configuration parameter. ([@skaestle][])
 
-`FPROF=truncated <your test command>`.
+Now you can trunacte long factory-names when using the simple output mode.
+
+Set `FPROF_TRUNCATE_NAMES=1` env var or set it through `FactoryProf` configuration:
+
+```ruby
+TestProf::FactoryProf.configure do |config|
+  config.truncate_names = true
+end
+```
 
 ## 1.4.4 (2025-01-03)
 
