@@ -4,12 +4,12 @@ require "test_prof/ext/float_duration"
 
 module TestProf::FactoryProf
   module Printers
-    class Simple # :nodoc: all
+    module Simple # :nodoc: all
       class << self
         using TestProf::FloatDuration
         include TestProf::Logging
 
-        def dump(result, start_time:, threshold:)
+        def dump(result, start_time:, threshold:, truncate_names:)
           return log(:info, "No factories detected") if result.raw_stats == {}
           msgs = []
 
@@ -34,7 +34,7 @@ module TestProf::FactoryProf
           result.stats.each do |stat|
             next if stat[:total_count] < threshold
 
-            msgs << formatted(3, 20, stat)
+            msgs << formatted(3, 20, truncate_names, stat)
             # move other variation ("[...]") to the end of the array
             sorted_variations = stat[:variations].sort_by.with_index do |variation, i|
               (variation[:name] == "[...]") ? stat[:variations].size + 1 : i
@@ -42,7 +42,7 @@ module TestProf::FactoryProf
             sorted_variations.each do |variation_stat|
               next if variation_stat[:total_count] < threshold
 
-              msgs << formatted(5, 18, variation_stat)
+              msgs << formatted(5, 18, truncate_names, variation_stat)
             end
           end
 
@@ -51,8 +51,8 @@ module TestProf::FactoryProf
 
         private
 
-        def formatted(indent, name, stat)
-          format(format_string(indent, name), *format_args(stat))
+        def formatted(indent_len, name_len, truncate_names, stat)
+          format(format_string(indent_len, name_len, truncate_names), *format_args(stat))
         end
 
         def format_args(stat)
@@ -63,8 +63,9 @@ module TestProf::FactoryProf
           format_args << stat[:top_level_time]
         end
 
-        def format_string(indent, name)
-          "%-#{indent}s%-#{name}s %8d %11d %13.4fs %17.4fs %18.4fs"
+        def format_string(indent_len, name_len, truncate_names)
+          name_format = truncate_names ? "#{name_len}.#{name_len}" : name_len.to_s
+          "%-#{indent_len}s%-#{name_format}s %8d %11d %13.4fs %17.4fs %18.4fs"
         end
       end
     end

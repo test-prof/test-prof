@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "test_prof/factory_prof/printers/simple"
-require "test_prof/factory_prof/printers/simple_truncated"
 require "test_prof/factory_prof/printers/flamegraph"
 require "test_prof/factory_prof/printers/nate_heckler"
 require "test_prof/factory_prof/printers/json"
@@ -17,7 +16,8 @@ module TestProf
 
     # FactoryProf configuration
     class Configuration
-      attr_accessor :mode, :printer, :threshold, :include_variations, :variations_limit
+      attr_accessor :mode, :printer, :threshold, :include_variations, :variations_limit,
+        :truncate_names
 
       def initialize
         @mode = (ENV["FPROF"] == "flamegraph") ? :flamegraph : :simple
@@ -37,6 +37,7 @@ module TestProf
         @threshold = ENV.fetch("FPROF_THRESHOLD", 0).to_i
         @include_variations = ENV["FPROF_VARS"] == "1"
         @variations_limit = ENV.fetch("FPROF_VARIATIONS_LIMIT", 2).to_i
+        @truncate_names = ENV["FPROF_TRUNCATE_NAMES"] == "1"
       end
 
       # Whether we want to generate flamegraphs
@@ -123,7 +124,7 @@ module TestProf
       def print(started_at)
         printer = config.printer
 
-        printer.dump(result, start_time: started_at, threshold: config.threshold)
+        printer.dump(result, start_time: started_at, threshold: config.threshold, truncate_names: config.truncate_names)
       end
 
       def start
