@@ -57,6 +57,48 @@ describe "FactoryProf" do
       expect(output).not_to match(/\s+post\s+10\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n/)
     end
 
+    specify "simple printer truncated", :aggregate_failures do
+      output = run_rspec("factory_prof", env: {"FPROF" => "1", "FPROF_TRUNCATE_NAMES" => "1"})
+      expect(output).to include("FactoryProf enabled (simple mode)")
+
+      expect(output).to include("Factories usage")
+      expect(output).to match(/Total: 30\n\s+Total top-level: 18\n\s+Total time: \d{2}+:\d{2}\.\d{3} \(out of \d{2}+:\d{2}\.\d{3}\)\n\s+Total uniq factories: 3/)
+      expect(output).to match(/name\s+total\s+top-level\s+total time\s+time per call\s+top-level time/)
+      expect(output).to match(
+        /
+          user\s+16\s+8\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+post\s+10\s+6\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+supercalifragilis...\s+4\s+4\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+        /x
+      )
+    end
+
+    specify "simple printer truncated with variations", :aggregate_failures do
+      output = run_rspec("factory_prof_with_variations", env: {"FPROF" => "1", "FPROF_TRUNCATE_NAMES" => "1", "FPROF_VARS" => "1", "FPROF_VARIATIONS_LIMIT" => "2"})
+
+      expect(output).to include("FactoryProf enabled (simple mode)")
+
+      expect(output).to include("Factories usage")
+      expect(output).to match(/Total: 29\n\s+Total top-level: 13\n\s+Total time: \d{2}+:\d{2}\.\d{3} \(out of \d{2}+:\d{2}\.\d{3}\)\n\s+Total uniq factories: 3/)
+      expect(output).to match(/name\s+total\s+top-level\s+total time\s+time per call\s+top-level time/)
+      expect(output).to match(
+        /
+          user\s+15\s+7\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+-\s+9\s+1\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+.traited.with_p...\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+\[name\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+\[...\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+post\s+10\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+-\s+8\s+0\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+\[text,\suser\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s
+          \s+supercalifragilis...\s+4\s+4\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+.other_trait_wi...\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+.traited\[tag\]\s+1\s+1\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+          \s+\[...\]\s+1\s+1\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
+        /x
+      )
+    end
+
     specify "flamegraph printer" do
       output = run_rspec("factory_prof", env: {"FPROF" => "flamegraph"})
 
@@ -110,48 +152,6 @@ describe "FactoryProf" do
         expect(output).to include("No factories detected")
         expect(output).not_to include("[TEST PROF ERROR]")
       end
-    end
-
-    specify "simple printer truncated", :aggregate_failures do
-      output = run_rspec("factory_prof", env: {"FPROF" => "truncated"})
-      expect(output).to include("FactoryProf enabled (simple mode)")
-
-      expect(output).to include("Factories usage")
-      expect(output).to match(/Total: 30\n\s+Total top-level: 18\n\s+Total time: \d{2}+:\d{2}\.\d{3} \(out of \d{2}+:\d{2}\.\d{3}\)\n\s+Total uniq factories: 3/)
-      expect(output).to match(/name\s+total\s+top-level\s+total time\s+time per call\s+top-level time/)
-      expect(output).to match(
-        /
-          user\s+16\s+8\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+post\s+10\s+6\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+supercalifragilis...\s+4\s+4\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-        /x
-      )
-    end
-
-    specify "simple printer truncated with variations", :aggregate_failures do
-      output = run_rspec("factory_prof_with_variations", env: {"FPROF" => "truncated", "FPROF_VARS" => "1", "FPROF_VARIATIONS_LIMIT" => "2"})
-
-      expect(output).to include("FactoryProf enabled (simple mode)")
-
-      expect(output).to include("Factories usage")
-      expect(output).to match(/Total: 29\n\s+Total top-level: 13\n\s+Total time: \d{2}+:\d{2}\.\d{3} \(out of \d{2}+:\d{2}\.\d{3}\)\n\s+Total uniq factories: 3/)
-      expect(output).to match(/name\s+total\s+top-level\s+total time\s+time per call\s+top-level time/)
-      expect(output).to match(
-        /
-          user\s+15\s+7\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+-\s+9\s+1\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+.traited.with_p...\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+\[name\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+\[...\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+post\s+10\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+-\s+8\s+0\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+\[text,\suser\]\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s
-          \s+supercalifragilis...\s+4\s+4\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+.other_trait_wi...\s+2\s+2\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+.traited\[tag\]\s+1\s+1\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-          \s+\[...\]\s+1\s+1\s+(\d+\.\d{4}s\s+){2}\d+\.\d{4}s\n
-        /x
-      )
     end
   end
 end

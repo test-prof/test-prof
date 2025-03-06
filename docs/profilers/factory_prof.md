@@ -159,6 +159,27 @@ TestProf::FactoryProf.configure do |config|
 end
 ```
 
+### Truncate long factory-names
+
+When running FactoryProf on a codebase with long factory names, the table layout may break. To avoid this you can allow FactoryProf to truncate these names
+
+To use truncation set `FPROF_TRUNCATE_NAMES` environment variable to `1`:
+
+```sh
+FPROF=1 FPROF_TRUNCATE_NAMES=1 rspec
+
+# or
+FPROF=1 FPROF_TRUNCATE_NAMES=1 bundle exec rake test
+```
+
+Or you can set the threshold parameter through the `FactoryProf` configuration:
+
+```ruby
+TestProf::FactoryProf.configure do |config|
+  config.truncate_names = true
+end
+```
+
 ## Factory Flamegraph
 
 The most useful feature of FactoryProf is the _FactoryFlame_ report. That's the special interpretation of Brendan Gregg's [flame graphs](http://www.brendangregg.com/flamegraphs.html) which allows you to identify _factory cascades_.

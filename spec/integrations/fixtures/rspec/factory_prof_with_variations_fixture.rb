@@ -49,8 +49,8 @@ describe "Supercalifragilisticexpialidocious" do
 
   context "created by factory_bot" do
     context "with few traits" do
-      let!(:user_with_traits) { TestProf::FactoryBot.create(factory, trait) }
-      let!(:user_with_same_traits) { TestProf::FactoryBot.create(factory, trait) }
+      let!(:super_with_traits) { TestProf::FactoryBot.create(factory, trait) }
+      let!(:super_with_same_traits) { TestProf::FactoryBot.create(factory, trait) }
 
       it "works" do
         expect(true).to eq true
@@ -58,8 +58,8 @@ describe "Supercalifragilisticexpialidocious" do
     end
 
     context "with many traits" do
-      let!(:user_over_limit) { TestProf::FactoryBot.create(factory, trait, other_trait, tag: "tag") }
-      let!(:another_user_over_limit) { TestProf::FactoryBot.create(factory, other_trait, tag: "some tag") }
+      let!(:super_over_limit) { TestProf::FactoryBot.create(factory, trait, other_trait, tag: "tag") }
+      let!(:another_super_over_limit) { TestProf::FactoryBot.create(factory, other_trait, tag: "some tag") }
 
       it "works" do
         expect(true).to eq true
