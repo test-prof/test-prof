@@ -29,8 +29,6 @@ module TestProf
             Printers::NateHeckler
           when "json"
             Printers::Json
-          when "truncated"
-            Printers::SimpleTruncated
           else
             Printers::Simple
           end

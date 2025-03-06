@@ -39,8 +39,6 @@ FPROF=1 rspec
 FPROF=1 bundle exec rake test
 ```
 
-If you wish to truncate long names in the output you can do so via `FPROF=truncated`.
-
 ### [_Nate Heckler_](https://twitter.com/nateberkopec/status/1389945187766456333) mode
 
 To encourage you to fix your factories as soon as possible, we also have a special _Nate heckler_ mode.
@@ -161,7 +159,7 @@ end
 
 ### Truncate long factory-names
 
-When running FactoryProf on a codebase with long factory names, the table layout may break. To avoid this you can allow FactoryProf to truncate these names
+When running FactoryProf on a codebase with long factory names, the table layout may break. To avoid this you can allow FactoryProf to truncate these names.
 
 To use truncation set `FPROF_TRUNCATE_NAMES` environment variable to `1`:
 
@@ -172,7 +170,7 @@ FPROF=1 FPROF_TRUNCATE_NAMES=1 rspec
 FPROF=1 FPROF_TRUNCATE_NAMES=1 bundle exec rake test
 ```
 
-Or you can set the threshold parameter through the `FactoryProf` configuration:
+Or you can set the truncate_names parameter through the `FactoryProf` configuration:
 
 ```ruby
 TestProf::FactoryProf.configure do |config|
