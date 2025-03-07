@@ -4,7 +4,7 @@
 
 - FactoryProf: Add truncate_names configuration parameter. ([@skaestle][])
 
-Now you can trunacte long factory-names when using the simple output mode.
+Now you can truncate long factory-names when using the simple output mode.
 
 Set `FPROF_TRUNCATE_NAMES=1` env var or set it through `FactoryProf` configuration:
 
