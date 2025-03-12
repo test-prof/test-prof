@@ -35,7 +35,7 @@ module TestProf::TagProf
             )
           end
 
-          header << format(
+          header << format( # rubocop:disable Style/RedundantFormat
             "%6s  %6s  %6s  %12s",
             "total", "%total", "%time", "avg"
           )
