@@ -120,7 +120,7 @@ At the end of the test run, you will see the message from Test Prof including th
 [TEST PROF INFO] Vernier report generated: tmp/test_prof/vernier-report-wall-raw-total.json
 ```
 
-Use the [profile-viewer](https://github.com/tenderlove/profiler/tree/ruby) gem or upload your profiles to [profiler.firefox.com](https://profiler.firefox.com).
+Use the [profile-viewer](https://github.com/tenderlove/profiler/tree/ruby) gem or upload your profiles to [vernier.prof](https://vernier.prof). Alternatively, you can use [profiler.firefox.com](https://profiler.firefox.com) which profile-viewer is a fork of.
 
 ### Profiling individual examples with Vernier
 
