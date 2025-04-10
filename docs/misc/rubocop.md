@@ -2,25 +2,28 @@
 
 TestProf comes with the [RuboCop](https://github.com/bbatsov/rubocop) cops that help you write more performant tests.
 
-To enable them, require `test_prof/rubocop` in your RuboCop configuration:
+To enable them, add `test_prof/rubocop` in your RuboCop configuration:
 
 ```yml
 # .rubocop.yml
-require:
+plugins:
  - 'test_prof/rubocop'
 ```
+
+Or you can just use it dynamically:
+
+```sh
+bundle exec rubocop --plugin 'test_prof/rubocop' --only RSpec/AggregateExamples
+```
+
+> [!NOTE]
+> The plugin system is supported in RuboCop 1.72+. In earlier versions, use `require` instead of `plugins`.
 
 To configure cops to your needs:
 
 ```yml
 RSpec/AggregateExamples:
   AddAggregateFailuresMetadata: false
-```
-
-Or you can just require it dynamically:
-
-```sh
-bundle exec rubocop -r 'test_prof/rubocop' --only RSpec/AggregateExamples
 ```
 
 ## RSpec/AggregateExamples
