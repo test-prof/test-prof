@@ -3,6 +3,7 @@
 ## master (unreleased)
 
 - FactoryProf: Add truncate_names configuration parameter. ([@skaestle][])
+- Update Rubocop setup to support new plugins system. ([@julianpasquale])
 
 Now you can truncate long factory-names when using the simple output mode.
 
