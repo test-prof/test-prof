@@ -8,7 +8,11 @@ require "rspec/rails"
 require_relative "../../support/ar_models"
 
 RSpec.configure do |config|
-  config.fixture_path = File.join(__dir__, "fixtures")
+  if config.respond_to?(:fixture_paths)
+    config.fixture_paths = [File.join(__dir__, "fixtures")]
+  else
+    config.fixture_path = File.join(__dir__, "fixtures")
+  end
   config.use_transactional_fixtures = true
 end
 

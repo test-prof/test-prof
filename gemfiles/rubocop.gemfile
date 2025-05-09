@@ -1,5 +1,5 @@
 source "https://rubygems.org" do
-  gem "rubocop-md", "~> 1.0"
+  gem "rubocop-md", "~> 2.0"
   gem "standard", "~> 1.0"
   gem "lint_roller", "~> 1.0"
 end

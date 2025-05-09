@@ -13,7 +13,11 @@ require "test_prof/recipes/rspec/before_all"
 require "test_prof/recipes/rspec/let_it_be"
 
 RSpec.configure do |config|
-  config.fixture_path = File.join(__dir__, "fixtures")
+  if config.respond_to?(:fixture_paths)
+    config.fixture_paths = [File.join(__dir__, "fixtures")]
+  else
+    config.fixture_path = File.join(__dir__, "fixtures")
+  end
   config.use_transactional_fixtures = true
 end
 
