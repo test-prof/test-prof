@@ -7,7 +7,7 @@
 
 **Ruby Version:**
 
-**Framework Version (RSpec, Minitest, FactoryGirl, Rails, whatever):**
+**Framework Version (RSpec, Minitest, FactoryBot, Rails, whatever):**
 
 **TestProf Version:**
 

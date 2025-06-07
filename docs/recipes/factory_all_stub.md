@@ -1,10 +1,10 @@
 # FactoryAllStub
 
-_Factory All Stub_ is a spell to force FactoryBot/FactoryGirl use only `build_stubbed` strategy (even if you call `create` or `build`).
+_Factory All Stub_ is a spell to force FactoryBot use only `build_stubbed` strategy (even if you call `create` or `build`).
 
 The idea behind it is to quickly fix [Factory Doctor](../profilers/factory_doctor.md) offenses (and even do that automatically).
 
-**NOTE**. Only works with FactoryGirl/FactoryBot. Should be considered only as a temporary specs fix.
+**NOTE**. Only works with FactoryBot. Should be considered only as a temporary specs fix.
 
 ## Instructions
 
