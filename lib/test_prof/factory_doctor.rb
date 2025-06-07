@@ -71,7 +71,7 @@ module TestProf
 
         log :info, "FactoryDoctor enabled (event: \"#{config.event}\", threshold: #{config.threshold})"
 
-        # Monkey-patch FactoryBot / FactoryGirl
+        # Monkey-patch FactoryBot
         TestProf::FactoryBot::FactoryRunner.prepend(FactoryBotPatch) if
           defined?(TestProf::FactoryBot)
 
