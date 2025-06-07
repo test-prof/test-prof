@@ -3,7 +3,7 @@
 One common bad pattern that slows our tests down is unnecessary database manipulation. Consider a _bad_ example:
 
 ```ruby
-# with FactoryBot/FactoryGirl
+# with FactoryBot
 it "validates name presence" do
   user = create(:user)
   user.name = ""
@@ -21,7 +21,7 @@ end
 Here we create a new user record, run all callbacks and validations and save it to the database. We don't need all these! Here is a _good_ example:
 
 ```ruby
-# with FactoryBot/FactoryGirl
+# with FactoryBot
 it "validates name presence" do
   user = build_stubbed(:user)
   user.name = ""
@@ -36,7 +36,7 @@ it "validates name presence" do
 end
 ```
 
-Read more about [`build_stubbed`](https://robots.thoughtbot.com/use-factory-girls-build-stubbed-for-a-faster-test).
+Read more about [`build_stubbed`](https://thoughtbot.com/blog/use-factory-bots-build-stubbed-for-a-faster-test).
 
 FactoryDoctor is a tool that helps you identify such _bad_ tests, i.e. tests that perform unnecessary database queries.
 
@@ -73,7 +73,7 @@ end
 
 FactoryDoctor supports:
 
-- FactoryGirl/FactoryBot
+- FactoryBot
 - Fabrication.
 
 ### RSpec
