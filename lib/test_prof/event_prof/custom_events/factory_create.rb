@@ -29,7 +29,7 @@ TestProf::EventProf::CustomEvents.register("factory.create") do
     TestProf.log(
       :error,
       <<~MSG
-        Failed to load factory_bot / factory_girl / fabrication.
+        Failed to load factory_bot / fabrication.
 
         Make sure that any of them is in your Gemfile.
       MSG

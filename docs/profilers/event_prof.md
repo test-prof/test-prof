@@ -155,9 +155,9 @@ end
 
 ### `"factory.create"`
 
-FactoryGirl provides its own instrumentation ('factory_girl.run_factory'); but there is a caveat – it fires an event every time a factory is used, even when we use factory for nested associations. Thus it's not possible to calculate the total time spent in factories due to the double calculation.
+FactoryBot provides its own instrumentation ('factory_bot.run_factory'); but there is a caveat – it fires an event every time a factory is used, even when we use factory for nested associations. Thus it's not possible to calculate the total time spent in factories due to the double calculation.
 
-EventProf comes with a little patch for FactoryGirl which provides instrumentation only for top-level `FactoryGirl.create` calls. It is loaded automatically if you use `"factory.create"` event:
+EventProf comes with a little patch for FactoryBot which provides instrumentation only for top-level `FactoryBot.create` calls. It is loaded automatically if you use `"factory.create"` event:
 
 ```sh
 EVENT_PROF=factory.create bundle exec rspec

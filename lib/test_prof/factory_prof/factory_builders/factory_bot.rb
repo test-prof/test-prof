@@ -12,7 +12,7 @@ module TestProf
       class FactoryBot
         using TestProf::FactoryBotStrategy
 
-        # Monkey-patch FactoryBot / FactoryGirl
+        # Monkey-patch FactoryBot
         def self.patch
           TestProf::FactoryBot::FactoryRunner.prepend(FactoryBotPatch) if
             defined? TestProf::FactoryBot

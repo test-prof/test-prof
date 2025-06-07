@@ -23,11 +23,11 @@ It shows both the total number of the factory runs and the number of _top-level_
 
 It also shows the time spent generating records with factories and the amount of time taken per factory call.
 
-**NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryGirl/FactoryBot these are the factories provided by using `create` strategy. In case of Fabrication - objects that created using `create` method.
+**NOTE**: FactoryProf only tracks the database-persisted factories. In case of FactoryBot these are the factories provided by using `create` strategy. In case of Fabrication - objects that created using `create` method.
 
 ## Instructions
 
-FactoryProf can be used with FactoryGirl/FactoryBot or Fabrication - application can be bundled with both gems at the same time.
+FactoryProf can be used with FactoryBot or Fabrication - application can be bundled with both gems at the same time.
 
 To activate FactoryProf use `FPROF` environment variable:
 
