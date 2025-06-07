@@ -12,7 +12,7 @@ module TestProf
 
     class << self
       def init
-        # Monkey-patch FactoryBot / FactoryGirl
+        # Monkey-patch FactoryBot
         TestProf::FactoryBot::FactoryRunner.prepend(FactoryBotPatch) if
           defined?(TestProf::FactoryBot)
       end

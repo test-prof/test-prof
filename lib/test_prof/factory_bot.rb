@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
 module TestProf # :nodoc: all
-  FACTORY_GIRL_NAMES = {"factory_bot" => "::FactoryBot", "factory_girl" => "::FactoryGirl"}.freeze
-
   TestProf.require("active_support")
 
-  FACTORY_GIRL_NAMES.find do |name, cname|
-    TestProf.require(name) do
-      TestProf::FactoryBot = Object.const_get(cname)
-    end
+  TestProf.require("factory_bot") do
+    TestProf::FactoryBot = Object.const_get("::FactoryBot")
   end
 end
