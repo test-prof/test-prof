@@ -24,6 +24,11 @@ module TestProf
             end
 
             def subscribe!
+              Thread.current[:before_all_subscription_count] ||= 0
+              Thread.current[:before_all_subscription_count] += 1
+
+              return unless Thread.current[:before_all_subscription_count] == 1
+
               Thread.current[:before_all_connection_subscriber] = ActiveSupport::Notifications.subscribe("!connection.active_record") do |_, _, _, _, payload|
                 connection_name = payload[:connection_name] if payload.key?(:connection_name)
                 shard = payload[:shard] if payload.key?(:shard)
@@ -37,7 +42,10 @@ module TestProf
             end
 
             def unsubscribe!
-              return unless Thread.current[:before_all_connection_subscriber]
+              Thread.current[:before_all_subscription_count] -= 1
+
+              return unless Thread.current[:before_all_subscription_count] == 0 && Thread.current[:before_all_connection_subscriber]
+
               ActiveSupport::Notifications.unsubscribe(Thread.current[:before_all_connection_subscriber])
               Thread.current[:before_all_connection_subscriber] = nil
             end
