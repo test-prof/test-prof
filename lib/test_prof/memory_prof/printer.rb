@@ -7,6 +7,7 @@ module TestProf
   module MemoryProf
     class Printer
       include Logging
+
       using StringTruncate
 
       def initialize(tracker)

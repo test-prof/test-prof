@@ -10,6 +10,7 @@ require "test_prof/recipes/minitest/before_all"
 describe "database connection owner" do
   describe "with before_all" do
     include TestProf::BeforeAll::Minitest
+
     before_all {}
 
     it "uses the connection owned by main thread" do

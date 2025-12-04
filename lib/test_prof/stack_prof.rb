@@ -72,7 +72,7 @@ module TestProf
 
         @locked = true
 
-        log :info, "StackProf#{config.raw? ? " (raw)" : ""} enabled globally: " \
+        log :info, "StackProf#{" (raw)" if config.raw?} enabled globally: " \
                    "mode – #{config.mode}, target – #{config.target}"
 
         at_exit { dump("total") } if config.suite?
@@ -125,7 +125,7 @@ module TestProf
 
       def build_path(name)
         TestProf.artifact_path(
-          "stack-prof-report-#{config.mode}#{config.raw ? "-raw" : ""}-#{name}.dump"
+          "stack-prof-report-#{config.mode}#{"-raw" if config.raw}-#{name}.dump"
         )
       end
 

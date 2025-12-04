@@ -7,6 +7,7 @@ module TestProf::TagProf
     module Simple # :nodoc: all
       class << self
         include TestProf::Logging
+
         using TestProf::FloatDuration
 
         def dump(result)

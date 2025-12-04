@@ -8,6 +8,7 @@ module TestProf
     module Reporter
       class Text
         include Logging
+
         using FloatDuration
         using StringTruncate
 

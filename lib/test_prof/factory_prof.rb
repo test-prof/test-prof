@@ -160,7 +160,7 @@ module TestProf
 
       def variation_name(variation)
         return "-" if variation.empty?
-        variations_count = variation.to_s.scan(/[\w]+/).size
+        variations_count = variation.to_s.scan(/\w+/).size
         return "[...]" if variations_count > config.variations_limit
 
         variation

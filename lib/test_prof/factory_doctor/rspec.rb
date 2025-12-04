@@ -6,6 +6,7 @@ module TestProf
   module FactoryDoctor
     class RSpecListener # :nodoc:
       include Logging
+
       using FloatDuration
 
       SUCCESS_MESSAGE = 'FactoryDoctor says: "Looks good to me!"'

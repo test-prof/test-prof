@@ -6,6 +6,7 @@ module TestProf
   module RSpecDissect
     class Listener # :nodoc:
       include Logging
+
       using FloatDuration
 
       NOTIFICATIONS = %i[

@@ -7,6 +7,7 @@ module TestProf
   module EventProf
     class RSpecListener # :nodoc:
       include Logging
+
       using FloatDuration
       using StringTruncate
 
