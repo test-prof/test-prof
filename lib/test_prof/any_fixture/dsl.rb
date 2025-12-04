@@ -44,7 +44,7 @@ module TestProf
       # - https://bugs.ruby-lang.org/issues/13446
       # - Rails added `Kernel.prepend` in 6.1: https://github.com/rails/rails/commit/3124007bd674dcdc9c3b5c6b2964dfb7a1a0733c
       refine ::Object do
-        if RUBY_VERSION >= "3.3.0"
+        if RUBY_VERSION >= "3.1.0"
           import_methods Methods
         else
           include Methods
