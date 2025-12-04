@@ -22,7 +22,7 @@ describe "Logging" do
       expect(output).not_to include("USER: b")
     end
 
-    specify "tegs", :aggregate_failures do
+    specify "tags", :aggregate_failures do
       output = run_rspec("logging", env: {"LOG" => "ar"}, options: "--tag test:tags")
 
       expect(output).to include("examples, 0 failures")

@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Logging: support Rails 8.2 structured events based logging. ([@palkan][])
+
 - Allow using AnyFixture DSL through module inclusion, not refinements. ([@palkan][])
 
 In Rails 7.2+, refined `#fixture` no longer works since there is a same-called method. So, from now on we recommend including the DSL module, instead of _using_ it.

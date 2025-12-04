@@ -84,16 +84,30 @@ module TestProf
 
       # Enable verbose Rails logging within a block
       def with_logging
+        if ::ActiveSupport.respond_to?(:event_reporter)
+          @was_events_debug_mode = ActiveSupport.event_reporter.debug_mode?
+          ::ActiveSupport.event_reporter.debug_mode = true
+        end
         *loggers = LoggingHelpers.swap_logger(LoggingHelpers.all_loggables)
         yield
       ensure
+        if ::ActiveSupport.respond_to?(:event_reporter)
+          ::ActiveSupport.event_reporter.debug_mode = @was_events_debug_mode
+        end
         LoggingHelpers.restore_logger(loggers, LoggingHelpers.all_loggables)
       end
 
       def with_ar_logging
+        if ::ActiveSupport.respond_to?(:event_reporter)
+          @was_events_debug_mode = ActiveSupport.event_reporter.debug_mode?
+          ::ActiveSupport.event_reporter.debug_mode = true
+        end
         *loggers = LoggingHelpers.swap_logger(LoggingHelpers.ar_loggables)
         yield
       ensure
+        if ::ActiveSupport.respond_to?(:event_reporter)
+          ::ActiveSupport.event_reporter.debug_mode = @was_events_debug_mode
+        end
         LoggingHelpers.restore_logger(loggers, LoggingHelpers.ar_loggables)
       end
     end
@@ -124,10 +138,16 @@ end
 
 TestProf.activate("LOG", "all") do
   TestProf.log :info, "Rails verbose logging enabled"
+  if ::ActiveSupport.respond_to?(:event_reporter)
+    ::ActiveSupport.event_reporter.debug_mode = true
+  end
   TestProf::Rails::LoggingHelpers.swap_logger!(TestProf::Rails::LoggingHelpers.all_loggables)
 end
 
 TestProf.activate("LOG", "ar") do
   TestProf.log :info, "Active Record verbose logging enabled"
+  if ::ActiveSupport.respond_to?(:event_reporter)
+    ::ActiveSupport.event_reporter.debug_mode = true
+  end
   TestProf::Rails::LoggingHelpers.swap_logger!(TestProf::Rails::LoggingHelpers.ar_loggables)
 end
