@@ -42,6 +42,8 @@ module TestProf
             end
 
             def unsubscribe!
+              return unless Thread.current[:before_all_subscription_count]
+
               Thread.current[:before_all_subscription_count] -= 1
 
               return unless Thread.current[:before_all_subscription_count] == 0 && Thread.current[:before_all_connection_subscriber]
