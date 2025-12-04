@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+- Allow using AnyFixture DSL through module inclusion, not refinements. ([@palkan][])
+
+In Rails 7.2+, refined `#fixture` no longer works since there is a same-called method. So, from now on we recommend including the DSL module, instead of _using_ it.
+
 ## 1.4.5. (2025-05-09) 🎇
 
 - FactoryProf: Add truncate_names configuration parameter. ([@skaestle][])

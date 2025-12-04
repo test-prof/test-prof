@@ -5,9 +5,9 @@ require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 require "test_prof/recipes/rspec/any_fixture"
 
-using TestProf::AnyFixture::DSL
-
 shared_context "user", user: true do
+  include TestProf::AnyFixture::DSL
+
   before(:all) do
     @user = fixture(:user) do
       TestProf::FactoryBot.create(:user)

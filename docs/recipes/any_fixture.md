@@ -89,8 +89,15 @@ We provide an optional _syntactic sugar_ (through Refinement) to make it easier 
 ```ruby
 require "test_prof/any_fixture/dsl"
 
-# Enable DSL
-using TestProf::AnyFixture::DSL
+# Enable DSL in RSpec
+RSpec.configure do |config|
+  config.include TestProf::AnyFixture::DSL
+end
+
+# Minitest
+class MyBaseTestCase < Minitest::Test
+  include TestProf::AnyFixture::DSL
+end
 
 # and then you can use `fixture` method (which is just an alias for `TestProf::AnyFixture.register`)
 before(:all) { fixture(:account) { create(:account) } }

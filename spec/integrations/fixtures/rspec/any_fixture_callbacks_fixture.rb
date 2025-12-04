@@ -5,11 +5,12 @@ require_relative "../../../support/ar_models"
 require "test_prof/recipes/rspec/any_fixture"
 
 require "test_prof/any_fixture/dsl"
-using TestProf::AnyFixture::DSL
 
 shared_context "user_and_post", user_and_post: true do
+  include TestProf::AnyFixture::DSL
+
   before(:all) do
-    @user = fixture(:user) do
+    @user = any_fixture(:user) do
       TestProf::FactoryBot.create(:user)
     end
   end
@@ -21,7 +22,7 @@ end
 
 describe "before_fixtures_reset callback", :user_and_post do
   before(:all) do
-    before_fixtures_reset do
+    before_any_fixtures_reset do
       Post.delete_all
     end
   end
@@ -33,7 +34,7 @@ end
 
 describe "after_fixtures_reset callback", :user_and_post do
   before(:all) do
-    after_fixtures_reset do
+    after_any_fixtures_reset do
       Post.delete_all
     end
   end
