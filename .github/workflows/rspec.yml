@@ -59,9 +59,6 @@ jobs:
         - ruby: "3.4"
           gemfile: "gemfiles/railsmaster.gemfile"
           db: "sqlite"
-        - ruby: "2.7"
-          gemfile: "gemfiles/activerecord60.gemfile"
-          db: "postgres"
     services:
       postgres:
         image: postgres:latest
