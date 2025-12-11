@@ -49,7 +49,7 @@ module IntegrationHelpers
     fullpath = File.join(__dir__, "../integrations/fixtures/rubocop", "#{path}_fixture.rb")
     test_prof_lib = File.join(__dir__, "../../lib")
 
-    command = "rubocop -r test_prof/rubocop.rb --force-default-config --only #{cop} #{fullpath} 2>&1"
+    command = "bundle exec rubocop --plugin test-prof --force-default-config --only #{cop} #{fullpath} 2>&1"
 
     output, err, _status = Open3.capture3(
       {"RUBYOPT" => "-I#{test_prof_lib}"},

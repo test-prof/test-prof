@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require "cop_helper"
-require "test_prof/cops/rspec/aggregate_examples"
+require "rubocop/test_prof/cops/rspec/aggregate_examples"
 
 RSpec.describe RuboCop::Cop::RSpec::AggregateExamples,
   ".matchers_with_side_effects", :config do

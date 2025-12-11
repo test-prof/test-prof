@@ -2,6 +2,10 @@
 
 ## master (unreleased)
 
+- Fix RuboCop plugin. ([@palkan][])
+
+Now you should use `--plugin test-prof` or `plugins: [test-prof]` (in YAML) (so LintRoller can correctly obtain the plugin class name from the gemspec).
+
 ## 1.5.0 (2025-12-04)
 
 - Logging: support Rails 8.2 structured events based logging. ([@palkan][])

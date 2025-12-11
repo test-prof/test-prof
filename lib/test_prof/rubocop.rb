@@ -1,13 +1,14 @@
 # frozen_string_literal: true
 
-require "test_prof/utils"
-supported = TestProf::Utils.verify_gem_version("rubocop", at_least: "0.51.0")
-unless supported
-  warn "TestProf cops require RuboCop >= 0.51.0 to run."
-  return
-end
+warn <<~MSG
+  !!!
 
-require "rubocop"
+  Please, update your .rubocop.yml configuration to load TestProf plugin as follows (and fix the error below):
 
-require "test_prof/cops/plugin"
-require "test_prof/cops/rspec/aggregate_examples"
+  plugins:
+    - test-prof
+
+  !!!
+
+
+MSG

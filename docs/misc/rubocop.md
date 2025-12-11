@@ -1,19 +1,19 @@
 # Custom RuboCop Cops
 
-TestProf comes with the [RuboCop](https://github.com/bbatsov/rubocop) cops that help you write more performant tests.
+TestProf comes with the [RuboCop](https://github.com/rubocop/rubocop) cops that help you write more performant tests.
 
-To enable them, add `test_prof/rubocop` in your RuboCop configuration:
+To enable them, add `test-prof` in your RuboCop configuration:
 
 ```yml
 # .rubocop.yml
 plugins:
- - 'test_prof/rubocop'
+ - 'test-prof'
 ```
 
 Or you can just use it dynamically:
 
 ```sh
-bundle exec rubocop --plugin 'test_prof/rubocop' --only RSpec/AggregateExamples
+bundle exec rubocop --plugin 'test-prof' --only RSpec/AggregateExamples
 ```
 
 > [!NOTE]

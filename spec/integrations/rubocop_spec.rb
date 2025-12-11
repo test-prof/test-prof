@@ -6,6 +6,7 @@ describe "RuboCop cops" do
       output = run_rubocop("aggregate_failures", cop: "RSpec/AggregateExamples")
 
       expect(output).to include("1 offense detected")
+      expect(output).to include("RSpec/AggregateExamples")
     end
   end
 end

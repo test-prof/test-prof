@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-require "test_prof/cops/rspec/language"
+require_relative "../language"
 
 module RuboCop
   module Cop

@@ -8,8 +8,8 @@ module RuboCop
     class Plugin < LintRoller::Plugin
       def about
         LintRoller::About.new(
-          name: "test_prof",
-          version: VERSION,
+          name: "test-prof",
+          version: ::TestProf::VERSION,
           homepage: "https://test-prof.evilmartians.io/misc/rubocop",
           description: "RuboCop plugin to help you write more performant tests."
         )
