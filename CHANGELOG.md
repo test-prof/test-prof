@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.5.1 (2026-01-27)
+
 - Fix RuboCop plugin. ([@palkan][])
 
 Now you should use `--plugin test-prof` or `plugins: [test-prof]` (in YAML) (so LintRoller can correctly obtain the plugin class name from the gemspec).
