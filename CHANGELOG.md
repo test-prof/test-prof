@@ -8,7 +8,7 @@ Now you should use `--plugin test-prof` or `plugins: [test-prof]` (in YAML) (so 
 
 ## 1.5.0 (2025-12-04)
 
-- Logging: support Rails 8.2 structured events based logging. ([@palkan][])
+- Logging: support Rails 8.1 structured events based logging. ([@palkan][])
 
 - Allow using AnyFixture DSL through module inclusion, not refinements. ([@palkan][])
 
