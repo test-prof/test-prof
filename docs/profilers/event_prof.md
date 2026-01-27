@@ -51,6 +51,8 @@ EVENT_PROF='sql.active_record,perform.active_job' rspec ...
 
 ### Minitest
 
+In Minitest 6+, you must first activate TestProf plugin by adding `Minitest.load :test_prof` in your test helper.
+
 Use `EVENT_PROF` environment variable set to event name:
 
 ```sh

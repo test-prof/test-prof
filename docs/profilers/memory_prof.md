@@ -41,6 +41,8 @@ TEST_MEM_PROF='alloc' rake rspec ...
 
 ### Minitest
 
+In Minitest 6+, you must first activate TestProf plugin by adding `Minitest.load :test_prof` in your test helper.
+
 Use `TEST_MEM_PROF` environment variable to set which metric to use:
 
 ```sh

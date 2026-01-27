@@ -29,7 +29,7 @@ module TestProf
             .sort_by(&:last)
             .take(RSpecDissect.config.let_top_count)
             .each do |(id, size)|
-            msgs << " ↳ #{id} – #{-size}\n"
+              msgs << " ↳ #{id} – #{-size}\n"
           end
           msgs.join
         end

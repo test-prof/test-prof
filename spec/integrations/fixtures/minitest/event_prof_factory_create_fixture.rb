@@ -3,6 +3,8 @@
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require_relative "../../../support/ar_models"
 require "minitest/autorun"
+Minitest.load :test_prof if Minitest.respond_to?(:load)
+
 require "test-prof"
 
 describe "Post" do

@@ -2,6 +2,8 @@
 
 require "minitest/autorun"
 require "test-prof"
+Minitest.load :test_prof if Minitest.respond_to?(:load)
+
 require "securerandom"
 
 describe "First Allocations" do

@@ -142,7 +142,7 @@ module TestProf
     end
 
     private def report_duplicates(identifier)
-      if instance_methods.include?(identifier) && File.basename(__FILE__) == File.basename(instance_method(identifier).source_location[0])
+      if method_defined?(identifier) && File.basename(__FILE__) == File.basename(instance_method(identifier).source_location[0])
         error_msg = "let_it_be(:#{identifier}) was redefined in nested group"
         report_level = LetItBe.config.report_duplicates.to_sym
 

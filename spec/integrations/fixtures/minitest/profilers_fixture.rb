@@ -3,6 +3,7 @@
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require "minitest/autorun"
 require "test_prof"
+Minitest.load :test_prof if Minitest.respond_to?(:load)
 
 TestProf.configure do |config|
   config.output_dir = "../../../../tmp/test_prof"

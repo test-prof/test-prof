@@ -2,6 +2,8 @@
 
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require "minitest/autorun"
+Minitest.load :test_prof if Minitest.respond_to?(:load)
+
 require "active_support"
 require "test-prof"
 

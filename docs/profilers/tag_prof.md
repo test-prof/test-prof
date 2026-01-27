@@ -41,7 +41,7 @@ With Rspec:
 TAG_PROF=type rspec
 ```
 
-With Minitest:
+With Minitest\*:
 
 ```sh
 # using pure ruby
@@ -52,6 +52,8 @@ TAG_PROF=type bin/rails test
 ```
 
 NB: if another value than "type" is used for TAG_PROF environment variable it will be ignored silently in both Minitest and RSpec.
+
+\* In Minitest 6+, you must first activate TestProf plugin by adding `Minitest.load :test_prof` in your test helper.
 
 ### Usage specificity with Minitest
 

@@ -4,6 +4,7 @@ $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_minitest"
 require "minitest/autorun"
+Minitest.load :test_prof if Minitest.respond_to?(:load)
 
 require "test_prof/recipes/minitest/before_all"
 

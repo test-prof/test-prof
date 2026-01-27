@@ -14,10 +14,10 @@ describe "EventProf" do
     expect(output).to match(/Something \(\.\/event_prof_fixture\.rb\) – 00:00\.214 \(7 \/ 3\) of 00:00\.7\d{2} \(\d{2}\.\d+%\)/)
     expect(output).to match(/Another something \(\.\/event_prof_fixture\.rb\) – 00:00\.300 \(3 \/ 2\) of 00:00\.3\d{2} \(\d{2}.\d+%\)/)
 
-    expect(output).to match(/do very long ...nvokes 3 times \(\.\/event_prof_fixture\.rb:49\) – 00:00\.300 \(3\) of 00:00\.3\d{2} \(\d{2}\.\d+%\)/)
-    expect(output).to match(/invokes many times \(\.\/event_prof_fixture\.rb:35\) – 00:00\.136 \(4\) of 00:00\.4\d{2} \(\d{2}.\d+%\)/)
-    expect(output).to match(/invokes once \(\.\/event_prof_fixture\.rb:24\) – 00:00\.040 \(1\) of 00:00\.1\d{2} \(\d{2}\.\d+%\)/)
-    expect(output).to match(/invokes twice \(\.\/event_prof_fixture\.rb:29\) – 00:00\.038 \(2\) of 00:00\.2\d{2} \(\d{1,2}.\d+%\)/)
+    expect(output).to match(/do very long ...nvokes 3 times \(\.\/event_prof_fixture\.rb:\d+\) – 00:00\.300 \(3\) of 00:00\.3\d{2} \(\d{2}\.\d+%\)/)
+    expect(output).to match(/invokes many times \(\.\/event_prof_fixture\.rb:\d+\) – 00:00\.136 \(4\) of 00:00\.4\d{2} \(\d{2}.\d+%\)/)
+    expect(output).to match(/invokes once \(\.\/event_prof_fixture\.rb:\d+\) – 00:00\.040 \(1\) of 00:00\.1\d{2} \(\d{2}\.\d+%\)/)
+    expect(output).to match(/invokes twice \(\.\/event_prof_fixture\.rb:\d+\) – 00:00\.038 \(2\) of 00:00\.2\d{2} \(\d{1,2}.\d+%\)/)
   end
   specify "Minitest integration with rank by count", :aggregate_failures do
     output = run_minitest(
@@ -35,10 +35,10 @@ describe "EventProf" do
     expect(output).to match(/Something \(\.\/event_prof_fixture\.rb\) – 00:00\.214 \(7 \/ 3\) of 00:00\.7\d{2} \(\d{2}\.\d+%\)/)
     expect(output).to match(/Another something \(\.\/event_prof_fixture\.rb\) – 00:00\.300 \(3 \/ 2\) of 00:00\.3\d{2} \(\d{2}.\d+%\)/)
 
-    expect(output).to match(/do very long ...nvokes 3 times \(\.\/event_prof_fixture\.rb:49\) – 00:00\.300 \(3\) of 00:00\.3\d{2} \(\d{2}\.\d+%\)/)
-    expect(output).to match(/invokes many times \(\.\/event_prof_fixture\.rb:35\) – 00:00\.136 \(4\) of 00:00\.4\d{2} \(\d{2}.\d+%\)/)
-    expect(output).to match(/invokes once \(\.\/event_prof_fixture\.rb:24\) – 00:00\.040 \(1\) of 00:00\.1\d{2} \(\d{2}\.\d+%\)/)
-    expect(output).to match(/invokes twice \(\.\/event_prof_fixture\.rb:29\) – 00:00\.038 \(2\) of 00:00\.2\d{2} \(\d{1,2}.\d+%\)/)
+    expect(output).to match(/do very long ...nvokes 3 times \(\.\/event_prof_fixture\.rb:\d+\) – 00:00\.300 \(3\) of 00:00\.3\d{2} \(\d{2}\.\d+%\)/)
+    expect(output).to match(/invokes many times \(\.\/event_prof_fixture\.rb:\d+\) – 00:00\.136 \(4\) of 00:00\.4\d{2} \(\d{2}.\d+%\)/)
+    expect(output).to match(/invokes once \(\.\/event_prof_fixture\.rb:\d+\) – 00:00\.040 \(1\) of 00:00\.1\d{2} \(\d{2}\.\d+%\)/)
+    expect(output).to match(/invokes twice \(\.\/event_prof_fixture\.rb:\d+\) – 00:00\.038 \(2\) of 00:00\.2\d{2} \(\d{1,2}.\d+%\)/)
   end
 
   context "CustomEvents" do

@@ -96,6 +96,8 @@ After running the command above all _potentially_ bad examples would be marked w
 
 ### Minitest
 
+In Minitest 6+, you must first activate TestProf plugin by adding `Minitest.load :test_prof` in your test helper.
+
 To activate FactoryDoctor use `FDOC` environment variable:
 
 ```sh
