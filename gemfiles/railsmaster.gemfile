@@ -9,5 +9,6 @@ gem "sidekiq", "~> 4.0"
 gem "timecop", "~> 0.9.1"
 gem "pg"
 gem "mysql2"
+gem "benchmark" # ref: https://github.com/aderyabin/sniffer/pull/73
 
 gemspec path: ".."
