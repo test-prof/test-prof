@@ -7,5 +7,6 @@ gem "sqlite3", "~> 2.0"
 gem "sidekiq"
 gem "timecop"
 gem "pg"
+gem "benchmark" # ref: https://github.com/aderyabin/sniffer/pull/73
 
 gemspec path: '..'

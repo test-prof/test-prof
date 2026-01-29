@@ -28,6 +28,16 @@ jobs:
         gemfile: ["gemfiles/activerecord8.gemfile"]
         db: ["postgres"]
         include:
+        - ruby: "4.0"
+          gemfile: "gemfiles/activerecord8.gemfile"
+          db: "postgres"
+          multi_db: "true"
+        - ruby: "4.0"
+          gemfile: "gemfiles/railsmaster.gemfile"
+          db: "mysql"
+        - ruby: "4.0"
+          gemfile: "gemfiles/railsmaster.gemfile"
+          db: "sqlite"
         - ruby: "3.4"
           gemfile: "gemfiles/activerecord8.gemfile"
           db: "postgres"
