@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Avoid using `Gem.loaded_specs` methods in RuboCop plugin version check. ([@Rylan12][])
+
 ## 1.5.1 (2026-01-27)
 
 - Fix RuboCop plugin. ([@palkan][])
@@ -484,3 +486,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@john-h-k]: https://github.com/john-h-k
 [@devinburnette]: https://github.com/devinburnette
 [@elasticspoon]: https://github.com/elasticspoon
+[@Rylan12]: https://github.com/Rylan12
