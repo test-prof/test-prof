@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.5.2 (2026-02-03)
+
 - Avoid using `Gem.loaded_specs` methods in RuboCop plugin version check. ([@Rylan12][])
 
 ## 1.5.1 (2026-01-27)
