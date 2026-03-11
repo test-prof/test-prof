@@ -2,46 +2,32 @@
 
 Do you know how much time you spend in `before` hooks? Or in memoization helpers such as `let`? Usually, the most of the whole test suite time.
 
-_RSpecDissect_ provides this kind of information and also shows you the worst example groups. The main purpose of RSpecDissect is to identify these slow groups and refactor them using [`before_all`](../recipes/before_all.md) or [`let_it_be`](../recipes/let_it_be.md) recipes.
+_RSpecDissect_ provides this kind of information and also shows you the example groups with the highest **setup time**. The main purpose of RSpecDissect is to identify these slow groups and refactor them using [`before_all`](../recipes/before_all.md) or [`let_it_be`](../recipes/let_it_be.md) recipes.
 
 Example output:
 
 ```sh
-[TEST PROF INFO] RSpecDissect enabled
+[TEST PROF INFO] RSpecDissect report
 
 Total time: 25:14.870
-Total `before(:each)` time: 14:36.482
-Total `let` time: 19:20.259
+Total setup time: 14:36.482
 
-Top 5 slowest suites (by `before(:each)` time):
+Top 5 slowest suites setup time:
 
-Webhooks::DispatchTransition (./spec/services/webhooks/dispatch_transition_spec.rb:3) – 00:29.895 of 00:33.706 (327)
-FunnelsController (./spec/controllers/funnels_controller_spec.rb:3) – 00:22.117 of 00:43.649 (133)
-ApplicantsController (./spec/controllers/applicants_controller_spec.rb:3) – 00:21.220 of 00:41.407 (222)
-BookedSlotsController (./spec/controllers/booked_slots_controller_spec.rb:3) – 00:15.729 of 00:27.893 (50)
-Analytics::Wor...rsion::Summary (./spec/services/analytics/workflow_conversion/summary_spec.rb:3) – 00:15.383 of 00:15.914 (12)
+Webhooks::DispatchTransition (./spec/services/webhooks/dispatch_transition_spec.rb:3) – 00:29.895 of 00:33.706 / 327 (before: 00:25.346, before let: 00:19.389, lazy let: 00:04.543)
+  ↳ user – 00:09.323 (327)
+  ↳ funnel – 00:06.231 (122)
+  ↳ account – 00:04.360 (91)
 
-
-Top 5 slowest suites (by `let` time):
-
-FunnelsController (./spec/controllers/funnels_controller_spec.rb:3) – 00:38.532 of 00:43.649 (133)
- ↳ user – 3
- ↳ funnel – 2
-ApplicantsController (./spec/controllers/applicants_controller_spec.rb:3) – 00:33.252 of 00:41.407 (222)
- ↳ user – 10
- ↳ funnel – 5
- ↳ applicant – 2
-Webhooks::DispatchTransition (./spec/services/webhooks/dispatch_transition_spec.rb:3) – 00:30.320 of 00:33.706 (327)
- ↳ user – 30
-BookedSlotsController (./spec/controllers/booked_slots_controller_spec.rb:3) – 00:25.710 of 00:27.893 e(50)
- ↳ user – 21
- ↳ stage – 14
-AvailableSlotsController (./spec/controllers/available_slots_controller_spec.rb:3) – 00:18.481 of 00:23.366 (85)
- ↳ user – 15
- ↳ stage – 10
+FunnelsController (./spec/controllers/funnels_controller_spec.rb:3) – 00:22.117 of 00:43.649 / 133 (before: 00:22.117, before let: 00:18.695, lazy let: 00:00.000)
+  ↳ user – 00:09.323 (327)
+  ↳ funnel – 00:06.231 (122)
+...
 ```
 
-As you can see, the `let` profiler also tracks the provides the information on how many times each `let` declarations has been used within a group (shows top-3 by default).
+The **setup time** includes the time spent in `before(:each)` hooks and lazy `let` definitions (except `subject`—it's often used to define the action under test, and, thus, shouldn't be considered a part of the setup phase).
+
+As you can see, the profiler also provides an information about the most time consuming `let` definitions.
 
 ## Instructions
 
@@ -59,17 +45,7 @@ You can also specify the number of top slow groups through `RD_PROF_TOP` variabl
 RD_PROF=1 RD_PROF_TOP=10 rspec ...
 ```
 
-You can also track only `let` or `before` usage by specifying `RD_PROF=let` and `RD_PROF=before` respectively.
-
-For `let` profiler you can also specify the number of top `let` declarations to print through `RD_PROF_LET_TOP=10` env var.
-
-To disable `let` stats add:
-
-```ruby
-TestProf::RSpecDissect.configure do |config|
-  config.let_stats_enabled = false
-end
-```
+You can also specify the number of top `let` declarations to print through `RD_PROF_LET_TOP=10` env var.
 
 ## Using with RSpecStamp
 

@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Upgrade RSpecDissect to show total setup time and let breakdowns. ([@palkan][])
+
 ## 1.5.2 (2026-02-03)
 
 - Avoid using `Gem.loaded_specs` methods in RuboCop plugin version check. ([@Rylan12][])

@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "test_prof/rspec_dissect/collector"
+
 require "test_prof/ext/float_duration"
 
 module TestProf
@@ -15,19 +17,12 @@ module TestProf
       ].freeze
 
       def initialize
-        @collectors = []
-
-        if RSpecDissect.config.let?
-          collectors << Collectors::Let.new(top_count: RSpecDissect.config.top_count)
-        end
-
-        if RSpecDissect.config.before?
-          collectors << Collectors::Before.new(top_count: RSpecDissect.config.top_count)
-        end
+        @collector = Collector.new(top_count: top_count)
 
         @examples_count = 0
         @examples_time = 0.0
         @total_examples_time = 0.0
+        @total_setup_time = 0.0
       end
 
       def example_finished(notification)
@@ -44,9 +39,11 @@ module TestProf
         data[:desc] = notification.group.top_level_description
         data[:loc] = notification.group.metadata[:location]
 
-        collectors.each { |c| c.populate!(data) }
-        collectors.each { |c| c << data }
+        RSpecDissect.populate_from_spans!(data)
 
+        collector << data
+
+        @total_setup_time += data[:total_setup]
         @total_examples_time += @examples_time
         @examples_count = 0
         @examples_time = 0.0
@@ -62,17 +59,12 @@ module TestProf
             RSpecDissect report
 
             Total time: #{@total_examples_time.duration}
+            Total setup time: #{@total_setup_time.duration}
           MSG
-
-        collectors.each do |c|
-          msgs << c.total_time_message
-        end
 
         msgs << "\n"
 
-        collectors.each do |c|
-          msgs << c.print_results
-        end
+        msgs << collector.print_results
 
         log :info, msgs.join
 
@@ -84,9 +76,9 @@ module TestProf
 
         examples = Hash.new { |h, k| h[k] = [] }
 
-        all_results = collectors.inject([]) { |acc, c| acc + c.results.to_a }
+        results = collector.results.to_a
 
-        all_results
+        results
           .map { |obj| obj[:loc] }.each do |location|
           file, line = location.split(":")
           examples[file] << line.to_i
@@ -114,7 +106,7 @@ module TestProf
 
       private
 
-      attr_reader :collectors
+      attr_reader :collector
 
       def top_count
         RSpecDissect.config.top_count
