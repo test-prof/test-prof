@@ -15,7 +15,7 @@ module TestProf
       attr_reader :reporter, :profiler
 
       def initialize
-        @profiler = Profiler.new(TPSProf.config.top_count, threshold: TPSProf.config.threshold)
+        @profiler = Profiler.new(TPSProf.config.top_count, TPSProf.config)
         @reporter = TPSProf.config.reporter
 
         log :info, "TPSProf enabled (top-#{TPSProf.config.top_count})"

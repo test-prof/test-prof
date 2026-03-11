@@ -1,18 +1,24 @@
 # frozen_string_literal: true
 
 require "test_prof/utils/sized_ordered_set"
+require "forwardable"
 
 module TestProf
   module TPSProf
     class Profiler
-      attr_reader :top_count, :groups, :total_count, :total_time, :threshold
+      extend Forwardable
 
-      def initialize(top_count, threshold: 10)
-        @threshold = threshold
+      attr_reader :top_count, :groups, :total_count, :total_time,
+        :config
+
+      def_delegators :@config, :min_examples_count, :min_group_time, :min_target_tps
+
+      def initialize(top_count, config)
+        @config = config
         @top_count = top_count
         @total_count = 0
         @total_time = 0.0
-        @groups = Utils::SizedOrderedSet.new(top_count, sort_by: :tps)
+        @groups = Utils::SizedOrderedSet.new(top_count, sort_by: :penalty)
       end
 
       def group_started(id)
@@ -23,18 +29,27 @@ module TestProf
       end
 
       def group_finished(id)
-        return unless @examples_count >= threshold
+        return unless @examples_count >= min_examples_count
 
-        # Context-time
-        group_time = (TestProf.now - @group_started_at) - @examples_time
-        run_time = @examples_time + group_time
+        total_time = TestProf.now - @group_started_at
+        shared_setup_time = total_time - @examples_time
+
+        return unless total_time >= min_group_time
+
+        tps = (@examples_count / total_time).round(2)
+
+        return unless tps < min_target_tps
+
+        # How much time did we waste compared to the target TPS
+        penalty = @examples_count * ((1.0 / tps) - (1.0 / min_target_tps))
 
         groups << {
           id: id,
-          run_time: run_time,
-          group_time: group_time,
+          total_time: total_time,
+          shared_setup_time: shared_setup_time,
           count: @examples_count,
-          tps: -(@examples_count / run_time).round(2)
+          tps: tps,
+          penalty: penalty
         }
       end
 
