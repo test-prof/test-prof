@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof/core"
 require "test_prof/logging"
 require "test_prof/rspec_stamp/parser"
 
