@@ -2,7 +2,7 @@
 
 TestProf::EventProf::CustomEvents.register("sidekiq.jobs") do
   if TestProf.require(
-    "sidekiq/testing",
+    "sidekiq",
     <<~MSG
       Failed to load Sidekiq.
 

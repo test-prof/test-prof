@@ -8,7 +8,7 @@ The main purpose of RSpecStamp is to make testing codebase refactoring easy. Cha
 
 ## Example Use Case: Sidekiq Inline
 
-Using `Sidekiq::Testing.inline!` may be considered a _bad practice_ (see [here](https://github.com/mperham/sidekiq/issues/3495)) due to its negative performance impact. But it's still widely used.
+Using `Sidekiq.testing!(:inline)` may be considered a _bad practice_ (see [here](https://github.com/mperham/sidekiq/issues/3495)) due to its negative performance impact. But it's still widely used.
 
 How to migrate from `inline!` to `fake!`?
 

@@ -2,6 +2,11 @@
 
 ## master (unreleased)
 
+- Upgrade to Sidekiq 8. ([@palkan][])
+
+- RSpecStamp now uses Prism if available. ([@kddnewton
+][])
+
 - Upgrade RSpecDissect to show total setup time and let breakdowns. ([@palkan][])
 
 ## 1.5.2 (2026-02-03)
@@ -491,3 +496,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@devinburnette]: https://github.com/devinburnette
 [@elasticspoon]: https://github.com/elasticspoon
 [@Rylan12]: https://github.com/Rylan12
+[@kddnewton]: https://github.com/kddnewton

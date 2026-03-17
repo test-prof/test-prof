@@ -5,9 +5,9 @@ require "active_support"
 require "minitest/autorun"
 Minitest.load :test_prof if Minitest.respond_to?(:load)
 
+require "sidekiq"
 require "sidekiq/testing"
-
-Sidekiq::Testing.inline!
+require "sidekiq/testing/inline"
 
 class SingleJob
   include Sidekiq::Worker

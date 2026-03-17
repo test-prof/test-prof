@@ -4,7 +4,9 @@ $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require_relative "../../../support/ar_models"
 require_relative "../../../support/transactional_context"
 
+require "sidekiq"
 require "sidekiq/testing"
+require "sidekiq/testing/inline"
 
 require "isolator"
 

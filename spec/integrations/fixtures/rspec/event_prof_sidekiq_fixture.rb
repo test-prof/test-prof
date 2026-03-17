@@ -2,9 +2,9 @@
 
 $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require "active_support"
+require "sidekiq"
 require "sidekiq/testing"
-
-Sidekiq::Testing.inline!
+require "sidekiq/testing/inline"
 
 class SingleJob
   include Sidekiq::Worker
