@@ -5,13 +5,16 @@ require "forwardable"
 
 module TestProf
   module TPSProf
+    class Error < StandardError; end
+
     class Profiler
       extend Forwardable
 
       attr_reader :top_count, :groups, :total_count, :total_time,
         :config
 
-      def_delegators :@config, :min_examples_count, :min_group_time, :min_target_tps
+      def_delegators :@config, :min_examples_count, :min_group_time, :min_target_tps,
+        :mode, :max_examples_count, :max_group_time, :min_tps
 
       def initialize(top_count, config)
         @config = config
@@ -28,7 +31,7 @@ module TestProf
         @group_started_at = TestProf.now
       end
 
-      def group_finished(id)
+      def group_finished(group)
         return unless @examples_count >= min_examples_count
 
         total_time = TestProf.now - @group_started_at
@@ -44,13 +47,24 @@ module TestProf
         penalty = @examples_count * ((1.0 / tps) - (1.0 / min_target_tps))
 
         groups << {
-          id: id,
+          id: group,
           total_time: total_time,
           shared_setup_time: shared_setup_time,
           count: @examples_count,
           tps: tps,
           penalty: penalty
         }
+
+        if mode == :strict
+          reporter = ::RSpec.configuration.reporter
+          location = group.metadata[:location]
+
+          reporter.notify_non_example_exception(Error.new("Group #{location} has too many examples: #{@examples_count} > #{max_examples_count}"), "") if max_examples_count && @examples_count > max_examples_count
+
+          reporter.notify_non_example_exception(Error.new("Group #{location} has too long total time: #{total_time} > #{max_group_time}"), "") if max_group_time && total_time > max_group_time
+
+          reporter.notify_non_example_exception(Error.new("Group #{location} has too low TPS: #{tps} < #{min_tps}"), "") if min_tps && tps < min_tps
+        end
       end
 
       def example_started(id)

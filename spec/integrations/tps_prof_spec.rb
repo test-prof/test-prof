@@ -11,5 +11,14 @@ describe "TPSProf" do
       expect(output).to match(/Another something \(\.\/tps_prof_fixture\.rb:\d+\) – 0\.\d+ TPS \(00:\d{2}\.\d{3} \/ 2, shared setup time: 00:01\.\d{3}\)/)
       expect(output).to match(/Something \(\.\/tps_prof_fixture\.rb:\d+\) – 3\.\d+ TPS \(00:\d{2}\.\d{3} \/ 2, shared setup time: 00:\d{2}\.\d{3}\)/)
     end
+
+    specify "with strict mode" do
+      output = run_rspec("tps_prof", success: false, env: {"TPS_PROF" => "strict", "TPS_PROF_MIN_EXAMPLES" => "2", "TPS_PROF_MIN_TIME" => "0", "TPS_PROF_MAX_EXAMPLES" => "4", "TPS_PROF_MIN_TPS" => "1"})
+
+      expect(output).to include("TPSProf strict enabled (max examples: 4, min tps: 1)")
+      expect(output).to match(/Total TPS \(tests per second\): 2\.\d+/)
+
+      expect(output).to include("4 examples, 0 failures, 1 error")
+    end
   end
 end

@@ -18,7 +18,17 @@ module TestProf
         @profiler = Profiler.new(TPSProf.config.top_count, TPSProf.config)
         @reporter = TPSProf.config.reporter
 
-        log :info, "TPSProf enabled (top-#{TPSProf.config.top_count})"
+        conf = TPSProf.config
+        if conf.mode == :strict
+          config_parts = []
+          config_parts << "max examples: #{conf.max_examples_count}" if conf.max_examples_count
+          config_parts << "max group time: #{conf.max_group_time}" if conf.max_group_time
+          config_parts << "min tps: #{conf.min_tps}" if conf.min_tps
+
+          log :info, "TPSProf strict enabled (#{config_parts.join(", ")})"
+        else
+          log :info, "TPSProf enabled (top-#{TPSProf.config.top_count})"
+        end
       end
 
       def example_group_started(notification)
