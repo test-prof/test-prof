@@ -54,13 +54,15 @@ describe "MemoryProf RSpec" do
     expect(output).to include("Top 4 examples (by RSS):")
   end
 
-  specify "in GC mode", :aggregate_failures do
-    output = run_rspec("memory_prof", env: {"TEST_MEM_PROF" => "gc", "TEST_MEM_PROF_COUNT" => "4"})
+  if ::GC.respond_to?(:total_time)
+    specify "in GC mode", :aggregate_failures do
+      output = run_rspec("memory_prof", env: {"TEST_MEM_PROF" => "gc", "TEST_MEM_PROF_COUNT" => "4"})
 
-    expect(output).to include("MemoryProf results")
-    expect(output).to match(/Total GC time: \d+:\d+.\d+/)
+      expect(output).to include("MemoryProf results")
+      expect(output).to match(/Total GC time: \d+:\d+.\d+/)
 
-    expect(output).to include("Top 4 groups (by GC time):")
-    expect(output).to include("Top 4 examples (by GC time):")
+      expect(output).to include("Top 4 groups (by GC time):")
+      expect(output).to include("Top 4 examples (by GC time):")
+    end
   end
 end

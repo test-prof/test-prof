@@ -87,11 +87,11 @@ module TestProf
 
     class GCTracker < Tracker
       def track
-        GC.total_time
+        ::GC.total_time
       end
 
       def supported?
-        true
+        ::GC.respond_to?(:total_time)
       end
     end
   end

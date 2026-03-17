@@ -29,7 +29,7 @@ module TestProf
 
       def initialize
         @mode = (ENV["TPS_PROF_MODE"] || ((ENV["TPS_PROF"] == "strict") ? :strict : :profile)).to_sym
-        @top_count = ENV["TPS_PROF_COUNT"]&.to_i || Integer.try_convert(ENV["TPS_PROF"]) || 10
+        @top_count = ENV["TPS_PROF_COUNT"]&.to_i || ((ENV["TPS_PROF"].to_i > 1) ? ENV["TPS_PROF"].to_i : nil) || 10
 
         @min_examples_count = ENV.fetch("TPS_PROF_MIN_EXAMPLES", 10).to_i
         @min_group_time = ENV.fetch("TPS_PROF_MIN_TIME", 5).to_i
