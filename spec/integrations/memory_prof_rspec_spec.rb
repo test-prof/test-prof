@@ -35,9 +35,8 @@ describe "MemoryProf RSpec" do
       expect(output).to include("Top 3 groups (by allocations):")
       expect(output).to include("Top 3 examples (by allocations):")
 
-      expect(output).to match(/with 10_000 allocations \(\.\/memory_prof_fixture.rb:\d+\) – \+#{number_regex} \(#{percent_regex}\)/)
-      expect(output).to match(/with 1000 allocations \(\.\/memory_prof_fixture.rb:\d+\) – \+#{number_regex} \(#{percent_regex}\)/)
-      expect(output).to match(/with 500 allocations \(\.\/memory_prof_fixture.rb:\d+\) – \+#{number_regex} \(#{percent_regex}\)/)
+      expect(output).to match(/Groups Allocations \(\.\/memory_prof_fixture.rb:\d+\) – \+#{number_regex} \(#{percent_regex}\)/)
+      expect(output).to match(/Examples allocations \(\.\/memory_prof_fixture.rb:\d+\) – \+#{number_regex} \(#{percent_regex}\)/)
 
       expect(output).to match(/allocates 10_000 objects \(\.\/memory_prof_fixture.rb:\d+\) – \+#{number_regex} \(#{percent_regex}\)/)
       expect(output).to match(/allocates 1000 objects \(\.\/memory_prof_fixture.rb:\d+\) – \+#{number_regex} \(#{percent_regex}\)/)
@@ -53,5 +52,15 @@ describe "MemoryProf RSpec" do
 
     expect(output).to include("Top 4 groups (by RSS):")
     expect(output).to include("Top 4 examples (by RSS):")
+  end
+
+  specify "in GC mode", :aggregate_failures do
+    output = run_rspec("memory_prof", env: {"TEST_MEM_PROF" => "gc", "TEST_MEM_PROF_COUNT" => "4"})
+
+    expect(output).to include("MemoryProf results")
+    expect(output).to match(/Total GC time: \d+:\d+.\d+/)
+
+    expect(output).to include("Top 4 groups (by GC time):")
+    expect(output).to include("Top 4 examples (by GC time):")
   end
 end

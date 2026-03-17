@@ -1,6 +1,6 @@
 # MemoryProf
 
-MemoryProf tracks memory usage during your test suite run, and can help to detect test examples and groups that cause memory spikes. Memory profiling supports two metrics: RSS and allocations.
+MemoryProf tracks memory usage during your test suite run, and can help to detect test examples and groups that cause memory spikes. Memory profiling supports the following metrics: RSS, allocations and GC time.
 
 Example output:
 
@@ -24,7 +24,7 @@ change Votes count (./spec/shared_examples/controllers/voted_examples.rb:23) –
 fails (./spec/shared_examples/controllers/invalid_examples.rb:3) – +32KB (5.00%)
 ```
 
-The examples block shows the amount of memory used by each example, and the groups block displays the memory allocated by other code defined in the groups. For example, RSpec groups may include heavy `before(:all)` (or `before_all`) setup blocks, so it is helpful to see which groups use the most amount of memory outside of their examples.
+The output shows the amount of memory used by each example and top-level example group (typically, a test file).
 
 ## Instructions
 
@@ -37,6 +37,7 @@ Use `TEST_MEM_PROF` environment variable to set which metric to use:
 ```sh
 TEST_MEM_PROF='rss' rspec ...
 TEST_MEM_PROF='alloc' rake rspec ...
+TEST_MEM_PROF='gc' rake rspec ...
 ```
 
 ### Minitest
@@ -47,7 +48,8 @@ Use `TEST_MEM_PROF` environment variable to set which metric to use:
 
 ```sh
 TEST_MEM_PROF='rss' rake test
-TEST_MEM_PROF='alloc' rspec ...
+TEST_MEM_PROF='alloc' rake test
+TEST_MEM_PROF='gc' rake test
 ```
 
 or use CLI options as well:

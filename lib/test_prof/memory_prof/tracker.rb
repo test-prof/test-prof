@@ -55,7 +55,7 @@ module TestProf
         node = list.remove_node(id, track)
         return unless node
 
-        groups << {**node.item, memory: node.hooks_memory}
+        groups << {**node.item, memory: node.total_memory}
       end
     end
 
@@ -82,6 +82,16 @@ module TestProf
 
       def supported?
         !!@rss_tool
+      end
+    end
+
+    class GCTracker < Tracker
+      def track
+        GC.total_time
+      end
+
+      def supported?
+        true
       end
     end
   end

@@ -11,6 +11,7 @@ module TestProf
   #
   #   TEST_MEM_PROF='rss' rspec ...
   #   TEST_MEM_PROF='alloc' rspec ...
+  #   TEST_MEM_PROF='gc' rspec ...
   #
   # By default MemoryProf shows the top 5 examples and groups (for RSpec) but you can
   # set how many items to display with `TEST_MEM_PROF_COUNT`:
@@ -25,6 +26,8 @@ module TestProf
   module MemoryProf
     # MemoryProf configuration
     class Configuration
+      MODES = %w[alloc rss gc].freeze
+
       attr_reader :mode, :top_count
 
       def initialize
@@ -33,7 +36,7 @@ module TestProf
       end
 
       def mode=(value)
-        @mode = (value == "alloc") ? :alloc : :rss
+        @mode = MODES.include?(value) ? value.to_sym : :rss
       end
 
       def top_count=(value)
@@ -45,12 +48,14 @@ module TestProf
     class << self
       TRACKERS = {
         alloc: AllocTracker,
-        rss: RssTracker
+        rss: RssTracker,
+        gc: GCTracker
       }.freeze
 
       PRINTERS = {
         alloc: AllocPrinter,
-        rss: RssPrinter
+        rss: RssPrinter,
+        gc: GCPrinter
       }.freeze
 
       def config

@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add GC profiling to MemoryProf. ([@palkan][])
+
 - Upgrade to Sidekiq 8. ([@palkan][])
 
 - RSpecStamp now uses Prism if available. ([@kddnewton

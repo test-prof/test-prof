@@ -31,10 +31,12 @@ module TestProf
       end
 
       def example_group_started(notification)
+        return unless notification.group.top_level?
         tracker.group_started(notification.group, group(notification))
       end
 
       def example_group_finished(notification)
+        return unless notification.group.top_level?
         tracker.group_finished(notification.group)
       end
 

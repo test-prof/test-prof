@@ -1,5 +1,6 @@
 # frozen_string_literal: true
 
+require "test_prof/ext/float_duration"
 require "test_prof/memory_prof/printer/number_to_human"
 require "test_prof/ext/string_truncate"
 
@@ -90,6 +91,36 @@ module TestProf
 
       def memory_amount(item)
         number_to_human(item[:memory])
+      end
+    end
+
+    class GCPrinter < Printer
+      using StringTruncate
+      using FloatDuration
+
+      private
+
+      def mode
+        "GC time"
+      end
+
+      def print_total
+        "Total GC time: #{(GC.total_time.to_f / 1_000_000_000).duration}\n\n"
+      end
+
+      def print_items(items)
+        messages =
+          items.map do |item|
+            <<~ITEM
+              #{item[:name].truncate(30)} (#{item[:location]}) – #{gc_time(item)}
+            ITEM
+          end
+
+        messages.join
+      end
+
+      def gc_time(item)
+        (item[:memory].to_f / 1_000_000_000).duration
       end
     end
   end
