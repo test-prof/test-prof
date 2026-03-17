@@ -2,12 +2,13 @@
 
 ## master (unreleased)
 
+- Add TPS profiler. ([@palkan][])
+
 - Add GC profiling to MemoryProf. ([@palkan][])
 
 - Upgrade to Sidekiq 8. ([@palkan][])
 
-- RSpecStamp now uses Prism if available. ([@kddnewton
-][])
+- RSpecStamp now uses Prism if available. ([@kddnewton][])
 
 - Upgrade RSpecDissect to show total setup time and let breakdowns. ([@palkan][])
 
