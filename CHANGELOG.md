@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.6.0 (2026-03-18)
+
 - Add TPS profiler. ([@palkan][])
 
 - Add GC profiling to MemoryProf. ([@palkan][])
