@@ -14,6 +14,11 @@ module TestProf
   #   # Report (as errors) groups with lower TPS
   #   TPS_PROF_MIN_TPS=10 TPS_PROF=strict rspec ...
   module TPSProf
+    class Error < StandardError; end
+
+    class GroupInfo < Struct.new(:group, :location, :examples_count, :total_time, :tps, :penalty, keyword_init: true)
+    end
+
     class Configuration
       attr_accessor :top_count, :reporter, :mode
 
@@ -26,6 +31,8 @@ module TestProf
         :max_group_time,     # Report groups with more total time in strict mode
         :min_tps             # Report groups with lower TPS in strict mode
       )
+
+      attr_reader :custom_strict_handler
 
       def initialize
         @mode = (ENV["TPS_PROF_MODE"] || ((ENV["TPS_PROF"] == "strict") ? :strict : :profile)).to_sym
@@ -42,11 +49,39 @@ module TestProf
         @reporter = resolve_reporter(ENV["TPS_PROF_FORMAT"])
       end
 
+      def strict_handler
+        @strict_handler ||= method(:default_strict_handler)
+      end
+
+      def strict_handler=(val)
+        @strict_handler = val
+        @custom_strict_handler = true
+      end
+
       private
 
       def resolve_reporter(format)
         # TODO: support other formats
         TPSProf::Reporter::Text.new
+      end
+
+      def default_strict_handler(group_info)
+        error_msg = nil
+        location = group_info.location
+
+        if max_examples_count && group_info.examples_count > max_examples_count
+          error_msg ||= "Group #{location} has too many examples: #{group_info.examples_count} > #{max_examples_count}"
+        end
+
+        if max_group_time && group_info.total_time > max_group_time
+          error_msg ||= "Group #{location} has too long total time: #{group_info.total_time} > #{max_group_time}"
+        end
+
+        if min_tps && group_info.tps < min_tps
+          error_msg ||= "Group #{location} has too low TPS: #{group_info.tps} < #{min_tps}"
+        end
+
+        raise error_msg if error_msg
       end
     end
 
@@ -57,6 +92,15 @@ module TestProf
 
       def configure
         yield config
+      end
+
+      def handle_group_strictly(group_info)
+        reporter = ::RSpec.configuration.reporter
+        config.strict_handler.call(group_info)
+        false
+      rescue => err
+        reporter.notify_non_example_exception(Error.new(err.message), "")
+        true
       end
     end
   end

@@ -21,9 +21,14 @@ module TestProf
         conf = TPSProf.config
         if conf.mode == :strict
           config_parts = []
-          config_parts << "max examples: #{conf.max_examples_count}" if conf.max_examples_count
-          config_parts << "max group time: #{conf.max_group_time}" if conf.max_group_time
-          config_parts << "min tps: #{conf.min_tps}" if conf.min_tps
+
+          if conf.custom_strict_handler
+            config_parts << "custom handler"
+          else
+            config_parts << "max examples: #{conf.max_examples_count}" if conf.max_examples_count
+            config_parts << "max group time: #{conf.max_group_time}" if conf.max_group_time
+            config_parts << "min tps: #{conf.min_tps}" if conf.min_tps
+          end
 
           log :info, "TPSProf strict enabled (#{config_parts.join(", ")})"
         else
@@ -33,19 +38,27 @@ module TestProf
 
       def example_group_started(notification)
         return unless notification.group.top_level?
+        return if notification.group.metadata[:tps_prof] == :ignore
+
         profiler.group_started notification.group
       end
 
       def example_group_finished(notification)
         return unless notification.group.top_level?
+        return if notification.group.metadata[:tps_prof] == :ignore
+
         profiler.group_finished notification.group
       end
 
       def example_started(notification)
+        return if notification.example.metadata[:tps_prof] == :ignore
+
         profiler.example_started notification.example
       end
 
       def example_finished(notification)
+        return if notification.example.metadata[:tps_prof] == :ignore
+
         profiler.example_finished notification.example
       end
 

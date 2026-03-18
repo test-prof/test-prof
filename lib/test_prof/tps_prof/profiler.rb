@@ -5,8 +5,6 @@ require "forwardable"
 
 module TestProf
   module TPSProf
-    class Error < StandardError; end
-
     class Profiler
       extend Forwardable
 
@@ -18,7 +16,9 @@ module TestProf
 
       def initialize(top_count, config)
         @config = config
-        @top_count = top_count
+        # In strict mode, we use the sorted set to keep track of offenders
+        # to show in the end
+        @top_count = (config.mode == :strict) ? 100 : top_count
         @total_count = 0
         @total_time = 0.0
         @groups = Utils::SizedOrderedSet.new(top_count, sort_by: :penalty)
@@ -46,7 +46,7 @@ module TestProf
         # How much time did we waste compared to the target TPS
         penalty = @examples_count * ((1.0 / tps) - (1.0 / min_target_tps))
 
-        groups << {
+        item = {
           id: group,
           total_time: total_time,
           shared_setup_time: shared_setup_time,
@@ -56,14 +56,22 @@ module TestProf
         }
 
         if mode == :strict
-          reporter = ::RSpec.configuration.reporter
           location = group.metadata[:location]
 
-          reporter.notify_non_example_exception(Error.new("Group #{location} has too many examples: #{@examples_count} > #{max_examples_count}"), "") if max_examples_count && @examples_count > max_examples_count
-
-          reporter.notify_non_example_exception(Error.new("Group #{location} has too long total time: #{total_time} > #{max_group_time}"), "") if max_group_time && total_time > max_group_time
-
-          reporter.notify_non_example_exception(Error.new("Group #{location} has too low TPS: #{tps} < #{min_tps}"), "") if min_tps && tps < min_tps
+          if TPSProf.handle_group_strictly(
+            GroupInfo.new(
+              group: group,
+              location: location,
+              examples_count: @examples_count,
+              total_time: total_time,
+              tps: tps,
+              penalty: penalty
+            )
+          )
+            groups << item
+          end
+        else
+          groups << item
         end
       end
 

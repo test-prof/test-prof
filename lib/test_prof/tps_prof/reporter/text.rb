@@ -23,9 +23,29 @@ module TestProf
             <<~MSG
               Total TPS (tests per second): #{total_tps}
 
-              Top #{profiler.top_count} slowest suites by TPS (tests per second):
-
             MSG
+
+          if profiler.mode == :strict
+            return if groups.empty?
+
+            msgs << if groups.size < profiler.top_count
+              <<~MSG
+                Suites violating TPS limits:
+
+              MSG
+            else
+              <<~MSG
+                Top #{profiler.top_count} suites violating TPS limits:
+
+              MSG
+            end
+          else
+            msgs <<
+              <<~MSG
+                Top #{profiler.top_count} slowest suites by TPS (tests per second):
+
+              MSG
+          end
 
           groups.each do |group|
             description = group[:id].top_level_description
@@ -41,7 +61,7 @@ module TestProf
               GROUP
           end
 
-          log :info, msgs.join
+          log((profiler.mode == :strict) ? :error : :info, msgs.join)
         end
       end
     end

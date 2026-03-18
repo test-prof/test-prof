@@ -1,5 +1,7 @@
 # TPSProf
 
+@available_since version=1.6.0
+
 TPSProf measures tests-per-second (TPS) for your top-level example groups and helps identify the slowest ones. It can also run in **strict mode** to fail the build when groups fall below a TPS threshold.
 
 Example output:
@@ -106,5 +108,32 @@ TestProf::TPSProf.configure do |config|
   config.max_examples_count = 100
   config.max_group_time = 60
   config.min_tps = 5
+end
+```
+
+### Custom strict handler
+
+You can provide a custom strict handler to implement your own violation logic. The handler receives a `GroupInfo` object with the following attributes: `group`, `location`, `examples_count`, `total_time`, `tps`, and `penalty`. Raise an exception to mark the group as a violation. Here is an example configuration to use different TPS thresholds for different test types:
+
+```ruby
+TestProf::TPSProf.configure do |config|
+  config.mode = :strict
+  config.strict_handler = ->(group_info) {
+    if group_info.group.metadata[:type] == :system && group_info.tps < 5
+      raise "Group #{group_info.location} is too slow: #{group_info.tps} TPS"
+    elsif group_info.tps < 20
+      raise "Group #{group_info.location} is too slow: #{group_info.tps} TPS"
+    end
+  }
+end
+```
+
+## Ignoring groups and examples
+
+You can exclude specific groups from TPSProf tracking using the `tps_prof: :ignore` metadata:
+
+```ruby
+RSpec.describe "SlowButOk", tps_prof: :ignore do
+  # ...
 end
 ```

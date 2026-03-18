@@ -18,7 +18,18 @@ describe "TPSProf" do
       expect(output).to include("TPSProf strict enabled (max examples: 4, min tps: 1)")
       expect(output).to match(/Total TPS \(tests per second\): 2\.\d+/)
 
-      expect(output).to include("4 examples, 0 failures, 1 error")
+      expect(output).to include("6 examples, 0 failures, 1 error")
+    end
+
+    specify "with custom strict handler" do
+      output = run_rspec("tps_prof", success: false, env: {"TPS_PROF" => "strict", "TPS_PROF_MIN_EXAMPLES" => "2", "TPS_PROF_MIN_TIME" => "0", "CUSTOM_STRICT_HANDLER" => "1"})
+
+      expect(output).to include("TPSProf strict enabled (custom handler)")
+      expect(output).to match(/Total TPS \(tests per second\): 2\.\d+/)
+
+      expect(output).to include("I don't like this example group")
+
+      expect(output).to include("6 examples, 0 failures, 2 errors")
     end
   end
 end
