@@ -10,7 +10,7 @@ module RuboCop
         LintRoller::About.new(
           name: "test-prof",
           version: ::TestProf::VERSION,
-          homepage: "https://test-prof.evilmartians.io/misc/rubocop",
+          homepage: "https://test-prof.evilmartians.io/guide/misc/rubocop",
           description: "RuboCop plugin to help you write more performant tests."
         )
       end
