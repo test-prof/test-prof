@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "rspec/core"
+
 require "test_prof/utils/rspec"
 
 module TestProf
