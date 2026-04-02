@@ -198,7 +198,7 @@ At the end of the test run, you will see the message from Test Prof including pa
 
 **NOTE:** RSpec only.
 
-It could be usefule to exclude the application boot and tests load from the RubyProf report to analyze only tests being executed (so you don't have `Kernel#require` being one of the top slowest methods).
+It could be useful to exclude the application boot and tests load from the RubyProf report to analyze only tests being executed (so you don't have `Kernel#require` being one of the top slowest methods).
 
 For that, specify the `TEST_RUBY_PROF_BOOT=false` (or "0", or "f") env variable:
 
