@@ -25,7 +25,8 @@ Gem::Specification.new do |spec|
     "homepage_uri" => "https://test-prof.evilmartians.io/",
     "source_code_uri" => "https://github.com/test-prof/test-prof",
     "funding_uri" => "https://github.com/sponsors/test-prof",
-    "default_lint_roller_plugin" => "RuboCop::TestProf::Plugin"
+    "default_lint_roller_plugin" => "RuboCop::TestProf::Plugin",
+    "rubygems_mfa_required" => "true"
   }
 
   spec.files = Dir.glob("lib/**/*") + Dir.glob("config/**/*") + Dir.glob("assets/**/*") + %w[README.md LICENSE.txt CHANGELOG.md]
