@@ -15,12 +15,12 @@ module TestProf::EventProf
           @started_at = TestProf.now
         end
 
-        def publish(_name, started_at, finished_at, *)
-          block.call(finished_at - started_at)
+        def publish(_name, started_at, finished_at, _id, payload)
+          block.call(finished_at - started_at, payload)
         end
 
-        def finish(*)
-          block.call(TestProf.now - started_at)
+        def finish(_name, _id, payload)
+          block.call(TestProf.now - started_at, payload)
         end
       end
 
@@ -31,8 +31,8 @@ module TestProf::EventProf
           ::ActiveSupport::Notifications.subscribe(event, Subscriber.new(block))
         end
 
-        def instrument(event)
-          ::ActiveSupport::Notifications.instrument(event) { yield }
+        def instrument(event, payload = nil)
+          ::ActiveSupport::Notifications.instrument(event, payload) { yield }
         end
       end
     end

@@ -14,7 +14,7 @@ module TestProf
         @top_count = top_count
         @per_example = per_example
 
-        instrumenter.subscribe(event) { |time| track(time) }
+        instrumenter.subscribe(event) { |time, payload = nil| track(time, payload) }
 
         @groups = Utils::SizedOrderedSet.new(
           top_count, sort_by: rank_by
@@ -29,7 +29,7 @@ module TestProf
         @absolute_run_time = 0.0
       end
 
-      def track(time)
+      def track(time, payload = nil)
         return if @current_group.nil?
         @total_time += time
         @total_count += 1
@@ -37,10 +37,15 @@ module TestProf
         @time += time
         @count += 1
 
+        label = payload[:label] if payload
+        track_breakdown(@breakdown, time, payload[:label]) if label
+
         return if @current_example.nil?
 
         @example_time += time
         @example_count += 1
+
+        track_breakdown(@example_breakdown, time, label) if label
       end
 
       def group_started(id)
@@ -59,6 +64,7 @@ module TestProf
           count: @count,
           examples: @total_examples
         }
+        data[:breakdown] = snapshot_breakdown(@breakdown) unless @breakdown.empty?
 
         @groups << data unless data[rank_by].zero?
 
@@ -82,8 +88,10 @@ module TestProf
           run_time: example_run_time,
           count: @example_count
         }
+        data[:breakdown] = snapshot_breakdown(@example_breakdown) unless @example_breakdown.nil? || @example_breakdown.empty?
 
         @examples << data unless data[rank_by].zero?
+
         @current_example = nil
       end
 
@@ -108,12 +116,28 @@ module TestProf
         @count = 0
         @total_examples = 0
         @group_ts = TestProf.now
+        @breakdown = Hash.new { |h, k| h[k] = {time: 0.0, count: 0} }
       end
 
       def reset_example!
         @example_count = 0
         @example_time = 0.0
         @example_ts = TestProf.now
+        @example_breakdown = Hash.new { |h, k| h[k] = {time: 0.0, count: 0} }
+      end
+
+      def track_breakdown(store, time, label)
+        bucket = store[label]
+        bucket[:time] += time
+        bucket[:count] += 1
+      end
+
+      def snapshot_breakdown(store)
+        store
+          .map { |label, stats| {label: label, time: stats[:time], count: stats[:count]} }
+          .sort { |a, b| b[rank_by] <=> a[rank_by] }
+          .first(top_count)
+          .reject { |row| row[rank_by].zero? }
       end
     end
 
