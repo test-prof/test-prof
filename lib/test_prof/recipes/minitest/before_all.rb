@@ -135,7 +135,7 @@ module TestProf
 
           if base.respond_to?(:parallelize)
             base.singleton_class.prepend(Module.new do
-              def parallelize(workers: :number_of_processors, with: :processes)
+              def parallelize(workers: :number_of_processors, with: :processes, **options)
                 # super.parallelize returns nil when no parallelization is set up
                 if super.nil?
                   return
