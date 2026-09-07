@@ -54,6 +54,53 @@ describe "EventProf RSpec" do
     expect(output).to include("Total events: 3")
   end
 
+  context "with JSON format" do
+    let(:artifact) { "tmp/test_prof/event-prof.json" }
+
+    after { FileUtils.rm_f(artifact) }
+
+    specify "it writes results to a JSON artifact", :aggregate_failures do
+      output = run_rspec(
+        "event_prof_json",
+        env: {"EVENT_PROF" => "test.event", "EVENT_PROF_FORMAT" => "json"}
+      )
+
+      expect(output).to include("EventProf results to JSON: ")
+      expect(output).not_to include("Top 5 slowest suites")
+
+      expect(File.exist?(artifact)).to eq true
+
+      data = JSON.parse(File.read(artifact))
+
+      expect(data.size).to eq 1
+
+      result = data.first
+
+      expect(result["event"]).to eq "test.event"
+      expect(result["total_count"]).to eq 4
+      expect(result["rank_by"]).to eq "time"
+      expect(result["top_count"]).to eq 5
+      expect(result["total_time"]).to match(/\A\d{2}:\d{2}\.\d{3}\z/)
+      expect(result["absolute_run_time"]).to match(/\A\d{2}:\d{2}\.\d{3}\z/)
+      expect(result["time_percentage"]).to be_a(Float)
+
+      expect(result["groups"].size).to eq 2
+
+      group = result["groups"].first
+      expect(group["description"]).to eq "Another something"
+      expect(group["location"]).to match(%r{./event_prof_json_fixture\.rb:\d+})
+      expect(group["count"]).to eq 1
+      expect(group["examples"]).to eq 1
+
+      expect(result["examples"].size).to eq 3
+
+      example = result["examples"].first
+      expect(example["description"]).to eq "do very long"
+      expect(example["location"]).to match(%r{./event_prof_json_fixture\.rb:\d+})
+      expect(example["count"]).to eq 1
+    end
+  end
+
   context "with RStamp" do
     before do
       FileUtils.cp(

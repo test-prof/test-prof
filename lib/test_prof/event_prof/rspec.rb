@@ -1,15 +1,9 @@
 # frozen_string_literal: true
 
-require "test_prof/ext/float_duration"
-require "test_prof/ext/string_truncate"
-
 module TestProf
   module EventProf
     class RSpecListener # :nodoc:
       include Logging
-
-      using FloatDuration
-      using StringTruncate
 
       NOTIFICATIONS = %i[
         example_group_started
@@ -43,59 +37,11 @@ module TestProf
       end
 
       def print
-        @profiler.each(&method(:report))
-      end
+        EventProf.config.printer.dump(@profiler)
 
-      def report(profiler)
-        result = profiler.results
-        time_percentage = time_percentage(profiler.total_time, profiler.absolute_run_time)
+        return unless EventProf.config.stamp?
 
-        msgs = []
-
-        msgs <<
-          <<~MSG
-            EventProf results for #{profiler.event}
-
-            Total time: #{profiler.total_time.duration} of #{profiler.absolute_run_time.duration} (#{time_percentage}%)
-            Total events: #{profiler.total_count}
-
-            Top #{profiler.top_count} slowest suites (by #{profiler.rank_by}):
-
-          MSG
-
-        result[:groups].each do |group|
-          description = group[:id].top_level_description
-          location = group[:id].metadata[:location]
-          time = group[:time]
-          run_time = group[:run_time]
-          time_percentage = time_percentage(time, run_time)
-
-          msgs <<
-            <<~GROUP
-              #{description.truncate} (#{location}) – #{time.duration} (#{group[:count]} / #{group[:examples]}) of #{run_time.duration} (#{time_percentage}%)
-            GROUP
-        end
-
-        if result[:examples]
-          msgs << "\nTop #{profiler.top_count} slowest tests (by #{profiler.rank_by}):\n\n"
-
-          result[:examples].each do |example|
-            description = example[:id].description
-            location = example[:id].metadata[:location]
-            time = example[:time]
-            run_time = example[:run_time]
-            time_percentage = time_percentage(time, run_time)
-
-            msgs <<
-              <<~GROUP
-                #{description.truncate} (#{location}) – #{time.duration} (#{example[:count]}) of #{run_time.duration} (#{time_percentage}%)
-              GROUP
-          end
-        end
-
-        log :info, msgs.join
-
-        stamp!(profiler) if EventProf.config.stamp?
+        @profiler.each { |profiler| stamp!(profiler) }
       end
 
       def stamp!(profiler)
@@ -129,10 +75,6 @@ module TestProf
           MSG
 
         log :info, msgs.join
-      end
-
-      def time_percentage(time, total_time)
-        (time / total_time * 100).round(2)
       end
     end
   end

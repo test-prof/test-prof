@@ -23,4 +23,20 @@ describe TestProf::EventProf do
       expect(subject.profilers.first.top_count).to eq 5
     end
   end
+
+  describe "Config#printer" do
+    it "returns Simple printer by default" do
+      expect(described_class.config.printer).to eq TestProf::EventProf::Printers::Simple
+    end
+
+    it "returns Json printer for string format" do
+      described_class.config.format = "json"
+      expect(described_class.config.printer).to eq TestProf::EventProf::Printers::Json
+    end
+
+    it "returns Json printer for symbol format" do
+      described_class.config.format = :json
+      expect(described_class.config.printer).to eq TestProf::EventProf::Printers::Json
+    end
+  end
 end

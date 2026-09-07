@@ -113,6 +113,24 @@ either by the time spent in the event or by the number of occurrences:
 EVENT_PROF_RANK=count EVENT_PROF='instantiation.active_record' be rspec
 ```
 
+## Formats
+
+By default, EventProf prints results to the stdout. You can also dump them as JSON by setting
+the `EVENT_PROF_FORMAT` env variable (or `config.format`):
+
+```sh
+EVENT_PROF='sql.active_record' EVENT_PROF_FORMAT=json rspec ...
+```
+
+The JSON artifact is written to `tmp/test_prof/event-prof.json` (the path is configurable
+via the global `output_dir` option).
+
+For Minitest you can use the corresponding CLI option:
+
+```sh
+ruby test/my_super_test.rb --event-prof=sql.active_record --event-prof-format=json
+```
+
 See [event_prof.rb](https://github.com/test-prof/test-prof/tree/master/lib/test_prof/event_prof.rb) for all available configuration options and their usage.
 
 ## Using with RSpecStamp

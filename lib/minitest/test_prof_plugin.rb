@@ -35,6 +35,9 @@ module Minitest # :nodoc:
     opts.on "--event-prof-per-example", TrueClass, "Includes examples metrics to results" do |flag|
       options[:per_example] = flag
     end
+    opts.on "--event-prof-format=FORMAT", "Defines output FORMAT for results" do |format|
+      options[:event_prof_format] = format
+    end
     opts.on "--factory-doctor", TrueClass, "Enable Factory Doctor for your examples" do |flag|
       options[:fdoc] = flag
     end

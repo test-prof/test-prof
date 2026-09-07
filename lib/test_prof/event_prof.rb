@@ -2,6 +2,9 @@
 
 require "test_prof/rspec_stamp"
 require "test_prof/event_prof/profiler"
+require "test_prof/event_prof/printers/base"
+require "test_prof/event_prof/printers/simple"
+require "test_prof/event_prof/printers/json"
 require "test_prof/event_prof/instrumentations/active_support"
 require "test_prof/event_prof/monitor"
 require "test_prof/utils/sized_ordered_set"
@@ -34,7 +37,7 @@ module TestProf
       }.freeze
 
       attr_accessor :instrumenter, :top_count, :per_example,
-        :rank_by, :event
+        :rank_by, :event, :format
 
       def initialize
         @event = ENV["EVENT_PROF"]
@@ -42,6 +45,7 @@ module TestProf
         @top_count = (ENV["EVENT_PROF_TOP"] || 5).to_i
         @per_example = ENV["EVENT_PROF_EXAMPLES"] == "1"
         @rank_by = (ENV["EVENT_PROF_RANK"] || :time).to_sym
+        @format = ENV["EVENT_PROF_FORMAT"]
         @stamp = ENV["EVENT_PROF_STAMP"]
 
         RSpecStamp.config.tags = @stamp if stamp?
@@ -53,6 +57,13 @@ module TestProf
 
       def per_example?
         per_example == true
+      end
+
+      def printer
+        case format.to_s
+        when "json" then Printers::Json
+        else Printers::Simple
+        end
       end
 
       def resolve_instrumenter

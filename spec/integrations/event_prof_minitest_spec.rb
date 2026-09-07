@@ -41,6 +41,57 @@ describe "EventProf" do
     expect(output).to match(/invokes twice \(\.\/event_prof_fixture\.rb:\d+\) – 00:00\.038 \(2\) of 00:00\.2\d{2} \(\d{1,2}.\d+%\)/)
   end
 
+  context "with JSON format" do
+    let(:artifact) { "tmp/test_prof/event-prof.json" }
+
+    after { FileUtils.rm_f(artifact) }
+
+    specify "it writes results to a JSON artifact", :aggregate_failures do
+      output = run_minitest(
+        "event_prof_json",
+        env: {"EVENT_PROF" => "test.event", "EVENT_PROF_FORMAT" => "json"}
+      )
+
+      expect(output).to include("EventProf results to JSON: ")
+      expect(output).not_to include("Top 5 slowest suites")
+
+      expect(File.exist?(artifact)).to eq true
+
+      data = JSON.parse(File.read(artifact))
+
+      expect(data.size).to eq 1
+
+      result = data.first
+
+      expect(result["event"]).to eq "test.event"
+      expect(result["total_count"]).to eq 3
+
+      expect(result["groups"].size).to eq 1
+
+      group = result["groups"].first
+      expect(group["description"]).to eq "Something"
+      expect(group["location"]).to eq "./event_prof_json_fixture.rb"
+      expect(group["count"]).to eq 3
+      expect(group["examples"]).to eq 2
+
+      expect(result["examples"].size).to eq 2
+
+      example = result["examples"].first
+      expect(example["description"]).to eq "invokes once"
+      expect(example["count"]).to eq 1
+    end
+
+    specify "it works with CLI options" do
+      output = run_minitest(
+        "event_prof_json",
+        env: {"TESTOPTS" => "--event-prof=test.event --event-prof-format=json"}
+      )
+
+      expect(output).to include("EventProf results to JSON: ")
+      expect(File.exist?(artifact)).to eq true
+    end
+  end
+
   context "CustomEvents" do
     it "works with factory.create" do
       output = run_minitest(
