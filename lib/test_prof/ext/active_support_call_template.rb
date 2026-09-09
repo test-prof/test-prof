@@ -35,6 +35,10 @@ module TestProf
       def call(target, value, &block)
         @original.call(target, value, &block)
       end
+
+      def to_proc
+        proc { |*args, &block| call(*args, &block) }
+      end
     end
   end
 end
