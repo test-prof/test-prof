@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Fix `RSpecDissect` writing bold escape sequences when the output is not a TTY. ([@meganemura][])
+
 - Fix `before_all` with parallel Minitest 6. ([@GabrielNagy][])
 
 ## 1.6.3 (2026-07-20)
@@ -521,3 +523,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@Rylan12]: https://github.com/Rylan12
 [@kddnewton]: https://github.com/kddnewton
 [@moznion]: https://github.com/moznion
+[@meganemura]: https://github.com/meganemura
