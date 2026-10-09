@@ -7,7 +7,7 @@ eval_gemfile "gemfiles/rubocop.gemfile"
 
 gem "json", "< 3"
 
-local_gemfile = File.join(__dir__, "Gemfile.local")
+local_gemfile = ENV.fetch("GEMFILE_LOCAL", File.join(__dir__, "Gemfile.local"))
 
 if File.exist?(local_gemfile)
   eval_gemfile(local_gemfile) # rubocop:disable Security/Eval

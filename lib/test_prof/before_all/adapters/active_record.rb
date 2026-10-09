@@ -18,14 +18,14 @@ module TestProf
               subscribe! if pinned_pools_stack.size == 1
 
               ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).each do |pool|
-                pool.pin_connection!(true)
+                pin_pool!(pool)
                 pinned_pools << pool
               end
             end
 
             def rollback_transaction
               pinned_pools = pinned_pools_stack.pop
-              pinned_pools&.each(&:unpin_connection!)
+              pinned_pools&.each { |pool| unpin_pool!(pool) }
             ensure
               unsubscribe! if pinned_pools_stack.empty?
             end
@@ -52,7 +52,7 @@ module TestProf
                 pinned_pools = stack.last
                 next if pinned_pools.nil? || pinned_pools.include?(pool)
 
-                pool.pin_connection!(true)
+                pin_pool!(pool)
                 pinned_pools << pool
               end
             end
@@ -62,6 +62,34 @@ module TestProf
 
               ActiveSupport::Notifications.unsubscribe(Thread.current[:before_all_connection_subscriber])
               Thread.current[:before_all_connection_subscriber] = nil
+            end
+
+            # Rails 8.2+
+            if ::ActiveRecord.version >= Gem::Version.new("8.2.0.alpha")
+              def pin_pool!(pool)
+                pool.pin_connection!(true)
+                pool.lease_connection.begin_transaction(joinable: false, _lazy: false)
+              end
+
+              def unpin_pool!(pool)
+                connection = pool.lease_connection
+                if connection.transaction_open?
+                  connection.rollback_transaction
+                else
+                  warn "!!! before_all transaction has been already rollbacked and could work incorrectly"
+                  connection.reset!
+                end
+              ensure
+                pool.unpin_connection!
+              end
+            else
+              def pin_pool!(pool)
+                pool.pin_connection!(true)
+              end
+
+              def unpin_pool!(pool)
+                pool.unpin_connection!
+              end
             end
           else
             def all_connections
