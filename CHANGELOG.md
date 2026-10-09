@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+## 1.6.4 (2026-10-09)
+
 - Fix `RSpecDissect` writing bold escape sequences when the output is not a TTY. ([@meganemura][])
 
 - Fix `before_all` with parallel Minitest 6. ([@GabrielNagy][])
