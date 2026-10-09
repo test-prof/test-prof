@@ -15,11 +15,11 @@ module TestProf::EventProf
           @started_at = TestProf.now
         end
 
-        def publish(_name, started_at, finished_at, _id, payload)
+        def publish(_name, started_at, finished_at, _id = nil, payload = nil)
           block.call(finished_at - started_at, payload)
         end
 
-        def finish(_name, _id, payload)
+        def finish(_name, _id, payload = nil)
           block.call(TestProf.now - started_at, payload)
         end
       end

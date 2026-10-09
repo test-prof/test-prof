@@ -14,7 +14,7 @@ module Instrumenter
     ActiveSupport::Notifications.publish(
       event,
       0,
-      time, nil, nil
+      time
     )
   end
 end

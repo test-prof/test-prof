@@ -20,7 +20,7 @@ module Instrumenter
     ActiveSupport::Notifications.publish(
       "test.event",
       0,
-      time, nil, nil
+      time
     )
   end
 end
