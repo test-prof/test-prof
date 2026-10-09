@@ -93,5 +93,4 @@ describe TestProf::FactoryProf::Printers::Flamegraph do
       )
     end
   end
-  # rubocop:enable Style/BracesAroundHashParameters
 end

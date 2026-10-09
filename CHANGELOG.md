@@ -5,6 +5,7 @@
 - Fix `RSpecDissect` writing bold escape sequences when the output is not a TTY. ([@meganemura][])
 
 - Fix `before_all` with parallel Minitest 6. ([@GabrielNagy][])
+
 - Add `EVENT_PROF_FORMAT` (`json`) support to EventProf along with the printers infrastructure (`Printers::Simple`, `Printers::Json`). ([@lHydra][])
 
 - Fix `before_all` Minitest `parallelize` patch rejecting Rails 7.0+ keyword arguments (`threshold:`, `parallelize_databases:`). ([@hnegishi][])
