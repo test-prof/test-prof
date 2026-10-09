@@ -6,6 +6,8 @@
 
 - Fix `before_all` with parallel Minitest 6. ([@GabrielNagy][])
 
+- Fix `before_all` Minitest `parallelize` patch rejecting Rails 7.0+ keyword arguments (`threshold:`, `parallelize_databases:`). ([@hnegishi][])
+
 ## 1.6.3 (2026-07-20)
 
 - Fix `before_all` firing N times in Minitest 6. ([@palkan][])
@@ -523,4 +525,5 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@Rylan12]: https://github.com/Rylan12
 [@kddnewton]: https://github.com/kddnewton
 [@moznion]: https://github.com/moznion
+[@hnegishi]: https://github.com/hnegishi
 [@meganemura]: https://github.com/meganemura
