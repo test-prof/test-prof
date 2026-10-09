@@ -5,6 +5,8 @@ gemspec
 
 eval_gemfile "gemfiles/rubocop.gemfile"
 
+gem "json", "< 3"
+
 local_gemfile = File.join(__dir__, "Gemfile.local")
 
 if File.exist?(local_gemfile)

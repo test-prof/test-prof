@@ -4,6 +4,7 @@ gem "activerecord-jdbcsqlite3-adapter"
 gem "jdbc-sqlite3"
 gem "activerecord", "~> 7.2.0"
 gem "rdoc", "< 8.0"
+gem "json", "< 3"
 
 gem "factory_bot"
 gem "fabrication"

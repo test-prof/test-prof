@@ -8,5 +8,6 @@ gem "sidekiq"
 gem "timecop"
 gem "pg"
 gem "minitest", "<6"
+gem "json", "< 3"
 
 gemspec path: '..'

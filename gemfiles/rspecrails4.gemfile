@@ -9,5 +9,6 @@ gem "timecop", "~> 0.9.1"
 gem "pg"
 gem "rspec-rails", "~> 4.0"
 gem "logger"
+gem "json", "< 3"
 
 gemspec path: '..'

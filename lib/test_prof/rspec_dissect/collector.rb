@@ -32,7 +32,7 @@ module TestProf # :nodoc: all
       end
 
       def print_group_result(group)
-        "#{group[:desc].truncate} (#{group[:loc]}) – \e[1m#{group[:total_setup].duration}\e[22m " \
+        "#{group[:desc].truncate} (#{group[:loc]}) – #{bold(group[:total_setup].duration)} " \
         "of #{group[:total].duration} / #{group[:count]} " \
         "(before: #{(group[:total_setup] - group[:total_lazy_let]).duration}, " \
         "before let: #{group[:total_before_let].duration}, " \
@@ -52,6 +52,16 @@ module TestProf # :nodoc: all
         end
 
         msgs.join
+      end
+
+      private
+
+      # Follow the logger's color setting, so that a report written to a file
+      # or a pipe has no escape sequences in it
+      def bold(str)
+        return str unless TestProf.config.color?
+
+        "\e[1m#{str}\e[22m"
       end
     end
   end
