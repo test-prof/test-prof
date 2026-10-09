@@ -205,6 +205,25 @@ EVENT_PROF=sidekiq.inline bundle exec rspec
 
 Use this event to profile the time spent running Sidekiq jobs.
 
+### `"callback.run"`
+
+Collects statistics about [ActiveSupport callbacks](https://api.rubyonrails.org/classes/ActiveSupport/Callbacks.html) invocations (`before`/`after`):
+
+```sh
+EVENT_PROF=callback.run bundle exec rspec
+```
+
+Requires `ActiveSupport::Callbacks` to be loaded (e.g., via Rails or `require "active_support/callbacks"`).
+
+The report includes a breakdown by callback, showing the time and the number of invocations for each one (`kind_name filter (Owner)`). Each callback event carries a payload of the form `{label: "..."}`, and events are grouped by that label:
+
+```
+  before_save normalize (Order) → 00:00.012 (42)
+  after_save audit (Order) → 00:00.008 (42)
+```
+
+**NOTE:** only `before` and `after` callbacks are tracked; `around` callbacks are not instrumented
+
 ## Profile arbitrary methods
 
 You can also add your custom events to profile specific methods (for example, after figuring out some hot calls with [RubyProf](./ruby_prof.md) or [StackProf](./stack_prof.md)).
@@ -236,6 +255,7 @@ You can also provide additional options:
 
 - `top_level: true | false` (defaults to `false`): defines whether you want to take into account only top-level invocations and ignore nested triggers of this event (that's how "factory.create" is [implemented](https://github.com/test-prof/test-prof/blob/master/lib/test_prof/event_prof/custom_events/factory_create.rb))
 - `guard: Proc` (defaults to `nil`): provide a Proc which could prevent from triggering an event: the method is instrumented only if `guard` returns `true`; `guard` is executed using `instance_exec` and the method arguments are passed to it.
+- `payload: Proc` (defaults to `nil`): provide a Proc returning a `Hash` to attach a payload to each event (passed through as the `ActiveSupport::Notifications` payload). When the Hash contains a `:label` key, events sharing the same label are aggregated into a breakdown (see [`"callback.run"`](#callbackrun)). The Proc is evaluated using `instance_exec` and the method arguments are passed to it.
 
 For example:
 

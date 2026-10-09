@@ -7,6 +7,7 @@
 - Fix `RSpecDissect` writing bold escape sequences when the output is not a TTY. ([@meganemura][])
 
 - Fix `before_all` with parallel Minitest 6. ([@GabrielNagy][])
+- Add EventProf `callback.run` event to profile ActiveSupport before/after callbacks. ([@lHydra][])
 
 - Add `EVENT_PROF_FORMAT` (`json`) support to EventProf along with the printers infrastructure (`Printers::Simple`, `Printers::Json`). ([@lHydra][])
 

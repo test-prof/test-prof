@@ -6,8 +6,8 @@ module InstrumenterStub
       listeners[event] = block
     end
 
-    def notify(event, time)
-      listeners[event].call(time)
+    def notify(event, time, payload = nil)
+      listeners[event].call(time, payload)
     end
 
     private
