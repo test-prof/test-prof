@@ -10,43 +10,55 @@ module TestProf
         class << self
           if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
             def begin_transaction
-              subscribe!
+              # don't rely on connection_handler.connection_pool_list,
+              # track pinned pools ourselves
+              # see https://github.com/rails/rails/pull/58489
+              pinned_pools = []
+              pinned_pools_stack.push(pinned_pools)
+              subscribe! if pinned_pools_stack.size == 1
+
               ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).each do |pool|
                 pool.pin_connection!(true)
+                pinned_pools << pool
               end
             end
 
             def rollback_transaction
-              ::ActiveRecord::Base.connection_handler.connection_pool_list(:writing).each do |pool|
-                pool.unpin_connection!
-              end
-              unsubscribe!
+              pinned_pools = pinned_pools_stack.pop
+              pinned_pools&.each(&:unpin_connection!)
+            ensure
+              unsubscribe! if pinned_pools_stack.empty?
+            end
+
+            def pinned_pools_stack
+              Thread.current[:before_all_pinned_pools_stack] ||= []
             end
 
             def subscribe!
-              Thread.current[:before_all_subscription_count] ||= 0
-              Thread.current[:before_all_subscription_count] += 1
-
-              return unless Thread.current[:before_all_subscription_count] == 1
+              # notifications are not Thread-pinned, so
+              # we must keep a reference to the current stack
+              stack = pinned_pools_stack
 
               Thread.current[:before_all_connection_subscriber] = ActiveSupport::Notifications.subscribe("!connection.active_record") do |_, _, _, _, payload|
                 connection_name = payload[:connection_name] if payload.key?(:connection_name)
                 shard = payload[:shard] if payload.key?(:shard)
+                # Use the role of the established connection, not the current one
+                role = payload.fetch(:role, ::ActiveRecord::Base.current_role)
                 next unless connection_name
 
-                pool = ::ActiveRecord::Base.connection_handler.retrieve_connection_pool(connection_name, shard: shard)
+                pool = ::ActiveRecord::Base.connection_handler.retrieve_connection_pool(connection_name, role: role, shard: shard)
                 next unless pool && pool.role == :writing
 
+                pinned_pools = stack.last
+                next if pinned_pools.nil? || pinned_pools.include?(pool)
+
                 pool.pin_connection!(true)
+                pinned_pools << pool
               end
             end
 
             def unsubscribe!
-              return unless Thread.current[:before_all_subscription_count]
-
-              Thread.current[:before_all_subscription_count] -= 1
-
-              return unless Thread.current[:before_all_subscription_count] == 0 && Thread.current[:before_all_connection_subscriber]
+              return unless Thread.current[:before_all_connection_subscriber]
 
               ActiveSupport::Notifications.unsubscribe(Thread.current[:before_all_connection_subscriber])
               Thread.current[:before_all_connection_subscriber] = nil

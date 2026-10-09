@@ -10,6 +10,14 @@ end
 require "test_prof/before_all/adapters/active_record"
 
 describe TestProf::BeforeAll::Adapters::ActiveRecord do
+  # Make sure no before_all state leaks between examples
+  after do
+    next unless described_class.respond_to?(:pinned_pools_stack)
+
+    described_class.pinned_pools_stack.clear
+    described_class.unsubscribe!
+  end
+
   context "when using single database", skip: (multi_db? ? "Using multiple databases" : nil) do
     let(:connection_pool) { ApplicationRecord.connection_pool }
     let(:connection) { connection_pool.connection }
@@ -36,8 +44,29 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
       subject { ::TestProf::BeforeAll::Adapters::ActiveRecord.rollback_transaction }
 
       if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
-        it "calls unpin_connection! on all available connections" do
-          expect(connection_pool).to receive(:unpin_connection!)
+        it "calls unpin_connection! on all pinned connections" do
+          ::TestProf::BeforeAll::Adapters::ActiveRecord.begin_transaction
+
+          expect(connection_pool).to receive(:unpin_connection!).and_call_original
+
+          subject
+        end
+
+        # https://github.com/test-prof/test-prof/issues/358
+        it "doesn't call unpin_connection! on connections it hasn't pinned" do
+          late_pool = double("late pool")
+
+          ::TestProf::BeforeAll::Adapters::ActiveRecord.begin_transaction
+
+          allow(::ActiveRecord::Base.connection_handler).to receive(:connection_pool_list)
+            .with(:writing).and_return([connection_pool, late_pool])
+          expect(connection_pool).to receive(:unpin_connection!).and_call_original
+
+          subject
+        end
+
+        it "doesn't call unpin_connection! without begin_transaction" do
+          expect(connection_pool).not_to receive(:unpin_connection!)
 
           subject
         end
@@ -91,8 +120,10 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
 
       if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
         it "calls #unpin_connection! on each connection" do
-          expect(connection_pool_list.first.connection_pool).to receive(:unpin_connection!)
-          expect(connection_pool_list.last.connection_pool).to receive(:unpin_connection!)
+          ::TestProf::BeforeAll::Adapters::ActiveRecord.begin_transaction
+
+          expect(connection_pool_list.first.connection_pool).to receive(:unpin_connection!).and_call_original
+          expect(connection_pool_list.last.connection_pool).to receive(:unpin_connection!).and_call_original
 
           subject
         end
