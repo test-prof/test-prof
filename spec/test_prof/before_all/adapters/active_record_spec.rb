@@ -25,7 +25,7 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
     describe ".begin_transaction" do
       subject { ::TestProf::BeforeAll::Adapters::ActiveRecord.begin_transaction }
 
-      if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
+      if ::ActiveRecord::Base.connection_pool.respond_to?(:pin_connection!)
         it "calls pin_connection! on all available connections" do
           expect(connection_pool).to receive(:pin_connection!).with(true)
 
@@ -43,7 +43,7 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
     describe ".rollback_transaction" do
       subject { ::TestProf::BeforeAll::Adapters::ActiveRecord.rollback_transaction }
 
-      if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
+      if ::ActiveRecord::Base.connection_pool.respond_to?(:pin_connection!)
         it "calls unpin_connection! on all pinned connections" do
           ::TestProf::BeforeAll::Adapters::ActiveRecord.begin_transaction
 
@@ -118,7 +118,7 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
     describe ".rollback_transaction" do
       subject { ::TestProf::BeforeAll::Adapters::ActiveRecord.rollback_transaction }
 
-      if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
+      if ::ActiveRecord::Base.connection_pool.respond_to?(:pin_connection!)
         it "calls #unpin_connection! on each connection" do
           ::TestProf::BeforeAll::Adapters::ActiveRecord.begin_transaction
 
