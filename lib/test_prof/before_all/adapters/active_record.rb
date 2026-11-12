@@ -8,7 +8,7 @@ module TestProf
         POOL_ARGS = ((::ActiveRecord::VERSION::MAJOR > 6) ? [:writing] : []).freeze
 
         class << self
-          if ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
+          if ::ActiveRecord::Base.connection_pool.respond_to?(:pin_connection!)
             def begin_transaction
               # don't rely on connection_handler.connection_pool_list,
               # track pinned pools ourselves
@@ -96,15 +96,21 @@ module TestProf
               @all_connections ||= if ::ActiveRecord::Base.respond_to? :connects_to
                 ::ActiveRecord::Base.connection_handler.connection_pool_list(*POOL_ARGS).filter_map { |pool|
                   begin
-                    pool.connection
+                    lease_connection(pool)
                   rescue *pool_connection_errors => error
                     log_pool_connection_error(pool, error)
                     nil
                   end
                 }
               else
-                Array.wrap(::ActiveRecord::Base.connection)
+                Array.wrap(lease_connection(::ActiveRecord::Base))
               end
+            end
+
+            def lease_connection(pool_or_base)
+              return pool_or_base.lease_connection if pool_or_base.respond_to?(:lease_connection)
+
+              pool_or_base.connection
             end
 
             def pool_connection_errors
@@ -152,7 +158,7 @@ module TestProf
       end
     end
 
-    unless ::ActiveRecord::Base.connection.pool.respond_to?(:pin_connection!)
+    unless ::ActiveRecord::Base.connection_pool.respond_to?(:pin_connection!)
       # avoid instance variable collisions with cats
       PREFIX_RESTORE_LOCK_THREAD = "@😺"
 
@@ -162,12 +168,12 @@ module TestProf
         # thus using thread in `before_all` (e.g. ActiveJob async adapter)
         # might lead to leaking connections
         config.before(:begin) do
-          instance_variable_set("#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread", ::ActiveRecord::Base.connection.pool.instance_variable_get(:@lock_thread)) unless instance_variable_defined? "#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread"
-          ::ActiveRecord::Base.connection.pool.lock_thread = true
+          instance_variable_set("#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread", ::ActiveRecord::Base.connection_pool.instance_variable_get(:@lock_thread)) unless instance_variable_defined? "#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread"
+          ::ActiveRecord::Base.connection_pool.lock_thread = true
         end
 
         config.after(:rollback) do
-          ::ActiveRecord::Base.connection.pool.lock_thread = instance_variable_get("#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread")
+          ::ActiveRecord::Base.connection_pool.lock_thread = instance_variable_get("#{PREFIX_RESTORE_LOCK_THREAD}_orig_lock_thread")
         end
       end
     end

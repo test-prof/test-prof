@@ -105,7 +105,7 @@ module TestProf
           elsif val.is_a?(ActiveModel::Attribute)
             quoted(val.value_for_database)
           else
-            ActiveRecord::Base.connection.quote(val)
+            AnyFixture.lease_connection.quote(val)
           end
         end
       end
@@ -125,7 +125,7 @@ module TestProf
         @success = false
 
         @adapter =
-          case ActiveRecord::Base.connection.adapter_name
+          case AnyFixture.lease_connection.adapter_name
           when /sqlite/i
             require "test_prof/any_fixture/dump/sqlite"
             SQLite.new
@@ -134,7 +134,7 @@ module TestProf
             PostgreSQL.new
           else
             raise ArgumentError,
-              "Your current database adapter (#{ActiveRecord::Base.connection.adapter_name}) " \
+              "Your current database adapter (#{AnyFixture.lease_connection.adapter_name}) " \
               "is currently not supported. So far, we only support SQLite and PostgreSQL"
           end
 
@@ -173,7 +173,7 @@ module TestProf
       attr_reader :adapter
 
       def import_via_active_record
-        conn = ActiveRecord::Base.connection
+        conn = AnyFixture.lease_connection
 
         File.open(path).each_line do |query|
           next if query.empty?
