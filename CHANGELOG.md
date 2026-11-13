@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Fix `before_all` global hooks with metadata filters raising `ArgumentError` on RSpec 4. ([@andrewfader][])
+
 ## 1.6.4 (2026-10-09)
 
 - Fix `RSpecDissect` writing bold escape sequences when the output is not a TTY. ([@meganemura][])
@@ -531,3 +533,4 @@ See [changelog](https://github.com/test-prof/test-prof/blob/v0.8.0/CHANGELOG.md)
 [@moznion]: https://github.com/moznion
 [@hnegishi]: https://github.com/hnegishi
 [@meganemura]: https://github.com/meganemura
+[@andrewfader]: https://github.com/andrewfader

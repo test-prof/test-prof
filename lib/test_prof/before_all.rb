@@ -97,11 +97,9 @@ module TestProf
       def filters_apply?(metadata)
         return true unless filters.is_a?(Hash) && TestProf.rspec?
 
-        ::RSpec::Core::MetadataFilter.apply?(
-          :all?,
-          filters,
-          metadata
-        )
+        filters.all? do |key, value|
+          ::RSpec::Core::MetadataFilter.filter_applies?(key, value, metadata)
+        end
       end
     end
 
