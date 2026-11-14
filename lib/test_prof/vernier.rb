@@ -1,5 +1,7 @@
 # frozen_string_literal: true
 
+require "stringio"
+
 module TestProf
   # Vernier wrapper.
   #
@@ -102,7 +104,8 @@ module TestProf
 
         path = build_path(name)
 
-        File.write(path, ::Vernier::Output::Firefox.new(result).output)
+        vernier_report = ::Vernier::Output::Firefox.new(result).output
+        IO.copy_stream(StringIO.new(vernier_report), path)
 
         log :info, "Vernier report generated: #{path}"
       end
