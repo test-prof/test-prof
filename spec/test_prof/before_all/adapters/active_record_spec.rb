@@ -16,6 +16,9 @@ describe TestProf::BeforeAll::Adapters::ActiveRecord do
 
     described_class.pinned_pools_stack.clear
     described_class.unsubscribe!
+
+    connection = ApplicationRecord.connection_pool.lease_connection
+    connection.rollback_transaction while connection.transaction_open?
   end
 
   context "when using single database", skip: (multi_db? ? "Using multiple databases" : nil) do
