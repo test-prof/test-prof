@@ -18,6 +18,10 @@ shared_context "user", user: true do
   let(:a_user) { fixture(:user) { TestProf::FactoryBot.create(:user) } }
 end
 
+RSpec.configure do |config|
+  config.include_context "user", user: true
+end
+
 describe "User", :user do
   it "creates user" do
     user.name = ""

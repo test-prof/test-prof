@@ -8,14 +8,16 @@ end
 
 require "open3"
 
+require_relative "support/rspec4_compat"
+
 Dir["#{File.dirname(__FILE__)}/support/**/*.rb"].sort.each { |f| require f }
 
 RSpec.configure do |config|
   config.mock_with :rspec
 
   config.order = :random
-  config.filter_run focus: true
-  config.run_all_when_everything_filtered = true
+  config.filter_run focus: true if config.respond_to?(:run_all_when_everything_filtered)
+  config.run_all_when_everything_filtered = true if config.respond_to?(:run_all_when_everything_filtered)
 
   config.example_status_persistence_file_path = "tmp/.rspec-status" if
     config.respond_to?(:example_status_persistence_file_path=)

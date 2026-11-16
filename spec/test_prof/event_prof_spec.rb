@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-describe TestProf::EventProf do
+RSpec.describe TestProf::EventProf do
   # Use fresh config all for every example
   after { described_class.remove_instance_variable(:@config) }
 

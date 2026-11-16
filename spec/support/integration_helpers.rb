@@ -11,7 +11,7 @@ module IntegrationHelpers
   RSPEC_STUB = File.join(__dir__, "../../bin/rspec")
 
   def run_rspec(path, chdir: nil, success: true, env: {}, options: "")
-    command = "#{RUBY_RUNNER} #{RSPEC_STUB} #{options} -rlogger #{path}_fixture.rb"
+    command = "#{RUBY_RUNNER} #{RSPEC_STUB} #{options} -rlogger -r#{File.expand_path("../../support/rspec4_compat", __FILE__)} #{path}_fixture.rb"
     output, err, status = Open3.capture3(
       env,
       command,

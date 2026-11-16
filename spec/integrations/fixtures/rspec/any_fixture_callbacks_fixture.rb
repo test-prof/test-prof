@@ -20,6 +20,10 @@ shared_context "user_and_post", user_and_post: true do
   let(:user) { User.find(fixture(:user).id) }
 end
 
+RSpec.configure do |config|
+  config.include_context "user_and_post", user_and_post: true
+end
+
 describe "before_fixtures_reset callback", :user_and_post do
   before(:all) do
     before_any_fixtures_reset do

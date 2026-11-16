@@ -4,8 +4,12 @@ $LOAD_PATH.unshift File.expand_path("../../../../../lib", __FILE__)
 require "active_support"
 require "test-prof"
 
-shared_context "fixxer", fix: :me do
+shared_context "fixxer" do
   before { @value = true }
+end
+
+RSpec.configure do |config|
+  config.include_context "fixxer", fix: :me
 end
 
 describe "Something" do

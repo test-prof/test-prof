@@ -14,3 +14,7 @@ shared_context "transactional", transactional: true do
       ActiveRecord::Base.connection.open_transactions.zero?
   end
 end
+
+RSpec.configure do |config|
+  config.include_context "transactional", transactional: true
+end
