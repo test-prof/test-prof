@@ -63,8 +63,8 @@ jobs:
           gemfile: "gemfiles/activerecord6.gemfile"
           db: "sqlite"
           db_url: ~
-        - ruby: "3.0"
-          gemfile: "gemfiles/rspecrails4.gemfile"
+        - ruby: "4.0"
+          gemfile: "gemfiles/rspec4.gemfile"
           db: "sqlite"
         - ruby: "3.4"
           gemfile: "gemfiles/railsmaster.gemfile"

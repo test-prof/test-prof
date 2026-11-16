@@ -1,0 +1,17 @@
+source 'https://rubygems.org'
+
+gem "rspec", "4.0.0.beta1"
+
+gem "activerecord", "~> 8.1"
+gem "factory_bot"
+gem "fabrication"
+gem "sqlite3", "~> 2.0"
+gem "sidekiq"
+gem "timecop"
+gem "pg"
+gem "rspec-rails", "~> 8.1"
+
+gem "json", "< 3"
+gem "benchmark"
+
+gemspec path: '..'
