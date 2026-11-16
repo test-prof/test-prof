@@ -31,7 +31,7 @@ module TestProf
         end
 
         def conn
-          ActiveRecord::Base.connection
+          AnyFixture.lease_connection
         end
 
         def execute(query)

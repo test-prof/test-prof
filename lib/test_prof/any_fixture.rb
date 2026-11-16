@@ -122,6 +122,12 @@ module TestProf
         cache.fetch(id, &block)
       end
 
+      def lease_connection
+        return ActiveRecord::Base.lease_connection if ActiveRecord::Base.respond_to?(:lease_connection)
+
+        ActiveRecord::Base.connection
+      end
+
       # Create and register new SQL dump.
       # Use `watch` to provide additional paths to watch for
       # dump re-generation
@@ -159,7 +165,7 @@ module TestProf
       def clean
         disable_referential_integrity do
           tables_cache.keys.reverse_each do |table|
-            ActiveRecord::Base.connection.execute %(
+            lease_connection.execute %(
               DELETE FROM #{table}
             )
           end
@@ -273,7 +279,7 @@ module TestProf
       end
 
       def disable_referential_integrity
-        connection = ActiveRecord::Base.connection
+        connection = lease_connection
         return yield unless connection.respond_to?(:disable_referential_integrity)
         connection.disable_referential_integrity { yield }
       end
