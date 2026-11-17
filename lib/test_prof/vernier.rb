@@ -21,7 +21,7 @@ module TestProf
   module Vernier
     # Vernier configuration
     class Configuration
-      attr_accessor :mode, :target, :interval, :hooks
+      attr_accessor :mode, :target, :interval, :hooks, :gzip
 
       def initialize
         @mode = ENV.fetch("TEST_VERNIER_MODE", :wall).to_sym
@@ -30,6 +30,7 @@ module TestProf
         sample_interval = ENV["TEST_VERNIER_INTERVAL"].to_i
         @interval = (sample_interval > 0) ? sample_interval : nil
         @hooks = ENV["TEST_VERNIER_HOOKS"]&.split(",")&.map { |hook| hook.strip.to_sym }
+        @gzip = ENV["TEST_VERNIER_GZIP"] == "1"
       end
 
       def boot?
@@ -87,35 +88,51 @@ module TestProf
         options[:interval] = config.interval if config.interval
         options[:hooks] = config.hooks if config.hooks
 
-        if block_given?
-          options[:mode] = config.mode
-          options[:out] = build_path(name)
-          ::Vernier.trace(**options) { yield }
-        else
-          collector = ::Vernier::Collector.new(config.mode, **options)
-          collector.start
+        collector = ::Vernier::Collector.new(config.mode, **options)
+        collector.start
 
-          collector
+        return collector unless block_given?
+
+        # Dump through our own writer: Vernier writes `out:` with a single File.binwrite.
+        begin
+          yield
+        ensure
+          dump(collector, name)
         end
       end
 
       def dump(collector, name)
         result = collector.stop
 
-        path = build_path(name)
+        gzip = gzip?
+        path = build_path(name, gzip: gzip)
 
-        vernier_report = ::Vernier::Output::Firefox.new(result).output
-        IO.copy_stream(StringIO.new(vernier_report), path)
+        firefox = ::Vernier::Output::Firefox.new(result)
+        # Vernier < 1.0 doesn't accept the gzip: keyword at all, so only pass it when enabled.
+        report = gzip ? firefox.output(gzip: true) : firefox.output
+
+        # Stream the report: macOS rejects single writes of 2 GiB or more with EINVAL.
+        IO.copy_stream(StringIO.new(report), path)
 
         log :info, "Vernier report generated: #{path}"
       end
 
       private
 
-      def build_path(name)
-        TestProf.artifact_path(
+      def build_path(name, gzip: false)
+        path = TestProf.artifact_path(
           "vernier-report-#{config.mode}-#{name}.json"
         )
+        # Append after artifact_path so report suffixes and timestamps stay before ".json.gz".
+        gzip ? "#{path}.gz" : path
+      end
+
+      def gzip?
+        return false unless config.gzip
+        return true if Utils.verify_gem_version("vernier", at_least: "1.0.0")
+
+        log :warn, "Vernier report compression requires 'vernier' >= 1.0.0, writing an uncompressed report instead."
+        false
       end
 
       def locked?

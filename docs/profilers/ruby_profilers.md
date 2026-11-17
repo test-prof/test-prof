@@ -88,7 +88,7 @@ See [stack_prof.rb](https://github.com/test-prof/test-prof/tree/master/lib/test_
 
 ## Vernier
 
-[Vernier][] is next generation sampling profiler for Ruby. Give it a try and see if it can help in identifying test peformance bottlenecks!
+[Vernier][] is next generation sampling profiler for Ruby. Give it a try and see if it can help in identifying test performance bottlenecks!
 
 Make sure you have `vernier` in your dependencies:
 
@@ -103,7 +103,7 @@ end
 
 **NOTE:** It's recommended to use [test sampling](../recipes/tests_sampling.md) to generate smaller profiling reports.
 
-You can activate Verner profiling by setting the `TEST_VERNIER` env variable:
+You can activate Vernier profiling by setting the `TEST_VERNIER` env variable:
 
 ```sh
 TEST_VERNIER=1 bundle exec rake test
@@ -117,7 +117,7 @@ At the end of the test run, you will see the message from Test Prof including th
 ```sh
 ...
 
-[TEST PROF INFO] Vernier report generated: tmp/test_prof/vernier-report-wall-raw-total.json
+[TEST PROF INFO] Vernier report generated: tmp/test_prof/vernier-report-wall-total.json
 ```
 
 Use the [profile-viewer](https://github.com/tenderlove/profiler/tree/ruby) gem or upload your profiles to [vernier.prof](https://vernier.prof). Alternatively, you can use [profiler.firefox.com](https://profiler.firefox.com) which profile-viewer is a fork of.
@@ -161,6 +161,24 @@ TestProf::Vernier.configure do |config|
   config.hooks = :rails
 end
 ```
+
+### Compressing Vernier reports
+
+Set the `TEST_VERNIER_GZIP` env variable to write compressed (`.json.gz`) reports (requires `vernier` >= 1.0.0):
+
+```sh
+TEST_VERNIER=1 TEST_VERNIER_GZIP=1 bundle exec rspec ...
+```
+
+Or through the `Vernier` configuration:
+
+```ruby
+TestProf::Vernier.configure do |config|
+  config.gzip = true
+end
+```
+
+With an older `vernier`, Test Prof logs a warning and writes an uncompressed (`.json`) report instead.
 
 ## RubyProf
 
