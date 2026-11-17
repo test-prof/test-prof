@@ -48,6 +48,8 @@ module TestProf
                 <<~GROUP
                   #{description.truncate} (#{location}) – #{time.duration} (#{group[:count]} / #{group[:examples]}) of #{run_time.duration} (#{time_percentage}%)
                 GROUP
+
+              msgs << format_breakdown(group[:breakdown]) if group[:breakdown]
             end
 
             if result[:examples]
@@ -64,10 +66,19 @@ module TestProf
                   <<~GROUP
                     #{description.truncate} (#{location}) – #{time.duration} (#{example[:count]}) of #{run_time.duration} (#{time_percentage}%)
                   GROUP
+
+                msgs << format_breakdown(example[:breakdown]) if example[:breakdown]
               end
             end
 
             log :info, msgs.join
+          end
+
+          def format_breakdown(breakdown, indent: "  ")
+            lines = breakdown.map do |row|
+              "#{indent}#{row[:label]} → #{row[:time].duration} (#{row[:count]})"
+            end
+            "#{lines.join("\n")}\n"
           end
         end
       end

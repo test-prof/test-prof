@@ -52,7 +52,9 @@ module TestProf
               time_percentage: time_percentage(group[:time], group[:run_time]),
               count: group[:count],
               examples: group[:examples]
-            }
+            }.tap do |data|
+              data[:breakdown] = convert_breakdown(group[:breakdown]) if group[:breakdown]
+            end
           end
 
           def convert_example(example)
@@ -63,7 +65,15 @@ module TestProf
               run_time: example[:run_time].duration,
               time_percentage: time_percentage(example[:time], example[:run_time]),
               count: example[:count]
-            }
+            }.tap do |data|
+              data[:breakdown] = convert_breakdown(example[:breakdown]) if example[:breakdown]
+            end
+          end
+
+          def convert_breakdown(breakdown)
+            breakdown.map do |row|
+              {label: row[:label], time: row[:time].duration, count: row[:count]}
+            end
           end
         end
       end

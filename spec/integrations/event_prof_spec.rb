@@ -218,6 +218,18 @@ describe "EventProf RSpec" do
       expect(output).to match(%r{SingleJob \(./event_prof_sidekiq_fixture.rb:27\) – \d{2}:\d{2}.\d{3} \(2 / 2\)})
       expect(output).to match(%r{BatchJob \(./event_prof_sidekiq_fixture.rb:39\) – \d{2}:\d{2}.\d{3} \(4 / 2\)})
     end
+
+    it "works with callback.run" do
+      output = run_rspec(
+        "event_prof_callback_run",
+        env: {"EVENT_PROF" => "callback.run"}
+      )
+
+      expect(output).to include("EventProf results for callback.run")
+      expect(output).to include("Total events: 4")
+      expect(output).to include("before_save normalize (Record)")
+      expect(output).to include("after_save audit (Record)")
+    end
   end
 
   context "with monitor" do

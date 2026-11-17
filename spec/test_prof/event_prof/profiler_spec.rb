@@ -117,5 +117,33 @@ describe TestProf::EventProf::Profiler do
         )
       end
     end
+
+    context "when event has a payload with label" do
+      let(:results) do
+        subject
+
+        subject.group_started "A"
+
+        InstrumenterStub.notify "test.event", 100, {label: "before_save (User)"}
+        InstrumenterStub.notify "test.event", 40, {label: "before_save (User)"}
+        InstrumenterStub.notify "test.event", 200, {label: "after_save (Post)"}
+
+        subject.group_finished "A"
+
+        subject.results
+      end
+
+      it "includes breakdown grouped and ranked by label" do
+        expect(results).to eq(
+          groups: [
+            {id: "A", examples: 0, run_time: 500, time: 340, count: 3,
+             breakdown: [
+               {label: "after_save (Post)", time: 200, count: 1},
+               {label: "before_save (User)", time: 140, count: 2}
+             ]}
+          ]
+        )
+      end
+    end
   end
 end

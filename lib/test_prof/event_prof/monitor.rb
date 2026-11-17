@@ -11,8 +11,8 @@ module TestProf
           @event = event
         end
 
-        def track
-          TestProf::EventProf.instrumenter.instrument(event) { yield }
+        def track(payload = nil)
+          TestProf::EventProf.instrumenter.instrument(event, payload) { yield }
         end
       end
 
@@ -25,7 +25,7 @@ module TestProf
           Thread.current[id] = 0
         end
 
-        def track
+        def track(payload = nil)
           Thread.current[id] += 1
           res = nil
           begin
@@ -43,14 +43,15 @@ module TestProf
       end
 
       class << self
-        def call(mod, event, *mids, guard: nil, top_level: false)
+        def call(mod, event, *mids, guard: nil, top_level: false, payload: nil)
           tracker = top_level ? TopLevelTracker.new(event) : BaseTracker.new(event)
 
           patch = Module.new do
             mids.each do |mid|
               define_method(mid) do |*args, **kwargs, &block|
                 next super(*args, **kwargs, &block) unless guard.nil? || instance_exec(*args, **kwargs, &guard)
-                tracker.track { super(*args, **kwargs, &block) }
+                pl = payload ? instance_exec(*args, **kwargs, &payload) : nil
+                tracker.track(pl) { super(*args, **kwargs, &block) }
               end
             end
           end
