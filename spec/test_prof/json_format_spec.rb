@@ -6,18 +6,31 @@ require "test_prof/tag_prof"
 require "test_prof/memory_prof"
 
 describe "TEST_PROF_FORMAT=json" do
-  # Save and restore ENV around each example
+  # Some specs configure profilers at load time and rely on that configuration
+  # persisting across examples, so we snapshot and restore both ENV and the
+  # memoized profiler configs around each example.
   around do |example|
     env = ENV.to_h
+    configs = profiler_modules.to_h do |mod|
+      [mod, (mod.instance_variable_get(:@config) if mod.instance_variable_defined?(:@config))]
+    end
+
+    profiler_modules.each do |mod|
+      mod.remove_instance_variable(:@config) if mod.instance_variable_defined?(:@config)
+    end
+
     example.run
   ensure
     ENV.replace(env)
+
+    profiler_modules.each do |mod|
+      mod.remove_instance_variable(:@config) if mod.instance_variable_defined?(:@config)
+      mod.instance_variable_set(:@config, configs[mod]) if configs[mod]
+    end
   end
 
-  after do
-    [TestProf::EventProf, TestProf::FactoryProf, TestProf::TPSProf, TestProf::MemoryProf, TestProf::RSpecDissect].each do |mod|
-      mod.remove_instance_variable(:@config) if mod.instance_variable_defined?(:@config)
-    end
+  def profiler_modules
+    [TestProf::EventProf, TestProf::FactoryProf, TestProf::TPSProf, TestProf::MemoryProf, TestProf::RSpecDissect]
   end
 
   context "by default" do

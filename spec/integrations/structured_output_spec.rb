@@ -5,6 +5,7 @@ describe "Structured output" do
     let(:env) do
       {
         "TEST_PROF_FORMAT" => "json",
+        "FPROF" => "1",
         "RD_PROF" => "1",
         "TAG_PROF" => "type",
         "EVENT_PROF" => "test.event",
@@ -17,7 +18,8 @@ describe "Structured output" do
         "rspec_dissect" => "tmp/test_prof/rspec-dissect.json",
         "tag_prof" => "tmp/test_prof/tag-prof.json",
         "event_prof" => "tmp/test_prof/event-prof.json",
-        "tps_prof" => "tmp/test_prof/tps-prof.json"
+        "tps_prof" => "tmp/test_prof/tps-prof.json",
+        "factory_prof" => "tmp/test_prof/test-prof.result.json"
       }
     end
 

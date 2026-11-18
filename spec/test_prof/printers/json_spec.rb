@@ -61,12 +61,23 @@ describe TestProf::Printers::Json do
 
       printer.dump(total: 1.5)
 
-      manifest = nil
-      allow(File).to receive(:write) { |_outpath, data| manifest = data }
+      outpath = TestProf.artifact_path("index.json", timestamps: false)
+      expect(File).to have_received(:write).with(outpath, String)
+    end
 
-      TestProf::Reports.write
+    it "rewrites the manifest on every registration" do
+      allow(TestProf).to receive(:json_format?).and_return(true)
 
-      expect(JSON.parse(manifest)).to include("reports" => [include("profiler" => "test_profiler")])
+      writes = []
+      allow(File).to receive(:write) { |_outpath, data| writes << data }
+
+      printer.dump(total: 1.5)
+      printer.dump(total: 2.5)
+
+      manifests = writes.map { |data| JSON.parse(data) }.select { |data| data.key?("reports") }
+
+      expect(manifests.size).to eq 2
+      expect(manifests.last.fetch("reports").size).to eq 2
     end
 
     it "doesn't register the report when TEST_PROF_FORMAT is not set" do
