@@ -2,6 +2,7 @@
 
 require "test_prof/tag_prof/result"
 require "test_prof/tag_prof/printers/simple"
+require "test_prof/tag_prof/printers/json"
 require "test_prof/tag_prof/printers/html"
 
 module TestProf
