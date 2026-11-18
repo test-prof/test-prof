@@ -13,15 +13,7 @@ module TestProf
       attr_reader :result, :printer
 
       def initialize
-        @printer =
-          case ENV["TAG_PROF_FORMAT"]
-          when "html"
-            Printers::HTML
-          when "json"
-            Printers::Json
-          else
-            TestProf.json_format? ? Printers::Json : Printers::Simple
-          end
+        @printer = TagProf.printer
 
         @result =
           if ENV["TAG_PROF_EVENT"].nil?

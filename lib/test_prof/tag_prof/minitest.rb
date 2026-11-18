@@ -30,17 +30,7 @@ module Minitest
       end
 
       def report
-        printer =
-          case ENV["TAG_PROF_FORMAT"]
-          when "html"
-            ::TestProf::TagProf::Printers::HTML
-          when "json"
-            ::TestProf::TagProf::Printers::Json
-          else
-            ::TestProf.json_format? ? ::TestProf::TagProf::Printers::Json : ::TestProf::TagProf::Printers::Simple
-          end
-
-        printer.dump(results)
+        ::TestProf::TagProf.printer.dump(results)
       end
 
       private
