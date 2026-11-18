@@ -47,6 +47,18 @@ RD_PROF=1 RD_PROF_TOP=10 rspec ...
 
 You can also specify the number of top `let` declarations to print through `RD_PROF_LET_TOP=10` env var.
 
+## JSON report
+
+RSpecDissect can save the report as JSON by setting the global `TEST_PROF_FORMAT=json`
+environment variable:
+
+```sh
+RD_PROF=1 TEST_PROF_FORMAT=json rspec ...
+```
+
+The report is written to `tmp/test_prof/rspec-dissect.json` and uses the uniform
+[JSON envelope](json_format.md) with raw numeric values.
+
 ## Using with RSpecStamp
 
 RSpecDissect can be used with [RSpec Stamp](../recipes/rspec_stamp.md) to automatically mark _slow_ examples with custom tags. For example:

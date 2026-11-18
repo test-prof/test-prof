@@ -123,7 +123,11 @@ EVENT_PROF='sql.active_record' EVENT_PROF_FORMAT=json rspec ...
 ```
 
 The JSON artifact is written to `tmp/test_prof/event-prof.json` (the path is configurable
-via the global `output_dir` option).
+via the global `output_dir` option). The report uses the uniform [JSON envelope](json_format.md)
+and raw numeric values.
+
+EventProf also emits JSON when the global `TEST_PROF_FORMAT=json` switch is set (unless
+`EVENT_PROF_FORMAT` explicitly overrides it).
 
 For Minitest you can use the corresponding CLI option:
 

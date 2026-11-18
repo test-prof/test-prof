@@ -132,8 +132,13 @@ FPROF=json bundle exec rake test
 Example output:
 
 ```sh
-[TEST PROF INFO] Profile results to JSON: tmp/test_prof/test-prof.result.json
+[TEST PROF INFO] Report written: profiler=factory_prof path=tmp/test_prof/test-prof.result.json
 ```
+
+The report uses the uniform [JSON envelope](json_format.md) with raw numeric values.
+
+FactoryProf also emits JSON when the global `TEST_PROF_FORMAT=json` switch is set
+(unless `FPROF` explicitly selects another printer, e.g. `flamegraph`).
 
 ### Reducing the output
 

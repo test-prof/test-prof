@@ -139,6 +139,18 @@ Otherwise, you'll get an error caused by Minitest plugin system, which scans all
 `$LOAD_PATH` for any `minitest/*_plugin.rb`, thus initialization of `minitest-reporters` plugin which is
 available in that case doesn't happens correctly.
 
+## JSON report
+
+FactoryDoctor can save the report as JSON by setting the global `TEST_PROF_FORMAT=json`
+environment variable:
+
+```sh
+FDOC=1 TEST_PROF_FORMAT=json rspec ...
+```
+
+The report is written to `tmp/test_prof/factory-doctor.json` and uses the uniform
+[JSON envelope](json_format.md) with raw numeric values.
+
 ## Configuration
 
 The following configuration parameters are available (showing defaults):
