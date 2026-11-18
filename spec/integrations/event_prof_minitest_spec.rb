@@ -52,16 +52,16 @@ describe "EventProf" do
         env: {"EVENT_PROF" => "test.event", "EVENT_PROF_FORMAT" => "json"}
       )
 
-      expect(output).to include("EventProf results to JSON: ")
+      expect(output).to include("Report written: profiler=event_prof")
       expect(output).not_to include("Top 5 slowest suites")
 
       expect(File.exist?(artifact)).to eq true
 
-      data = JSON.parse(File.read(artifact))
+      envelope = JSON.parse(File.read(artifact))
 
-      expect(data.size).to eq 1
+      expect(envelope).to include("profiler" => "event_prof", "schema_version" => 1)
 
-      result = data.first
+      result = envelope.dig("data", "events").first
 
       expect(result["event"]).to eq "test.event"
       expect(result["total_count"]).to eq 3
@@ -87,7 +87,7 @@ describe "EventProf" do
         env: {"TESTOPTS" => "--event-prof=test.event --event-prof-format=json"}
       )
 
-      expect(output).to include("EventProf results to JSON: ")
+      expect(output).to include("Report written: profiler=event_prof")
       expect(File.exist?(artifact)).to eq true
     end
   end
