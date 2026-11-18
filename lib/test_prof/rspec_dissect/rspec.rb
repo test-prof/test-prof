@@ -1,15 +1,13 @@
 # frozen_string_literal: true
 
 require "test_prof/rspec_dissect/collector"
-
-require "test_prof/ext/float_duration"
+require "test_prof/rspec_dissect/printers/simple"
+require "test_prof/rspec_dissect/printers/json"
 
 module TestProf
   module RSpecDissect
     class Listener # :nodoc:
       include Logging
-
-      using FloatDuration
 
       NOTIFICATIONS = %i[
         example_group_finished
@@ -52,21 +50,7 @@ module TestProf
       end
 
       def print
-        msgs = []
-
-        msgs <<
-          <<~MSG
-            RSpecDissect report
-
-            Total time: #{@total_examples_time.duration}
-            Total setup time: #{@total_setup_time.duration}
-          MSG
-
-        msgs << "\n"
-
-        msgs << collector.print_results
-
-        log :info, msgs.join
+        printer.dump(results)
 
         stamp! if RSpecDissect.config.stamp?
       end
@@ -107,6 +91,33 @@ module TestProf
       private
 
       attr_reader :collector
+
+      def results
+        {
+          top_count: top_count,
+          total_time: @total_examples_time,
+          total_setup_time: @total_setup_time,
+          groups: collector.results.map { |group| group_result(group) }
+        }
+      end
+
+      def group_result(group)
+        {
+          description: group[:desc],
+          location: group[:loc],
+          time: group[:total],
+          count: group[:count],
+          setup_time: group[:total_setup],
+          before_time: group[:total_setup] - group[:total_lazy_let],
+          before_let_time: group[:total_before_let],
+          lazy_let_time: group[:total_lazy_let],
+          top_lets: group[:top_lets]
+        }
+      end
+
+      def printer
+        @printer ||= TestProf.json_format? ? Printers::Json : Printers::Simple
+      end
 
       def top_count
         RSpecDissect.config.top_count
