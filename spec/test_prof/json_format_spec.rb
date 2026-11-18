@@ -15,7 +15,7 @@ describe "TEST_PROF_FORMAT=json" do
   end
 
   after do
-    [TestProf::EventProf, TestProf::FactoryProf, TestProf::TPSProf].each do |mod|
+    [TestProf::EventProf, TestProf::FactoryProf, TestProf::TPSProf, TestProf::MemoryProf, TestProf::RSpecDissect].each do |mod|
       mod.remove_instance_variable(:@config) if mod.instance_variable_defined?(:@config)
     end
   end
