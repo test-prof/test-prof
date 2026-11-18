@@ -30,6 +30,15 @@ describe TestProf do
       it { expect(described_class.artifact_path("c")).to eq "tmp/test/c-123454321" }
     end
 
+    context "with timestamps disabled explicitly" do
+      before do
+        described_class.config.timestamps = true
+        expect(described_class).not_to receive(:now)
+      end
+
+      it { expect(described_class.artifact_path("c.html", timestamps: false)).to eq "tmp/test/c.html" }
+    end
+
     context "with report suffix" do
       before do
         described_class.config.report_suffix = "run-1"

@@ -117,17 +117,26 @@ module TestProf
     end
 
     # Return a path to store artifact
-    def artifact_path(filename)
+    #
+    # Pass `timestamps: false` to opt out of timestamped file names
+    # (e.g. for machine-readable reports that must have deterministic paths)
+    def artifact_path(filename, timestamps: true)
       create_artifact_dir
 
-      with_timestamps(
-        ::File.join(
-          config.output_dir,
-          with_report_suffix(
-            filename
-          )
+      path = ::File.join(
+        config.output_dir,
+        with_report_suffix(
+          filename
         )
       )
+
+      timestamps ? with_timestamps(path) : path
+    end
+
+    # Returns true if the global JSON output format is activated
+    # via the TEST_PROF_FORMAT environment variable
+    def json_format?
+      ENV["TEST_PROF_FORMAT"] == "json"
     end
 
     def create_artifact_dir
