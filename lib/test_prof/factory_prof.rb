@@ -30,7 +30,7 @@ module TestProf
           when "json"
             Printers::Json
           else
-            Printers::Simple
+            TestProf.json_format? ? Printers::Json : Printers::Simple
           end
         @threshold = ENV.fetch("FPROF_THRESHOLD", 0).to_i
         @include_variations = ENV["FPROF_VARS"] == "1"
