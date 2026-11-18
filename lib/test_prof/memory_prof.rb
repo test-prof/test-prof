@@ -2,6 +2,7 @@
 
 require "test_prof/memory_prof/tracker"
 require "test_prof/memory_prof/printer"
+require "test_prof/memory_prof/printer/json"
 
 module TestProf
   # MemoryProf can help in detecting test examples causing memory spikes.
@@ -72,6 +73,8 @@ module TestProf
       end
 
       def printer(tracker)
+        return JsonPrinter.new(tracker) if TestProf.json_format?
+
         printer = PRINTERS[config.mode]
         printer.new(tracker)
       end
