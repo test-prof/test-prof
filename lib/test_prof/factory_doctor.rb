@@ -3,6 +3,8 @@
 require "test_prof/factory_bot"
 require "test_prof/factory_doctor/factory_bot_patch"
 require "test_prof/factory_doctor/fabrication_patch"
+require "test_prof/factory_doctor/printers/simple"
+require "test_prof/factory_doctor/printers/json"
 
 module TestProf
   # FactoryDoctor is a tool that helps you identify

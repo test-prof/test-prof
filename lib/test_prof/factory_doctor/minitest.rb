@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 require "minitest/base_reporter"
-require "test_prof/ext/float_duration"
 
 module Minitest
   module TestProf # :nodoc:
@@ -15,8 +14,6 @@ module Minitest
     Minitest::Test.include FactoryDoctorIgnore
 
     class FactoryDoctorReporter < BaseReporter # :nodoc:
-      using ::TestProf::FloatDuration
-
       SUCCESS_MESSAGE = 'FactoryDoctor says: "Looks good to me!"'
 
       def initialize(io = $stdout, options = {})
@@ -60,34 +57,27 @@ module Minitest
       def report
         return log(:info, SUCCESS_MESSAGE) if @example_groups.empty?
 
-        msgs = []
-
-        msgs <<
-          <<~MSG
-            FactoryDoctor report
-
-            Total (potentially) bad examples: #{@count}
-            Total wasted time: #{@time.duration}
-
-          MSG
-
-        @example_groups.each do |group, examples|
-          msgs << "#{group[:description]} (#{group[:location]})\n"
-          examples.each do |ex|
-            msgs << "  #{ex[:description]} (#{ex[:location]}) " \
-                    "– #{pluralize_records(ex[:factories])} created, " \
-                    "#{ex[:time].duration}\n"
-          end
-          msgs << "\n"
-        end
-
-        log :info, msgs.join
+        printer.dump(results)
       end
 
       private
 
-      def pluralize_records(count)
-        (count == 1) ? "1 record" : "#{count} records"
+      def results
+        {
+          total_bad_examples: @count,
+          total_wasted_time: @time,
+          groups: @example_groups.map do |group, examples|
+            {
+              description: group[:description],
+              location: group[:location],
+              examples: examples
+            }
+          end
+        }
+      end
+
+      def printer
+        @printer ||= ::TestProf.json_format? ? ::TestProf::FactoryDoctor::Printers::Json : ::TestProf::FactoryDoctor::Printers::Simple
       end
     end
   end
