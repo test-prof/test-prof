@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Fix `EventProf` crashing with `undefined method '+' for nil` when a top-level monitored event (such as `factory.create` or `sidekiq.inline`) runs on a thread or fiber other than the one that initialized the monitor.
+
 - Use `#lease_connection` instead of the deprecated `#connection` for checking out Active Record connections in `before_all` and `any_fixture` (with a fallback to `#connection` for older Rails versions). ([@viralpraxis][])
 
 - Fix `before_all` global hooks with metadata filters raising `ArgumentError` on RSpec 4. ([@andrewfader][])

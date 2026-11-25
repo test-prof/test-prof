@@ -22,10 +22,10 @@ module TestProf
         def initialize(event)
           super
           @id = :"event_prof_monitor_#{event}"
-          Thread.current[id] = 0
         end
 
         def track(payload = nil)
+          Thread.current[id] ||= 0
           Thread.current[id] += 1
           res = nil
           begin
