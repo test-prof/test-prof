@@ -39,7 +39,7 @@ TestProf toolbox aims to help you identify bottlenecks in your test suite. It co
 
 <br/>
 
-<img src="https://cdn.evilmartians.com/badges/logo-no-label.svg" alt="Evil Martians logo" width="22" height="16" /> <b>TestProf</b> is built by <b><a href="https://evilmartians.com/">Evil Martians</a></b>, an American design and engineering consultancy for <b>developer tools, AI, and cybersecurity startups</b>.
+<img src="https://cdn.evilmartians.com/badges/logo-no-label.svg" alt="Evil Martians logo" width="22" height="16" /> <b>TestProf</b> is built by <b><a href="https://evilmartians.com/">Evil Martians</a></b>, an American design and engineering consultancy for <b>developer tools, AI, and cybersecurity startups</b>. Slow test suite or CI? We run <a href="https://evilmartians.com/services/rails-ci-speedup?utm_source=test-prof">Rails CI speedups</a> and <a href="https://evilmartians.com/services/rails-performance-audit?utm_source=test-prof">Rails performance audits</a>.
 
 ## Who uses TestProf
 
