@@ -1,6 +1,23 @@
 # frozen_string_literal: true
 
 describe TestProf do
+  describe ".config" do
+    context "output_dir" do
+      after { ENV.delete("TEST_PROF_OUTPUT_DIR") if ENV.key?("TEST_PROF_OUTPUT_DIR") }
+
+      it "defaults to tmp/test_prof" do
+        expect(described_class.config.output_dir).to eq "tmp/test_prof"
+      end
+
+      it "is configurable via TEST_PROF_OUTPUT_DIR env variable" do
+        ENV["TEST_PROF_OUTPUT_DIR"] = "tmp/custom_dir"
+        described_class.remove_instance_variable(:@config)
+
+        expect(described_class.config.output_dir).to eq "tmp/custom_dir"
+      end
+    end
+  end
+
   describe "#artifact_path" do
     before do
       described_class.config.output_dir = "tmp/test"

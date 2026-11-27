@@ -74,3 +74,9 @@ When `TEST_PROF_FORMAT=json` is set, TestProf also writes a manifest — `tmp/te
 ```
 
 This way consumers don't have to parse stdout at all: just read the manifest.
+
+The manifest always lives at `<output_dir>/index.json`; the artifacts directory could be changed via the `TEST_PROF_OUTPUT_DIR` env variable (e.g., to point reports directly at a CI artifacts directory):
+
+```sh
+TEST_PROF_FORMAT=json TEST_PROF_OUTPUT_DIR=tmp/artifacts rspec ...
+```

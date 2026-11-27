@@ -183,7 +183,7 @@ module TestProf
     def initialize
       @output = $stdout
       @color = true
-      @output_dir = "tmp/test_prof"
+      @output_dir = ENV["TEST_PROF_OUTPUT_DIR"] || "tmp/test_prof"
       @timestamps = false
       @report_suffix = ENV["TEST_PROF_REPORT"]
     end

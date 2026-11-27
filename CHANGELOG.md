@@ -2,6 +2,8 @@
 
 ## master (unreleased)
 
+- Add `TEST_PROF_OUTPUT_DIR` environment variable to configure the artifacts directory (equivalent to the `output_dir` configuration option). ([@viralpraxis][])
+
 - Add unified structured (JSON) output activated by the `TEST_PROF_FORMAT=json` environment variable. All profilers (FactoryProf, EventProf, RSpecDissect, TagProf, FactoryDoctor, MemoryProf, TPSProf) can now emit their reports as JSON documents sharing a uniform envelope (`profiler`, `schema_version`, `test_prof_version`, `data`) with raw numeric values and deterministic (timestamp-free) artifact paths. When `TEST_PROF_FORMAT=json` is set, a manifest (`tmp/test_prof/index.json`) listing every report written during the run is generated after the suite. The existing per-profiler format variables (`FPROF`, `EVENT_PROF_FORMAT`, `TAG_PROF_FORMAT`, `TPS_PROF_FORMAT`) keep working as overrides. ([@viralpraxis][])
 
 - **Breaking change for JSON consumers**: the EventProf and FactoryProf JSON reports are now wrapped into the uniform envelope (see above) and durations are raw float seconds instead of pre-formatted `MM:SS.mmm` strings. Also, JSON printers now log `Report written: profiler=<name> path=<path>` instead of `EventProf results to JSON: <path>` / `Profile results to JSON: <path>` (the artifact file names — `event-prof.json`, `test-prof.result.json` — are unchanged). ([@viralpraxis][])

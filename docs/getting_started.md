@@ -35,6 +35,12 @@ TestProf.configure do |config|
 end
 ```
 
+The artifacts directory could also be set via the `TEST_PROF_OUTPUT_DIR` env variable:
+
+```sh
+TEST_PROF_OUTPUT_DIR=reports/test_prof bundle exec rake
+```
+
 You can also dynamically add artifacts/reports suffixes via `TEST_PROF_REPORT` env variable.
 It is useful if you're not using timestamps and want to generate multiple reports with different setups and compare them.
 
