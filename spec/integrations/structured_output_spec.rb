@@ -23,7 +23,7 @@ describe "Structured output" do
       }
     end
 
-    after { FileUtils.rm_rf("tmp/test_prof") }
+    after { FileUtils.rm_f([*reports.values, "tmp/test_prof/index.json"]) }
 
     specify "all profilers emit a well-formed envelope plus a manifest", :aggregate_failures do
       output = run_rspec("structured_output", env: env)
@@ -56,7 +56,7 @@ describe "Structured output" do
   context "Minitest" do
     let(:env) { {"TEST_PROF_FORMAT" => "json", "TAG_PROF" => "type"} }
 
-    after { FileUtils.rm_rf("tmp/test_prof") }
+    after { FileUtils.rm_f(["tmp/test_prof/tag-prof.json", "tmp/test_prof/index.json"]) }
 
     specify "TagProf emits a well-formed envelope plus a manifest", :aggregate_failures do
       output = run_minitest("structured_output", env: env)
