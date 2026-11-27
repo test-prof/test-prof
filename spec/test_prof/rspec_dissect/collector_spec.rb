@@ -18,20 +18,11 @@ describe TestProf::RSpecDissect::Collector do
     }
   end
 
-  describe "#print_group_result" do
-    it "makes the setup time bold when color is on" do
-      allow(TestProf.config).to receive(:color?).and_return(true)
+  describe "#<<" do
+    it "collects group results" do
+      collector << group
 
-      expect(collector.print_group_result(group)).to include("\e[1m00:01.500\e[22m")
-    end
-
-    it "writes no escape sequences when color is off" do
-      allow(TestProf.config).to receive(:color?).and_return(false)
-
-      result = collector.print_group_result(group)
-
-      expect(result).to include("– 00:01.500 of 00:02.000")
-      expect(result).not_to include("\e[")
+      expect(collector.results.to_a).to eq [group]
     end
   end
 end

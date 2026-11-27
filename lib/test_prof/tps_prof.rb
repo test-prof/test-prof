@@ -2,6 +2,7 @@
 
 require "test_prof/tps_prof/profiler"
 require "test_prof/tps_prof/reporter/text"
+require "test_prof/tps_prof/reporter/json"
 
 module TestProf
   # TPSProf shows top-N example group based on their tests-per-second value.
@@ -61,8 +62,10 @@ module TestProf
       private
 
       def resolve_reporter(format)
-        # TODO: support other formats
-        TPSProf::Reporter::Text.new
+        return TPSProf::Reporter::Json.new if format.to_s == "json"
+        return TPSProf::Reporter::Text.new unless format.nil?
+
+        TestProf.json_format? ? TPSProf::Reporter::Json.new : TPSProf::Reporter::Text.new
       end
 
       def default_strict_handler(group_info)

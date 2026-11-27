@@ -65,23 +65,27 @@ describe "EventProf RSpec" do
         env: {"EVENT_PROF" => "test.event", "EVENT_PROF_FORMAT" => "json"}
       )
 
-      expect(output).to include("EventProf results to JSON: ")
+      expect(output).to include("Report written: profiler=event_prof")
       expect(output).not_to include("Top 5 slowest suites")
 
       expect(File.exist?(artifact)).to eq true
 
-      data = JSON.parse(File.read(artifact))
+      envelope = JSON.parse(File.read(artifact))
 
-      expect(data.size).to eq 1
+      expect(envelope).to include(
+        "profiler" => "event_prof",
+        "schema_version" => 1,
+        "test_prof_version" => TestProf::VERSION
+      )
 
-      result = data.first
+      result = envelope.dig("data", "events").first
 
       expect(result["event"]).to eq "test.event"
       expect(result["total_count"]).to eq 4
       expect(result["rank_by"]).to eq "time"
       expect(result["top_count"]).to eq 5
-      expect(result["total_time"]).to match(/\A\d{2}:\d{2}\.\d{3}\z/)
-      expect(result["absolute_run_time"]).to match(/\A\d{2}:\d{2}\.\d{3}\z/)
+      expect(result["total_time"]).to be_a(Float)
+      expect(result["absolute_run_time"]).to be_a(Float)
       expect(result["time_percentage"]).to be_a(Float)
 
       expect(result["groups"].size).to eq 2

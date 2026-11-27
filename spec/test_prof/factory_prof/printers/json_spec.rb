@@ -48,10 +48,34 @@ describe TestProf::FactoryProf::Printers::Json do
       expect(stats).to include({
         total_count: 15,
         total_top_level_count: 13,
-        total_time: "00:01.000",
-        total_run_time: "00:02.000",
+        total_time: 1.0,
+        total_run_time: 2.0,
         total_uniq_factories: 4
       })
+    end
+  end
+
+  describe "#dump" do
+    before do
+      allow(TestProf).to receive(:now).and_return(2.0)
+    end
+
+    it "wraps results into the uniform envelope" do
+      payload = nil
+      allow(File).to receive(:write) { |_outpath, data| payload = data }
+
+      described_class.dump(result, start_time: 0.0)
+
+      expect(JSON.parse(payload)).to include(
+        "profiler" => "factory_prof",
+        "schema_version" => 1,
+        "test_prof_version" => TestProf::VERSION,
+        "data" => include(
+          "total_count" => 15,
+          "total_time" => 1.0,
+          "total_run_time" => 2.0
+        )
+      )
     end
   end
 end

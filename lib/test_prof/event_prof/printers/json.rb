@@ -1,25 +1,21 @@
 # frozen_string_literal: true
 
 require "test_prof/event_prof/printers/base"
-require "test_prof/ext/float_duration"
+require "test_prof/printers/json"
 
 module TestProf
   module EventProf
     module Printers
       module Json # :nodoc: all
         class << self
-          using TestProf::FloatDuration
-
           include Base
+          include TestProf::Printers::Json
 
           def dump(profilers)
-            data = []
-            profilers.each { |profiler| data << convert_results(profiler) }
+            events = []
+            profilers.each { |profiler| events << convert_results(profiler) }
 
-            outpath = TestProf.artifact_path("event-prof.json")
-            File.write(outpath, data.to_json)
-
-            log :info, "EventProf results to JSON: #{outpath}"
+            dump_json("event_prof", {events: events}, filename: "event-prof.json")
           end
 
           private
@@ -29,9 +25,9 @@ module TestProf
 
             {
               event: profiler.event,
-              total_time: profiler.total_time.duration,
+              total_time: profiler.total_time,
               total_count: profiler.total_count,
-              absolute_run_time: profiler.absolute_run_time.duration,
+              absolute_run_time: profiler.absolute_run_time,
               time_percentage: time_percentage(profiler.total_time, profiler.absolute_run_time),
               rank_by: profiler.rank_by,
               top_count: profiler.top_count,
@@ -47,8 +43,8 @@ module TestProf
             {
               description: describe_group(group[:id]),
               location: locate(group[:id]),
-              time: group[:time].duration,
-              run_time: group[:run_time].duration,
+              time: group[:time],
+              run_time: group[:run_time],
               time_percentage: time_percentage(group[:time], group[:run_time]),
               count: group[:count],
               examples: group[:examples]
@@ -61,8 +57,8 @@ module TestProf
             {
               description: describe_example(example[:id]),
               location: locate(example[:id]),
-              time: example[:time].duration,
-              run_time: example[:run_time].duration,
+              time: example[:time],
+              run_time: example[:run_time],
               time_percentage: time_percentage(example[:time], example[:run_time]),
               count: example[:count]
             }.tap do |data|
@@ -72,7 +68,7 @@ module TestProf
 
           def convert_breakdown(breakdown)
             breakdown.map do |row|
-              {label: row[:label], time: row[:time].duration, count: row[:count]}
+              {label: row[:label], time: row[:time], count: row[:count]}
             end
           end
         end

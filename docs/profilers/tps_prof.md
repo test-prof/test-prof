@@ -128,6 +128,18 @@ TestProf::TPSProf.configure do |config|
 end
 ```
 
+## JSON report
+
+TPSProf can save the report as JSON by setting the `TPS_PROF_FORMAT=json` environment
+variable (or the global `TEST_PROF_FORMAT=json` switch):
+
+```sh
+TPS_PROF=1 TPS_PROF_FORMAT=json rspec ...
+```
+
+The report is written to `tmp/test_prof/tps-prof.json` and uses the uniform
+[JSON envelope](json_format.md) with raw numeric values.
+
 ## Ignoring groups and examples
 
 You can exclude specific groups from TPSProf tracking using the `tps_prof: :ignore` metadata:

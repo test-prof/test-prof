@@ -133,7 +133,7 @@ describe "FactoryProf" do
       output = run_rspec("factory_prof_with_nate", env: {"FPROF" => "json"})
 
       expect(output).to match(/Time spent in factories: \d{2}+:\d{2}\.\d{3} \([\d.]+% of total time\)/)
-      expect(output).to include("Profile results to JSON: ")
+      expect(output).to include("Report written: profiler=factory_prof")
     end
 
     context "when no fabrication installed" do

@@ -28,6 +28,16 @@ That's how a report looks like:
 
 <img alt="TagProf UI" data-origin="/assets/tag-prof.gif" src="/assets/tag-prof.gif">
 
+You can also dump the report as JSON:
+
+```sh
+TAG_PROF=type TAG_PROF_FORMAT=json bundle exec rspec
+```
+
+The report is written to `tmp/test_prof/tag-prof.json` and uses the uniform
+[JSON envelope](json_format.md) with raw numeric values. The global `TEST_PROF_FORMAT=json`
+switch works as well (unless `TAG_PROF_FORMAT` explicitly overrides it).
+
 ## Instructions
 
 TagProf can be used with both RSpec and Minitest (limited support, see  below).

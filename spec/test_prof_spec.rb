@@ -1,6 +1,23 @@
 # frozen_string_literal: true
 
 describe TestProf do
+  describe ".config" do
+    context "output_dir" do
+      after { ENV.delete("TEST_PROF_OUTPUT_DIR") if ENV.key?("TEST_PROF_OUTPUT_DIR") }
+
+      it "defaults to tmp/test_prof" do
+        expect(described_class.config.output_dir).to eq "tmp/test_prof"
+      end
+
+      it "is configurable via TEST_PROF_OUTPUT_DIR env variable" do
+        ENV["TEST_PROF_OUTPUT_DIR"] = "tmp/custom_dir"
+        described_class.remove_instance_variable(:@config)
+
+        expect(described_class.config.output_dir).to eq "tmp/custom_dir"
+      end
+    end
+  end
+
   describe "#artifact_path" do
     before do
       described_class.config.output_dir = "tmp/test"
@@ -28,6 +45,15 @@ describe TestProf do
 
       it { expect(described_class.artifact_path("c.html")).to eq "tmp/test/c-123454321.html" }
       it { expect(described_class.artifact_path("c")).to eq "tmp/test/c-123454321" }
+    end
+
+    context "with timestamps disabled explicitly" do
+      before do
+        described_class.config.timestamps = true
+        expect(described_class).not_to receive(:now)
+      end
+
+      it { expect(described_class.artifact_path("c.html", timestamps: false)).to eq "tmp/test/c.html" }
     end
 
     context "with report suffix" do

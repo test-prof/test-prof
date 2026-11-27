@@ -1,13 +1,9 @@
 # frozen_string_literal: true
 
-require "test_prof/ext/float_duration"
-
 module TestProf
   module FactoryDoctor
     class RSpecListener # :nodoc:
       include Logging
-
-      using FloatDuration
 
       SUCCESS_MESSAGE = 'FactoryDoctor says: "Looks good to me!"'
 
@@ -47,34 +43,7 @@ module TestProf
       def print
         return log(:info, SUCCESS_MESSAGE) if @example_groups.empty?
 
-        msgs = []
-
-        msgs <<
-          <<~MSG
-            FactoryDoctor report
-
-            Total (potentially) bad examples: #{@count}
-            Total wasted time: #{@time.duration}
-
-          MSG
-
-        @example_groups.each do |group, examples|
-          group_time = examples.sum { |ex| ex.metadata[:time] }
-          group_count = examples.sum { |ex| ex.metadata[:factories] }
-
-          msgs << "#{group.description} (#{group.metadata[:location]}) " \
-                  "(#{pluralize_records(group_count)} created, " \
-                  "#{group_time.duration})\n"
-
-          examples.each do |ex|
-            msgs << "  #{ex.description} (#{ex.metadata[:location]}) " \
-                    "– #{pluralize_records(ex.metadata[:factories])} created, " \
-                    "#{ex.metadata[:time].duration}\n"
-          end
-          msgs << "\n"
-        end
-
-        log :info, msgs.join
+        printer.dump(results)
 
         stamp! if FactoryDoctor.stamp?
       end
@@ -113,9 +82,31 @@ module TestProf
 
       private
 
-      def pluralize_records(count)
-        return "1 record" if count == 1
-        "#{count} records"
+      def results
+        {
+          total_bad_examples: @count,
+          total_wasted_time: @time,
+          groups: @example_groups.map do |group, examples|
+            {
+              description: group.description,
+              location: group.metadata[:location],
+              total_factories: examples.sum { |ex| ex.metadata[:factories] },
+              total_time: examples.sum { |ex| ex.metadata[:time] },
+              examples: examples.map do |ex|
+                {
+                  description: ex.description,
+                  location: ex.metadata[:location],
+                  factories: ex.metadata[:factories],
+                  time: ex.metadata[:time]
+                }
+              end
+            }
+          end
+        }
+      end
+
+      def printer
+        @printer ||= TestProf.json_format? ? Printers::Json : Printers::Simple
       end
     end
   end

@@ -30,8 +30,7 @@ module Minitest
       end
 
       def report
-        printer = (ENV["TAG_PROF_FORMAT"] == "html") ? ::TestProf::TagProf::Printers::HTML : ::TestProf::TagProf::Printers::Simple
-        printer.dump(results)
+        ::TestProf::TagProf.printer.dump(results)
       end
 
       private

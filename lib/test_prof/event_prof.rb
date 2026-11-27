@@ -60,10 +60,10 @@ module TestProf
       end
 
       def printer
-        case format.to_s
-        when "json" then Printers::Json
-        else Printers::Simple
-        end
+        return Printers::Json if format.to_s == "json"
+        return Printers::Simple unless format.nil?
+
+        TestProf.json_format? ? Printers::Json : Printers::Simple
       end
 
       def resolve_instrumenter

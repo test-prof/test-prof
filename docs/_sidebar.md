@@ -28,4 +28,5 @@
   * [Rails Logging](/recipes/logging.md)
 
 * Misc
+  * [JSON reports](/profilers/json_format.md)
   * [RuboCop cops](/misc/rubocop.md)

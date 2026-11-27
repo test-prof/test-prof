@@ -78,6 +78,19 @@ or with CLI options for Minitest:
 ruby test/my_super_test.rb --mem-prof=rs --mem-prof-top-count=10
 ```
 
+## JSON report
+
+MemoryProf can save the report as JSON by setting the global `TEST_PROF_FORMAT=json`
+environment variable:
+
+```sh
+TEST_MEM_PROF='rss' TEST_PROF_FORMAT=json rspec ...
+```
+
+The report is written to `tmp/test_prof/memory-prof.json` and uses the uniform
+[JSON envelope](json_format.md) with raw byte/value numbers (allocations count,
+RSS bytes, GC nanoseconds — no humanized formatting).
+
 ## Supported Ruby Engines & OS
 
 Currently the allocation mode is not supported for JRuby.
